@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" lang="cs">
+  <title>Seřaďte typy připojení od nejrychlejšího po nejpomalejší</title>
+  <desc>Aktivita: tři karty s ikonami Wi-Fi, mobilních dat a síťového kabelu; žáci je řadí podle rychlosti od nejrychlejšího po nejpomalejší.</desc>
+  <text x="480" y="60" text-anchor="middle" font-family="sans-serif" font-size="30" font-weight="bold" fill="#1a1a2e">Seřaďte typy připojení od <tspan fill="#3fae4a">nejrychlejšího</tspan> po <tspan fill="#e0483e">nejpomalejší</tspan></text>
+  <g aria-label="Karta Wi-Fi">
+    <rect x="110" y="140" width="220" height="280" rx="14" fill="#fff" stroke="#6c3df4" stroke-width="3"/>
+    <g role="img"><title>Fialová ikona Wi-Fi — vějíř soustředných oblouků.</title>
+      <path d="M 175 260 A 63 63 0 0 1 265 260" fill="none" stroke="#6c3df4" stroke-width="7"/>
+      <path d="M 195 283 A 36 36 0 0 1 245 283" fill="none" stroke="#6c3df4" stroke-width="7"/>
+      <circle cx="220" cy="308" r="9" fill="#6c3df4"/>
+    </g>
+    <text x="220" y="380" text-anchor="middle" font-family="sans-serif" font-size="19" fill="#1a1a2e">připojení přes <tspan font-weight="bold">Wi-Fi</tspan></text>
+  </g>
+  <g aria-label="Karta mobilní data">
+    <rect x="370" y="140" width="220" height="280" rx="14" fill="#fff" stroke="#e0483e" stroke-width="3"/>
+    <g role="img"><title>Červená ikona mobilních dat — šipka nahoru a šipka dolů.</title>
+      <line x1="460" y1="320" x2="460" y2="245" stroke="#e0483e" stroke-width="8"/>
+      <path d="M 448 258 L 460 235 L 472 258 Z" fill="#e0483e"/>
+      <line x1="500" y1="245" x2="500" y2="320" stroke="#e0483e" stroke-width="8"/>
+      <path d="M 488 307 L 500 330 L 512 307 Z" fill="#e0483e"/>
+    </g>
+    <text x="480" y="380" text-anchor="middle" font-family="sans-serif" font-size="19" fill="#1a1a2e">připojení přes <tspan font-weight="bold">mobilní data</tspan></text>
+  </g>
+  <g aria-label="Karta síťový kabel">
+    <rect x="630" y="140" width="220" height="280" rx="14" fill="#fff" stroke="#f5a623" stroke-width="3"/>
+    <g role="img"><title>Oranžová ikona síťového kabelu se zástrčkou.</title>
+      <path d="M 670 310 Q 720 240 775 285" fill="none" stroke="#f5a623" stroke-width="8"/>
+      <rect x="770" y="268" width="34" height="28" rx="4" fill="#f5a623"/>
+    </g>
+    <text x="740" y="380" text-anchor="middle" font-family="sans-serif" font-size="19" fill="#1a1a2e">připojení přes <tspan font-weight="bold">síťový kabel</tspan></text>
+  </g>
+  <text x="930" y="525" text-anchor="end" font-family="sans-serif" font-size="14" fill="#999">17</text>
+</svg>

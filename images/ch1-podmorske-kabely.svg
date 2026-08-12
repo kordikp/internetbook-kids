@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420" font-family="system-ui,sans-serif">
+  <rect width="800" height="420" rx="14" fill="#FAFAF7" stroke="#E5E7EB"/>
+  <text x="400" y="36" text-anchor="middle" font-size="19" font-weight="700" fill="#1E1B4B">Podmořské kabely: dálnice mezi kontinenty</text>
+
+  <!-- zjednodušené kontinenty -->
+  <g fill="#FFFFFF" stroke="#E5E7EB" stroke-width="1.5">
+    <path d="M 65 100 C 100 74 180 74 215 98 C 240 116 238 150 212 170 C 190 187 155 196 125 190 C 92 183 66 140 65 100 Z"/>
+    <path d="M 150 230 C 180 215 215 222 225 250 C 233 277 220 315 200 335 C 185 320 160 295 152 268 C 148 252 145 240 150 230 Z"/>
+    <path d="M 560 85 C 595 70 650 72 675 92 C 692 108 685 130 660 140 C 630 150 590 148 570 130 C 556 117 552 97 560 85 Z"/>
+    <path d="M 575 175 C 610 160 655 168 668 195 C 680 222 668 262 648 292 C 632 312 608 315 595 292 C 580 265 566 200 575 175 Z"/>
+  </g>
+
+  <!-- kabely (modrá = data v pohybu) -->
+  <g stroke="#0EA5E9" stroke-width="2.5" fill="none">
+    <path d="M 228 120 C 340 86 460 84 562 102"/>
+    <path d="M 232 138 C 345 108 462 104 566 116"/>
+    <path d="M 234 156 C 348 130 465 124 570 129"/>
+    <path d="M 226 268 C 340 302 465 288 572 236"/>
+  </g>
+
+  <!-- zvýraznění nejhustšího svazku -->
+  <text x="400" y="70" text-anchor="middle" font-size="11" fill="#D97706">tudy vede nejvíc kabelů světa</text>
+  <line x1="400" y1="75" x2="400" y2="86" stroke="#D97706" stroke-width="1.5"/>
+
+  <!-- popisky -->
+  <g text-anchor="middle" font-size="12.5" font-weight="700" fill="#1E1B4B">
+    <text x="148" y="211">Amerika</text>
+    <text x="620" y="112">Evropa</text>
+    <text x="620" y="232">Afrika</text>
+  </g>
+  <text x="398" y="332" text-anchor="middle" font-size="11" fill="#6B7280">Atlantský oceán</text>
+
+  <text x="400" y="404" text-anchor="middle" font-size="12.5" fill="#6B7280">99 % dat mezi kontinenty teče kabely po dně oceánu – satelity jsou jen doplněk.</text>
+</svg>

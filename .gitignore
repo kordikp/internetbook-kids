@@ -1,0 +1,15 @@
+index-v1-standalone.html
+node_modules/
+.DS_Store
+*.log
+.env
+.log-interactions.jsonl
+
+# Separate repo, synced to git.recombee.net/business/marketing
+recombee-wiki/
+
+# legacy local CLI duplicate of api/sync-recombee.js (root only)
+/sync-recombee.js
+.vercel
+
+.claude/

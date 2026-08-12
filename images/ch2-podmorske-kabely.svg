@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420" font-family="system-ui,sans-serif">
+  <rect width="800" height="420" rx="14" fill="#FAFAF7" stroke="#E5E7EB"/>
+  <text x="400" y="36" text-anchor="middle" font-size="19" font-weight="700" fill="#1E1B4B">Řez oceánem: kudy vede kabel</text>
+
+  <!-- voda -->
+  <path d="M192 184 L608 184 C 560 296, 530 330, 460 330 L340 330 C 270 330, 240 296, 192 184 Z" fill="#E0F2FE" opacity="0.45" stroke="none"/>
+
+  <!-- pevniny -->
+  <path d="M40 184 L40 118 L128 118 L192 184 Z" fill="#D1FAE5" stroke="#10B981" stroke-width="2"/>
+  <path d="M608 184 L672 118 L760 118 L760 184 Z" fill="#D1FAE5" stroke="#10B981" stroke-width="2"/>
+  <text x="86" y="142" text-anchor="middle" font-size="12.5" fill="#1E1B4B">Evropa</text>
+  <text x="712" y="142" text-anchor="middle" font-size="12.5" fill="#1E1B4B">Amerika</text>
+
+  <!-- hladina -->
+  <path d="M192 184 Q 212 176 232 184 T 272 184 T 312 184 T 352 184 T 392 184 T 432 184 T 472 184 T 512 184 T 552 184 T 592 184 L608 184" fill="none" stroke="#6B7280" stroke-width="1.5" opacity="0.55"/>
+
+  <!-- kabel: pevnina — dno — loď — dno — pevnina -->
+  <path d="M40 156 L160 156 L196 190 C 235 296, 268 322, 340 322 L352 322 L400 176 L448 322 L460 322 C 510 322, 540 292, 604 188 L646 154 L760 154" fill="none" stroke="#0EA5E9" stroke-width="2.5" stroke-linejoin="round"/>
+  <circle cx="52" cy="156" r="4" fill="#0EA5E9"/>
+  <circle cx="748" cy="154" r="4" fill="#0EA5E9"/>
+
+  <!-- opravárenská loď -->
+  <path d="M354 158 L446 158 L430 180 L370 180 Z" fill="#FFFFFF" stroke="#1E1B4B" stroke-width="2"/>
+  <rect x="386" y="140" width="28" height="18" rx="3" fill="#FFFFFF" stroke="#1E1B4B" stroke-width="1.5"/>
+  <text x="400" y="124" text-anchor="middle" font-size="12.5" fill="#1E1B4B">opravárenská loď</text>
+
+  <!-- hloubka -->
+  <g stroke="#6B7280" stroke-width="1.5">
+    <line x1="490" y1="196" x2="490" y2="305"/>
+    <path d="M490 196 L486 204 M490 196 L494 204 M490 305 L486 297 M490 305 L494 297" fill="none"/>
+  </g>
+  <text x="500" y="246" font-size="11" fill="#6B7280">hloubka</text>
+  <text x="500" y="262" font-size="11" fill="#6B7280">i 4 km</text>
+
+  <!-- žralok (nekouše) -->
+  <g fill="#FFFFFF" stroke="#6B7280" stroke-width="1.5">
+    <ellipse cx="272" cy="224" rx="24" ry="10"/>
+    <path d="M294 224 L310 215 L310 233 Z"/>
+    <path d="M266 215 L272 203 L279 215"/>
+  </g>
+  <circle cx="256" cy="221" r="1.5" fill="#6B7280"/>
+
+  <text x="400" y="362" text-anchor="middle" font-size="12.5" fill="#1E1B4B">optický kabel na dně</text>
+  <text x="400" y="404" text-anchor="middle" font-size="12.5" fill="#6B7280">Zpráva pluje kabelem po dně oceánu. Když se přetrhne, opraví ho loď — a žralok si nekousne.</text>
+</svg>

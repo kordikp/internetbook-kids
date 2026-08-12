@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" lang="cs">
+  <title>Wi-Fi router — prvky schématu</title>
+  <desc>Úvodní rozmístění prvků schématu zapojení Wi-Fi routeru, zatím bez propojení: notebook, datová zásuvka ve zdi, elektrická zásuvka, router s barevnými porty a mobil s ikonou Wi-Fi.</desc>
+  <text x="480" y="52" text-anchor="middle" font-family="sans-serif" font-size="36" font-weight="bold" fill="#2d1b69">Wi-Fi router</text>
+  <g aria-label="Notebook s otevřenou webovou stránkou">
+    <rect x="70" y="190" width="160" height="100" rx="6" fill="#f5f5fa" stroke="#333" stroke-width="2"/>
+    <rect x="85" y="202" width="130" height="65" fill="#fff" stroke="#888"/>
+    <circle cx="103" cy="218" r="7" fill="#f5d442"/>
+    <rect x="118" y="212" width="80" height="10" fill="#6c3df4"/>
+    <rect x="98" y="230" width="55" height="30" fill="#e8635a"/>
+    <line x1="55" y1="296" x2="245" y2="296" stroke="#333" stroke-width="4"/>
+    <text x="150" y="325" text-anchor="middle" font-family="sans-serif" font-size="16" fill="#333">notebook</text>
+  </g>
+  <g aria-label="Datová zásuvka ve zdi">
+    <rect x="360" y="130" width="85" height="75" rx="8" fill="#e6ddf5" stroke="#333" stroke-width="2"/>
+    <rect x="375" y="155" width="22" height="24" fill="none" stroke="#4a9fd8" stroke-width="3"/>
+    <rect x="407" y="155" width="22" height="24" fill="none" stroke="#888" stroke-width="3"/>
+    <text x="402" y="230" text-anchor="middle" font-family="sans-serif" font-size="15" fill="#333">datová zásuvka ve zdi</text>
+  </g>
+  <g aria-label="Elektrická zásuvka">
+    <rect x="360" y="360" width="85" height="75" rx="8" fill="#e6ddf5" stroke="#333" stroke-width="2"/>
+    <circle cx="402" cy="397" r="19" fill="none" stroke="#4b2e83" stroke-width="3"/>
+    <circle cx="394" cy="397" r="3" fill="#4b2e83"/>
+    <circle cx="410" cy="397" r="3" fill="#4b2e83"/>
+    <text x="402" y="460" text-anchor="middle" font-family="sans-serif" font-size="15" fill="#333">elektrická zásuvka</text>
+  </g>
+  <g aria-label="Wi-Fi router s barevnými porty">
+    <line x1="600" y1="150" x2="580" y2="100" stroke="#333" stroke-width="5"/>
+    <line x1="690" y1="150" x2="710" y2="100" stroke="#333" stroke-width="5"/>
+    <rect x="565" y="150" width="160" height="52" rx="8" fill="#e9e9f2" stroke="#333" stroke-width="2"/>
+    <circle cx="588" cy="176" r="8" fill="none" stroke="#6a3fb5" stroke-width="3"/>
+    <rect x="605" y="164" width="20" height="22" fill="none" stroke="#4a9fd8" stroke-width="3"/>
+    <rect x="632" y="164" width="20" height="22" fill="none" stroke="#e8b021" stroke-width="3"/>
+    <rect x="658" y="164" width="20" height="22" fill="none" stroke="#e8b021" stroke-width="3"/>
+    <rect x="684" y="164" width="20" height="22" fill="none" stroke="#e8b021" stroke-width="3"/>
+    <text x="645" y="230" text-anchor="middle" font-family="sans-serif" font-size="16" font-weight="bold" fill="#2d1b69">Wi-Fi router</text>
+  </g>
+  <g aria-label="Mobil s ikonou Wi-Fi">
+    <rect x="810" y="140" width="80" height="140" rx="12" fill="#fff" stroke="#333" stroke-width="3"/>
+    <path d="M 830 210 A 27 27 0 0 1 870 210" fill="none" stroke="#6c3df4" stroke-width="4"/>
+    <path d="M 839 222 A 15 15 0 0 1 861 222" fill="none" stroke="#6c3df4" stroke-width="4"/>
+    <circle cx="850" cy="234" r="4" fill="#6c3df4"/>
+    <text x="850" y="305" text-anchor="middle" font-family="sans-serif" font-size="16" fill="#333">mobil</text>
+  </g>
+  <text x="480" y="505" text-anchor="middle" font-family="sans-serif" font-size="15" fill="#777">Prvky zatím nejsou propojeny — schéma se doplní na dalších slidech.</text>
+  <text x="930" y="525" text-anchor="end" font-family="sans-serif" font-size="14" fill="#999">4</text>
+</svg>

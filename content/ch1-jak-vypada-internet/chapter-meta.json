@@ -1,0 +1,33 @@
+{
+  "id": "ch1-jak-vypada-internet",
+  "number": 1,
+  "title": "Jak vypadá internet",
+  "subtitle": "Servery, kabely a chytré křižovatky",
+  "directory": "ch1-jak-vypada-internet",
+  "files": [
+    "01-spine-servery-a-datacentra.md",
+    "01a-depth-thinker-klient-server.md",
+    "01c-sidebar-pocitame-servery.md",
+    "02-spine-kabely.md",
+    "02a-sidebar-mapa-kabelu.md",
+    "03-spine-routery.md",
+    "03a-depth-thinker-pakety.md",
+    "03b-depth-thinker-obsah-paketu.md",
+    "03c-depth-creator-nakresli-sit.md",
+    "03d-sidebar-traceroute.md",
+    "04-spine-internet-nema-reditele.md",
+    "05x-sidebar-komiks-nema-reditele.md",
+    "05-game-paket-order.md",
+    "06-spine-shrnuti.md",
+    "07-question-co-te-prekvapilo.md"
+  ],
+  "boss": {
+    "q": "Kamarád ti tvrdí: 'Internet je jeden obří počítač někde v Americe a data k nám létají přes satelity. Když ho někdo vypne, internet skončí.' Vysvětli mu, co všechno má špatně a jak internet doopravdy vypadá.",
+    "hints": [
+      "Kde jsou doopravdy uložena videa a zprávy? Kolik je serverů a datových center?",
+      "Kudy data cestují mezi kontinenty – satelity, nebo něco jiného?",
+      "Co jsou routery a co se stane, když se někde překopne kabel? Proč síť bez centra nejde 'vypnout'?"
+    ]
+  },
+  "reward_title": "Vstupenka na 2. hodinu"
+}

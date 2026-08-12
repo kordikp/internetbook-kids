@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" lang="cs">
+  <title>Kolik videí je na YouTube?</title>
+  <desc>Otázka pro žáky, kolik videí je na YouTube; pod nadpisem je ikona přehrávacího tlačítka YouTube.</desc>
+  <rect x="0" y="0" width="960" height="540" fill="#ffffff"/>
+  <text x="480" y="140" font-family="sans-serif" font-size="44" font-weight="bold" fill="#1a1a1a" text-anchor="middle">Kolik videí je na <tspan fill="#c9a000">YouTube</tspan>?</text>
+  <g role="img" aria-label="Ikona YouTube">
+    <title>Červený zaoblený obdélník s bílým trojúhelníkem přehrávání – ikona YouTube</title>
+    <rect x="390" y="230" width="180" height="126" rx="28" fill="#e02b2b"/>
+    <path d="M 455 258 L 455 328 L 515 293 Z" fill="#ffffff"/>
+  </g>
+  <text x="30" y="522" font-family="sans-serif" font-size="12" fill="#999999">Matfyz · PedF UK</text>
+  <text x="930" y="522" font-family="sans-serif" font-size="12" fill="#999999" text-anchor="end">4</text>
+</svg>

@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420" font-family="system-ui,sans-serif">
+  <rect width="800" height="420" rx="14" fill="#FAFAF7" stroke="#E5E7EB"/>
+
+  <defs>
+    <marker id="ha" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#0EA5E9"/>
+    </marker>
+  </defs>
+
+  <!-- dům vlevo -->
+  <g>
+    <path d="M60 150 L140 96 L220 150" fill="none" stroke="#1E1B4B" stroke-width="2" stroke-linejoin="round"/>
+    <rect x="72" y="150" width="136" height="118" rx="6" fill="#FFFFFF" stroke="#1E1B4B" stroke-width="2"/>
+    <!-- mobil (fialová = zařízení lidí) -->
+    <rect x="90" y="168" width="30" height="48" rx="6" fill="#EDE9FE" stroke="#7C3AED" stroke-width="2"/>
+    <rect x="99" y="206" width="12" height="3" rx="1.5" fill="#7C3AED"/>
+    <!-- notebook -->
+    <rect x="138" y="176" width="52" height="32" rx="4" fill="#EDE9FE" stroke="#7C3AED" stroke-width="2"/>
+    <rect x="132" y="208" width="64" height="6" rx="3" fill="#7C3AED"/>
+    <!-- Wi-Fi router doma -->
+    <rect x="112" y="234" width="56" height="20" rx="5" fill="#E0F2FE" stroke="#0EA5E9" stroke-width="2"/>
+    <line x1="122" y1="234" x2="122" y2="222" stroke="#0EA5E9" stroke-width="2" stroke-linecap="round"/>
+    <line x1="158" y1="234" x2="158" y2="222" stroke="#0EA5E9" stroke-width="2" stroke-linecap="round"/>
+    <!-- bezdrát: přerušované -->
+    <path d="M132 216 A9 9 0 0 1 148 216" fill="none" stroke="#0EA5E9" stroke-width="1.6" stroke-dasharray="3 3"/>
+    <text x="96" y="290" text-anchor="middle" font-size="12" fill="#6B7280">doma</text>
+  </g>
+
+  <!-- dům vpravo -->
+  <g>
+    <path d="M580 150 L660 96 L740 150" fill="none" stroke="#1E1B4B" stroke-width="2" stroke-linejoin="round"/>
+    <rect x="592" y="150" width="136" height="118" rx="6" fill="#FFFFFF" stroke="#1E1B4B" stroke-width="2"/>
+    <rect x="610" y="172" width="56" height="36" rx="4" fill="#EDE9FE" stroke="#7C3AED" stroke-width="2"/>
+    <rect x="604" y="208" width="68" height="6" rx="3" fill="#7C3AED"/>
+    <rect x="640" y="234" width="56" height="20" rx="5" fill="#E0F2FE" stroke="#0EA5E9" stroke-width="2"/>
+    <line x1="650" y1="234" x2="650" y2="222" stroke="#0EA5E9" stroke-width="2" stroke-linecap="round"/>
+    <line x1="686" y1="234" x2="686" y2="222" stroke="#0EA5E9" stroke-width="2" stroke-linecap="round"/>
+    <path d="M660 216 A9 9 0 0 1 676 216" fill="none" stroke="#0EA5E9" stroke-width="1.6" stroke-dasharray="3 3"/>
+    <text x="704" y="290" text-anchor="middle" font-size="12" fill="#6B7280">u kamaráda</text>
+  </g>
+
+  <!-- server uprostřed (zelená = cíl) -->
+  <g>
+    <rect x="352" y="120" width="96" height="128" rx="10" fill="#D1FAE5" stroke="#10B981" stroke-width="2"/>
+    <g fill="#FFFFFF" stroke="#10B981" stroke-width="1.5">
+      <rect x="366" y="136" width="68" height="20" rx="4"/>
+      <rect x="366" y="162" width="68" height="20" rx="4"/>
+      <rect x="366" y="188" width="68" height="20" rx="4"/>
+      <rect x="366" y="214" width="68" height="20" rx="4"/>
+    </g>
+    <g fill="#10B981">
+      <circle cx="376" cy="146" r="2.5"/><circle cx="376" cy="172" r="2.5"/>
+      <circle cx="376" cy="198" r="2.5"/><circle cx="376" cy="224" r="2.5"/>
+    </g>
+    <text x="400" y="268" text-anchor="middle" font-size="12" fill="#6B7280">server</text>
+  </g>
+
+  <!-- síťové routery + kabely pod zemí -->
+  <g stroke="#0EA5E9" stroke-width="2" fill="#E0F2FE">
+    <rect x="245" y="311" width="46" height="46" rx="9" transform="rotate(45 268 334)"/>
+    <rect x="509" y="311" width="46" height="46" rx="9" transform="rotate(45 532 334)"/>
+  </g>
+  <text x="268" y="338" text-anchor="middle" font-size="11" fill="#1E1B4B">router</text>
+  <text x="532" y="338" text-anchor="middle" font-size="11" fill="#1E1B4B">router</text>
+
+  <g stroke="#0EA5E9" stroke-width="2.2" fill="none">
+    <path d="M140 254 L140 334 L234 334" marker-end="url(#ha)"/>
+    <path d="M302 334 L400 334 L400 252" marker-end="url(#ha)"/>
+    <path d="M400 252 L400 334 L498 334" fill="none"/>
+    <path d="M566 334 L660 334 L660 258" marker-end="url(#ha)"/>
+  </g>
+
+  <!-- animovaný paket na cestě mezi domy -->
+  <rect x="-10" y="-7" width="20" height="14" rx="3" fill="#FEF3C7" stroke="#D97706" stroke-width="1.5">
+    <animateMotion dur="6s" repeatCount="indefinite"
+      path="M140 300 L140 334 L268 334 L400 334 L400 260 L400 334 L532 334 L660 334 L660 262"/>
+  </rect>
+
+  <text x="400" y="396" text-anchor="middle" font-size="12.5" fill="#6B7280">Zpráva putuje z mobilu přes routery a server až ke kamarádovi — a celou cestu jedou data po kabelech.</text>
+
+  <style>@media (prefers-reduced-motion: reduce){ * { animation: none !important } }</style>
+</svg>

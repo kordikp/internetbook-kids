@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" lang="cs">
+  <title>Satelity</title>
+  <desc>Slide o satelitním připojení: rychlost přenosu běžně kolem 100 Mb/s, satelit komunikuje z oběžné dráhy Země. Ilustrace tří satelitů vysílajících vlny signálu k Zemi.</desc>
+  <rect x="0" y="0" width="960" height="540" fill="#3b2a70"/>
+  <text x="480" y="70" text-anchor="middle" font-family="sans-serif" font-size="42" font-weight="bold" fill="#ffffff">SATELITY</text>
+  <g aria-label="Parametry satelitního připojení">
+    <text x="300" y="200" font-family="sans-serif" font-size="24" font-weight="bold" fill="#ffffff">Rychlost přenosu</text>
+    <text x="320" y="235" font-family="sans-serif" font-size="20" fill="#e8dcff">• běžně kolem 100 Mb/s</text>
+    <text x="300" y="300" font-family="sans-serif" font-size="24" font-weight="bold" fill="#ffffff">Maximální dosah</text>
+    <text x="320" y="335" font-family="sans-serif" font-size="20" fill="#e8dcff">• satelit komunikuje z oběžné dráhy Země</text>
+  </g>
+  <g role="img" aria-label="Satelit vlevo nahoře">
+    <title>Kreslený satelit — tělo s parabolickou anténou a dvěma křídly solárních panelů; dolů se šíří modré vlny signálu.</title>
+    <rect x="95" y="90" width="50" height="35" rx="4" fill="#c9b8ee" stroke="#fff"/>
+    <rect x="40" y="98" width="45" height="20" fill="#8a7bb8" stroke="#fff"/>
+    <rect x="155" y="98" width="45" height="20" fill="#8a7bb8" stroke="#fff"/>
+    <path d="M 105 85 A 18 10 0 0 1 135 85" fill="none" stroke="#fff" stroke-width="3"/>
+    <path d="M 90 150 A 40 40 0 0 0 150 150" fill="none" stroke="#6bb9e8" stroke-width="4"/>
+    <path d="M 78 175 A 60 60 0 0 0 162 175" fill="none" stroke="#6bb9e8" stroke-width="4"/>
+  </g>
+  <g role="img" aria-label="Satelit vpravo nahoře">
+    <title>Kreslený satelit se solárními panely; dolů se šíří modré vlny signálu.</title>
+    <rect x="815" y="90" width="50" height="35" rx="4" fill="#c9b8ee" stroke="#fff"/>
+    <rect x="760" y="98" width="45" height="20" fill="#8a7bb8" stroke="#fff"/>
+    <rect x="875" y="98" width="45" height="20" fill="#8a7bb8" stroke="#fff"/>
+    <path d="M 825 85 A 18 10 0 0 1 855 85" fill="none" stroke="#fff" stroke-width="3"/>
+    <path d="M 810 150 A 40 40 0 0 0 870 150" fill="none" stroke="#6bb9e8" stroke-width="4"/>
+    <path d="M 798 175 A 60 60 0 0 0 882 175" fill="none" stroke="#6bb9e8" stroke-width="4"/>
+  </g>
+  <g role="img" aria-label="Malý satelit dole uprostřed">
+    <title>Menší kreslený satelit dole uprostřed; dolů se šíří modré vlny signálu.</title>
+    <rect x="455" y="410" width="36" height="26" rx="3" fill="#c9b8ee" stroke="#fff"/>
+    <rect x="415" y="416" width="32" height="14" fill="#8a7bb8" stroke="#fff"/>
+    <rect x="499" y="416" width="32" height="14" fill="#8a7bb8" stroke="#fff"/>
+    <path d="M 448 458 A 30 30 0 0 0 496 458" fill="none" stroke="#6bb9e8" stroke-width="3"/>
+    <path d="M 438 478 A 45 45 0 0 0 506 478" fill="none" stroke="#6bb9e8" stroke-width="3"/>
+  </g>
+  <text x="930" y="525" text-anchor="end" font-family="sans-serif" font-size="14" fill="#8a7bb8">15</text>
+</svg>

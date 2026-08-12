@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 520" font-family="system-ui,sans-serif">
+  <rect width="800" height="520" rx="14" fill="#FAFAF7" stroke="#E5E7EB"/>
+  <text x="400" y="36" text-anchor="middle" font-size="19" font-weight="700" fill="#1E1B4B">Čtyři cesty na internet</text>
+
+  <!-- větve (křivky od středu) -->
+  <path d="M330 240 C 300 210, 280 180, 255 156" fill="none" stroke="#0EA5E9" stroke-width="2"/>
+  <path d="M470 240 C 500 210, 520 180, 545 156" fill="none" stroke="#7C3AED" stroke-width="2"/>
+  <path d="M330 284 C 300 314, 280 340, 255 364" fill="none" stroke="#D97706" stroke-width="2"/>
+  <path d="M470 284 C 500 314, 520 340, 545 364" fill="none" stroke="#10B981" stroke-width="2"/>
+
+  <!-- střed -->
+  <rect x="312" y="234" width="176" height="56" rx="14" fill="#FFFFFF" stroke="#1E1B4B" stroke-width="2"/>
+  <text x="400" y="267" text-anchor="middle" font-size="14" font-weight="700" fill="#1E1B4B">Připojení k internetu</text>
+
+  <!-- KABEL (modrá) -->
+  <rect x="170" y="118" width="120" height="38" rx="10" fill="#E0F2FE" stroke="#0EA5E9" stroke-width="2"/>
+  <text x="230" y="142" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1E1B4B">Kabel</text>
+  <g fill="none" stroke="#0EA5E9" stroke-width="1.5">
+    <path d="M170 130 C 164 122, 164 104, 160 97"/>
+    <path d="M170 137 L160 137"/>
+    <path d="M170 144 C 164 152, 164 170, 160 177"/>
+  </g>
+  <g fill="#FFFFFF" stroke="#0EA5E9" stroke-width="1.5">
+    <rect x="28" y="84" width="132" height="26" rx="13"/>
+    <rect x="28" y="124" width="132" height="26" rx="13"/>
+    <rect x="28" y="164" width="132" height="26" rx="13"/>
+  </g>
+  <g text-anchor="middle" font-size="11" fill="#1E1B4B">
+    <text x="94" y="101">nejrychlejší</text>
+    <text x="94" y="141">páteř internetu</text>
+    <text x="94" y="181">i pod oceánem</text>
+  </g>
+
+  <!-- WI-FI (fialová) -->
+  <rect x="510" y="118" width="120" height="38" rx="10" fill="#EDE9FE" stroke="#7C3AED" stroke-width="2"/>
+  <text x="570" y="142" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1E1B4B">Wi-Fi</text>
+  <g fill="none" stroke="#7C3AED" stroke-width="1.5">
+    <path d="M630 130 C 636 122, 636 104, 640 97"/>
+    <path d="M630 137 L640 137"/>
+    <path d="M630 144 C 636 152, 636 170, 640 177"/>
+  </g>
+  <g fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.5">
+    <rect x="640" y="84" width="132" height="26" rx="13"/>
+    <rect x="640" y="124" width="132" height="26" rx="13"/>
+    <rect x="640" y="164" width="132" height="26" rx="13"/>
+  </g>
+  <g text-anchor="middle" font-size="11" fill="#1E1B4B">
+    <text x="706" y="101">vysílá ji router</text>
+    <text x="706" y="141">krátký dosah</text>
+    <text x="706" y="181">doma a ve škole</text>
+  </g>
+
+  <!-- MOBILNÍ DATA (jantarová) -->
+  <rect x="160" y="364" width="140" height="38" rx="10" fill="#FEF3C7" stroke="#D97706" stroke-width="2"/>
+  <text x="230" y="388" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1E1B4B">Mobilní data</text>
+  <g fill="none" stroke="#D97706" stroke-width="1.5">
+    <path d="M160 376 C 154 368, 154 350, 150 343"/>
+    <path d="M160 383 L150 383"/>
+    <path d="M160 390 C 154 398, 154 416, 150 423"/>
+  </g>
+  <g fill="#FFFFFF" stroke="#D97706" stroke-width="1.5">
+    <rect x="18" y="330" width="132" height="26" rx="13"/>
+    <rect x="18" y="370" width="132" height="26" rx="13"/>
+    <rect x="18" y="410" width="132" height="26" rx="13"/>
+  </g>
+  <g text-anchor="middle" font-size="11" fill="#1E1B4B">
+    <text x="84" y="347">přes BTS vysílač</text>
+    <text x="84" y="387">potřebuje SIM</text>
+    <text x="84" y="427">funguje i venku</text>
+  </g>
+
+  <!-- SATELIT (zelená) -->
+  <rect x="510" y="364" width="120" height="38" rx="10" fill="#D1FAE5" stroke="#10B981" stroke-width="2"/>
+  <text x="570" y="388" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1E1B4B">Satelit</text>
+  <g fill="none" stroke="#10B981" stroke-width="1.5">
+    <path d="M630 376 C 636 368, 636 350, 640 343"/>
+    <path d="M630 383 L640 383"/>
+    <path d="M630 390 C 636 398, 636 416, 640 423"/>
+  </g>
+  <g fill="#FFFFFF" stroke="#10B981" stroke-width="1.5">
+    <rect x="640" y="330" width="132" height="26" rx="13"/>
+    <rect x="640" y="370" width="132" height="26" rx="13"/>
+    <rect x="640" y="410" width="132" height="26" rx="13"/>
+  </g>
+  <g text-anchor="middle" font-size="11" fill="#1E1B4B">
+    <text x="706" y="347">skoro všude</text>
+    <text x="706" y="387">velké zpoždění</text>
+    <text x="706" y="427">jen odlehlá místa</text>
+  </g>
+
+  <text x="400" y="504" text-anchor="middle" font-size="12.5" fill="#6B7280">Každá cesta má své plus i minus — vybírej podle místa, zařízení a toho, co zrovna děláš.</text>
+</svg>

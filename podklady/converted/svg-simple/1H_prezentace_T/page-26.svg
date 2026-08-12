@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" lang="cs">
+  <title>Co musí obsahovat každý paket? – řešení</title>
+  <desc>Každý paket musí obsahovat IP adresu odesílatele, IP adresu příjemce, identifikátor zprávy, obsah a pořadí. Pět oranžových rámečků ve dvou řadách.</desc>
+  <rect x="0" y="0" width="960" height="540" fill="#ffffff"/>
+  <text x="480" y="110" font-family="sans-serif" font-size="40" font-weight="bold" fill="#1a1a1a" text-anchor="middle">Co musí obsahovat každý paket?</text>
+  <g aria-label="Obsah paketu">
+    <rect x="70" y="200" width="250" height="80" rx="12" fill="#f0923e"/>
+    <text x="195" y="235" font-family="sans-serif" font-size="20" font-weight="bold" fill="#ffffff" text-anchor="middle">IP adresu</text>
+    <text x="195" y="262" font-family="sans-serif" font-size="20" font-weight="bold" fill="#ffffff" text-anchor="middle">odesílatele</text>
+    <rect x="355" y="200" width="250" height="80" rx="12" fill="#f0923e"/>
+    <text x="480" y="235" font-family="sans-serif" font-size="20" font-weight="bold" fill="#ffffff" text-anchor="middle">IP adresu</text>
+    <text x="480" y="262" font-family="sans-serif" font-size="20" font-weight="bold" fill="#ffffff" text-anchor="middle">příjemce</text>
+    <rect x="640" y="200" width="250" height="80" rx="12" fill="#f0923e"/>
+    <text x="765" y="235" font-family="sans-serif" font-size="20" font-weight="bold" fill="#ffffff" text-anchor="middle">Identifikátor</text>
+    <text x="765" y="262" font-family="sans-serif" font-size="20" font-weight="bold" fill="#ffffff" text-anchor="middle">zprávy</text>
+    <rect x="215" y="330" width="250" height="80" rx="12" fill="#f0923e"/>
+    <text x="340" y="380" font-family="sans-serif" font-size="22" font-weight="bold" fill="#ffffff" text-anchor="middle">obsah</text>
+    <rect x="500" y="330" width="250" height="80" rx="12" fill="#f0923e"/>
+    <text x="625" y="380" font-family="sans-serif" font-size="22" font-weight="bold" fill="#ffffff" text-anchor="middle">pořadí</text>
+  </g>
+  <text x="30" y="522" font-family="sans-serif" font-size="12" fill="#999999">Matfyz · PedF UK</text>
+  <text x="930" y="522" font-family="sans-serif" font-size="12" fill="#999999" text-anchor="end">27</text>
+</svg>

@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" lang="cs">
+  <title>Páteřní síť v ČR: CETIN</title>
+  <desc>Slide o páteřní síti v České republice: vlevo vložené video „Optické vlákno, síť budoucnosti", vpravo vysvětlení, že CETIN síť rozprodává poskytovatelům internetu, od nichž si připojení kupujeme my.</desc>
+  <text x="480" y="56" text-anchor="middle" font-family="sans-serif" font-size="36" font-weight="bold" fill="#2d1b69">Páteřní síť v ČR: CETIN</text>
+  <g role="img" aria-label="Vložené video">
+    <title>Náhled videa „Optické vlákno, síť budoucnosti" od CETIN z kampaně „zrychlujeme Česko".</title>
+    <rect x="70" y="110" width="450" height="320" rx="10" fill="#4b2e83" stroke="#2d1b69" stroke-width="3"/>
+    <rect x="230" y="230" width="130" height="80" rx="14" fill="#ffffff" fill-opacity="0.25"/>
+    <path d="M 275 250 L 275 290 L 320 270 Z" fill="#ffffff"/>
+    <text x="295" y="180" text-anchor="middle" font-family="sans-serif" font-size="20" font-weight="bold" fill="#ffffff">Optické vlákno,</text>
+    <text x="295" y="206" text-anchor="middle" font-family="sans-serif" font-size="20" font-weight="bold" fill="#ffffff">síť budoucnosti</text>
+    <text x="295" y="400" text-anchor="middle" font-family="sans-serif" font-size="15" fill="#c9b8ee">video (CETIN)</text>
+  </g>
+  <g aria-label="Vysvětlující text">
+    <text x="560" y="200" font-family="sans-serif" font-size="20" fill="#1a1a2e">CETIN pak tuto síť <tspan font-weight="bold">rozprodává</tspan></text>
+    <text x="560" y="230" font-family="sans-serif" font-size="20" fill="#1a1a2e">mezi poskytovatele Internetu,</text>
+    <text x="560" y="260" font-family="sans-serif" font-size="20" fill="#1a1a2e">od nichž si zas připojení</text>
+    <text x="560" y="290" font-family="sans-serif" font-size="20" fill="#1a1a2e">k Internetu kupujeme my.</text>
+  </g>
+  <text x="480" y="480" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#888">Zdroj: zrychlujeme Česko</text>
+  <text x="930" y="525" text-anchor="end" font-family="sans-serif" font-size="14" fill="#999">10</text>
+</svg>

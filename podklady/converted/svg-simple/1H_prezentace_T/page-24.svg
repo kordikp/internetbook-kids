@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" lang="cs">
+  <title>Směrování paketů</title>
+  <desc>Schéma sítě 3×3: Start vlevo nahoře, Cíl vpravo dole a osm routerů propojených linkami (mřížka s diagonálami přes prostřední Router 5). Soubor (obrázek) se rozdělí na pakety a pošle sítí. Čím větší soubor posíláme, tím pošleme více paketů.</desc>
+  <rect x="0" y="0" width="960" height="540" fill="#6a4fd8"/>
+  <text x="60" y="60" font-family="sans-serif" font-size="36" font-weight="bold" fill="#f5c518">Směrování paketů</text>
+  <text x="500" y="45" font-family="sans-serif" font-size="20" fill="#ffffff">Čím <tspan font-weight="bold" fill="#f5c518">větší soubor</tspan> posíláme, tím</text>
+  <text x="500" y="72" font-family="sans-serif" font-size="20" fill="#ffffff">pošleme <tspan font-weight="bold" fill="#f5c518">více paketů</tspan></text>
+  <g aria-label="Síť routerů mezi Startem a Cílem">
+    <rect x="130" y="95" width="700" height="410" rx="14" fill="#ffffff"/>
+    <!-- linky -->
+    <g stroke="#333333" stroke-width="2">
+      <line x1="255" y1="185" x2="425" y2="185"/>
+      <line x1="425" y1="185" x2="610" y2="185"/>
+      <line x1="610" y1="185" x2="760" y2="185"/>
+      <line x1="255" y1="320" x2="425" y2="320"/>
+      <line x1="425" y1="320" x2="610" y2="320"/>
+      <line x1="610" y1="320" x2="760" y2="320"/>
+      <line x1="255" y1="450" x2="425" y2="450"/>
+      <line x1="425" y1="450" x2="610" y2="450"/>
+      <line x1="610" y1="450" x2="745" y2="450"/>
+      <line x1="255" y1="185" x2="255" y2="320"/>
+      <line x1="255" y1="320" x2="255" y2="450"/>
+      <line x1="425" y1="185" x2="425" y2="320"/>
+      <line x1="425" y1="320" x2="425" y2="450"/>
+      <line x1="610" y1="185" x2="610" y2="320"/>
+      <line x1="610" y1="320" x2="610" y2="450"/>
+      <line x1="760" y1="185" x2="760" y2="320"/>
+      <line x1="760" y1="320" x2="760" y2="415"/>
+      <line x1="255" y1="185" x2="425" y2="320"/>
+      <line x1="610" y1="185" x2="425" y2="320"/>
+      <line x1="255" y1="450" x2="425" y2="320"/>
+      <line x1="425" y1="320" x2="745" y2="450"/>
+      <line x1="760" y1="185" x2="425" y2="320"/>
+      <line x1="185" y1="150" x2="255" y2="185"/>
+    </g>
+    <!-- Start -->
+    <rect x="150" y="115" width="90" height="70" fill="#f0923e"/>
+    <text x="195" y="156" font-family="sans-serif" font-size="17" fill="#ffffff" text-anchor="middle">Start</text>
+    <!-- soubor rozdělený na části -->
+    <g role="img" aria-label="Soubor rozdělený na pakety">
+      <title>Fotografie horské krajiny rozdělená na části – soubor, který se rozdělí na pakety a pošle sítí.</title>
+      <rect x="150" y="200" width="100" height="66" fill="#cfe0cf" stroke="#555555" stroke-width="2"/>
+      <line x1="200" y1="200" x2="200" y2="266" stroke="#555555" stroke-width="2"/>
+      <line x1="150" y1="233" x2="250" y2="233" stroke="#555555" stroke-width="2"/>
+      <text x="200" y="286" font-family="sans-serif" font-size="12" fill="#555555" text-anchor="middle">soubor → pakety</text>
+    </g>
+    <!-- routery -->
+    <g aria-label="Osm routerů">
+      <circle cx="255" cy="185" r="34" fill="#8a8a8a"/>
+      <text x="255" y="190" font-family="sans-serif" font-size="13" fill="#ffffff" text-anchor="middle">Router 1</text>
+      <circle cx="425" cy="185" r="34" fill="#8a8a8a"/>
+      <text x="425" y="190" font-family="sans-serif" font-size="13" fill="#ffffff" text-anchor="middle">Router 2</text>
+      <circle cx="610" cy="185" r="34" fill="#8a8a8a"/>
+      <text x="610" y="190" font-family="sans-serif" font-size="13" fill="#ffffff" text-anchor="middle">Router 3</text>
+      <circle cx="255" cy="320" r="34" fill="#8a8a8a"/>
+      <text x="255" y="325" font-family="sans-serif" font-size="13" fill="#ffffff" text-anchor="middle">Router 4</text>
+      <circle cx="425" cy="320" r="34" fill="#8a8a8a"/>
+      <text x="425" y="325" font-family="sans-serif" font-size="13" fill="#ffffff" text-anchor="middle">Router 5</text>
+      <circle cx="760" cy="320" r="34" fill="#8a8a8a"/>
+      <text x="760" y="325" font-family="sans-serif" font-size="13" fill="#ffffff" text-anchor="middle">Router 6</text>
+      <circle cx="255" cy="450" r="34" fill="#8a8a8a"/>
+      <text x="255" y="455" font-family="sans-serif" font-size="13" fill="#ffffff" text-anchor="middle">Router 7</text>
+      <circle cx="610" cy="450" r="34" fill="#8a8a8a"/>
+      <text x="610" y="455" font-family="sans-serif" font-size="13" fill="#ffffff" text-anchor="middle">Router 8</text>
+    </g>
+    <!-- Cíl -->
+    <rect x="730" y="405" width="85" height="85" fill="#8a8a8a"/>
+    <text x="772" y="453" font-family="sans-serif" font-size="17" fill="#ffffff" text-anchor="middle">Cíl</text>
+  </g>
+  <text x="930" y="530" font-family="sans-serif" font-size="12" fill="#d9d2f5" text-anchor="end">25</text>
+</svg>

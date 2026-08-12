@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" lang="cs">
+  <title>Kabely</title>
+  <desc>Koláž čtyř fotografií kolem nápisu KABELY: síťové a optické kabely, serverový rack se switchi, malý switch se změtí kabelů a výkop, do kterého se pokládají chráničky s kabely.</desc>
+  <text x="480" y="285" text-anchor="middle" font-family="sans-serif" font-size="56" font-weight="bold" fill="#2d1b69">KABELY</text>
+  <g role="img" aria-label="Fotografie smotaných kabelů">
+    <title>Smotané síťové kabely — modrý ethernetový kabel (kroucená dvojlinka s konektory RJ-45) a žlutý optický kabel s modrými konektory.</title>
+    <rect x="70" y="60" width="330" height="150" fill="#f2f2f2" stroke="#999"/>
+    <circle cx="180" cy="135" r="38" fill="none" stroke="#4a9fd8" stroke-width="6"/>
+    <circle cx="280" cy="135" r="38" fill="none" stroke="#e8b021" stroke-width="6"/>
+    <text x="235" y="198" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#555">modrý UTP a žlutý optický kabel</text>
+  </g>
+  <g role="img" aria-label="Fotografie serverového racku">
+    <title>Serverový rack se síťovými switchi, do kterých je zapojeno mnoho kabelů; svítí zelené kontrolky.</title>
+    <rect x="560" y="60" width="330" height="150" fill="#f2f2f2" stroke="#999"/>
+    <rect x="640" y="80" width="170" height="22" fill="#ddd" stroke="#555"/>
+    <rect x="640" y="112" width="170" height="22" fill="#ddd" stroke="#555"/>
+    <rect x="640" y="144" width="170" height="22" fill="#ddd" stroke="#555"/>
+    <circle cx="795" cy="91" r="4" fill="#3fae4a"/>
+    <circle cx="795" cy="123" r="4" fill="#3fae4a"/>
+    <circle cx="795" cy="155" r="4" fill="#3fae4a"/>
+    <text x="725" y="198" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#555">serverový rack se switchi</text>
+  </g>
+  <g role="img" aria-label="Fotografie switche na podlaze">
+    <title>Malý switch NETGEAR na podlaze se změtí zapojených síťových kabelů.</title>
+    <rect x="70" y="330" width="330" height="150" fill="#f2f2f2" stroke="#999"/>
+    <rect x="170" y="390" width="130" height="35" rx="4" fill="#ddd" stroke="#555"/>
+    <path d="M 170 400 Q 120 380 110 420 M 300 400 Q 350 375 355 420" fill="none" stroke="#888" stroke-width="3"/>
+    <text x="235" y="465" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#555">switch se změtí kabelů</text>
+  </g>
+  <g role="img" aria-label="Fotografie výkopu s kabely">
+    <title>Výkop na chodníku: dělník ve výstražné vestě pokládá oranžové chráničky s kabely do země — kabely se zakopávají.</title>
+    <rect x="560" y="330" width="330" height="150" fill="#f2f2f2" stroke="#999"/>
+    <path d="M 590 450 L 640 400 L 860 400 L 860 450 Z" fill="#d8c8a8" stroke="#888"/>
+    <path d="M 640 425 Q 740 405 850 425" fill="none" stroke="#e8742c" stroke-width="6"/>
+    <text x="725" y="465" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#555">pokládka kabelů do výkopu</text>
+  </g>
+  <text x="930" y="525" text-anchor="end" font-family="sans-serif" font-size="14" fill="#999">6</text>
+</svg>

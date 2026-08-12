@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420" font-family="system-ui,sans-serif">
+  <rect width="800" height="420" rx="14" fill="#FAFAF7" stroke="#E5E7EB"/>
+  <text x="400" y="36" text-anchor="middle" font-size="19" font-weight="700" fill="#1E1B4B">Wi-Fi router: co kam zapojit?</text>
+
+  <!-- zeď se zásuvkami -->
+  <rect x="40" y="92" width="110" height="280" rx="8" fill="#FFFFFF" stroke="#E5E7EB"/>
+  <text x="95" y="114" text-anchor="middle" font-size="11" fill="#6B7280">zeď</text>
+
+  <!-- elektrická zásuvka -->
+  <rect x="73" y="150" width="44" height="44" rx="6" fill="#FFFFFF" stroke="#6B7280" stroke-width="1.5"/>
+  <circle cx="87" cy="172" r="3" fill="#6B7280"/>
+  <circle cx="103" cy="172" r="3" fill="#6B7280"/>
+  <text x="95" y="214" text-anchor="middle" font-size="12.5" fill="#1E1B4B">elektřina</text>
+
+  <!-- internetová přípojka -->
+  <rect x="73" y="280" width="44" height="44" rx="6" fill="#FFFFFF" stroke="#0EA5E9" stroke-width="2"/>
+  <rect x="83" y="294" width="24" height="16" rx="2" fill="#E0F2FE" stroke="#0EA5E9" stroke-width="1.5"/>
+  <text x="95" y="344" text-anchor="middle" font-size="12.5" fill="#1E1B4B">internetová</text>
+  <text x="95" y="360" text-anchor="middle" font-size="12.5" fill="#1E1B4B">přípojka</text>
+
+  <!-- router s anténami -->
+  <g stroke="#0EA5E9" stroke-width="2.5" stroke-linecap="round">
+    <line x1="322" y1="118" x2="322" y2="82"/>
+    <line x1="478" y1="118" x2="478" y2="82"/>
+  </g>
+  <circle cx="322" cy="78" r="4" fill="#0EA5E9"/>
+  <circle cx="478" cy="78" r="4" fill="#0EA5E9"/>
+  <rect x="290" y="118" width="220" height="128" rx="10" fill="#E0F2FE" stroke="#0EA5E9" stroke-width="2"/>
+  <text x="400" y="150" text-anchor="middle" font-size="14" font-weight="700" fill="#1E1B4B">Wi-Fi router</text>
+  <circle cx="376" cy="172" r="2.5" fill="#0EA5E9"/>
+  <circle cx="400" cy="172" r="2.5" fill="#0EA5E9"/>
+  <circle cx="424" cy="172" r="2.5" fill="#0EA5E9"/>
+
+  <!-- porty (zadní strana) -->
+  <rect x="294" y="196" width="212" height="44" rx="6" fill="#FFFFFF" stroke="#0EA5E9" stroke-width="1.5"/>
+  <rect x="312" y="202" width="16" height="16" rx="2" fill="#E5E7EB" stroke="#6B7280" stroke-width="1.5"/>
+  <rect x="364" y="202" width="16" height="16" rx="2" fill="#E0F2FE" stroke="#0EA5E9" stroke-width="1.5"/>
+  <g fill="#FEF3C7" stroke="#D97706" stroke-width="1.5">
+    <rect x="412" y="202" width="16" height="16" rx="2"/>
+    <rect x="437" y="202" width="16" height="16" rx="2"/>
+    <rect x="462" y="202" width="16" height="16" rx="2"/>
+    <rect x="487" y="202" width="16" height="16" rx="2"/>
+  </g>
+  <g text-anchor="middle" font-size="11" fill="#1E1B4B">
+    <text x="320" y="232">napájení</text>
+    <text x="372" y="232">WAN</text>
+    <text x="457" y="232">LAN</text>
+  </g>
+
+  <!-- kabely -->
+  <path d="M320 240 C 320 300, 220 172, 121 172" fill="none" stroke="#6B7280" stroke-width="2.5"/>
+  <path d="M372 240 C 372 330, 240 302, 121 302" fill="none" stroke="#0EA5E9" stroke-width="2.5"/>
+  <path d="M420 240 C 420 320, 500 330, 594 330" fill="none" stroke="#D97706" stroke-width="2.5"/>
+
+  <!-- notebook (po kabelu) -->
+  <rect x="618" y="252" width="106" height="70" rx="6" fill="#EDE9FE" stroke="#7C3AED" stroke-width="2"/>
+  <rect x="628" y="262" width="86" height="50" rx="3" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.5"/>
+  <rect x="596" y="322" width="150" height="12" rx="4" fill="#EDE9FE" stroke="#7C3AED" stroke-width="2"/>
+  <text x="671" y="360" text-anchor="middle" font-size="12.5" fill="#1E1B4B">notebook — po kabelu</text>
+
+  <!-- mobil (přes Wi-Fi) -->
+  <rect x="624" y="96" width="44" height="78" rx="8" fill="#EDE9FE" stroke="#7C3AED" stroke-width="2"/>
+  <rect x="632" y="108" width="28" height="44" rx="2" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.5"/>
+  <rect x="638" y="160" width="16" height="4" rx="2" fill="#7C3AED"/>
+  <text x="646" y="196" text-anchor="middle" font-size="12.5" fill="#1E1B4B">mobil — přes Wi-Fi</text>
+
+  <!-- Wi-Fi vlnky (přerušovaně = bezdrát) -->
+  <g fill="none" stroke="#0EA5E9" stroke-width="2" stroke-dasharray="5 4">
+    <path d="M496.8 69.2 A20 20 0 0 1 484.8 94.8"/>
+    <path d="M509.9 64.4 A34 34 0 0 1 489.6 108"/>
+    <path d="M523.1 59.6 A48 48 0 0 1 494.4 121.1"/>
+  </g>
+  <text x="566" y="72" text-anchor="middle" font-size="12.5" fill="#1E1B4B">Wi-Fi</text>
+
+  <text x="400" y="404" text-anchor="middle" font-size="12.5" fill="#6B7280">Bez modrého kabelu z přípojky nemá router co rozdávat — Wi-Fi uvidíš, ale nic se nenačte.</text>
+</svg>

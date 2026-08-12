@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" lang="cs">
+<title>Víc peněz! (odpověď na 1. otázku)</title>
+<desc>Odpověď na otázku o návštěvnosti: víc peněz. Delší pobyt na stránce znamená víc zobrazených reklam; AdBlock reklamy blokuje a firmy přichází o zisky.</desc>
+<defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#555"/></marker><marker id="arrR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#a04030"/></marker><marker id="arrP" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#6a3fc0"/></marker></defs>
+<rect x="0" y="0" width="960" height="540" fill="#ffffff"/>
+<rect x="120" y="40" width="720" height="90" rx="14" fill="none" stroke="#d97706" stroke-width="3"/>
+<text x="480" y="78" font-family="sans-serif" font-size="19" font-weight="bold" text-anchor="middle" fill="#000">Jak se projeví vysoká návštěvnost stránky</text>
+<text x="480" y="106" font-family="sans-serif" font-size="19" font-weight="bold" text-anchor="middle" fill="#000">a čas na ní strávený na výdělku majitele?</text>
+<text x="480" y="210" font-family="sans-serif" font-size="46" font-weight="bold" text-anchor="middle" fill="#c2571a">VÍC PENĚZ!</text>
+<text x="480" y="270" font-family="sans-serif" font-size="21" font-weight="normal" text-anchor="middle" fill="#000">Čím déle jsem na stránce, tím více se mi ukazují reklamy.</text>
+<text x="480" y="304" font-family="sans-serif" font-size="21" font-weight="normal" text-anchor="middle" fill="#000">Čím déle nebo častěji se mi ukazuje reklama, tím více se mi</text>
+<text x="480" y="338" font-family="sans-serif" font-size="21" font-weight="normal" text-anchor="middle" fill="#000">zarývá do paměti a ovlivňuje mě.</text>
+<text x="480" y="372" font-family="sans-serif" font-size="21" font-weight="normal" text-anchor="middle" fill="#000">AdBlock reklamy blokuje a firmy tak přichází o možné zisky,</text>
+<text x="480" y="406" font-family="sans-serif" font-size="21" font-weight="normal" text-anchor="middle" fill="#000">protože se k nám nedostávají jejich reklamy.</text>
+<text x="930" y="528" font-family="sans-serif" font-size="13" font-weight="normal" text-anchor="end" fill="#999">4</text>
+</svg>

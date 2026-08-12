@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" lang="cs">
+  <title>Video: How submarine cables are installed?</title>
+  <desc>Slide s náhledem videa YouTube „How submarine cables are installed?" (Jak se instalují podmořské kabely?) — letecký záběr na pokládkovou loď na moři.</desc>
+  <g role="img" aria-label="Náhled videa YouTube">
+    <title>Celoplošný náhled videa: letecký záběr na moře s pokládkovou lodí, žlutou příhradovou plošinou a jeřábem.</title>
+    <rect x="60" y="50" width="840" height="420" fill="#dceef7" stroke="#999"/>
+    <path d="M 60 350 Q 300 330 480 350 T 900 350 L 900 470 L 60 470 Z" fill="#8fc3de"/>
+    <rect x="380" y="300" width="220" height="50" fill="#555"/>
+    <path d="M 430 300 L 470 250 L 510 300 Z" fill="#e8b021"/>
+    <line x1="540" y1="300" x2="580" y2="250" stroke="#777" stroke-width="5"/>
+  </g>
+  <g aria-label="Tlačítko přehrávání">
+    <rect x="410" y="215" width="140" height="90" rx="18" fill="#cc0000"/>
+    <path d="M 460 240 L 460 280 L 505 260 Z" fill="#ffffff"/>
+  </g>
+  <text x="480" y="130" text-anchor="middle" font-family="sans-serif" font-size="30" font-weight="bold" fill="#1a1a2e">HOW SUBMARINE CABLES ARE INSTALLED?</text>
+  <text x="480" y="165" text-anchor="middle" font-family="sans-serif" font-size="18" fill="#444">(Jak se instalují podmořské kabely? — odkaz na video YouTube)</text>
+  <text x="930" y="525" text-anchor="end" font-family="sans-serif" font-size="14" fill="#999">9</text>
+</svg>

@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420" font-family="system-ui,sans-serif">
+  <rect width="800" height="420" rx="14" fill="#FAFAF7" stroke="#E5E7EB"/>
+  <text x="400" y="36" text-anchor="middle" font-size="19" font-weight="700" fill="#1E1B4B">Mobilní data: vzduchem jen k vysílači</text>
+
+  <defs>
+    <marker id="arrb" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#0EA5E9"/>
+    </marker>
+  </defs>
+
+  <!-- země -->
+  <line x1="40" y1="344" x2="760" y2="344" stroke="#6B7280" stroke-width="2" opacity="0.3"/>
+
+  <!-- mobil (fialová = zařízení lidí) -->
+  <rect x="84" y="204" width="46" height="86" rx="8" fill="#EDE9FE" stroke="#7C3AED" stroke-width="2"/>
+  <rect x="92" y="216" width="30" height="48" rx="2" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.5"/>
+  <rect x="99" y="272" width="16" height="4" rx="2" fill="#7C3AED"/>
+  <text x="107" y="318" text-anchor="middle" font-size="12.5" fill="#1E1B4B">mobil</text>
+
+  <!-- vlnky signálu (animace opacity) -->
+  <g fill="none" stroke="#0EA5E9" stroke-width="2.5" stroke-dasharray="6 5">
+    <path class="w1" d="M148.9 184.7 A26 26 0 0 1 148.9 227.3"/>
+    <path class="w2" d="M161.6 166.7 A48 48 0 0 1 161.6 245.3"/>
+    <path class="w3" d="M174.2 148.7 A70 70 0 0 1 174.2 263.3"/>
+  </g>
+  <text x="204" y="136" text-anchor="middle" font-size="11" fill="#6B7280">vzduchem, do ~5 km</text>
+
+  <!-- BTS stožár -->
+  <g stroke="#1E1B4B" fill="none">
+    <path d="M272 344 L300 128 M328 344 L300 128" stroke-width="2"/>
+    <path d="M278 300 L322 300 M284 245 L316 245 M290 190 L310 190" stroke-width="1.25" opacity="0.7"/>
+    <path d="M278 300 L316 245 M322 300 L284 245" stroke-width="1.25" opacity="0.7"/>
+    <path d="M284 245 L310 190 M316 245 L290 190" stroke-width="1.25" opacity="0.7"/>
+    <path d="M300 128 L300 98 M287 124 L313 124" stroke-width="2"/>
+  </g>
+  <g fill="#E0F2FE" stroke="#0EA5E9" stroke-width="1.5">
+    <rect x="287" y="96" width="10" height="26" rx="2"/>
+    <rect x="303" y="96" width="10" height="26" rx="2"/>
+  </g>
+  <text x="300" y="370" text-anchor="middle" font-size="12.5" fill="#1E1B4B">BTS vysílač</text>
+
+  <!-- kabel do sítě -->
+  <path d="M302 345 L520 345 C 570 345, 598 322, 618 298" fill="none" stroke="#0EA5E9" stroke-width="2.5" marker-end="url(#arrb)"/>
+  <text x="420" y="330" text-anchor="middle" font-size="12.5" fill="#1E1B4B">dál už kabelem</text>
+
+  <!-- internet (obláček z kruhů) -->
+  <g fill="#FFFFFF" stroke="#6B7280" stroke-width="2">
+    <circle cx="612" cy="252" r="34"/>
+    <circle cx="668" cy="238" r="44"/>
+    <circle cx="716" cy="258" r="30"/>
+    <rect x="596" y="252" width="136" height="38" rx="19"/>
+  </g>
+  <text x="666" y="316" text-anchor="middle" font-size="12.5" fill="#1E1B4B">internet</text>
+
+  <text x="400" y="404" text-anchor="middle" font-size="12.5" fill="#6B7280">Bezdrátově letí signál jen k nejbližšímu vysílači — dál už data pokračují kabelem.</text>
+
+  <style>
+    .w1 { animation: sig 2.7s linear infinite; }
+    .w2 { animation: sig 2.7s linear infinite 0.45s; }
+    .w3 { animation: sig 2.7s linear infinite 0.9s; }
+    @keyframes sig { 0% { opacity: 0.2 } 35% { opacity: 1 } 100% { opacity: 0.2 } }
+    @media (prefers-reduced-motion: reduce) { * { animation: none !important } }
+  </style>
+</svg>

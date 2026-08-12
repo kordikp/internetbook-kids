@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" lang="cs">
+<title>K čemu to komu může být?</title>
+<desc>Citát: ze střípků digitální stopy lze poskládat velice podrobnou digitální identitu každého uživatele. Zdroj: Internetem bezpečně.</desc>
+<defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#555"/></marker><marker id="arrR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#a04030"/></marker><marker id="arrP" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#6a3fc0"/></marker></defs>
+<rect x="0" y="0" width="960" height="540" fill="#ffffff"/>
+<text x="480" y="90" font-family="sans-serif" font-size="34" font-weight="bold" text-anchor="middle" fill="#000">K čemu to komu může být?</text>
+<rect x="140" y="170" width="680" height="190" rx="20" fill="#fde68a" stroke="#d9a441" stroke-width="2"/>
+<text x="480" y="240" font-family="sans-serif" font-size="25" font-weight="bold" text-anchor="middle" fill="#000">„Ze střípků digitální stopy lze poskládat</text>
+<text x="480" y="278" font-family="sans-serif" font-size="25" font-weight="bold" text-anchor="middle" fill="#000">velice podrobnou digitální identitu</text>
+<text x="480" y="316" font-family="sans-serif" font-size="25" font-weight="bold" text-anchor="middle" fill="#000">každého uživatele.</text>
+<text x="60" y="505" font-family="sans-serif" font-size="14" font-weight="normal" text-anchor="start" fill="#888">1] Zdroj: Internetem bezpečně</text>
+<text x="930" y="528" font-family="sans-serif" font-size="13" font-weight="normal" text-anchor="end" fill="#999">8</text>
+</svg>

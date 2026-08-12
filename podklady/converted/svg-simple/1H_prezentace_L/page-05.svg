@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" lang="cs">
+  <title>Pojďme si to spočítat</title>
+  <desc>Výpočet objemu dat na YouTube: 800 milionů videí po průměrně 1 GB dává 800 000 000 GB, zatímco mobil má paměť jen 32 až 128 GB – videa se do mobilu vejít nemohou.</desc>
+  <rect x="0" y="0" width="960" height="540" fill="#ffffff"/>
+  <text x="480" y="55" font-family="sans-serif" font-size="34" font-weight="bold" fill="#1a1a1a" text-anchor="middle">Pojďme si to spočítat</text>
+  <g aria-label="Množství videí na YouTube">
+    <title>Stoh ikon YouTube naznačující množství videí a šipka k celkovému objemu dat</title>
+    <rect x="90" y="110" width="120" height="60" rx="12" fill="#e02b2b"/>
+    <rect x="100" y="100" width="120" height="60" rx="12" fill="#e85555"/>
+    <rect x="110" y="90" width="120" height="60" rx="12" fill="#f08080"/>
+    <path d="M 150 112 L 150 148 L 182 130 Z" fill="#ffffff"/>
+    <text x="270" y="130" font-family="sans-serif" font-size="20" fill="#1a1a1a">Na YouTubu je <tspan font-weight="bold">800 milionů videí</tspan></text>
+    <rect x="120" y="210" width="70" height="42" rx="8" fill="#e02b2b"/>
+    <path d="M 145 220 L 145 242 L 165 231 Z" fill="#ffffff"/>
+    <text x="270" y="238" font-family="sans-serif" font-size="20" fill="#1a1a1a">Jedno video zabere průměrně <tspan font-weight="bold">1 GB</tspan></text>
+    <path d="M 150 280 L 150 340 L 135 340 L 160 375 L 185 340 L 170 340 L 170 280 Z" fill="#b9aee8"/>
+    <text x="270" y="340" font-family="sans-serif" font-size="22" fill="#1a1a1a">To se rovná <tspan font-weight="bold">800 000 000 GB</tspan></text>
+    <text x="270" y="370" font-family="sans-serif" font-size="18" fill="#555555">(800 000 TB)</text>
+  </g>
+  <g aria-label="Paměť mobilu">
+    <title>Chytrý telefon a typická velikost jeho vnitřní paměti</title>
+    <rect x="740" y="140" width="110" height="200" rx="14" fill="none" stroke="#333333" stroke-width="3"/>
+    <rect x="758" y="165" width="74" height="45" fill="#6644cc"/>
+    <rect x="758" y="220" width="74" height="45" fill="#f5c518"/>
+    <rect x="758" y="275" width="74" height="40" fill="#e05252"/>
+    <text x="795" y="385" font-family="sans-serif" font-size="18" fill="#1a1a1a" text-anchor="middle">Mobil má paměť</text>
+    <text x="795" y="410" font-family="sans-serif" font-size="18" font-weight="bold" fill="#1a1a1a" text-anchor="middle">32 GB až 128 GB</text>
+  </g>
+  <text x="480" y="470" font-family="sans-serif" font-size="18" fill="#555555" text-anchor="middle">Videa z YouTube se do paměti mobilu vejít nemohou – musí být uložena jinde.</text>
+  <text x="30" y="522" font-family="sans-serif" font-size="12" fill="#999999">Matfyz · PedF UK</text>
+  <text x="930" y="522" font-family="sans-serif" font-size="12" fill="#999999" text-anchor="end">5</text>
+</svg>

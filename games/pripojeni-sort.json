@@ -1,0 +1,51 @@
+{
+  "type": "sort",
+  "title": "Po drátě, nebo vzduchem?",
+  "instruction": "Rozhodni, zda data putují po drátě, nebo vzduchem.",
+  "buckets": [
+    "Po drátě",
+    "Vzduchem"
+  ],
+  "items": [
+    {
+      "text": "UTP kabel s konektorem RJ-45",
+      "answer": 0
+    },
+    {
+      "text": "Optický kabel",
+      "answer": 0
+    },
+    {
+      "text": "Wi-Fi z domácího routeru",
+      "answer": 1
+    },
+    {
+      "text": "Mobilní data přes BTS",
+      "answer": 1
+    },
+    {
+      "text": "Satelitní připojení",
+      "answer": 1
+    },
+    {
+      "text": "Hotspot z mobilu",
+      "answer": 1
+    },
+    {
+      "text": "Podmořský optický kabel",
+      "answer": 0
+    },
+    {
+      "text": "Bluetooth sluchátka",
+      "answer": 1
+    },
+    {
+      "text": "Notebook v LAN portu routeru",
+      "answer": 0
+    },
+    {
+      "text": "Starlink",
+      "answer": 1
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" lang="cs">
+  <title>Mapa datových center světa</title>
+  <desc>Celostránková mapa světa s bublinovým kartogramem počtu datových center: nejvíce jich je v USA a západní Evropě, méně ve východní Asii, Indii, Brazílii, Jižní Africe a Austrálii; Afrika a střední Asie jich mají velmi málo.</desc>
+  <rect x="0" y="0" width="960" height="540" fill="#ffffff"/>
+  <g role="img" aria-label="Mapa světa s počty datových center">
+    <title>Bublinový kartogram „Number of data centers“: fialové kroužky podle počtu datových center, zeleně země s podílem uživatelů internetu nad světovým průměrem 48 %. Největší koncentrace je na pobřežích USA a v západní Evropě.</title>
+    <rect x="40" y="40" width="880" height="380" rx="10" fill="#f2f6fa" stroke="#999999" stroke-width="2"/>
+    <!-- stylizované kontinenty -->
+    <ellipse cx="210" cy="160" rx="95" ry="60" fill="#bfe3bf"/>
+    <ellipse cx="280" cy="300" rx="50" ry="75" fill="#dddddd"/>
+    <ellipse cx="470" cy="150" rx="55" ry="42" fill="#bfe3bf"/>
+    <ellipse cx="500" cy="280" rx="45" ry="70" fill="#dddddd"/>
+    <ellipse cx="660" cy="170" rx="105" ry="65" fill="#dddddd"/>
+    <ellipse cx="760" cy="340" rx="55" ry="32" fill="#bfe3bf"/>
+    <!-- bubliny datových center -->
+    <circle cx="150" cy="150" r="34" fill="#8a6fd0" fill-opacity="0.7"/>
+    <circle cx="255" cy="160" r="26" fill="#8a6fd0" fill-opacity="0.7"/>
+    <circle cx="465" cy="140" r="30" fill="#8a6fd0" fill-opacity="0.7"/>
+    <circle cx="700" cy="160" r="14" fill="#8a6fd0" fill-opacity="0.7"/>
+    <circle cx="560" cy="220" r="10" fill="#8a6fd0" fill-opacity="0.7"/>
+    <circle cx="290" cy="290" r="9" fill="#8a6fd0" fill-opacity="0.7"/>
+    <circle cx="510" cy="330" r="7" fill="#8a6fd0" fill-opacity="0.7"/>
+    <circle cx="765" cy="340" r="8" fill="#8a6fd0" fill-opacity="0.7"/>
+    <text x="150" y="105" font-family="sans-serif" font-size="13" fill="#555555" text-anchor="middle">USA</text>
+    <text x="465" y="92" font-family="sans-serif" font-size="13" fill="#555555" text-anchor="middle">západní Evropa</text>
+    <text x="700" y="135" font-family="sans-serif" font-size="13" fill="#555555" text-anchor="middle">východní Asie</text>
+    <!-- legenda -->
+    <g aria-label="Legenda velikostí bublin">
+      <text x="70" y="355" font-family="sans-serif" font-size="14" font-weight="bold" fill="#333333">Number of data centers</text>
+      <circle cx="85" cy="385" r="17" fill="none" stroke="#8a6fd0" stroke-width="2"/>
+      <text x="85" y="390" font-family="sans-serif" font-size="10" fill="#333333" text-anchor="middle">194</text>
+      <circle cx="130" cy="388" r="12" fill="none" stroke="#8a6fd0" stroke-width="2"/>
+      <text x="130" y="392" font-family="sans-serif" font-size="9" fill="#333333" text-anchor="middle">100</text>
+      <circle cx="165" cy="391" r="8" fill="none" stroke="#8a6fd0" stroke-width="2"/>
+      <text x="165" y="394" font-family="sans-serif" font-size="8" fill="#333333" text-anchor="middle">30</text>
+      <circle cx="190" cy="393" r="5" fill="none" stroke="#8a6fd0" stroke-width="2"/>
+      <circle cx="208" cy="395" r="3" fill="none" stroke="#8a6fd0" stroke-width="2"/>
+      <circle cx="222" cy="396" r="2" fill="none" stroke="#8a6fd0" stroke-width="2"/>
+      <text x="235" y="399" font-family="sans-serif" font-size="10" fill="#333333">15 / 5 / 1</text>
+      <rect x="320" y="380" width="14" height="14" fill="#bfe3bf"/>
+      <text x="342" y="392" font-family="sans-serif" font-size="12" fill="#333333">podíl uživatelů internetu nad světovým průměrem (48 %)</text>
+    </g>
+  </g>
+  <text x="480" y="455" font-family="sans-serif" font-size="18" fill="#333333" text-anchor="middle">Datová centra jsou rozmístěna po celém světě – nejvíce v USA a Evropě.</text>
+  <text x="40" y="490" font-family="sans-serif" font-size="11" fill="#999999">Zdroj: www.datacentermap.com; International Telecommunications Union (ITU), www.itu.int</text>
+  <text x="930" y="522" font-family="sans-serif" font-size="12" fill="#999999" text-anchor="end">9</text>
+</svg>

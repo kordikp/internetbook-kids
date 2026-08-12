@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" lang="cs">
+  <title>ROUTER (6/6) – objížďka</title>
+  <desc>Pokud nějaká cesta nefunguje, routery umí najít objížďku. Schéma mapy ČR: přímá trasa mezi Prahou a Brnem je přerušena červeným křížkem, objízdná trasa vede přes třetí uzel a je průchozí.</desc>
+  <rect x="0" y="0" width="960" height="540" fill="#f5a623"/>
+  <g role="img" aria-label="Fotografie routeru Cisco">
+    <title>Fotografie skutečného routeru Cisco – plochá černá skříň do racku.</title>
+    <rect x="40" y="25" width="200" height="70" rx="8" fill="#2a2a30" stroke="#ffffff" stroke-width="3"/>
+    <circle cx="65" cy="60" r="6" fill="#555560"/>
+    <rect x="85" y="45" width="130" height="8" fill="#44444e"/>
+    <rect x="85" y="60" width="130" height="8" fill="#44444e"/>
+    <text x="140" y="88" font-family="sans-serif" font-size="10" fill="#aaaaaa" text-anchor="middle">router Cisco (foto)</text>
+  </g>
+  <text x="290" y="75" font-family="sans-serif" font-size="44" font-weight="bold" fill="#2d1b69">ROUTER</text>
+  <text x="540" y="72" font-family="sans-serif" font-size="20" fill="#1a1a1a"><tspan font-style="italic" font-weight="bold">route</tspan> – angl. směrovat</text>
+  <text x="60" y="140" font-family="sans-serif" font-size="24" fill="#1a1a1a">Pokud nějaká cesta nefunguje, <tspan font-weight="bold" fill="#2d1b69">umí najít objížďku</tspan>.</text>
+  <g aria-label="Schéma: překopnutá trasa Praha–Brno a objížďka">
+    <title>Obrys mapy ČR se žlutými uzly Praha a Brno; přímá trasa je přerušena červeným křížkem, objízdná trasa vede přes tyrkysový uzel a je průchozí – routery najdou náhradní cestu jako navigace při uzavírce.</title>
+    <rect x="140" y="170" width="680" height="290" rx="14" fill="#3a2d85"/>
+    <path d="M 330 260 C 420 320 520 370 640 405" fill="none" stroke="#cfd8cf" stroke-width="5"/>
+    <path d="M 330 260 C 410 230 480 230 540 245 C 600 260 630 330 640 405" fill="none" stroke="#cfd8cf" stroke-width="5"/>
+    <g aria-label="Překopnutý kabel">
+      <line x1="465" y1="315" x2="505" y2="355" stroke="#e05252" stroke-width="14" stroke-linecap="round"/>
+      <line x1="505" y1="315" x2="465" y2="355" stroke="#e05252" stroke-width="14" stroke-linecap="round"/>
+    </g>
+    <circle cx="330" cy="260" r="18" fill="#f5c518"/><circle cx="330" cy="260" r="6" fill="#3a2d85"/>
+    <circle cx="540" cy="245" r="14" fill="#2ec4c4"/><circle cx="540" cy="245" r="5" fill="#3a2d85"/>
+    <circle cx="640" cy="405" r="18" fill="#f5c518"/><circle cx="640" cy="405" r="6" fill="#3a2d85"/>
+    <text x="303" y="268" font-family="sans-serif" font-size="26" font-weight="bold" fill="#f5c518" text-anchor="end">Praha</text>
+    <text x="670" y="415" font-family="sans-serif" font-size="26" font-weight="bold" fill="#f5c518">Brno</text>
+    <text x="540" y="220" font-family="sans-serif" font-size="14" fill="#9fe8e8" text-anchor="middle">objízdná trasa přes další uzel</text>
+    <text x="448" y="390" font-family="sans-serif" font-size="14" fill="#f0a0a0" text-anchor="end">přerušená přímá trasa</text>
+  </g>
+  <text x="930" y="522" font-family="sans-serif" font-size="12" fill="#7a5310" text-anchor="end">19</text>
+</svg>

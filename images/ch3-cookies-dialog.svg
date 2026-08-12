@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420" font-family="system-ui,sans-serif">
+  <rect width="800" height="420" rx="14" fill="#FAFAF7" stroke="#E5E7EB"/>
+  <text x="400" y="36" text-anchor="middle" font-size="19" font-weight="700" fill="#1E1B4B">Cookie lišta: najdi tlačítko Odmítnout</text>
+
+  <defs>
+    <marker id="arra" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#D97706"/>
+    </marker>
+    <marker id="arrg" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#6B7280"/>
+    </marker>
+  </defs>
+
+  <!-- dialog webu -->
+  <rect x="210" y="76" width="380" height="212" rx="12" fill="#FFFFFF" stroke="#E5E7EB" stroke-width="1.5"/>
+
+  <!-- sušenka -->
+  <circle cx="248" cy="114" r="14" fill="#FEF3C7" stroke="#D97706" stroke-width="1.5"/>
+  <g fill="#D97706">
+    <circle cx="243" cy="109" r="2"/><circle cx="253" cy="112" r="2"/>
+    <circle cx="246" cy="120" r="2"/><circle cx="254" cy="121" r="1.6"/>
+  </g>
+  <text x="270" y="119" font-size="14" font-weight="700" fill="#1E1B4B">Tento web používá cookies</text>
+
+  <g font-size="11" fill="#6B7280">
+    <text x="232" y="148">Díky cookies si tě zapamatujeme a přizpůsobíme ti</text>
+    <text x="232" y="164">obsah i reklamu. Souhlasíš?</text>
+  </g>
+
+  <!-- velké lákavé tlačítko -->
+  <rect x="232" y="182" width="336" height="52" rx="10" fill="#FEF3C7" stroke="#D97706" stroke-width="2"/>
+  <text x="400" y="214" text-anchor="middle" font-size="14" font-weight="700" fill="#D97706">Přijmout vše</text>
+  <path d="M516 216 L516 231 L520.2 227.8 L523 233.5 L525.6 232.2 L522.8 226.6 L527.8 226.2 Z" fill="#1E1B4B"/>
+
+  <!-- malinké odmítnutí -->
+  <text x="340" y="264" text-anchor="middle" font-size="11" fill="#6B7280">Odmítnout</text>
+  <line x1="313" y1="268" x2="367" y2="268" stroke="#6B7280" stroke-width="1" opacity="0.6"/>
+
+  <!-- poznámky: nepoměr tlačítek -->
+  <text x="682" y="211" text-anchor="middle" font-size="12.5" fill="#D97706">velké a barevné</text>
+  <line x1="622" y1="208" x2="576" y2="208" stroke="#D97706" stroke-width="1.5" marker-end="url(#arra)"/>
+
+  <text x="120" y="264" text-anchor="middle" font-size="12.5" fill="#6B7280">malé a šedé</text>
+  <line x1="166" y1="261" x2="304" y2="261" stroke="#6B7280" stroke-width="1.5" marker-end="url(#arrg)"/>
+
+  <text x="400" y="404" text-anchor="middle" font-size="12.5" fill="#6B7280">Nepoměr tlačítek je záměr, tzv. dark pattern: vzhled tě postrkuje k „Přijmout vše“. Volba je i tak na tobě.</text>
+</svg>

@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" lang="cs">
+  <title>Kabely tvořící internet — optický kabel</title>
+  <desc>Optický kabel ze skla či plastu: přenosová rychlost desítky Gb/s, dosah 100 kilometrů. Fotografie podmořského kabelu, rozpleteného optického kabelu a zafukování vláken.</desc>
+  <text x="480" y="56" text-anchor="middle" font-family="sans-serif" font-size="34" font-weight="bold" fill="#2d1b69">KABELY TVOŘÍCÍ INTERNET</text>
+  <g aria-label="Parametry optického kabelu">
+    <text x="480" y="110" text-anchor="middle" font-family="sans-serif" font-size="26" font-weight="bold" fill="#1a1a2e">OPTICKÝ KABEL (ze skla či plastu)</text>
+    <text x="480" y="145" text-anchor="middle" font-family="sans-serif" font-size="20" fill="#1a1a2e">• přenosová rychlost desítky Gb/s</text>
+    <text x="480" y="175" text-anchor="middle" font-family="sans-serif" font-size="20" fill="#1a1a2e">• dosah 100 kilometrů</text>
+  </g>
+  <g role="img" aria-label="Fotografie potápěče u podmořského kabelu">
+    <title>Potápěč pod vodou u podmořského kabelu — černý kabel se žlutými pruhy na mořském dně.</title>
+    <rect x="60" y="220" width="260" height="200" fill="#cfe6f2" stroke="#999"/>
+    <path d="M 80 380 Q 190 350 300 380" fill="none" stroke="#222" stroke-width="7"/>
+    <path d="M 110 372 l 9 -3 M 180 362 l 9 -1 M 250 368 l 9 3" stroke="#e8b021" stroke-width="3"/>
+    <circle cx="190" cy="290" r="18" fill="none" stroke="#555" stroke-width="3"/>
+    <text x="190" y="445" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#555">podmořský kabel s potápěčem</text>
+  </g>
+  <g role="img" aria-label="Fotografie rozpleteného optického kabelu">
+    <title>Rozpletený konec optického kabelu — z černého pláště trčí barevné trubičky (modré, žluté, červené, zelené) a tenká skleněná vlákna.</title>
+    <rect x="350" y="220" width="260" height="200" fill="#f2f2f2" stroke="#999"/>
+    <rect x="380" y="305" width="90" height="26" rx="10" fill="#222"/>
+    <path d="M 470 310 Q 520 280 570 270" fill="none" stroke="#4a9fd8" stroke-width="4"/>
+    <path d="M 470 315 Q 525 305 578 300" fill="none" stroke="#e8b021" stroke-width="4"/>
+    <path d="M 470 322 Q 525 330 578 340" fill="none" stroke="#d63a2f" stroke-width="4"/>
+    <path d="M 470 328 Q 520 355 570 368" fill="none" stroke="#3fae4a" stroke-width="4"/>
+    <text x="480" y="445" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#555">rozpletený optický kabel</text>
+  </g>
+  <g role="img" aria-label="Fotografie zafukování optických vláken">
+    <title>Technik klečící na chodníku u stroje na zafukování optických vláken do chrániček; barevné mikrotrubičky vedou do výkopu.</title>
+    <rect x="640" y="220" width="260" height="200" fill="#f2f2f2" stroke="#999"/>
+    <rect x="700" y="330" width="70" height="45" rx="6" fill="#ddd" stroke="#555"/>
+    <path d="M 770 350 Q 820 340 860 370" fill="none" stroke="#e8742c" stroke-width="5"/>
+    <circle cx="680" cy="300" r="14" fill="none" stroke="#555" stroke-width="3"/>
+    <text x="770" y="445" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#555">zafukování vláken do chrániček</text>
+  </g>
+  <text x="930" y="525" text-anchor="end" font-family="sans-serif" font-size="14" fill="#999">9</text>
+</svg>

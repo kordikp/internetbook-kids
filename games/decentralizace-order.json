@@ -1,0 +1,12 @@
+{
+  "type": "order",
+  "title": "Když se přeruší kabel",
+  "instruction": "Seřaď, jak internet najde náhradní cestu.",
+  "steps": [
+    "Jeden kabel se přeruší",
+    "Router zjistí, že cesta nefunguje",
+    "Vybere jinou dostupnou cestu",
+    "Pakety pokračují jinudy",
+    "Zpráva může dorazit i tak"
+  ]
+}

@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 794 1123" role="img" lang="cs">
+  <title>Pracovní list č. 1L – Jak vypadá internet</title>
+  <desc>Pracovní list pro žáky: Vennův diagram činností online/offline, servery a co je na nich uloženo, diskusní otázky o řídícím centru internetu a překopnutém kabelu, a přiřazování pojmů server, datové centrum, Wi-Fi router a síťový router k vysvětlením.</desc>
+  <rect x="0" y="0" width="794" height="1123" fill="#ffffff"/>
+  <text x="42" y="40" font-family="sans-serif" font-size="14" fill="#333333">PRACOVNÍ LIST č.1L</text>
+  <text x="440" y="40" font-family="sans-serif" font-size="14" fill="#777777">jméno:</text>
+  <line x1="490" y1="42" x2="740" y2="42" stroke="#999999" stroke-width="1"/>
+  <text x="42" y="78" font-family="sans-serif" font-size="28" font-weight="bold" fill="#1a1a1a">JAK VYPADÁ INTERNET</text>
+  <!-- Úloha 1 -->
+  <g aria-label="Úloha 1 – Vennův diagram online/offline">
+    <text x="42" y="115" font-family="sans-serif" font-size="16" font-weight="bold" fill="#1a1a1a">1.  Jaké činnosti můžeme dělat na digitálním zařízení, když jsme a když nejsme</text>
+    <text x="65" y="137" font-family="sans-serif" font-size="16" font-weight="bold" fill="#1a1a1a">připojeni k internetu?</text>
+    <g role="img" aria-label="Vennův diagram">
+      <title>Dva překrývající se ovály: levý (plná čára) „pouze online“, pravý (přerušovaná čára) „pouze offline“, průnik „online i offline“. Oblasti jsou prázdné – žáci do nich vpisují činnosti.</title>
+      <rect x="40" y="160" width="460" height="200" rx="100" fill="none" stroke="#555555" stroke-width="2"/>
+      <rect x="295" y="160" width="460" height="200" rx="100" fill="none" stroke="#555555" stroke-width="2" stroke-dasharray="8 6"/>
+      <text x="190" y="185" font-family="sans-serif" font-size="15" fill="#1a1a1a" text-anchor="middle">pouze <tspan font-weight="bold">online</tspan></text>
+      <text x="397" y="185" font-family="sans-serif" font-size="15" fill="#1a1a1a" text-anchor="middle"><tspan font-weight="bold">online</tspan> i <tspan font-weight="bold">offline</tspan></text>
+      <text x="610" y="185" font-family="sans-serif" font-size="15" fill="#1a1a1a" text-anchor="middle">pouze <tspan font-weight="bold">offline</tspan></text>
+    </g>
+  </g>
+  <!-- Úloha 2 -->
+  <g aria-label="Úloha 2 – Co je uloženo na serverech">
+    <text x="42" y="405" font-family="sans-serif" font-size="16" font-weight="bold" fill="#1a1a1a">2.  Co je uloženo na těchto serverech?</text>
+    <g role="img" aria-label="Jedenáct ikon serverů s linkami na odpovědi">
+      <title>Řada jedenácti malých ikon serverů ve dvou řadách; u každé je linka, kam žáci píší, co na serveru může být uloženo.</title>
+      <!-- horní řada: 6 serverů -->
+      <rect x="126" y="430" width="28" height="40" rx="6" fill="none" stroke="#555555" stroke-width="2"/>
+      <line x1="42" y1="468" x2="118" y2="468" stroke="#555555" stroke-width="1"/>
+      <rect x="248" y="430" width="28" height="40" rx="6" fill="none" stroke="#555555" stroke-width="2"/>
+      <line x1="164" y1="468" x2="240" y2="468" stroke="#555555" stroke-width="1"/>
+      <rect x="370" y="430" width="28" height="40" rx="6" fill="none" stroke="#555555" stroke-width="2"/>
+      <line x1="286" y1="468" x2="362" y2="468" stroke="#555555" stroke-width="1"/>
+      <rect x="492" y="430" width="28" height="40" rx="6" fill="none" stroke="#555555" stroke-width="2"/>
+      <line x1="408" y1="468" x2="484" y2="468" stroke="#555555" stroke-width="1"/>
+      <rect x="614" y="430" width="28" height="40" rx="6" fill="none" stroke="#555555" stroke-width="2"/>
+      <line x1="530" y1="468" x2="606" y2="468" stroke="#555555" stroke-width="1"/>
+      <rect x="716" y="430" width="28" height="40" rx="6" fill="none" stroke="#555555" stroke-width="2"/>
+      <line x1="652" y1="468" x2="708" y2="468" stroke="#555555" stroke-width="1"/>
+      <!-- dolní řada: 5 serverů -->
+      <rect x="60" y="495" width="28" height="40" rx="6" fill="none" stroke="#555555" stroke-width="2"/>
+      <line x1="96" y1="533" x2="180" y2="533" stroke="#555555" stroke-width="1"/>
+      <rect x="200" y="495" width="28" height="40" rx="6" fill="none" stroke="#555555" stroke-width="2"/>
+      <line x1="236" y1="533" x2="320" y2="533" stroke="#555555" stroke-width="1"/>
+      <rect x="345" y="495" width="28" height="40" rx="6" fill="none" stroke="#555555" stroke-width="2"/>
+      <line x1="381" y1="533" x2="465" y2="533" stroke="#555555" stroke-width="1"/>
+      <rect x="490" y="495" width="28" height="40" rx="6" fill="none" stroke="#555555" stroke-width="2"/>
+      <line x1="526" y1="533" x2="610" y2="533" stroke="#555555" stroke-width="1"/>
+      <rect x="635" y="495" width="28" height="40" rx="6" fill="none" stroke="#555555" stroke-width="2"/>
+      <line x1="671" y1="533" x2="750" y2="533" stroke="#555555" stroke-width="1"/>
+    </g>
+  </g>
+  <!-- Úloha 3 -->
+  <g aria-label="Úloha 3 – diskusní otázky">
+    <text x="42" y="590" font-family="sans-serif" font-size="16" font-weight="bold" fill="#1a1a1a">3.  Zamyslete a prodiskutujte ve skupině. Sem si pište argumenty:</text>
+    <text x="42" y="625" font-family="sans-serif" font-size="15" fill="#1a1a1a">A.  Má internet nějaké <tspan font-weight="bold">řídící centrum</tspan>? Má</text>
+    <text x="65" y="647" font-family="sans-serif" font-size="15" fill="#1a1a1a">ředitele? Proč si to myslíte?</text>
+    <text x="415" y="625" font-family="sans-serif" font-size="15" fill="#1a1a1a">B.  Co by se stalo, kdyby někdo <tspan font-weight="bold">překopl</tspan></text>
+    <text x="438" y="647" font-family="sans-serif" font-size="15" fill="#1a1a1a"><tspan font-weight="bold">internetový kabel</tspan> vedoucí mezi Prahou</text>
+    <text x="438" y="669" font-family="sans-serif" font-size="15" fill="#1a1a1a">a Brnem? Budeme moci z Brna napsat</text>
+    <text x="438" y="691" font-family="sans-serif" font-size="15" fill="#1a1a1a">zprávu přes Instagram kamarádce, která</text>
+    <text x="438" y="713" font-family="sans-serif" font-size="15" fill="#1a1a1a">je v Praze? Proč?</text>
+    <!-- volný prostor na argumenty -->
+    <rect x="42" y="700" width="340" height="130" fill="none" stroke="#dddddd" stroke-width="1"/>
+    <rect x="415" y="730" width="340" height="100" fill="none" stroke="#dddddd" stroke-width="1"/>
+  </g>
+  <!-- Úloha 4 -->
+  <g aria-label="Úloha 4 – přiřazování pojmů">
+    <text x="42" y="875" font-family="sans-serif" font-size="16" font-weight="bold" fill="#1a1a1a">4.  Zapište k novým pojmům číslo správného vysvětlení:</text>
+    <rect x="42" y="898" width="30" height="30" rx="6" fill="none" stroke="#555555" stroke-width="2"/>
+    <text x="85" y="919" font-family="sans-serif" font-size="15" font-weight="bold" fill="#1a1a1a">SERVER</text>
+    <rect x="42" y="948" width="30" height="30" rx="6" fill="none" stroke="#555555" stroke-width="2"/>
+    <text x="85" y="969" font-family="sans-serif" font-size="15" font-weight="bold" fill="#1a1a1a">DATOVÉ CENTRUM</text>
+    <rect x="42" y="998" width="30" height="30" rx="6" fill="none" stroke="#555555" stroke-width="2"/>
+    <text x="85" y="1019" font-family="sans-serif" font-size="15" font-weight="bold" fill="#1a1a1a">WI-FI ROUTER</text>
+    <rect x="42" y="1048" width="30" height="30" rx="6" fill="none" stroke="#555555" stroke-width="2"/>
+    <text x="85" y="1069" font-family="sans-serif" font-size="15" font-weight="bold" fill="#1a1a1a">SÍŤOVÝ ROUTER</text>
+    <text x="300" y="915" font-family="sans-serif" font-size="14" fill="#1a1a1a">1.  Prostor, kde se nachází velké množství serverů.</text>
+    <text x="300" y="943" font-family="sans-serif" font-size="14" fill="#1a1a1a">2.  Počítač, kde je uloženo velké množství dat (například</text>
+    <text x="322" y="963" font-family="sans-serif" font-size="14" fill="#1a1a1a">webové stránky, videa, herní skóre či naše zprávy),</text>
+    <text x="322" y="983" font-family="sans-serif" font-size="14" fill="#1a1a1a">a který poskytuje nějaké služby.</text>
+    <text x="300" y="1011" font-family="sans-serif" font-size="14" fill="#1a1a1a">3.  Po internetové síti směruje data až k cíli</text>
+    <text x="322" y="1031" font-family="sans-serif" font-size="14" fill="#1a1a1a">(např. k serveru webové stránky).</text>
+    <text x="300" y="1059" font-family="sans-serif" font-size="14" fill="#1a1a1a">4.  Zařízení, které nám umožňuje se připojit přes Wi-Fi.</text>
+  </g>
+  <text x="42" y="1105" font-family="sans-serif" font-size="12" fill="#777777">internet4kids.mff.cuni.cz</text>
+  <line x1="690" y1="1098" x2="740" y2="1098" stroke="#999999" stroke-width="1"/>
+  <text x="748" y="1105" font-family="sans-serif" font-size="12" fill="#777777">1</text>
+</svg>

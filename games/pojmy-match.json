@@ -1,0 +1,47 @@
+{
+  "type": "pairs",
+  "title": "Pojmy internetu",
+  "instruction": "Přečti definici a vyber správný pojem.",
+  "pairs": [
+    {
+      "a": "Server",
+      "b": "Počítač v síti, který poskytuje služby, třeba web nebo úložiště fotek."
+    },
+    {
+      "a": "Síťový router",
+      "b": "Zařízení, které směruje pakety k dalším částem sítě."
+    },
+    {
+      "a": "Paket",
+      "b": "Malá část dat posílaná přes internet."
+    },
+    {
+      "a": "IP adresa",
+      "b": "Číselná adresa zařízení nebo síťového rozhraní v síti."
+    },
+    {
+      "a": "Wi-Fi",
+      "b": "Bezdrátové připojení zařízení k místní síti."
+    },
+    {
+      "a": "Optický kabel",
+      "b": "Kabel, který přenáší data pomocí světla."
+    },
+    {
+      "a": "Cookie",
+      "b": "Textový záznam, který si web ukládá v prohlížeči; není to program."
+    },
+    {
+      "a": "Datová stopa",
+      "b": "Záznamy o online činnosti, například kliknutí nebo komentáře."
+    },
+    {
+      "a": "Poskytovatel internetu",
+      "b": "Firma, která připojí domácnost nebo školu k internetu."
+    },
+    {
+      "a": "Datové centrum",
+      "b": "Místo s velkým množstvím serverů a další síťové techniky."
+    }
+  ]
+}

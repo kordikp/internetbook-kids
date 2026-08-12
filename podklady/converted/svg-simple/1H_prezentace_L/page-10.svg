@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" lang="cs">
+  <title>Jak se k nám posílaná data dostanou?</title>
+  <desc>Přechodový textový slide s otázkou, jak se posílaná data dostanou od serverů k nám; slovo „data“ je zvýrazněno fialově.</desc>
+  <rect x="0" y="0" width="960" height="540" fill="#ffffff"/>
+  <text x="480" y="285" font-family="sans-serif" font-size="44" font-weight="bold" fill="#1a1a1a" text-anchor="middle">Jak se k nám posílaná <tspan fill="#6644cc">data</tspan> dostanou?</text>
+  <text x="30" y="522" font-family="sans-serif" font-size="12" fill="#999999">Matfyz · PedF UK</text>
+  <text x="930" y="522" font-family="sans-serif" font-size="12" fill="#999999" text-anchor="end">10</text>
+</svg>

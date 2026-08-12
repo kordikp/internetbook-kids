@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" lang="cs">
+  <title>Jaká je rychlost připojení?</title>
+  <desc>Aktivita měření rychlosti na speedtest.cesnet.cz: QR kód a ukázka výsledků se čtyřmi budíky (ping, jitter, download, upload). Žáci měří rychlost čtyřmi způsoby připojení.</desc>
+  <text x="480" y="56" text-anchor="middle" font-family="sans-serif" font-size="36" font-weight="bold" fill="#1a1a2e">Jaká je <tspan fill="#6c3df4">rychlost</tspan> připojení?</text>
+  <g aria-label="QR kód na speedtest">
+    <rect x="70" y="110" width="220" height="220" fill="#fff" stroke="#333" stroke-width="4"/>
+    <text x="180" y="205" text-anchor="middle" font-family="sans-serif" font-size="22" font-weight="bold" fill="#1a1a2e">QR kód</text>
+    <text x="180" y="238" text-anchor="middle" font-family="sans-serif" font-size="16" fill="#444">speedtest.cesnet.cz</text>
+  </g>
+  <g role="img" aria-label="Výsledky speedtestu se čtyřmi budíky">
+    <title>Snímek výsledků speedtestu: čtyři kruhové budíky — Ping 14,67 ms, Jitter 3,58 ms, Download 100,08 Mbps, Upload 108,12 Mbps; pod nimi nápis SPEEDTEST.CESNET.CZ.</title>
+    <rect x="340" y="100" width="560" height="260" fill="#fafafa" stroke="#999"/>
+    <g aria-label="Ping 14,67 ms">
+      <circle cx="410" cy="180" r="52" fill="none" stroke="#e8b021" stroke-width="6"/>
+      <text x="410" y="175" text-anchor="middle" font-family="sans-serif" font-size="15" font-weight="bold" fill="#1a1a2e">Ping</text>
+      <text x="410" y="197" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#1a1a2e">14,67 ms</text>
+    </g>
+    <g aria-label="Jitter 3,58 ms">
+      <circle cx="550" cy="180" r="52" fill="none" stroke="#e0483e" stroke-width="6"/>
+      <text x="550" y="175" text-anchor="middle" font-family="sans-serif" font-size="15" font-weight="bold" fill="#1a1a2e">Jitter</text>
+      <text x="550" y="197" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#1a1a2e">3,58 ms</text>
+    </g>
+    <g aria-label="Download 100,08 Mbps">
+      <circle cx="690" cy="180" r="52" fill="none" stroke="#6c3df4" stroke-width="6"/>
+      <text x="690" y="175" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="bold" fill="#1a1a2e">Download</text>
+      <text x="690" y="197" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#1a1a2e">100,08 Mbps</text>
+    </g>
+    <g aria-label="Upload 108,12 Mbps">
+      <circle cx="830" cy="180" r="52" fill="none" stroke="#3fae4a" stroke-width="6"/>
+      <text x="830" y="175" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="bold" fill="#1a1a2e">Upload</text>
+      <text x="830" y="197" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#1a1a2e">108,12 Mbps</text>
+    </g>
+    <text x="620" y="320" text-anchor="middle" font-family="sans-serif" font-size="22" font-weight="bold" fill="#2d1b69">SPEEDTEST.CESNET.CZ</text>
+  </g>
+  <g aria-label="Způsoby měření">
+    <text x="100" y="405" font-family="sans-serif" font-size="20" font-weight="bold" fill="#1a1a2e">Měřte postupně:</text>
+    <text x="120" y="437" font-family="sans-serif" font-size="18" fill="#1a1a2e">• přes <tspan font-weight="bold">Wi-Fi router</tspan> a <tspan font-weight="bold">školní síť</tspan></text>
+    <text x="120" y="465" font-family="sans-serif" font-size="18" fill="#1a1a2e">• přes <tspan font-weight="bold">mobilní data</tspan></text>
+    <text x="520" y="437" font-family="sans-serif" font-size="18" fill="#1a1a2e">• přes <tspan font-weight="bold">hotspot + data</tspan></text>
+    <text x="520" y="465" font-family="sans-serif" font-size="18" fill="#1a1a2e">• přes <tspan font-weight="bold">hotspot + Wi-Fi</tspan></text>
+  </g>
+  <text x="930" y="525" text-anchor="end" font-family="sans-serif" font-size="14" fill="#999">16</text>
+</svg>

@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420" font-family="system-ui,sans-serif">
+  <rect width="800" height="420" rx="14" fill="#FAFAF7" stroke="#E5E7EB"/>
+  <text x="400" y="36" text-anchor="middle" font-size="19" font-weight="700" fill="#1E1B4B">Dinosaurus v náklaďácích</text>
+
+  <defs>
+    <marker id="arrg" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#6B7280"/>
+    </marker>
+  </defs>
+
+  <!-- rozebraný dinosaurus (čárkovaně) nad muzeem A -->
+  <g stroke="#7C3AED" fill="none" stroke-dasharray="4 3" stroke-width="2">
+    <rect x="72" y="96" width="54" height="26" rx="13"/>
+    <path d="M80 100 C 68 88 64 78 70 68"/>
+    <circle cx="72" cy="64" r="5"/>
+    <path d="M124 106 C 142 112 156 118 166 125"/>
+    <path d="M86 120 L86 126"/>
+    <path d="M112 120 L112 126"/>
+  </g>
+  <line x1="46" y1="128" x2="170" y2="128" stroke="#E5E7EB" stroke-width="2"/>
+
+  <!-- muzeum A (fialová = odesílatel) -->
+  <g>
+    <polygon points="42,168 106,140 170,168" fill="#EDE9FE" stroke="#7C3AED" stroke-width="2" stroke-linejoin="round"/>
+    <rect x="42" y="168" width="128" height="92" fill="#EDE9FE" stroke="#7C3AED" stroke-width="2"/>
+    <g fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.5">
+      <rect x="56" y="184" width="16" height="60"/>
+      <rect x="98" y="184" width="16" height="60"/>
+      <rect x="140" y="184" width="16" height="60"/>
+    </g>
+    <text x="106" y="282" text-anchor="middle" font-size="12.5" fill="#1E1B4B">muzeum A</text>
+  </g>
+
+  <!-- muzeum B (zelená = cíl) -->
+  <g>
+    <polygon points="630,168 694,140 758,168" fill="#D1FAE5" stroke="#10B981" stroke-width="2" stroke-linejoin="round"/>
+    <rect x="630" y="168" width="128" height="92" fill="#D1FAE5" stroke="#10B981" stroke-width="2"/>
+    <g fill="#FFFFFF" stroke="#10B981" stroke-width="1.5">
+      <rect x="644" y="184" width="16" height="60"/>
+      <rect x="686" y="184" width="16" height="60"/>
+      <rect x="728" y="184" width="16" height="60"/>
+    </g>
+    <text x="694" y="282" text-anchor="middle" font-size="12.5" fill="#1E1B4B">muzeum B</text>
+  </g>
+
+  <!-- složený dinosaurus nad muzeem B -->
+  <g stroke="#10B981" fill="none" stroke-width="2">
+    <rect x="668" y="96" width="54" height="26" rx="13" fill="#D1FAE5"/>
+    <path d="M676 100 C 664 88 660 78 666 68" stroke-width="5" stroke-linecap="round"/>
+    <path d="M720 106 C 738 112 752 118 762 125" stroke-width="4" stroke-linecap="round"/>
+    <path d="M682 118 L682 126" stroke-width="5" stroke-linecap="round"/>
+    <path d="M708 118 L708 126" stroke-width="5" stroke-linecap="round"/>
+  </g>
+  <circle cx="668" cy="64" r="5" fill="#10B981"/>
+  <line x1="634" y1="128" x2="766" y2="128" stroke="#E5E7EB" stroke-width="2"/>
+
+  <!-- tři různé silnice -->
+  <g fill="none" stroke="#E5E7EB" stroke-width="8">
+    <path d="M172 196 C 250 110 550 110 628 196"/>
+    <path d="M172 216 C 300 224 500 224 628 216"/>
+    <path d="M172 236 C 250 318 550 318 628 236"/>
+  </g>
+  <g fill="none" stroke="#6B7280" stroke-width="1.2" opacity="0.6" stroke-dasharray="7 6">
+    <path d="M172 196 C 250 110 550 110 628 196" marker-end="url(#arrg)"/>
+    <path d="M172 216 C 300 224 500 224 628 216" marker-end="url(#arrg)"/>
+    <path d="M172 236 C 250 318 550 318 628 236" marker-end="url(#arrg)"/>
+  </g>
+
+  <!-- náklaďáky (modrá = data v pohybu) -->
+  <g>
+    <g transform="translate(371 97)">
+      <rect x="0" y="0" width="40" height="26" rx="3" fill="#E0F2FE" stroke="#0EA5E9" stroke-width="1.5"/>
+      <rect x="41" y="8" width="17" height="18" rx="3" fill="#E0F2FE" stroke="#0EA5E9" stroke-width="1.5"/>
+      <rect x="44" y="11" width="10" height="7" fill="#FFFFFF" stroke="#0EA5E9" stroke-width="1"/>
+      <circle cx="10" cy="28" r="5" fill="#FFFFFF" stroke="#0EA5E9" stroke-width="1.5"/>
+      <circle cx="49" cy="28" r="5" fill="#FFFFFF" stroke="#0EA5E9" stroke-width="1.5"/>
+      <text x="20" y="18" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1E1B4B">1</text>
+    </g>
+    <g transform="translate(281 187)">
+      <rect x="0" y="0" width="40" height="26" rx="3" fill="#E0F2FE" stroke="#0EA5E9" stroke-width="1.5"/>
+      <rect x="41" y="8" width="17" height="18" rx="3" fill="#E0F2FE" stroke="#0EA5E9" stroke-width="1.5"/>
+      <rect x="44" y="11" width="10" height="7" fill="#FFFFFF" stroke="#0EA5E9" stroke-width="1"/>
+      <circle cx="10" cy="28" r="5" fill="#FFFFFF" stroke="#0EA5E9" stroke-width="1.5"/>
+      <circle cx="49" cy="28" r="5" fill="#FFFFFF" stroke="#0EA5E9" stroke-width="1.5"/>
+      <text x="20" y="18" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1E1B4B">2</text>
+    </g>
+    <g transform="translate(480 261)">
+      <rect x="0" y="0" width="40" height="26" rx="3" fill="#E0F2FE" stroke="#0EA5E9" stroke-width="1.5"/>
+      <rect x="41" y="8" width="17" height="18" rx="3" fill="#E0F2FE" stroke="#0EA5E9" stroke-width="1.5"/>
+      <rect x="44" y="11" width="10" height="7" fill="#FFFFFF" stroke="#0EA5E9" stroke-width="1"/>
+      <circle cx="10" cy="28" r="5" fill="#FFFFFF" stroke="#0EA5E9" stroke-width="1.5"/>
+      <circle cx="49" cy="28" r="5" fill="#FFFFFF" stroke="#0EA5E9" stroke-width="1.5"/>
+      <text x="20" y="18" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1E1B4B">3</text>
+    </g>
+  </g>
+
+  <text x="400" y="404" text-anchor="middle" font-size="12.5" fill="#6B7280">Kostru rozebereš, očísluješ a pošleš třemi cestami — v cíli ji podle čísel složíš. Přesně takhle cestují data v paketech.</text>
+</svg>

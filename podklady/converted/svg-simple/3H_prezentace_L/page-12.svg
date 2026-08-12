@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" lang="cs">
+<title>Co je dobré a co je špatné na tom, že jsou o nás na internetu sbírány informace?</title>
+<desc>Vennův diagram výhody/nevýhody sbírání informací; průnik pro věci, které jsou obojím. Předloha úkolu 3 pracovního listu.</desc>
+<defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#555"/></marker><marker id="arrR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#a04030"/></marker><marker id="arrP" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#6a3fc0"/></marker></defs>
+<rect x="0" y="0" width="960" height="540" fill="#ffffff"/>
+<text x="480" y="60" font-family="sans-serif" font-size="28" font-weight="bold" text-anchor="middle" fill="#000">Co je dobré a co je špatné na tom,</text>
+<text x="480" y="98" font-family="sans-serif" font-size="28" font-weight="bold" text-anchor="middle" fill="#000">že jsou o nás na internetu sbírány informace?</text>
+<g aria-label="Vennův diagram: výhody, nevýhody a jejich průnik">
+<rect x="395" y="250" width="170" height="160" rx="0" fill="#fde68a" stroke="none" stroke-width="1.5"/>
+<rect x="120" y="180" width="445" height="230" rx="60" fill="none" stroke="#6a3fc0" stroke-width="3"/>
+<rect x="395" y="250" width="445" height="230" rx="60" fill="none" stroke="#b33939" stroke-width="3"/>
+<text x="230" y="220" font-family="sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="#6a3fc0">výhody</text>
+<text x="730" y="450" font-family="sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="#b33939">nevýhody</text>
+<text x="480" y="335" font-family="sans-serif" font-size="16" font-weight="normal" text-anchor="middle" fill="#8a6d1a">obojí</text>
+</g>
+<text x="930" y="528" font-family="sans-serif" font-size="13" font-weight="normal" text-anchor="end" fill="#999">12</text>
+</svg>

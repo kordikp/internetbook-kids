@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" lang="cs">
+<title>Napište alespoň 2 výhody a 2 nevýhody ukládání souborů cookies (snímek 20)</title>
+<desc>Zadání úkolu 3 pracovního listu; řada kreslených sušenek s otazníkem uprostřed.</desc>
+<defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#555"/></marker><marker id="arrR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#a04030"/></marker><marker id="arrP" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#6a3fc0"/></marker></defs>
+<rect x="0" y="0" width="960" height="540" fill="#ffffff"/>
+<text x="480" y="140" font-family="sans-serif" font-size="30" font-weight="bold" text-anchor="middle" fill="#000">Napište alespoň 2 výhody a 2 nevýhody</text>
+<text x="480" y="184" font-family="sans-serif" font-size="30" font-weight="bold" text-anchor="middle" fill="#000">ukládání souborů cookies</text>
+<g role="img"><title>Kreslená sušenka (cookie)</title>
+<circle cx="180" cy="350" r="45" fill="#e8c07d" stroke="#a3742c" stroke-width="2"/>
+<circle cx="164" cy="336" r="5" fill="#7a4f1d"/>
+<circle cx="194" cy="334" r="5" fill="#7a4f1d"/>
+<circle cx="176" cy="354" r="5" fill="#7a4f1d"/>
+<circle cx="196" cy="361" r="5" fill="#7a4f1d"/>
+<circle cx="162" cy="366" r="5" fill="#7a4f1d"/>
+<circle cx="182" cy="348" r="5" fill="#7a4f1d"/>
+</g>
+<g role="img"><title>Kreslená sušenka (cookie)</title>
+<circle cx="330" cy="350" r="32" fill="#e8c07d" stroke="#a3742c" stroke-width="2"/>
+<circle cx="319" cy="340" r="4" fill="#7a4f1d"/>
+<circle cx="340" cy="339" r="4" fill="#7a4f1d"/>
+<circle cx="327" cy="353" r="4" fill="#7a4f1d"/>
+<circle cx="341" cy="358" r="4" fill="#7a4f1d"/>
+<circle cx="317" cy="361" r="4" fill="#7a4f1d"/>
+<circle cx="332" cy="348" r="4" fill="#7a4f1d"/>
+</g>
+<circle cx="480" cy="350" r="45" fill="none" stroke="#555" stroke-width="2.5"/>
+<text x="480" y="365" font-family="sans-serif" font-size="40" font-weight="bold" text-anchor="middle" fill="#000">?</text>
+<g role="img"><title>Kreslená sušenka (cookie)</title>
+<circle cx="630" cy="350" r="32" fill="#e8c07d" stroke="#a3742c" stroke-width="2"/>
+<circle cx="619" cy="340" r="4" fill="#7a4f1d"/>
+<circle cx="640" cy="339" r="4" fill="#7a4f1d"/>
+<circle cx="627" cy="353" r="4" fill="#7a4f1d"/>
+<circle cx="641" cy="358" r="4" fill="#7a4f1d"/>
+<circle cx="617" cy="361" r="4" fill="#7a4f1d"/>
+<circle cx="632" cy="348" r="4" fill="#7a4f1d"/>
+</g>
+<g role="img"><title>Kreslená sušenka (cookie)</title>
+<circle cx="780" cy="350" r="45" fill="#e8c07d" stroke="#a3742c" stroke-width="2"/>
+<circle cx="764" cy="336" r="5" fill="#7a4f1d"/>
+<circle cx="794" cy="334" r="5" fill="#7a4f1d"/>
+<circle cx="776" cy="354" r="5" fill="#7a4f1d"/>
+<circle cx="796" cy="361" r="5" fill="#7a4f1d"/>
+<circle cx="762" cy="366" r="5" fill="#7a4f1d"/>
+<circle cx="782" cy="348" r="5" fill="#7a4f1d"/>
+</g>
+<text x="930" y="528" font-family="sans-serif" font-size="13" font-weight="normal" text-anchor="end" fill="#999">20</text>
+</svg>

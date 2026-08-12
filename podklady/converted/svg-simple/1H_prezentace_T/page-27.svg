@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" lang="cs">
+  <title>Zakreslete část internetové sítě</title>
+  <desc>Kreslicí úloha: zakreslit část internetové sítě pro přenos videa k uživateli z YouTube serveru. Vlevo uživatel u klávesnice, vpravo rack serverů s ikonou YouTube, mezi nimi otazník – prostor pro zákres sítě.</desc>
+  <rect x="0" y="0" width="960" height="540" fill="#ffffff"/>
+  <text x="480" y="60" font-family="sans-serif" font-size="28" font-weight="bold" fill="#1a1a1a" text-anchor="middle">Zakreslete část internetové sítě pro přenos videa</text>
+  <text x="480" y="96" font-family="sans-serif" font-size="24" fill="#1a1a1a" text-anchor="middle">k uživateli z YouTube <tspan font-weight="bold">serveru</tspan> tak, aby z toho pochopila</text>
+  <text x="480" y="128" font-family="sans-serif" font-size="24" fill="#1a1a1a" text-anchor="middle">i vaše babička, jak to funguje.</text>
+  <g aria-label="Uživatel">
+    <title>Kreslený muž u klávesnice ve žlutém kruhu – uživatel</title>
+    <circle cx="180" cy="340" r="85" fill="#fdeeb3" stroke="#c9a000" stroke-width="3"/>
+    <circle cx="180" cy="300" r="24" fill="none" stroke="#333333" stroke-width="3"/>
+    <line x1="180" y1="324" x2="180" y2="375" stroke="#333333" stroke-width="3"/>
+    <line x1="180" y1="340" x2="150" y2="365" stroke="#333333" stroke-width="3"/>
+    <line x1="180" y1="340" x2="210" y2="365" stroke="#333333" stroke-width="3"/>
+    <rect x="140" y="370" width="80" height="14" rx="4" fill="#ffffff" stroke="#333333" stroke-width="2"/>
+    <text x="180" y="460" font-family="sans-serif" font-size="22" font-weight="bold" fill="#6644cc" text-anchor="middle">uživatel</text>
+  </g>
+  <circle cx="480" cy="330" r="45" fill="#ffffff" stroke="#6644cc" stroke-width="4"/>
+  <text x="480" y="348" font-family="sans-serif" font-size="48" font-weight="bold" fill="#6644cc" text-anchor="middle">?</text>
+  <g aria-label="YouTube server">
+    <title>Rack serverů s červenou ikonou YouTube – server</title>
+    <rect x="700" y="240" width="180" height="180" rx="8" fill="none" stroke="#333333" stroke-width="3"/>
+    <rect x="715" y="255" width="150" height="34" rx="4" fill="#4a4a55"/>
+    <rect x="715" y="296" width="150" height="34" rx="4" fill="#4a4a55"/>
+    <rect x="715" y="337" width="150" height="34" rx="4" fill="#4a4a55"/>
+    <rect x="715" y="378" width="150" height="34" rx="4" fill="#4a4a55"/>
+    <rect x="762" y="300" width="56" height="40" rx="9" fill="#e02b2b"/>
+    <path d="M 781 309 L 781 331 L 800 320 Z" fill="#ffffff"/>
+    <text x="790" y="460" font-family="sans-serif" font-size="22" font-weight="bold" fill="#e05252" text-anchor="middle">server</text>
+  </g>
+  <text x="30" y="522" font-family="sans-serif" font-size="12" fill="#999999">Matfyz · PedF UK</text>
+  <text x="930" y="522" font-family="sans-serif" font-size="12" fill="#999999" text-anchor="end">28</text>
+</svg>

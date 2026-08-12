@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" lang="cs">
+  <title>Hrají satelity v připojení k internetu nějakou roli?</title>
+  <desc>Diskusní slide na tmavě fialovém pozadí s otázkou; slovo „satelity" je zvýrazněno růžovofialově.</desc>
+  <rect x="0" y="0" width="960" height="540" fill="#3b2a70"/>
+  <text x="480" y="250" text-anchor="middle" font-family="sans-serif" font-size="40" font-weight="bold" fill="#ffffff">Hrají <tspan fill="#c05ce8">satelity</tspan> v připojení</text>
+  <text x="480" y="310" text-anchor="middle" font-family="sans-serif" font-size="40" font-weight="bold" fill="#ffffff">k internetu nějakou roli?</text>
+  <text x="930" y="525" text-anchor="end" font-family="sans-serif" font-size="14" fill="#8a7bb8">14</text>
+</svg>

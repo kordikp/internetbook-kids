@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#FAFAF7">
+<title>Jak funguje internet? — p-book pro školy</title>
+<meta name="description" content="Živá interaktivní učebnice o fungování internetu pro 2. stupeň ZŠ. Servery, kabely, routery, pakety a digitální stopa — s misemi, vstupenkami, AI tvorbou a školním režimem. Podle materiálů Internet4Kids.">
+<meta name="author" content="Doprovodný materiál k lekcím Internet4Kids (MFF UK & PedF UK)">
+<meta name="keywords" content="internet, jak funguje internet, servery, routery, pakety, IP adresa, Wi-Fi, digitální stopa, cookies, informatika, ZŠ, digitální gramotnost">
+<link rel="canonical" href="https://recsys-pbook.vercel.app/">
+<!-- Open Graph -->
+<meta property="og:type" content="book">
+<meta property="og:title" content="Jak funguje internet? — živá učebnice pro školy">
+<meta property="og:description" content="Bezplatná interaktivní učebnice o fungování internetu pro 2. stupeň ZŠ — blok 4 hodin s domácí přípravou, vstupenkami a AI tvorbou.">
+<meta property="og:url" content="https://recsys-pbook.vercel.app/">
+<meta property="og:site_name" content="p-book: Jak funguje internet?">
+<meta property="og:image" content="https://recsys-pbook.vercel.app/images/og-cover.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="cs_CZ">
+<meta property="book:author" content="Internet4Kids (MFF UK & PedF UK)">
+<meta property="book:tag" content="recommendation systems">
+<meta property="book:tag" content="recommender systems">
+<meta property="book:tag" content="digital literacy">
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Jak funguje internet? — p-book pro školy">
+<meta name="twitter:description" content="Interaktivní učebnice o fungování internetu — síť, připojení, digitální stopa.">
+<meta name="twitter:image" content="https://recsys-pbook.vercel.app/images/og-cover.png">
+<!-- Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Book",
+  "name": "Jak funguje internet?",
+  "alternateName": "p-book: Jak funguje internet?",
+  "author": {
+    "@type": "Person",
+    "name": "Internet4Kids (MFF UK & PedF UK)"
+  },
+  "description": "Živá interaktivní učebnice o fungování internetu pro 2. stupeň ZŠ — doprovodný materiál k lekcím Internet4Kids.",
+  "url": "https://recsys-pbook.vercel.app/",
+  "inLanguage": "cs",
+  "audience": { "@type": "EducationalAudience", "educationalRole": "professional", "typicalAgeRange": "18+" },
+  "educationalLevel": "professional",
+  "genre": ["Education", "Technology", "Computer Science"],
+  "numberOfPages": 213,
+  "license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+  "isAccessibleForFree": true,
+  "publisher": { "@type": "Organization", "name": "Internet4Kids (MFF UK & PedF UK)", "url": "https://internet4kids.mff.cuni.cz" }
+}
+</script>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<link rel="stylesheet" href="css/style.css?v=3.13.0">
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+</head>
+<body>
+
+<!-- ONBOARDING (first visit only) -->
+<div class="overlay" id="onboarding">
+  <div class="onboarding-card">
+
+    <!-- Step 0: Welcome screen -->
+    <div class="step active" data-step="0">
+      <h1 class="intro-title">Jak funguje internet?</h1>
+      <img src="images/hero-internet.svg" alt="Model internetu: domácnosti, routery a server" class="intro-hero" style="max-width:480px;border-radius:16px">
+      <p class="intro-tagline">Servery, kabely, pakety &mdash; a stopa, kterou za sebou necháváš</p>
+
+      <div class="intro-author-visible">
+        <p class="intro-author-name">Doprovodn&yacute; materi&aacute;l k lekc&iacute;m <a href="https://internet4kids.mff.cuni.cz" target="_blank" rel="noopener">Internet4Kids</a></p>
+        <p class="intro-author-role">Vytvo&#345;ily MFF UK &amp; PedF UK &middot; interaktivn&iacute; podobu p&#345;in&aacute;&scaron;&iacute; <a href="https://aidetem.cz" target="_blank" rel="noopener">AI d&#283;tem</a></p>
+        <p class="intro-author-text">Internet používáš každý den &mdash; ale víš, kudy putuje tvoje zpráva a co o tobě cestou prozradí? Blok 4 hodin podle materiálů Internet4Kids (MFF UK &amp; PedF UK). Kniha je živá: můžeš si ji nechat přegenerovat po svém, tvořit vlastní podání a sdílet je se třídou.</p>
+      </div>
+
+      <button class="btn-primary btn-large" onclick="app.startRandom()">Začít číst &#128640;</button>
+      <p style="margin:.6em 0 0;font-size:.85rem"><a href="/start">🏫 Jdeš ze školy? Otevři rozcestník bloku →</a></p>
+
+      <h3 class="intro-section-title">Uprav si knihu <span class="toggle-hint">(dva kliky — zbytek se přizpůsobí při čtení)</span></h3>
+      <div class="intro-voices" id="introLens">
+        <button class="intro-voice selected" data-lens="generic" onclick="app.onboardPick('lens','generic',this)">
+          <span>&#127760;</span> Všude
+        </button>
+        <button class="intro-voice" data-lens="ecommerce" onclick="app.onboardPick('lens','ecommerce',this)">
+          <span>&#128722;</span> Nakupování
+        </button>
+        <button class="intro-voice" data-lens="media" onclick="app.onboardPick('lens','media',this)">
+          <span>&#127925;</span> Hudba a video
+        </button>
+        <button class="intro-voice" data-lens="social-feeds" onclick="app.onboardPick('lens','social-feeds',this)">
+          <span>&#128241;</span> Sociální sítě
+        </button>
+        <button class="intro-voice" data-lens="education" onclick="app.onboardPick('lens','education',this)">
+          <span>&#127891;</span> Škola a učení
+        </button>
+      </div>
+      <div class="intro-voices" id="introGoal">
+        <button class="intro-voice selected" data-goal="understand" onclick="app.onboardPick('goal','understand',this)">
+          <span>&#128161;</span> Pochopit
+        </button>
+        <button class="intro-voice" data-goal="build" onclick="app.onboardPick('goal','build',this)">
+          <span>&#128295;</span> Postavit si
+        </button>
+        <button class="intro-voice" data-goal="decide" onclick="app.onboardPick('goal','decide',this)">
+          <span>&#9878;&#65039;</span> Rozhodovat se
+        </button>
+        <button class="intro-voice" data-goal="protect" onclick="app.onboardPick('goal','protect',this)">
+          <span>&#128737;&#65039;</span> Chránit se
+        </button>
+      </div>
+      <input type="text" id="introGoalText" maxlength="200" class="gen-wish" style="margin-top:.5em;width:100%"
+        placeholder="…nebo napiš, co se chceš naučit — kniha ti postaví osobní misi (nepovinné)">
+      <p class="intro-onboard-hint" id="onboardHint">Vyber si svůj svět a cíl — kniha ti každý koncept podá po tvém.</p>
+
+      <label class="intro-toggle intro-livingbook" id="introLiving">
+        <input type="checkbox" id="optOpenMode" checked>
+        <div><b>&#127793; Živá kniha</b> <span class="toggle-hint">(doporučeno)</span><br>
+        <span class="toggle-desc">Uvidíš podání sdílená ostatními čtenáři a můžeš ✨ generovat či remixovat vlastní — text, diagramy i animace. Vše je označené; ověřené jádro zůstává nedotčené.</span></div>
+      </label>
+
+      <h3 class="intro-section-title">Nebo zvol způsob čtení</h3>
+      <div class="home-modes" style="padding:0;margin-bottom:.6em">
+        <div class="home-mode" onclick="app.startWithVoiceAndGo('glossary')">
+          <span class="home-mode-icon">&#127919;</span>
+          <span class="home-mode-label">Mise</span>
+          <span class="home-mode-desc">Příběhové výpravy s finálním bossem</span>
+        </div>
+        <div class="home-mode" onclick="app.startWithVoiceAndGo('home')">
+          <span class="home-mode-icon">&#127916;</span>
+          <span class="home-mode-label">Procházet</span>
+          <span class="home-mode-desc">Jako Netflix — vyber si, co tě zajímá</span>
+        </div>
+        <div class="home-mode" onclick="app.startWithVoiceAndGo('read')">
+          <span class="home-mode-icon">&#128214;</span>
+          <span class="home-mode-label">Feed</span>
+          <span class="home-mode-desc">Nekonečný personalizovaný feed</span>
+        </div>
+        <div class="home-mode" onclick="app.startWithVoiceAndGo('map')">
+          <span class="home-mode-icon">&#128506;</span>
+          <span class="home-mode-label">Mapa</span>
+          <span class="home-mode-desc">Ruční výběr z přehledu</span>
+        </div>
+      </div>
+
+      <details class="intro-details" style="margin-top:2em">
+        <summary>Přizpůsobit funkce <span class="toggle-hint">(gamifikace, personalizace, opakování, mise, hry)</span></summary>
+        <div class="intro-toggles">
+          <label class="intro-toggle">
+            <input type="checkbox" id="optGamification" checked>
+            <div><b>Gamifikace</b><br><span class="toggle-desc">XP, úrovně, odznaky a certifikát za dokončení. Bez ní je kniha obyčejná čtečka.</span></div>
+          </label>
+          <label class="intro-toggle">
+            <input type="checkbox" id="optPersonalization" checked>
+            <div><b>Personalizovaná doporučení</b><br><span class="toggle-desc">Pohání <a href="https://recombee.com" target="_blank" rel="noopener">Recombee</a>. Bez nich se obsah řadí ve výchozím pořadí.</span></div>
+          </label>
+          <label class="intro-toggle">
+            <input type="checkbox" id="optRecall" checked>
+            <div><b>Chytré opakování</b><br><span class="toggle-desc">Kvízy s rozestupy, aby ti učivo opravdu zůstalo. Bez nich žádné připomínky.</span></div>
+          </label>
+          <label class="intro-toggle">
+            <input type="checkbox" id="optMissions" checked>
+            <div><b>Mise</b><br><span class="toggle-desc">Příběhové cesty s finální boss otázkou. Bez nich je záložka Mise skrytá.</span></div>
+          </label>
+          <label class="intro-toggle">
+            <input type="checkbox" id="optGames" checked>
+            <div><b>Mini-hry</b><br><span class="toggle-desc">Interaktivní hry s časovkou 60 s. Bez nich jsou herní bloky skryté.</span></div>
+          </label>
+          <label class="intro-toggle">
+            <input type="checkbox" id="optHighlights" checked>
+            <div><b>AI shrnutí</b><br><span class="toggle-desc">Klíčové body jako poznámky vedle každé sekce. Pomáhají zapamatovat si to podstatné.</span></div>
+          </label>
+        </div>
+        <p style="font-size:.68rem;color:var(--text-3);margin-top:.3em">More details in the <a href="https://github.com/kordikp/recsysbook-kids#readme" target="_blank" rel="noopener">project README</a>.</p>
+      </details>
+
+      <div class="intro-credits">
+        <p>S podporou <a href="https://recombee.com" target="_blank" rel="noopener">Recombee</a>, <a href="https://aidetem.cz" target="_blank" rel="noopener">AI d&#283;tem</a>, <a href="https://www.google.org/" target="_blank" rel="noopener">Google.org</a> a <a href="https://www.tacr.cz" target="_blank" rel="noopener">TA&#268;R</a></p>
+        <p><a href="https://github.com/kordikp/recsysbook-kids" target="_blank" rel="noopener">Open source on GitHub</a> &middot; <a href="https://github.com/kordikp/recsysbook-kids#create-your-own-p-book" target="_blank" rel="noopener">Create your own p-book</a></p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- SEARCH OVERLAY -->
+<div class="search-overlay" id="searchOverlay">
+  <div class="search-header">
+    <div class="search-input-wrap">
+      <span class="search-icon">&#128269;</span>
+      <input type="text" id="searchInput" placeholder="Hledat v knize..." autocomplete="off" oninput="app.onSearch(this.value)">
+    </div>
+    <button class="btn-ghost" onclick="app.closeSearch()">Zrušit</button>
+  </div>
+  <div class="search-results" id="searchResults"></div>
+</div>
+
+<!-- TOP BAR -->
+<header class="topbar" id="topbar">
+  <div class="topbar-left">
+    <span class="topbar-title" onclick="app.showWelcome()">p-book</span>
+  </div>
+  <div class="mission-bar-inline" id="missionBarInline" style="display:none"></div>
+  <button class="topbar-search" onclick="app.openSearch()">
+    <span>&#128269;</span>
+    <span class="search-placeholder">Hledat…</span>
+  </button>
+  <div class="topbar-right">
+    <button class="xp-badge" id="xpBadge" onclick="app.switchView('profile')"></button>
+    <button class="topbar-icon" id="settingsBtn" onclick="app.toggleSettings()">&#9881;</button>
+  </div>
+</header>
+
+<!-- MAIN VIEWS -->
+<main id="appMain">
+
+  <!-- HOME VIEW (Netflix-style) -->
+  <div class="view active" id="view-home">
+    <div class="home-inner" id="homeContent">
+      <!-- Shelves rendered by JS -->
+    </div>
+  </div>
+
+  <!-- READ VIEW (focused reading) -->
+  <div class="view" id="view-read">
+    <div class="read-layout">
+      <div class="read-pane" id="readPane">
+        <!-- Content rendered by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- MAP VIEW (big picture) -->
+  <div class="view" id="view-map">
+    <div class="map-inner" id="mapContent">
+      <!-- Chapter map rendered by JS -->
+    </div>
+  </div>
+
+  <!-- GLOSSARY VIEW -->
+  <div class="view" id="view-glossary">
+    <div class="glossary-inner" id="glossaryContent"></div>
+  </div>
+
+  <!-- PROFILE VIEW -->
+  <div class="view" id="view-profile">
+    <div class="profile-inner" id="profileContent"></div>
+  </div>
+
+  <!-- QUIZ / TEST KNOWLEDGE VIEW -->
+  <div class="view" id="view-quiz">
+    <div class="quiz-inner" id="quizContent"></div>
+  </div>
+
+  <!-- TUTOR VIEW -->
+  <div class="view" id="view-chat">
+    <div class="chat-view-inner">
+      <div class="tutor-header">
+        <span class="tutor-avatar">&#128104;&#8205;&#128187;</span>
+        <div class="tutor-info">
+          <span class="tutor-name">AI průvodce knihou</span>
+          <span class="tutor-status" id="tutorStatus">Znám knihu nazpaměť. Zeptej se na cokoliv!</span>
+        </div>
+        <button class="tutor-author-btn" onclick="app.escalateToAuthor()" title="Poslat zprávu autorům knihy">&#9993; Napsat autorům</button>
+      </div>
+      <div class="chat-messages" id="chatMessagesFull">
+        <div class="chat-msg bot">Ahoj! Jsem AI průvodce touhle knihou o fungování internetu. Zeptej se na cokoliv &mdash; servery, pakety, Wi-Fi, digitální stopu. A když si nebudu vědět rady, můžeš nahoře napsat autorům!</div>
+      </div>
+      <div class="tutor-typing" id="tutorTyping" style="display:none"><span></span><span></span><span></span></div>
+      <div class="chat-input-wrap">
+        <input type="text" id="chatInputFull" placeholder="Zeptej se na internet..." onkeydown="if(event.key==='Enter')app.sendFullChat()">
+        <button onclick="app.sendFullChat()">&#10148;</button>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- HIGHLIGHT POPUP (appears on text selection) -->
+<div class="highlight-popup" id="highlightPopup" style="display:none">
+  <button onclick="app.highlightSelection()" title="Highlight">&#127912;</button>
+  <button onclick="app.highlightAndNote()" title="Highlight + Note">&#128221;</button>
+  <button onclick="app.remixSelection()" title="Vylepšit nebo přidat — uprav si to sám, nebo to nech napsat AI">&#9999;&#65039;</button>
+</div>
+
+<!-- BOTTOM TAB NAV -->
+<nav class="bottom-nav" id="bottomNav">
+  <button class="tab active" data-view="home" onclick="app.switchView('home')">
+    <span class="tab-icon">&#127916;</span>
+    <span class="tab-label">Procházet</span>
+  </button>
+  <button class="tab" data-view="read" onclick="app.switchView('read')">
+    <span class="tab-icon">&#128214;</span>
+    <span class="tab-label">Číst</span>
+  </button>
+  <button class="tab" data-view="map" onclick="app.switchView('map')">
+    <span class="tab-icon">&#128506;</span>
+    <span class="tab-label">Mapa</span>
+  </button>
+  <button class="tab" data-view="glossary" onclick="app.switchView('glossary')">
+    <span class="tab-icon">&#127919;</span>
+    <span class="tab-label">Mise</span>
+  </button>
+  <button class="tab" data-view="quiz" onclick="app.switchView('quiz')">
+    <span class="tab-icon">&#129504;</span>
+    <span class="tab-label">Kvíz</span>
+  </button>
+  <button class="tab" data-view="profile" onclick="app.switchView('profile')">
+    <span class="tab-icon">&#128100;</span>
+    <span class="tab-label">Profil</span>
+  </button>
+</nav>
+
+<!-- XP Toast (slides in from top-right) -->
+<div class="xp-toast" id="xpToast"></div>
+
+<!-- SETTINGS PANEL -->
+<div class="settings-drawer" id="settingsDrawer">
+  <div class="settings-inner">
+    <div class="settings-head">
+      <h3>Settings</h3>
+      <button onclick="app.toggleSettings()">&#10005;</button>
+    </div>
+    <!-- Account -->
+    <div class="sg" id="settingsAccount"></div>
+    <!-- Theme (level-unlocked only) -->
+    <div class="sg"><label>Theme (unlock by leveling up)</label>
+      <div id="settingsThemes"></div>
+    </div>
+    <!-- Font size -->
+    <div class="sg"><label>Font size</label>
+      <div class="sg-row">
+        <button class="sg-opt" data-fs="small" onclick="app.setFontSize('small')">Small</button>
+        <button class="sg-opt active" data-fs="medium" onclick="app.setFontSize('medium')">Medium</button>
+        <button class="sg-opt" data-fs="large" onclick="app.setFontSize('large')">Large</button>
+      </div>
+    </div>
+    <!-- Features -->
+    <div class="sg"><label>Features</label>
+      <div style="display:flex;flex-direction:column;gap:.3em;font-size:.75rem">
+        <label style="display:flex;align-items:center;gap:.4em"><input type="checkbox" id="sGamification" onchange="app.updateSettingsFeature()"> Gamification (XP, levels, badges)</label>
+        <label style="display:flex;align-items:center;gap:.4em"><input type="checkbox" id="sPersonalization" onchange="app.updateSettingsFeature()"> Personalization (Recombee)</label>
+        <label style="display:flex;align-items:center;gap:.4em"><input type="checkbox" id="sRecall" onchange="app.updateSettingsFeature()"> Spaced repetition</label>
+        <label style="display:flex;align-items:center;gap:.4em"><input type="checkbox" id="sMissions" onchange="app.updateSettingsFeature()"> Missions</label>
+        <label style="display:flex;align-items:center;gap:.4em"><input type="checkbox" id="sGames" onchange="app.updateSettingsFeature()"> Mini-games</label>
+        <label style="display:flex;align-items:center;gap:.4em"><input type="checkbox" id="sHighlights" onchange="app.updateSettingsFeature()"> AI takeaways (side notes)</label>
+      </div>
+    </div>
+    <!-- Data -->
+    <div class="sg"><label>Your data</label>
+      <div style="display:flex;gap:.4em;flex-wrap:wrap">
+        <button class="btn-ghost" style="border:1px solid var(--accent);border-radius:6px;padding:.3em .8em;font-size:.72rem;color:var(--accent)" onclick="app.exportData()">Download all data</button>
+        <button class="btn-ghost" style="border:1px solid var(--accent);border-radius:6px;padding:.3em .8em;font-size:.72rem;color:var(--accent)" onclick="localStorage.removeItem('pbook-tour-done');app.startTour()">Replay tour</button>
+        <button class="btn-ghost" style="border:1px solid #dc2626;border-radius:6px;padding:.3em .8em;font-size:.72rem;color:#dc2626" onclick="app.resetAll()">Reset everything</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js" defer></script>
+<script>localStorage.setItem("pbook-tour-done","1");localStorage.setItem("pbook-mode-chosen","1");</script>
+<script>window.addEventListener("load",()=>setTimeout(()=>{document.getElementById("onboarding")?.classList.add("hidden");app.switchView("home");},2500));</script>
+<script type="module" src="js/app.js?v=5.12.4-cs7"></script>
+<script>if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(() => {});</script>
+</body>
+</html>

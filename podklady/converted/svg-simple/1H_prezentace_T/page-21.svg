@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" lang="cs">
+  <title>IP ADRESA</title>
+  <desc>IP adresa (Internet Protocol) jednoznačně určuje zařízení v internetové síti. Dva panely ukazují tvar starší verze (IPv4) a nové verze (IPv6) s příklady.</desc>
+  <rect x="0" y="0" width="960" height="540" fill="#d9536a"/>
+  <text x="60" y="75" font-family="sans-serif" font-size="42" font-weight="bold" fill="#ffffff">IP ADRESA</text>
+  <text x="330" y="72" font-family="sans-serif" font-size="20" fill="#ffe0e6"><tspan font-style="italic" font-weight="bold">IP</tspan> – Internet Protocol</text>
+  <text x="60" y="130" font-family="sans-serif" font-size="24" fill="#ffffff"><tspan font-weight="bold">Jednoznačně určuje</tspan> zařízení v internetové síti.</text>
+  <text x="480" y="200" font-family="sans-serif" font-size="26" font-weight="bold" fill="#ffffff" text-anchor="middle">Tvar IP adresy</text>
+  <line x1="440" y1="215" x2="270" y2="265" stroke="#ffffff" stroke-width="4"/>
+  <path d="M 270 265 L 288 253 L 280 271 Z" fill="#ffffff"/>
+  <line x1="520" y1="215" x2="690" y2="265" stroke="#ffffff" stroke-width="4"/>
+  <path d="M 690 265 L 672 253 L 680 271 Z" fill="#ffffff"/>
+  <g aria-label="Starší verze IPv4">
+    <rect x="70" y="280" width="390" height="170" rx="14" fill="#ffffff"/>
+    <text x="265" y="320" font-family="sans-serif" font-size="21" font-weight="bold" fill="#1a1a1a" text-anchor="middle">starší verze</text>
+    <text x="265" y="360" font-family="sans-serif" font-size="19" fill="#1a1a1a" text-anchor="middle">X.X.X.X, kde X je číslo od 0 do 255</text>
+    <text x="265" y="405" font-family="sans-serif" font-size="19" fill="#1a1a1a" text-anchor="middle">příklad: <tspan font-family="monospace" font-weight="bold">193.179.60.95</tspan></text>
+  </g>
+  <g aria-label="Nová verze IPv6">
+    <rect x="500" y="280" width="390" height="170" rx="14" fill="#ffffff"/>
+    <text x="695" y="320" font-family="sans-serif" font-size="21" font-weight="bold" fill="#1a1a1a" text-anchor="middle">nová verze (IPv6)</text>
+    <text x="695" y="370" font-family="sans-serif" font-size="17" fill="#1a1a1a" text-anchor="middle">příklad:</text>
+    <text x="695" y="402" font-family="monospace" font-size="15" font-weight="bold" fill="#1a1a1a" text-anchor="middle">2001:2000:8002:2030:47ff:fea5:3085</text>
+  </g>
+  <text x="930" y="522" font-family="sans-serif" font-size="12" fill="#ffd0d8" text-anchor="end">22</text>
+</svg>

@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420" font-family="system-ui,sans-serif">
+  <rect width="800" height="420" rx="14" fill="#FAFAF7" stroke="#E5E7EB"/>
+  <text x="400" y="36" text-anchor="middle" font-size="19" font-weight="700" fill="#1E1B4B">UTP vs. optika: silnice a dálnice</text>
+
+  <!-- UTP: úzká silnice -->
+  <text x="64" y="88" font-size="14" font-weight="700" fill="#1E1B4B">UTP — měděný kabel</text>
+  <rect x="64" y="100" width="440" height="44" rx="8" fill="#FFFFFF" stroke="#6B7280" stroke-width="1.5"/>
+  <g fill="#E0F2FE" stroke="#0EA5E9" stroke-width="1.5">
+    <rect x="150" y="115" width="22" height="13" rx="3"/>
+    <rect x="298" y="115" width="22" height="13" rx="3"/>
+  </g>
+  <text x="284" y="166" text-anchor="middle" font-size="11" fill="#6B7280">jeden pruh — data jedou za sebou</text>
+
+  <rect x="540" y="92" width="200" height="60" rx="10" fill="#FEF3C7" stroke="#D97706" stroke-width="2"/>
+  <text x="640" y="117" text-anchor="middle" font-size="14" font-weight="700" fill="#1E1B4B">~100 Mb/s</text>
+  <text x="640" y="139" text-anchor="middle" font-size="12.5" fill="#1E1B4B">dosah do 100 m</text>
+
+  <!-- optika: dálnice -->
+  <text x="64" y="222" font-size="14" font-weight="700" fill="#1E1B4B">Optika — data letí světlem</text>
+  <rect x="64" y="234" width="440" height="110" rx="10" fill="#FFFFFF" stroke="#0EA5E9" stroke-width="2"/>
+  <g stroke="#6B7280" stroke-width="2" stroke-dasharray="14 10" opacity="0.4">
+    <line x1="76" y1="261.5" x2="492" y2="261.5"/>
+    <line x1="76" y1="289" x2="492" y2="289"/>
+    <line x1="76" y1="316.5" x2="492" y2="316.5"/>
+  </g>
+  <g fill="#E0F2FE" stroke="#0EA5E9" stroke-width="1.5">
+    <rect x="120" y="241" width="22" height="13" rx="3"/>
+    <rect x="260" y="241" width="22" height="13" rx="3"/>
+    <rect x="400" y="241" width="22" height="13" rx="3"/>
+    <rect x="190" y="268.5" width="22" height="13" rx="3"/>
+    <rect x="330" y="268.5" width="22" height="13" rx="3"/>
+    <rect x="150" y="296" width="22" height="13" rx="3"/>
+    <rect x="290" y="296" width="22" height="13" rx="3"/>
+    <rect x="430" y="296" width="22" height="13" rx="3"/>
+    <rect x="230" y="323.5" width="22" height="13" rx="3"/>
+    <rect x="370" y="323.5" width="22" height="13" rx="3"/>
+  </g>
+  <text x="284" y="366" text-anchor="middle" font-size="11" fill="#6B7280">mnoho pruhů — spousta dat najednou</text>
+
+  <rect x="540" y="258" width="200" height="60" rx="10" fill="#E0F2FE" stroke="#0EA5E9" stroke-width="2"/>
+  <text x="640" y="283" text-anchor="middle" font-size="14" font-weight="700" fill="#1E1B4B">desítky Gb/s</text>
+  <text x="640" y="305" text-anchor="middle" font-size="12.5" fill="#1E1B4B">dosah až 100 km</text>
+
+  <text x="400" y="404" text-anchor="middle" font-size="12.5" fill="#6B7280">Víc pruhů = víc dat najednou. Optika je zhruba stokrát rychlejší a doveze data tisíckrát dál.</text>
+</svg>

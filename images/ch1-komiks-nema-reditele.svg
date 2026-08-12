@@ -1,0 +1,129 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 640" font-family="system-ui,sans-serif">
+  <rect width="800" height="640" rx="14" fill="#FAFAF7" stroke="#E5E7EB"/>
+  <text x="400" y="38" text-anchor="middle" font-size="21" font-weight="700" fill="#1E1B4B">Chci mluvit s ředitelem internetu!</text>
+
+  <!-- panely -->
+  <rect x="14" y="56" width="380" height="264" rx="10" fill="#FFFFFF" stroke="#E5E7EB"/>
+  <rect x="406" y="56" width="380" height="264" rx="10" fill="#FFFFFF" stroke="#E5E7EB"/>
+  <rect x="14" y="336" width="380" height="264" rx="10" fill="#FFFFFF" stroke="#E5E7EB"/>
+  <rect x="406" y="336" width="380" height="264" rx="10" fill="#FFFFFF" stroke="#E5E7EB"/>
+
+  <!-- P1: doma, trapné video -->
+  <g>
+    <rect x="148" y="88" width="228" height="56" rx="9" fill="#EDE9FE" stroke="#7C3AED" stroke-width="1.5"/>
+    <path d="M 168 142 L 128 170 L 196 142 Z" fill="#EDE9FE"/>
+    <text x="262" y="111" text-anchor="middle" font-size="12.5" fill="#1E1B4B">To trapné video musí zmizet!</text>
+    <text x="262" y="131" text-anchor="middle" font-size="12.5" fill="#1E1B4B">Jdu za ředitelem internetu.</text>
+    <circle cx="95" cy="185" r="10" fill="#EDE9FE" stroke="#7C3AED" stroke-width="2"/>
+    <g stroke="#1E1B4B" stroke-width="2.5" stroke-linecap="round" fill="none">
+      <path d="M 95 195 L 95 232"/>
+      <path d="M 95 205 L 118 214"/>
+      <path d="M 95 205 L 74 220"/>
+      <path d="M 95 232 L 82 258"/>
+      <path d="M 95 232 L 108 258"/>
+    </g>
+    <rect x="112" y="200" width="20" height="34" rx="3" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.5"/>
+    <path d="M 118.5 211 L 127.5 217 L 118.5 223 Z" fill="#7C3AED"/>
+    <text x="204" y="306" text-anchor="middle" font-size="12" fill="#6B7280">Kubovo salto do bazénu vidělo už půl školy.</text>
+  </g>
+
+  <!-- P2: u poskytovatele internetu -->
+  <g>
+    <rect x="496" y="84" width="200" height="28" rx="6" fill="#E0F2FE" stroke="#0EA5E9" stroke-width="1.5"/>
+    <text x="596" y="102" text-anchor="middle" font-size="12" font-weight="700" fill="#1E1B4B">POSKYTOVATEL INTERNETU</text>
+    <rect x="444" y="126" width="196" height="52" rx="9" fill="#E0F2FE" stroke="#0EA5E9" stroke-width="1.5"/>
+    <path d="M 600 177 L 646 194 L 626 177 Z" fill="#E0F2FE"/>
+    <text x="542" y="147" text-anchor="middle" font-size="12.5" fill="#1E1B4B">My tu jen vedeme kabely.</text>
+    <text x="542" y="166" text-anchor="middle" font-size="12.5" fill="#1E1B4B">Zkuste datové centrum!</text>
+    <circle cx="664" cy="202" r="10" fill="#E0F2FE" stroke="#0EA5E9" stroke-width="2"/>
+    <g stroke="#1E1B4B" stroke-width="2.5" stroke-linecap="round" fill="none">
+      <path d="M 664 212 L 664 234"/>
+      <path d="M 664 220 L 702 206"/>
+      <path d="M 664 220 L 646 232"/>
+    </g>
+    <rect x="600" y="234" width="150" height="44" rx="6" fill="#FFFFFF" stroke="#6B7280" stroke-width="1.5"/>
+    <circle cx="462" cy="200" r="10" fill="#EDE9FE" stroke="#7C3AED" stroke-width="2"/>
+    <g stroke="#1E1B4B" stroke-width="2.5" stroke-linecap="round" fill="none">
+      <path d="M 462 210 L 462 248"/>
+      <path d="M 462 220 L 478 231"/>
+      <path d="M 462 220 L 446 231"/>
+      <path d="M 462 248 L 450 274"/>
+      <path d="M 462 248 L 474 274"/>
+    </g>
+    <text x="596" y="306" text-anchor="middle" font-size="12" fill="#6B7280">První adresa: firma, která k vám domů vede kabel.</text>
+  </g>
+
+  <!-- P3: v datovém centru -->
+  <g>
+    <rect x="196" y="352" width="182" height="52" rx="9" fill="#D1FAE5" stroke="#10B981" stroke-width="1.5"/>
+    <path d="M 252 403 L 264 424 L 286 403 Z" fill="#D1FAE5"/>
+    <text x="287" y="373" text-anchor="middle" font-size="12.5" fill="#1E1B4B">Kousek videa je tady.</text>
+    <text x="287" y="392" text-anchor="middle" font-size="12.5" fill="#1E1B4B">Zbytek? Tři kontinenty.</text>
+    <g>
+      <rect x="44" y="398" width="52" height="112" rx="6" fill="#D1FAE5" stroke="#10B981" stroke-width="2"/>
+      <g fill="#FFFFFF" stroke="#10B981" stroke-width="1.2">
+        <rect x="52" y="408" width="36" height="16" rx="3"/>
+        <rect x="52" y="430" width="36" height="16" rx="3"/>
+        <rect x="52" y="452" width="36" height="16" rx="3"/>
+      </g>
+      <circle cx="70" cy="488" r="3" fill="#10B981"/>
+    </g>
+    <g>
+      <rect x="104" y="398" width="52" height="112" rx="6" fill="#D1FAE5" stroke="#10B981" stroke-width="2"/>
+      <g fill="#FFFFFF" stroke="#10B981" stroke-width="1.2">
+        <rect x="112" y="408" width="36" height="16" rx="3"/>
+        <rect x="112" y="430" width="36" height="16" rx="3"/>
+        <rect x="112" y="452" width="36" height="16" rx="3"/>
+      </g>
+      <circle cx="130" cy="488" r="3" fill="#10B981"/>
+    </g>
+    <circle cx="264" cy="434" r="10" fill="#D1FAE5" stroke="#10B981" stroke-width="2"/>
+    <g stroke="#1E1B4B" stroke-width="2.5" stroke-linecap="round" fill="none">
+      <path d="M 264 444 L 264 476"/>
+      <path d="M 264 454 L 242 442"/>
+      <path d="M 264 454 L 286 442"/>
+      <path d="M 264 476 L 252 500"/>
+      <path d="M 264 476 L 276 500"/>
+    </g>
+    <circle cx="196" cy="446" r="10" fill="#EDE9FE" stroke="#7C3AED" stroke-width="2"/>
+    <g stroke="#1E1B4B" stroke-width="2.5" stroke-linecap="round" fill="none">
+      <path d="M 196 456 L 196 486"/>
+      <path d="M 196 466 L 183 480"/>
+      <path d="M 196 466 L 209 480"/>
+      <path d="M 196 486 L 185 508"/>
+      <path d="M 196 486 L 207 508"/>
+    </g>
+    <text x="204" y="586" text-anchor="middle" font-size="12" fill="#6B7280">Druhá adresa: server. Jenže dat je všude jen kus.</text>
+  </g>
+
+  <!-- P4: zpátky doma -->
+  <g>
+    <rect x="422" y="406" width="148" height="32" rx="9" fill="#FFFFFF" stroke="#6B7280" stroke-width="1.5"/>
+    <path d="M 478 437 L 490 458 L 508 437 Z" fill="#FFFFFF" stroke="#6B7280" stroke-width="1.5"/>
+    <rect x="480" y="431" width="26" height="8" fill="#FFFFFF"/>
+    <text x="496" y="426" text-anchor="middle" font-size="12.5" fill="#1E1B4B">Tak co, našels ho?</text>
+    <rect x="592" y="360" width="186" height="56" rx="9" fill="#EDE9FE" stroke="#7C3AED" stroke-width="1.5"/>
+    <path d="M 668 415 L 686 456 L 702 415 Z" fill="#EDE9FE"/>
+    <text x="685" y="382" text-anchor="middle" font-size="12.5" fill="#1E1B4B">Internet nemá ředitele.</text>
+    <text x="685" y="401" text-anchor="middle" font-size="12.5" fill="#1E1B4B">Ani vrátnici.</text>
+    <circle cx="492" cy="470" r="10" fill="#FFFFFF" stroke="#6B7280" stroke-width="2"/>
+    <g stroke="#1E1B4B" stroke-width="2.5" stroke-linecap="round" fill="none">
+      <path d="M 492 480 L 492 515"/>
+      <path d="M 492 492 L 508 501"/>
+      <path d="M 492 492 L 476 501"/>
+      <path d="M 492 515 L 480 540"/>
+      <path d="M 492 515 L 504 540"/>
+    </g>
+    <circle cx="688" cy="470" r="10" fill="#EDE9FE" stroke="#7C3AED" stroke-width="2"/>
+    <g stroke="#1E1B4B" stroke-width="2.5" stroke-linecap="round" fill="none">
+      <path d="M 688 480 L 688 515"/>
+      <path d="M 688 490 L 665 483"/>
+      <path d="M 688 490 L 711 483"/>
+      <path d="M 688 515 L 676 540"/>
+      <path d="M 688 515 L 700 540"/>
+    </g>
+    <text x="596" y="586" text-anchor="middle" font-size="12" fill="#6B7280">Vypínač internetu nikdo nemá. A to je vlastně dobře.</text>
+  </g>
+
+  <text x="400" y="626" text-anchor="middle" font-size="13" fill="#6B7280">Internet nemá ředitele ani centrum – tvoří ho tisíce nezávislých sítí. Proto ho nejde vypnout.</text>
+</svg>

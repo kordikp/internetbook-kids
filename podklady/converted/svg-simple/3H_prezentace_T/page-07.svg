@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" lang="cs">
+<title>Co všechno je digitální stopa?</title>
+<desc>Oblak třinácti štítků se složkami digitální stopy: od IP adresy a zpráv přes lajky a komentáře až po čas strávený na stránce.</desc>
+<defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#555"/></marker><marker id="arrR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#a04030"/></marker><marker id="arrP" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#6a3fc0"/></marker></defs>
+<rect x="0" y="0" width="960" height="540" fill="#ffffff"/>
+<text x="480" y="60" font-family="sans-serif" font-size="32" font-weight="bold" text-anchor="middle" fill="#000">Co všechno je DIGITÁLNÍ STOPA?</text>
+<text x="480" y="110" font-family="sans-serif" font-size="22" font-weight="normal" text-anchor="middle" fill="#555">Vše co na internetu děláme</text>
+<g aria-label="Třináct složek digitální stopy">
+<rect x="45" y="145" width="280" height="46" rx="23" fill="none" stroke="#888" stroke-width="1.5"/>
+<text x="185" y="174" font-family="sans-serif" font-size="16" font-weight="normal" text-anchor="middle" fill="#000">co o mně sdílí ostatní</text>
+<rect x="345" y="145" width="280" height="46" rx="23" fill="none" stroke="#888" stroke-width="1.5"/>
+<text x="485" y="174" font-family="sans-serif" font-size="16" font-weight="normal" text-anchor="middle" fill="#000">moje IP adresa</text>
+<rect x="645" y="145" width="280" height="46" rx="23" fill="none" stroke="#888" stroke-width="1.5"/>
+<text x="785" y="174" font-family="sans-serif" font-size="16" font-weight="normal" text-anchor="middle" fill="#000">posílané zprávy</text>
+<rect x="45" y="207" width="280" height="46" rx="23" fill="none" stroke="#888" stroke-width="1.5"/>
+<text x="185" y="236" font-family="sans-serif" font-size="16" font-weight="normal" text-anchor="middle" fill="#000">na co jsme klikli</text>
+<rect x="345" y="207" width="280" height="46" rx="23" fill="none" stroke="#888" stroke-width="1.5"/>
+<text x="485" y="236" font-family="sans-serif" font-size="16" font-weight="normal" text-anchor="middle" fill="#000">moje příspěvky</text>
+<rect x="645" y="207" width="280" height="46" rx="23" fill="none" stroke="#888" stroke-width="1.5"/>
+<text x="785" y="236" font-family="sans-serif" font-size="16" font-weight="normal" text-anchor="middle" fill="#000">označení v příspěvcích</text>
+<rect x="45" y="269" width="280" height="46" rx="23" fill="none" stroke="#888" stroke-width="1.5"/>
+<text x="185" y="298" font-family="sans-serif" font-size="16" font-weight="normal" text-anchor="middle" fill="#000">co si vyhledávám</text>
+<rect x="345" y="269" width="280" height="46" rx="23" fill="none" stroke="#888" stroke-width="1.5"/>
+<text x="485" y="298" font-family="sans-serif" font-size="16" font-weight="normal" text-anchor="middle" fill="#000">co jsme lajkli</text>
+<rect x="645" y="269" width="280" height="46" rx="23" fill="none" stroke="#888" stroke-width="1.5"/>
+<text x="785" y="298" font-family="sans-serif" font-size="16" font-weight="normal" text-anchor="middle" fill="#000">komentáře v diskuzích</text>
+<rect x="45" y="331" width="280" height="46" rx="23" fill="none" stroke="#888" stroke-width="1.5"/>
+<text x="185" y="360" font-family="sans-serif" font-size="16" font-weight="normal" text-anchor="middle" fill="#000">položky prohlížené v e-shopu</text>
+<rect x="345" y="331" width="280" height="46" rx="23" fill="none" stroke="#888" stroke-width="1.5"/>
+<text x="485" y="360" font-family="sans-serif" font-size="16" font-weight="normal" text-anchor="middle" fill="#000">co sleduju za příspěvky</text>
+<rect x="645" y="331" width="280" height="46" rx="23" fill="none" stroke="#888" stroke-width="1.5"/>
+<text x="785" y="360" font-family="sans-serif" font-size="16" font-weight="normal" text-anchor="middle" fill="#000">můj poskytovatel připojení</text>
+<rect x="45" y="393" width="280" height="46" rx="23" fill="none" stroke="#888" stroke-width="1.5"/>
+<text x="185" y="422" font-family="sans-serif" font-size="16" font-weight="normal" text-anchor="middle" fill="#000">čas strávený na stránce</text>
+</g>
+<text x="930" y="528" font-family="sans-serif" font-size="13" font-weight="normal" text-anchor="end" fill="#999">7</text>
+</svg>

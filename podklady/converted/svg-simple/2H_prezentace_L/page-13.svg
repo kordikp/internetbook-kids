@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" lang="cs">
+  <title>Hotspot</title>
+  <desc>Schéma sdílení připojení: mobil s hotspotem vlevo předává internetové připojení (velká šipka s přechodem fialová–červená) druhému mobilu s Wi-Fi vpravo. Detail ukazuje dlaždici Personal hotspot v rychlém nastavení telefonu.</desc>
+  <defs>
+    <linearGradient id="grad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#6c3df4"/>
+      <stop offset="1" stop-color="#e0483e"/>
+    </linearGradient>
+  </defs>
+  <text x="480" y="56" text-anchor="middle" font-family="sans-serif" font-size="38" font-weight="bold" fill="#2d1b69">HOTSPOT</text>
+  <g aria-label="Mobil s hotspotem (dárce připojení)">
+    <rect x="150" y="130" width="130" height="230" rx="16" fill="#fff" stroke="#333" stroke-width="3"/>
+    <g role="img"><title>Fialová ikona hotspotu — soustředné oblouky kolem tečky.</title>
+      <path d="M 185 250 A 42 42 0 0 1 245 250" fill="none" stroke="#6c3df4" stroke-width="5"/>
+      <path d="M 198 265 A 24 24 0 0 1 232 265" fill="none" stroke="#6c3df4" stroke-width="5"/>
+      <circle cx="215" cy="282" r="6" fill="#6c3df4"/>
+    </g>
+    <text x="215" y="390" text-anchor="middle" font-family="sans-serif" font-size="16" fill="#333">můj mobil (hotspot)</text>
+  </g>
+  <g aria-label="Šipka předání připojení">
+    <path d="M 310 225 L 590 225 L 590 195 L 660 245 L 590 295 L 590 265 L 310 265 Z" fill="url(#grad)"/>
+  </g>
+  <g aria-label="Mobil kamaráda (příjemce připojení)">
+    <rect x="680" y="130" width="130" height="230" rx="16" fill="#fff" stroke="#333" stroke-width="3"/>
+    <g role="img"><title>Červená ikona Wi-Fi na displeji druhého mobilu.</title>
+      <path d="M 715 250 A 42 42 0 0 1 775 250" fill="none" stroke="#e0483e" stroke-width="5"/>
+      <path d="M 728 265 A 24 24 0 0 1 762 265" fill="none" stroke="#e0483e" stroke-width="5"/>
+      <circle cx="745" cy="282" r="6" fill="#e0483e"/>
+    </g>
+    <text x="745" y="390" text-anchor="middle" font-family="sans-serif" font-size="16" fill="#333">mobil kamaráda</text>
+  </g>
+  <g aria-label="Text">
+    <text x="215" y="110" text-anchor="middle" font-family="sans-serif" font-size="18" fill="#1a1a2e">Tím, že můj <tspan font-weight="bold">mobil</tspan> má přístup k internetu,…</text>
+    <text x="700" y="110" text-anchor="middle" font-family="sans-serif" font-size="18" fill="#1a1a2e">…mohu „darovat" přístup k internetu i <tspan font-weight="bold">kamarádovi</tspan>.</text>
+  </g>
+  <g role="img" aria-label="Detail nastavení hotspotu v telefonu">
+    <title>Kruhový detail rychlého nastavení Androidu: dlaždice Location, Auto rotate, Dark mode, Power saving mode a modře zvýrazněná dlaždice Personal hotspot — tady se hotspot zapíná.</title>
+    <circle cx="300" cy="450" r="65" fill="#f7f7fb" stroke="#555" stroke-width="2"/>
+    <line x1="255" y1="405" x2="230" y2="360" stroke="#555" stroke-width="2"/>
+    <rect x="255" y="415" width="42" height="18" rx="4" fill="#e2e2ea"/>
+    <rect x="303" y="415" width="42" height="18" rx="4" fill="#e2e2ea"/>
+    <rect x="255" y="440" width="42" height="18" rx="4" fill="#e2e2ea"/>
+    <rect x="303" y="440" width="42" height="18" rx="4" fill="#3d7df4"/>
+    <rect x="255" y="465" width="42" height="18" rx="4" fill="#e2e2ea"/>
+    <text x="440" y="455" font-family="sans-serif" font-size="15" fill="#444">V nastavení telefonu: dlaždice</text>
+    <text x="440" y="475" font-family="sans-serif" font-size="15" font-weight="bold" fill="#3d7df4">„Personal hotspot"</text>
+  </g>
+  <text x="930" y="525" text-anchor="end" font-family="sans-serif" font-size="14" fill="#999">13</text>
+</svg>

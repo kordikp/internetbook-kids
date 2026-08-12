@@ -1,0 +1,383 @@
+# Obsahový balíček dle zadání P-book Školní edice v0.4, §5 — varianta T (8.-9. ročník)
+# Zdroj: Internet4Kids (MFF UK + PedF UK), pbook/content/{1,2,3,4}H.js (variants.T)
+#        + converted/{1,2,3,4}H_priprava_pro_ucitele_T.md
+
+unit:
+  id: inf-zs2-internet-t
+  title: "Jak funguje internet"
+  grade: "8-9"
+  lang: cs
+  source: "Internet4Kids (MFF UK + PedF UK), blok 4 hodin"
+  rvp: ["I-9-4-03", "I-9-4-05"]
+
+  # Číselník konceptů — 31 pojmů z tabulky pojmů lekce 4H (těžší varianta)
+  concepts:
+    server: "server"
+    sitovy-router: "síťový router"
+    datove-centrum: "datové centrum"
+    internet: "internet"
+    bts: "BTS"
+    cookies: "cookies"
+    datova-stopa: "datová stopa"
+    ip-adresa: "IP adresa"
+    paket: "paket"
+    satelit: "satelit"
+    mobilni-data: "mobilní data"
+    wi-fi: "Wi-Fi"
+    opticky-kabel: "optický kabel"
+    bezdratove-pripojeni: "bezdrátové připojení"
+    kovovy-kabel: "kovový kabel"
+    wi-fi-router: "Wi-Fi router"
+    prenosova-rychlost: "přenosová rychlost"
+    speedtest: "speedtest"
+    poskytovatel-internetu: "poskytovatel internetu"
+    paterni-sit: "páteřní síť"
+    cetin: "CETIN"
+    hacker: "hacker"
+    hotspot: "hotspot"
+    sim-karta: "SIM karta"
+    sit: "síť"
+    podmorske-kabely: "podmořské kabely"
+    pozadavek-na-server: "požadavek na server"
+    klient-server: "klient-server"
+    traceroute: "traceroute"
+    ip-adresa-prijemce: "IP adresa příjemce"
+    ip-adresa-odesilatele: "IP adresa odesílatele"
+
+  lessons:
+    - id: L1
+      title: "Servery, routery, pakety"
+      objectives:
+        - "žák vysvětlí, co znamená, že je internet decentralizovaný, a uvede výhodu plynoucí z decentralizace"
+        - "žák popíše, přes jaká zařízení putují data internetem (servery, routery)"
+        - "žák popíše komunikaci klient-server a vyjmenuje, co obsahuje paket"
+      home_prep:                                  # DP1
+        segments: [seg/l1-klient-server, seg/l1-routery, seg/l1-ip-adresy, seg/l1-pakety]
+        recall: auto
+        est_min: 30
+        link_label: "Domácí příprava na 2. hodinu"
+      in_class:
+        - {phase: warmup, min: 5, source: generated}
+        - {phase: aktivita, min: 15, note: "Skupinová diskuze „Co kdyby najednou přestal fungovat internet?“ — témata ekonomika, politika, já jako uživatel, zdravotnictví, doprava; sdílení a porovnání řešení skupin.", offline: true}
+        - {phase: aktivita, min: 15, note: "Společný traceroute na web školy (traceroute-online.com), aktivita Dinosaurus (rozebrání kostry = paketizace) a otázka, co vše musí paket obsahovat.", offline: false}
+        - {phase: reflexe, min: 5, note: "Žáci kreslí „internet z výšky“ (uživatel — routery — server, pakety na cestě) a porovnají nákres se vzorovým řešením.", offline: true}
+      gate: {requires: home_prep, min_score: 0.7, soft: true}
+
+    - id: L2
+      title: "Typy připojení a přenosová rychlost"
+      objectives:
+        - "žák se seznámí s typy připojení k internetu a jejich základními principy fungování a vlastnostmi"
+        - "žák rozhodne, jaký typ připojení k internetu je nejlepší využít v daných situacích"
+        - "žák změří parametry svého připojení (ping, jitter, download, upload) a interpretuje je"
+      home_prep:                                  # DP2 — tutorovaný úkol
+        segments: [seg/l2-prenosova-rychlost, seg/l2-wifi-router, seg/l2-kabely-pater, seg/l2-mobilni-satelity]
+        recall: auto
+        est_min: 30
+        link_label: "Domácí příprava na 3. hodinu"
+        activity: {type: tutored_task, tutor_config: tc/L2}
+      in_class:
+        - {phase: warmup, min: 5, source: generated}
+        - {phase: aktivita, min: 15, note: "Živý experiment s Wi-Fi routerem: hlasování (uvidíme síť? načte se google.cz?), připojování k routeru zapojenému jen do elektřiny a poté i do internetové přípojky.", offline: false}
+        - {phase: aktivita, min: 10, note: "Mapa pokrytí mobilním signálem a nejbližší BTS u školy; tabulka drát vs. bezdrát na tabuli.", offline: false}
+        - {phase: reflexe, min: 10, note: "Porovnání výsledků tutorovaného speedtestu z DP2, seřazení připojení podle rychlosti a přiřazení typů připojení k situacím.", offline: false}
+      gate: {requires: home_prep, min_score: 0.7, soft: true}
+
+    - id: L3
+      title: "Digitální (datová) stopa"
+      objectives:
+        - "žák se seznámí s digitální stopou, cookies a personalizací obsahu na internetu"
+        - "žák usměrní svou činnost tak, aby minimalizoval riziko ztráty či zneužití dat (formuluje vlastní pravidla)"
+      home_prep:                                  # DP3 — telling + peer review
+        segments: [seg/l3-pakety-penize, seg/l3-digitalni-stopa, seg/l3-cookies, seg/l3-pravidla]
+        recall: auto
+        est_min: 30
+        link_label: "Domácí příprava na 4. hodinu"
+        activity:
+          - {type: telling, brief: "Připrav si 2-3minutové mluvené vystoupení pro mladšího spolužáka: vysvětli, co je digitální stopa, jak doopravdy fungují cookies a jakých 5 pravidel dodržuješ, aby tvou stopu nikdo nezneužil. Opři se o svá řešení úkolů z této lekce; vystoupení jsi začal(a) chystat ve 3. hodině a obhájíš ho ve 4. hodině."}
+          - {type: peer_review, note: "Vyměň si nahrávku nebo osnovu vystoupení se spolužákem. U jeho verze zkontroluj věcnou správnost (co je cookie, co vše patří do stopy, kdo data může zneužít), označ jedno místo vysvětlené nejlépe a jedno, které by šlo říct srozumitelněji — a totéž dostaneš zpět ty."}
+      in_class:
+        - {phase: warmup, min: 5, note: "Opakovací hlasovací kvíz (webové stránky na serveru? paket obsahuje IP odesílatele? nejčastější spojení Wi-Fi?).", source: generated}
+        - {phase: aktivita, min: 10, note: "Co si o vás myslí Instagram — průzkum doporučovaného obsahu (lupička); alternativně doporučování na YouTube nebo reklamy Google.", offline: false}
+        - {phase: aktivita, min: 15, note: "Analýza stop (historie vyhledávání „křeček“) ve skupinách: odhady o uživateli, návrh reklam, diskuze o tom, že servery odhadují jen pravděpodobnostně.", offline: true}
+        - {phase: reflexe, min: 10, note: "Start tellingu: žáci ve skupinách formulují pravidla bezpečného zacházení s datovou stopou a začnou chystat vystoupení (dokončí doma v DP3).", offline: true}
+      gate: {requires: home_prep, min_score: 0.7, soft: true}
+
+    - id: L4
+      title: "Velké opakování"
+      objectives:
+        - "žák za pomoci spolužáků odpoví správně na většinu otázek, které shrnují učivo předchozích tří vyučovacích hodin"
+      home_prep:                                  # jen lehké opakování + Bingo
+        segments: [seg/l4-opakovani]
+        recall: auto
+        est_min: 15
+        link_label: "Lehké opakování před závěrečnou hodinou"
+        activity: {type: game, name: "Bingo", note: "Vytiskni si (nebo nakresli) mřížku 3 × 3 podle pracovního listu a do políček vepiš 9 pojmů z číselníku lekce. Druhý hráč (kamarád, sourozenec, rodič) čte v náhodném pořadí vysvětlení pojmů ze segmentu Zopakuj si pojmy a pojem neprozrazuje; ty škrtáš, co poznáš. Tři správně škrtnutá políčka v řadě = Bingo. Pak si role vyměňte."}
+      in_class:
+        - {phase: warmup, min: 5, source: generated}
+        - {phase: aktivita, min: 15, note: "Obhajoby tellingů z DP3 před třídou + peer zpětná vazba podle kritérií z peer review.", offline: true}
+        - {phase: aktivita, min: 20, note: "Týmový kvíz v Kahootu ve skupinách po 4 (2 kola: výběr z možností za 0,5 bodu, otevřené otázky na lepicí papírky za 1 bod), nebo offline Bingo s losováním definic pojmů.", offline: false}
+        - {phase: reflexe, min: 5, note: "Boss kvíz jednotlivě v p-booku; po úspěchu certifikát za absolvování bloku „Jak funguje internet“.", offline: false}
+      gate: {requires: home_prep, min_score: 0.7, soft: true}
+
+  segments:
+    # ── L1: Servery, routery, pakety (z 1H.js, variants.T) ──────────────────
+    - id: seg/l1-klient-server
+      title: "Klient a server: kdo komu slouží"
+      concepts: [server, klient-server, datove-centrum, pozadavek-na-server]
+      est_min: 8
+      blocks:
+        - {type: text, html: "<p>Představ si, že by internet najednou přestal fungovat. Nejde jen o to, že by nejely sociální sítě - přestaly by fungovat jízdní řády, objednávání k lékaři, platby kartou, navigace... Skoro všechno kolem nás na internetu závisí. Kde jsou ale všechna ta data - webové stránky, videa, dokumenty na cloudu - vlastně uložena?</p><p>Odpověď: na <strong>serverech</strong>. Server je počítač zapojený do sítě, který má obrovské úložiště a plní speciální úkoly - třeba vyhledá spojení v jízdním řádu, skladuje tvoje dokumenty na Google Drive nebo ukládá obsah Instagramu. Typicky nemá ani monitor, ani klávesnici, protože se k němu připojujeme <strong>vzdáleně</strong>.</p><p>Tomuto způsobu komunikace říkáme <strong>KLIENT-SERVER</strong>:</p><ul><li><strong>Klient</strong> = tvoje zařízení (mobil, počítač), které posílá <strong>požadavek</strong>: \"Ukaž mi video o kočičkách.\"</li><li><strong>Server</strong> = počítač, který požadavek splní a pošle <strong>odpověď</strong>: \"Dobře, tady ho máš.\" (Anglicky <em>serve</em> = sloužit.)</li></ul><p>Serverů existují různé typy: webové, herní, chatservery... a s mnoha \"služebními\" servery komunikuješ, aniž o tom víš.</p>"}
+        - {type: figure, src: "pbook/assets/svg/1H_prezentace_T/page-09.svg", alt: "Schéma klient-server: dívka s tabletem posílá požadavky na YouTube server a webový server Wikipedie, které jí vracejí odpovědi.", caption: "Klient posílá požadavek, server vrací odpověď - stejně to funguje pro video na YouTube i pro stránku Wikipedie."}
+      items:
+        - {id: l1s1-i1, concept: klient-server, q: "Co je v modelu klient-server klient?", options: ["Počítač, který ukládá webové stránky", "Tvoje zařízení, které posílá serveru požadavek", "Firma, která ti prodává připojení k internetu", "Program na blokování reklam"], correct: 1, explain: "Klient je zařízení uživatele (mobil, počítač), které posílá požadavek - server mu na něj pošle odpověď."}
+        - {id: l1s1-i2, concept: datove-centrum, q: "Kolik je přibližně po světě datových center?", options: ["Asi 80", "Asi 800", "Asi 8000", "Asi 8 milionů"], correct: 2, explain: "Datových center je po světě zhruba 8000 - nejvíc v USA a západní Evropě."}
+        - {id: l1s1-i3, concept: server, q: "Proč typický server nemá monitor ani klávesnici?", options: ["Protože se k němu připojujeme vzdáleně po síti", "Protože servery neumí zobrazovat obraz", "Protože je to zakázáno kvůli bezpečnosti", "Protože by se přehříval"], correct: 0, explain: "Server ovládáme vzdáleně z jiného počítače, takže vlastní monitor a klávesnici k práci nepotřebuje."}
+        - {id: l1s1-i4, concept: pozadavek-na-server, q: "Co je požadavek na server?", options: ["Chybová hláška serveru", "Platba za připojení k internetu", "Heslo, kterým se server odemyká", "Úkol, který serveru pošle klientské zařízení - třeba „ukaž mi video“"], correct: 3, explain: "Požadavek posílá klient (mobil, počítač) serveru - server ho splní a vrátí odpověď."}
+        - {id: l1s1-i5, concept: klient-server, q: "Které tvrzení o komunikaci klient-server je pravdivé?", options: ["Server posílá požadavky klientům a ti je plní", "Mnoho klientů posílá požadavky jednomu výkonnému počítači, který je plní", "Klient a server si role pravidelně střídají", "Klient-server funguje jen pro webové stránky, ne pro hry nebo chat"], correct: 1, explain: "V modelu klient-server plní jeden výkonný počítač (server) požadavky mnoha klientů - a existují servery webové, herní i chatové."}
+      prompts:
+        - {type: didyouknow, id: l1s1-p1, concept: datove-centrum, text: "Velké firmy sdružují servery do datových center - po světě jich je asi 8000. Když pošleš zprávu přes Instagram, klidně může ke kamarádovi běžet přes Irsko, Dánsko nebo USA."}
+        - {type: think, id: l1s1-p2, question: "Co kdyby zítra na celém světě přestal fungovat internet? Vyber si dvě oblasti (školství, politika, zdravotnictví, doprava, ekonomika) a promysli co nejkonkrétnější dopady - i takové, které nejsou vidět na první pohled.", handoff: {bot: co-kdyby, minutes: 5}}
+
+    - id: seg/l1-routery
+      title: "Routery: chytré křižovatky sítě"
+      concepts: [sitovy-router, internet]
+      est_min: 7
+      blocks:
+        - {type: text, html: "<p>Jak jsou ale klient a server propojeni? Kdyby vedl <strong>přímý kabel z každého serveru ke každému klientovi</strong>, potřebovali bychom miliardy kabelů - to by nešlo. Síť je proto postavena jinak: z <strong>propojených uzlů</strong>, které si data předávají.</p><p>Funguje to jako doprava: taky nevede přímý vlak z každé vesnice do každé jiné vesnice. Jedeš do většího města, tam <strong>přestoupíš</strong> a pokračuješ dál. A když jedeš autem, na každé křižovatce vybereš odbočku podle cedule s cílem cesty.</p><p>Tyto křižovatky v internetové síti se nazývají <strong>routery</strong> (z anglického <em>route</em> = směrovat). Jsou to směrovací zařízení: každý router se podívá, kam data míří, a pošle je dál nejvhodnějším směrem. Cesta k cíli tak vzniká jako řada rozhodnutí na jednotlivých křižovatkách.</p><p>A co když nějaká cesta nefunguje - třeba někdo překopne kabel mezi Prahou a Brnem? Routery umí najít <strong>objížďku</strong>, stejně jako navigace při uzavírce. Právě proto je internet tak odolný: je <strong>decentralizovaný</strong>, nemá žádné řídící centrum, jehož zničení by ho vyřadilo z provozu.</p>"}
+        - {type: figure, src: "pbook/assets/svg/1H_prezentace_T/page-18.svg", alt: "Mapa Česka se dvěma trasami mezi uzly Praha a Brno; přímá trasa je přerušena křížkem, objízdná trasa přes další uzel je průchozí.", caption: "Když přímá cesta nefunguje, routery pošlou data objízdnou trasou."}
+      items:
+        - {id: l1s2-i1, concept: internet, q: "Proč je výhodné, že internet nemá jedno řídící centrum?", options: ["Protože je tak levnější na provoz", "Protože se tak dají snáz sledovat uživatelé", "Protože pak nikdo nemusí platit za připojení", "Protože je odolný - výpadek jednoho místa síť neochromí a routery najdou jinou cestu"], correct: 3, explain: "Decentralizovaná síť nemá slabé místo: když část sítě vypadne, data se k cíli dostanou objížďkou přes jiné routery."}
+        - {id: l1s2-i2, concept: sitovy-router, q: "Proč nevede přímý kabel z každého serveru ke každému klientovi?", options: ["Protože by to vyžadovalo miliardy kabelů - síť je proto postavena z propojených uzlů, které si data předávají", "Protože by data po tak dlouhém kabelu nedorazila", "Protože to zakazují poskytovatelé internetu", "Protože servery umí komunikovat jen s jedním zařízením najednou"], correct: 0, explain: "Přímé propojení každého s každým by bylo nerealizovatelné - stejně jako nevede přímý vlak z každé vesnice do každé jiné, síť stojí na přestupních uzlech (routerech)."}
+        - {id: l1s2-i3, concept: sitovy-router, q: "Co udělá síťový router s daty, která k němu dorazí?", options: ["Uloží si jejich kopii na disk", "Podívá se, kam data míří, a pošle je dál nejvhodnějším směrem", "Zrychlí je zesílením signálu", "Zkontroluje, jestli neobsahují viry"], correct: 1, explain: "Router je směrovací zařízení - na každé „křižovatce“ rozhodne, kudy data pošle blíž k cíli."}
+        - {id: l1s2-i4, concept: internet, q: "Bagr překopne kabel mezi Prahou a Brnem. Co se stane se zprávou, kterou právě posíláš z Brna do Prahy?", options: ["Nedorazí, dokud kabel neopraví", "Dorazí, ale až za několik dní", "Routery ji pošlou objízdnou trasou přes jiné uzly a dorazí normálně", "Vrátí se odesílateli s chybou"], correct: 2, explain: "Stejně jako navigace při uzavírce najdou routery objížďku - díky decentralizaci vede k cíli více cest."}
+      prompts:
+        - {type: try, id: l1s2-p1, task: "Představ si 5 domácností a 3 servery. Kolik přímých kabelů by bylo potřeba, kdyby si každá domácnost vedla vlastní kabel ke každému serveru? A kolik přípojek stačí, když se všichni připojí k jednomu společnému uzlu (routeru)?", answer: "Přímé propojení: 5 × 3 = 15 kabelů. Přes společný uzel stačí 5 + 3 = 8 přípojek. A s rostoucím počtem zařízení rozdíl dramaticky roste - proto je internet postaven z propojených uzlů, ne z přímých kabelů.", to_item_pool: true}
+
+    - id: seg/l1-ip-adresy
+      title: "IP adresy a stopování cesty dat"
+      concepts: [ip-adresa, traceroute]
+      est_min: 8
+      blocks:
+        - {type: text, html: "<p>Podle čeho routery poznají, kam data poslat? Každý dům má svou adresu, každý člověk rodné číslo - a každé zařízení v internetu má <strong>IP adresu</strong> (IP = Internet Protocol), která ho v síti <strong>jednoznačně určuje</strong>.</p><ul><li><strong>IPv4</strong> (starší verze): tvar X.X.X.X, kde X je číslo 0 až 255. Příklad: <strong>193.179.60.95</strong>. Takových adres existuje jen asi 4 miliardy - a docházejí.</li><li><strong>IPv6</strong> (nová verze): mnohem delší, zapisuje se šestnáctkově. Příklad: 2001:2000:8002:2030:47ff:fea5:3085. Adres je tolik, že by jich na každého člověka připadlo asi 10<sup>28</sup>.</li></ul>"}
+        - {type: figure, src: "pbook/assets/svg/1H_prezentace_T/page-20.svg", alt: "Výstup nástroje traceroute: mapa s trasou paketu přes Atlantik a výpis příkazu tracert se seznamem routerů a jejich IP adres.", caption: "Traceroute ukáže všechny routery (hopy), přes které požadavek putoval, včetně jejich IP adres."}
+      items:
+        - {id: l1s3-i1, concept: ip-adresa, q: "Která z těchto adres je platná IPv4 adresa?", options: ["193.179.60.95", "300.500.1.2", "2001:2000:8002:2030", "www.skola.cz"], correct: 0, explain: "IPv4 adresa má tvar X.X.X.X, kde každé X je číslo 0 až 255 - hodnoty 300 a 500 jsou mimo rozsah a www.skola.cz je URL, ne IP adresa."}
+        - {id: l1s3-i2, concept: ip-adresa, q: "Proč vznikla nová verze IP adres (IPv6)?", options: ["Protože IPv4 adresy byly příliš dlouhé", "Protože IPv6 je rychlejší při přenosu videa", "Protože IPv4 nefunguje v mobilech", "Protože IPv4 adres je jen asi 4 miliardy a docházejí"], correct: 3, explain: "IPv4 nabízí jen asi 4 miliardy adres, což pro všechna zařízení světa nestačí - IPv6 je mnohem delší, a adres tak nabízí obrovské množství."}
+        - {id: l1s3-i3, concept: traceroute, q: "Co ti ukáže nástroj traceroute?", options: ["Přes jaké routery (hopy) putuje požadavek k cílovému serveru", "Jak rychlé je tvoje připojení k internetu", "Kdo všechno si prohlížel tvůj profil", "Jaké viry jsou v tvém počítači"], correct: 0, explain: "Traceroute vypíše jednotlivé routery na cestě k cíli včetně jejich IP adres - takzvané hopy."}
+        - {id: l1s3-i4, concept: ip-adresa, q: "Do prohlížeče píšeš www.skola.cz, ale routery pracují s IP adresami. Kdo zapamatovatelnou adresu (URL) přeloží na IP adresu?", options: ["Wi-Fi router", "DNS server", "Poskytovatel internetu ručně", "Prohlížeč si ji tipne"], correct: 1, explain: "Podobně jako kontakty v telefonu překládají jména na čísla, DNS server překládá URL adresy na IP adresy - nemusíme si je pamatovat."}
+      prompts:
+        - {type: didyouknow, id: l1s3-p1, concept: ip-adresa, text: "IP adresy webů si nemusíš pamatovat - podobně jako si neukládáš telefonní čísla, ale jména v kontaktech. Zapamatovatelnou adresu (URL) za tebe na IP adresu překládá DNS server."}
+        - {type: try, id: l1s3-p2, task: "Vystopuj cestu ke školnímu webu: otevři stránku traceroute-online.com a zadej adresu webu tvé školy (stránka posílá pakety z USA). Odpověz: 1) Jaké země vidíš na mapě trasy? 2) Přes kolik routerů (hopů) požadavek prošel? 3) Jakou IP adresu má web tvé školy? Tip: podobný výpis získáš ve Windows příkazem tracert.", answer: "Trasa typicky startuje v USA, překoná Atlantik podmořským kabelem a přes evropské uzly doputuje do Česka; počet hopů bývá kolem 10-20. IP adresu školního webu najdeš u posledního hopu výpisu (tvar X.X.X.X).", to_item_pool: false}
+
+    - id: seg/l1-pakety
+      title: "Pakety: jak poslat dinosaura"
+      concepts: [paket, ip-adresa-prijemce, ip-adresa-odesilatele]
+      est_min: 9
+      blocks:
+        - {type: text, html: "<p>Poslední otázka: jak se po síti posílají velké soubory, třeba celé video? Pomůže nám příběh: jsi ředitel malého muzea a jiné muzeum na druhém konci republiky ti daruje <strong>kostru dinosaura</strong>. Nemáš náklaďák, jen tři malá osobní auta. Jak dinosaura převezeš?</p><p>Celý se do auta nevejde, takže ho musíš <strong>rozebrat</strong>: uděláš si plánek, <strong>očísluješ</strong> kosti, uložíš je do označených krabic a rozvezeš je na třikrát. Auta ani nemusí jet stejnou cestou - podle plánku a čísel kostru v cíli zase složíš.</p><p>Přesně takhle funguje internet. Všechno, co posíláš, se rozdělí na stejně velké části - <strong>pakety</strong>. Čím větší soubor, tím více paketů. Každý paket může k cíli dorazit <strong>jinou cestou</strong> - podle toho, kde je na síti zrovna \"kolona\". V cíli se pakety podle pořadových čísel zase složí dohromady.</p>"}
+        - {type: figure, src: "pbook/assets/svg/1H_prezentace_T/page-23.svg", alt: "Schéma dvou tras mezi dvěma muzei: dva náklaďáky vezou části kostry dinosaura různými cestami do stejného cíle.", caption: "Náklaďáky s částmi dinosaura nemusí jet stejnou cestou - stejně jako pakety."}
+        - {type: figure, src: "pbook/assets/svg/1H_prezentace_T/page-24.svg", alt: "Schéma sítě routerů mezi startem a cílem; soubor rozdělený na části putuje sítí jako jednotlivé pakety.", caption: "Soubor se rozdělí na pakety, které putují sítí routerů od startu k cíli."}
+        - {type: text, html: "<p>Aby to fungovalo, musí každý paket kromě kousku dat nést i \"štítek\" s údaji. Každý paket obsahuje:</p><ul><li><strong>IP adresu odesílatele</strong>,</li><li><strong>IP adresu příjemce</strong>,</li><li><strong>identifikátor zprávy</strong> (ke které zprávě či souboru paket patří),</li><li><strong>obsah</strong> (samotný kousek dat),</li><li><strong>pořadí</strong> (pořadové číslo, aby šel soubor v cíli zase složit).</li></ul>"}
+        - {type: figure, src: "pbook/assets/svg/1H_prezentace_T/page-28.svg", alt: "Vzorové schéma: domácnosti s Wi-Fi routery propojené podzemními kabely přes síťové routery se serverem v datovém centru.", caption: "Vzorové řešení: koncové zařízení - domácí Wi-Fi router - síťové routery - server a zpět. Porovnej se svým obrázkem."}
+      items:
+        - {id: l1s4-i1, concept: paket, q: "Co z tohoto paket NEOBSAHUJE?", options: ["IP adresu příjemce", "Pořadové číslo", "Heslo k tvé Wi-Fi", "Identifikátor zprávy"], correct: 2, explain: "Paket obsahuje IP adresu odesílatele a příjemce, identifikátor zprávy, obsah a pořadí - heslo k Wi-Fi mezi to nepatří."}
+        - {id: l1s4-i2, concept: paket, q: "Musí všechny pakety jedné zprávy putovat k cíli stejnou cestou?", options: ["Ano, jinak by se zpráva rozpadla", "Ne, každý paket může jet jinudy a v cíli se zpráva složí podle pořadových čísel", "Ano, cestu předem určuje odesílatel a nesmí se změnit", "Ne, ale pak dorazí jen část zprávy"], correct: 1, explain: "Routery posílají každý paket aktuálně nejvhodnější cestou - díky pořadovým číslům se zpráva v cíli správně poskládá."}
+        - {id: l1s4-i3, concept: paket, q: "Proč nese každý paket pořadové číslo?", options: ["Aby router věděl, který paket poslat první", "Aby se dala spočítat cena přenosu", "Aby se poznalo, jak je paket starý", "Aby šel soubor v cíli složit do správného pořadí, i když pakety dorazí přeházené"], correct: 3, explain: "Pakety mohou dorazit v libovolném pořadí - podle pořadových čísel se v cíli složí jako kostra dinosaura podle plánku."}
+        - {id: l1s4-i4, concept: ip-adresa-prijemce, q: "Co musí paket obsahovat, aby ho router dokázal poslat správným směrem?", options: ["IP adresu příjemce", "Jméno uživatele", "Heslo k Wi-Fi", "Název prohlížeče"], correct: 0, explain: "Podle IP adresy příjemce router pozná, kterým směrem má paket na křižovatce poslat."}
+        - {id: l1s4-i5, concept: ip-adresa-odesilatele, q: "K čemu slouží IP adresa odesílatele v paketu?", options: ["Zrychluje přenos paketu", "Říká, odkud byl paket poslán - třeba aby bylo kam poslat odpověď", "Šifruje obsah paketu", "Určuje, kolik paketů smí odesílatel poslat"], correct: 1, explain: "Bez adresy odesílatele by nebylo jasné, odkud paket přišel a kam má směřovat odpověď serveru."}
+        - {id: l1s4-i6, concept: paket, q: "Posíláš kamarádovi video a k tomu krátkou textovou zprávu. Co platí o počtu paketů?", options: ["Obojí se vejde vždy do jednoho paketu", "Zpráva se rozdělí na víc paketů než video", "Video se rozdělí na víc paketů, protože je větší - čím větší data, tím víc paketů", "Počet paketů je pro všechna data stejný"], correct: 2, explain: "Data se dělí na stejně velké části - větší soubor (video) proto vyplní více paketů než krátká zpráva."}
+      prompts:
+        - {type: try, id: l1s4-p1, task: "Nakresli internet z výšky: vezmi papír a zakresli část sítě, kterou putuje video z YouTube serveru k uživateli. Použij symboly: kroužek = router, úsečka = kabel, trojúhelníček = paket. Nakresli víc možných cest a zkus vysvětlit (třeba babičce), proč pakety nemusí jet všechny stejnou trasou.", answer: "Porovnej s obrázkem vzorového řešení pod textem: uživatel s notebookem - domácí Wi-Fi router - síť síťových routerů s více možnými cestami - server v datovém centru. Pakety jedou různými trasami podle toho, kde je síť zrovna volná; v cíli se složí podle pořadových čísel.", to_item_pool: false}
+
+    # ── L2: Typy připojení a přenosová rychlost (z 2H.js, variants.T) ───────
+    - id: seg/l2-prenosova-rychlost
+      title: "Přenosová rychlost: jak porovnat připojení"
+      concepts: [prenosova-rychlost, speedtest]
+      est_min: 5
+      blocks:
+        - {type: text, html: "<p>Abychom mohli typy připojení porovnávat, potřebujeme pojem <strong>přenosová rychlost</strong>. Udává, <strong>jaké množství dat se přenese za jednotku času</strong>. Čím větší přenosová rychlost, tím rychlejší připojení.</p><ul><li>Základní jednotka je <strong>bit za sekundu (b/s)</strong>; běžně se používají Mb/s a Gb/s.</li><li>Pro představu: <strong>1 Mb/s</strong> odpovídá přenosu asi <strong>25&nbsp;000 slov za sekundu</strong>.</li></ul><p>Přenosovou rychlost si můžeš představit jako <strong>počet pruhů na silnici</strong>: čím víc pruhů, tím víc aut (dat) projede najednou.</p><p>Při měření rychlosti se potkáš i s dalšími pojmy:</p><ul><li><strong>download / upload</strong> &mdash; kolik dat za sekundu umíš přijmout / odeslat,</li><li><strong>ping</strong> &mdash; rychlost odezvy připojení; čím menší, tím lépe,</li><li><strong>jitter</strong> &mdash; kolísání odezvy; čím vyšší, tím méně stabilní připojení.</li></ul>"}
+      items:
+        - {id: l2s1-i1, concept: prenosova-rychlost, q: "Co udává přenosová rychlost?", options: ["Jak daleko od routeru se lze připojit", "Kolik zařízení se vejde do jedné sítě", "Jaké množství dat se přenese za jednotku času", "Jak dlouho vydrží baterie routeru"], correct: 2, explain: "Přenosová rychlost říká, kolik dat proteče za jednotku času &mdash; čím větší, tím rychlejší připojení."}
+        - {id: l2s1-i2, concept: prenosova-rychlost, q: "Jaká je základní jednotka přenosové rychlosti?", options: ["Metr za sekundu", "Bit za sekundu (b/s)", "Bajt na kilometr", "Hertz"], correct: 1, explain: "Rychlost připojení se měří v bitech za sekundu; v praxi se používají násobky Mb/s a Gb/s."}
+        - {id: l2s1-i3, concept: speedtest, q: "Co je to ping?", options: ["Množství dat, které umíš odeslat za sekundu", "Rychlost odezvy připojení &mdash; čím menší, tím lepší", "Název páteřní sítě v ČR", "Signál, kterým router hledá zařízení"], correct: 1, explain: "Ping měří, jak rychle přijde odpověď z druhé strany sítě; nízký ping znamená svižnou odezvu."}
+        - {id: l2s1-i4, concept: speedtest, q: "Naměřil jsi vysoký jitter. Co to znamená?", options: ["Připojení je nestabilní, odezva hodně kolísá", "Připojení je velmi rychlé", "Download je vyšší než upload", "Router je zapojen jen do elektřiny"], correct: 0, explain: "Jitter je odchylka (kolísání) odezvy &mdash; čím vyšší, tím méně stabilní připojení."}
+        - {id: l2s1-i5, concept: speedtest, q: "Nahráváš vlastní video na YouTube a jde to pomalu, i když se ti stránky načítají bleskově. Která veličina je nejspíš nízká?", options: ["Ping", "Download", "Upload", "Jitter"], correct: 2, explain: "Upload udává, kolik dat za sekundu umíš odeslat &mdash; načítání stránek táhne download, odesílání videa upload."}
+      prompts:
+        - {type: try, id: l2s1-p1, task: "Stahuješ hru o velikosti 1 GB, tedy 8000 Mb (1 bajt = 8 bitů). Jak dlouho stahování potrvá při downloadu 100 Mb/s? A jak dlouho při 20 Mb/s?", answer: "8000 Mb ÷ 100 Mb/s = 80 sekund (něco přes minutu). Při 20 Mb/s je to 8000 ÷ 20 = 400 sekund, tedy skoro 7 minut. Proto se vyplatí znát download svého připojení.", to_item_pool: true}
+
+    - id: seg/l2-wifi-router
+      title: "Wi-Fi router zblízka"
+      concepts: [wi-fi, wi-fi-router, bezdratove-pripojeni]
+      est_min: 6
+      blocks:
+        - {type: text, html: "<p><strong>Wi-Fi router</strong> je krabička, která vytváří Wi-Fi síť a zároveň všechna tvá zařízení (mobil, notebook, tablet) připojuje do internetu &mdash; je to vlastně <strong>brána mezi tvou domácí sítí a internetem</strong>.</p><ul><li>Router <strong>posílá i přijímá</strong> Wi-Fi signál &mdash; komunikace je obousměrná.</li><li>Musí být zapojen do <strong>elektřiny</strong> a kabelem do <strong>přípojky k internetu</strong> ve zdi. Bez internetového kabelu Wi-Fi síť sice uvidíš, ale žádná stránka se nenačte.</li><li>Notebook nebo stolní počítač lze k routeru připojit i přímo <strong>kabelem</strong> do LAN portu.</li></ul><p>Wi-Fi má <strong>omezený dosah</strong> &mdash; většinou jednotky až desítky metrů. Krátké rádiové vlny navíc <strong>špatně procházejí překážkami</strong>: když je router za několika zdmi, signál znatelně slábne.</p>"}
+        - {type: figure, src: "pbook/assets/svg/2H_prezentace_T/page-06.svg", alt: "Kompletní schéma zapojení Wi-Fi routeru: žlutý kabel k notebooku, modrý kabel z datové zásuvky do WAN portu, fialový kabel do elektřiny a vlny Wi-Fi signálu k mobilu.", caption: "Kompletní zapojení routeru: žlutý kabel do LAN portu k notebooku, modrý z internetové přípojky do WAN portu, fialový do elektřiny; s mobilem router komunikuje bezdrátově."}
+      items:
+        - {id: l2s2-i1, concept: wi-fi-router, q: "Jakou roli hraje Wi-Fi router v domácí síti?", options: ["Ukládá webové stránky, aby se načítaly rychleji", "Je bránou mezi domácí sítí a internetem &mdash; vytváří Wi-Fi a připojuje zařízení do internetu", "Zesiluje mobilní signál z BTS", "Překládá URL adresy na IP adresy"], correct: 1, explain: "Router vytváří Wi-Fi síť a všechna zařízení v ní kabelem z přípojky připojuje do internetu &mdash; funguje jako brána."}
+        - {id: l2s2-i2, concept: wi-fi-router, q: "Router je zapojený jen do elektřiny, ne do internetové přípojky. Co uvidíš na mobilu?", options: ["Žádnou Wi-Fi síť neuvidíš", "Wi-Fi síť uvidíš a stránky se načtou normálně", "Wi-Fi síť uvidíš a připojíš se, ale žádná stránka se nenačte", "Mobil se automaticky přepne na satelit"], correct: 2, explain: "Router bez internetového kabelu Wi-Fi síť vytvoří, ale nemá internet „co rozdávat“ &mdash; stránky se nenačtou."}
+        - {id: l2s2-i3, concept: wi-fi, q: "Proč Wi-Fi signál znatelně slábne, když je router za několika zdmi?", options: ["Router se za zdmi automaticky ztlumí", "Krátké rádiové vlny špatně procházejí překážkami", "Zdi signál pohlcují jen v noci", "Wi-Fi funguje pouze na přímou viditelnost"], correct: 1, explain: "Wi-Fi používá krátké rádiové vlny, které kvůli své fyzikální podstatě špatně procházejí zdmi a jinými překážkami."}
+        - {id: l2s2-i4, concept: bezdratove-pripojeni, q: "Jaký je typický dosah Wi-Fi sítě?", options: ["Jednotky až desítky metrů", "Přibližně 5 kilometrů", "Přibližně 100 kilometrů", "Neomezený, pokud je signál silný"], correct: 0, explain: "Wi-Fi je bezdrátové připojení na krátkou vzdálenost &mdash; typicky jednotky až desítky metrů, podle překážek."}
+      prompts:
+        - {type: think, id: l2s2-p1, question: "Kamarád si stěžuje: „Wi-Fi síť na mobilu vidím, připojím se, ale nic se nenačte.“ Co všechno může být příčinou a v jakém pořadí bys to krok za krokem prověřil(a)?", handoff: {bot: zvedavy-mimon, minutes: 4}}
+
+    - id: seg/l2-kabely-pater
+      title: "Kabely a páteřní síť: silnice vs. dálnice"
+      concepts: [kovovy-kabel, opticky-kabel, paterni-sit, podmorske-kabely, cetin, poskytovatel-internetu]
+      est_min: 8
+      blocks:
+        - {type: text, html: "<p>Většina přenosu dat po internetu jde <strong>kabely</strong> &mdash; tvoří celou páteř internetu. Když pošleš zprávu do Ameriky, většinu cesty poputuje kabelem. Používají se dva hlavní druhy:</p><ul><li><strong>Kovový (UTP) kabel</strong> &mdash; přenosová rychlost kolem 100 Mb/s, dosah maximálně <strong>100 metrů</strong>. Kroucená dvojlinka s konektorem RJ-45, kterou zapojuješ do počítače nebo routeru.</li><li><strong>Optický kabel</strong> (ze skla či plastu) &mdash; přenosová rychlost <strong>desítky Gb/s</strong>, dosah až <strong>100 kilometrů</strong>. Signál se v tenkých vláknech přenáší <strong>světlem</strong>, s minimální ztrátou a imunitou vůči elektromagnetickému rušení &mdash; bouřka ani mráz na optice nepoznáš.</li></ul><p>Představ si to jako silnice: UTP je úzká cesta lesem, optika je mnohaproudá dálnice.</p>"}
+        - {type: figure, src: "pbook/assets/svg/2H_prezentace_T/page-08.svg", alt: "Srovnání kabelů pomocí silnic: úzká silnice lesem jako kovový UTP kabel a mnohaproudá dálnice jako optický kabel, s parametry rychlosti a dosahu.", caption: "UTP kabel = úzká silnice (100 Mb/s, 100 m), optický kabel = dálnice (desítky Gb/s, 100 km)."}
+        - {type: text, html: "<p>Optické kabely leží i <strong>na dně oceánů</strong> a spojují kontinenty. Na každých zhruba 100 km je na kabelu <strong>zesilovač signálu</strong>, aby data překonala celou vzdálenost třeba mezi Londýnem a New Yorkem.</p><p>V Česku se o <strong>páteřní síť</strong> stará telekomunikační infrastruktura <strong>CETIN</strong>: přibližně 38&nbsp;000 km optických kabelů a přístupová síť s asi 20 miliony km metalických kabelů, která rozvádí internet až do obcí. CETIN síť pronajímá <strong>poskytovatelům internetu</strong> &mdash; a od nich si připojení kupujeme my.</p>"}
+      items:
+        - {id: l2s3-i1, concept: kovovy-kabel, q: "Jaký je maximální dosah kovového (UTP) kabelu?", options: ["Přibližně 100 metrů", "Přibližně 5 kilometrů", "Přibližně 100 kilometrů", "Neomezený"], correct: 0, explain: "UTP kabel doveze signál maximálně asi 100 metrů &mdash; na delší vzdálenosti se používá optika s dosahem až 100 km."}
+        - {id: l2s3-i2, concept: opticky-kabel, q: "Proč se na dlouhé vzdálenosti používají optická vlákna místo kovových kabelů?", options: ["Jsou levnější na výrobu", "Snáz se ohýbají a zapojují", "Jsou z kovu, takže vydrží více", "Přenášejí signál světlem s minimální ztrátou a neruší je elektromagnetické vlivy"], correct: 3, explain: "V optickém vlákně letí signál jako světlo &mdash; téměř beze ztrát a imunní vůči rušení, bouřce i mrazu."}
+        - {id: l2s3-i3, concept: cetin, q: "Jakou roli hraje CETIN v českém internetu?", options: ["Vyrábí Wi-Fi routery pro domácnosti", "Provozuje mapy pokrytí mobilním signálem", "Spravuje páteřní síť a pronajímá ji poskytovatelům internetu", "Měří rychlost připojení ve školách"], correct: 2, explain: "CETIN vlastní páteřní a přístupovou síť v ČR; tu rozprodává poskytovatelům, od nichž si připojení kupujeme my."}
+        - {id: l2s3-i4, concept: podmorske-kabely, q: "Jak překoná signál v podmořském optickém kabelu vzdálenost mezi Londýnem a New Yorkem?", options: ["Cestou ho průběžně posilují satelity", "Na kabelu je zhruba každých 100 km zesilovač signálu", "Optický signál neslábne, takže nic nepotřebuje", "Data se posílají po částech a na pobřeží se skládají"], correct: 1, explain: "I optický signál na velké vzdálenosti slábne &mdash; proto jsou na podmořských kabelech přibližně po 100 km zesilovače."}
+        - {id: l2s3-i5, concept: paterni-sit, q: "Co je páteřní síť?", options: ["Síť Wi-Fi routerů ve velkých městech", "Domácí síť propojující zařízení v bytě", "Síť BTS vysílačů jednoho operátora", "Největší kabely s nejvyšší přenosovou rychlostí, které spojují celé státy a kontinenty"], correct: 3, explain: "Páteřní síť tvoří nejrychlejší a největší kabely (v ČR ji spravuje CETIN) &mdash; na ni se napojují menší sítě."}
+        - {id: l2s3-i6, concept: poskytovatel-internetu, q: "Od koho si tvoje domácnost kupuje připojení k internetu?", options: ["Přímo od firmy CETIN", "Od poskytovatele internetu, který si pronajímá páteřní a přístupovou síť", "Od výrobce Wi-Fi routeru", "Od správce DNS serverů"], correct: 1, explain: "CETIN síť pronajímá poskytovatelům internetu (ISP) &mdash; a od nich si připojení kupují domácnosti."}
+      prompts:
+        - {type: didyouknow, id: l2s3-p1, concept: kovovy-kabel, text: "Internet je starý jen asi 50 let, ale některé kabely, které využívá, jsou staré až 150 let - pocházejí ještě z dob, kdy sloužily jen k telefonování."}
+        - {type: try, id: l2s3-p2, task: "Sepiš do tabulky výhody a nevýhody připojení kabelem oproti bezdrátovému přenosu. Mysli na rychlost, spolehlivost, dosah, pohodlí a na to, která zařízení vůbec jde kabelem připojit.", answer: "Kabel: + nejvyšší rychlost a spolehlivost, imunita vůči rušení a počasí; − zařízení fyzicky připoutá, do mobilu ho nezapojíš, překáží. Bezdrát: + pohodlí a volný pohyb, připojí i mobil a hodinky; − kratší dosah, slábne přes překážky a snadněji se ruší.", to_item_pool: true}
+
+    - id: seg/l2-mobilni-satelity
+      title: "Mobilní data, hotspot a satelity"
+      concepts: [mobilni-data, bts, sim-karta, hotspot, satelit]
+      est_min: 9
+      blocks:
+        - {type: text, html: "<p>Mimo dosah Wi-Fi se mobil připojuje přes <strong>mobilní data</strong> k <strong>BTS vysílačům</strong>. Přes BTS probíhají i telefonní hovory a SMS &mdash; bez signálu nefunguje nic z toho. K BTS se připojí jen zařízení se <strong>SIM kartou</strong> (nebo eSIM): mobil, tablet, notebook i chytré hodinky. BTS jsou různých generací &mdash; některé umí 5G, jiné jen LTE nebo EDGE &mdash; a nevypadají jen jako věže na kopci, často jsou to antény na střechách domů.</p>"}
+        - {type: figure, src: "pbook/assets/svg/2H_prezentace_T/page-12.svg", alt: "Ilustrace BTS vysílače šířícího signál k mobilu, doplněná mapou pokrytí České republiky mobilním signálem a fotografiemi vysílačů.", caption: "BTS vysílače pokrývají signálem téměř celou ČR &mdash; na mapách pokrytí operátorů zjistíš, kde jaký signál je."}
+        - {type: text, html: "<p><strong>Hotspot:</strong> telefon se dokáže chovat jako Wi-Fi router a vytvořit Wi-Fi pro další zařízení. Mobil, který hotspot vytváří, ale sám musí být připojen k internetu jinak &mdash; typicky přes mobilní data.</p><p><strong>Satelity</strong> se pro běžnou komunikaci po internetu nepoužívají. Létají až <strong>35&nbsp;000 km vysoko</strong> &mdash; pro srovnání, obvod celé Země je 40&nbsp;075 km. Data k nim a zpět letí tak dlouho, že vzniká <strong>velké zpoždění</strong> (vysoký ping), a signál je nestabilní, například při oblačnosti. Rychlost bývá 30&ndash;100 Mb/s. Hodí se jen na odlehlá místa bez kabelů a BTS: hory, oceán, poušť. Satelity ale využíváš denně jinak &mdash; pro určení polohy pomocí <strong>GPS</strong>.</p>"}
+        - {type: figure, src: "pbook/assets/svg/2H_prezentace_T/page-15.svg", alt: "Schéma komunikace lodi se satelitem: mezi lodí na hladině a satelitem putují data přes vzdálenost 35 000 km.", caption: "Loď uprostřed oceánu komunikuje se satelitem &mdash; signál musí urazit až 35 000 km, proto má satelitní připojení velké zpoždění."}
+      items:
+        - {id: l2s4-i1, concept: satelit, q: "Proč se běžné satelity nehodí pro každodenní komunikaci po internetu?", options: ["Neumí přenášet data, jen televizní signál", "Je jich na oběžné dráze příliš málo", "Fungují jen nad oceánem", "Létají až 35 000 km vysoko, takže má spojení velké zpoždění a je nestabilní"], correct: 3, explain: "Signál musí urazit až 35 000 km tam a zpět (obvod Země je 40 075 km), což znamená vysoký ping; Starlink to řeší oběžnou dráhou jen 480 km vysoko."}
+        - {id: l2s4-i2, concept: bts, q: "Co všechno zajišťují BTS vysílače?", options: ["Mobilní data, telefonní hovory i SMS", "Jen mobilní data", "Jen telefonní hovory", "Wi-Fi signál v domácnostech"], correct: 0, explain: "Přes BTS běží mobilní data i hovory a SMS &mdash; bez signálu z BTS nefunguje nic z toho."}
+        - {id: l2s4-i3, concept: sim-karta, q: "Která zařízení se mohou připojit přes mobilní data k BTS?", options: ["Jen mobilní telefony", "Jen zařízení s Wi-Fi anténou", "Jakékoli zařízení se SIM kartou nebo eSIM &mdash; mobil, tablet, notebook i chytré hodinky", "Všechna zařízení bez výjimky"], correct: 2, explain: "Vstupenkou do mobilní sítě je SIM karta (či eSIM) od operátora &mdash; může být v mobilu, tabletu, notebooku i hodinkách."}
+        - {id: l2s4-i4, concept: hotspot, q: "Co musí platit pro mobil, který vytváří hotspot pro další zařízení?", options: ["Musí být připojen k Wi-Fi routeru kabelem", "Sám musí být připojen k internetu jinak, typicky přes mobilní data", "Musí mít vypnutou SIM kartu", "Musí být od stejného operátora jako připojovaná zařízení"], correct: 1, explain: "Hotspot jen sdílí existující připojení &mdash; mobil se chová jako Wi-Fi router, ale internet musí odněkud brát, typicky z mobilních dat."}
+        - {id: l2s4-i5, concept: satelit, q: "K čemu satelity běžně využíváš každý den, i když se přes ně nepřipojuješ k internetu?", options: ["K posílání SMS", "K měření rychlosti připojení", "K blokování reklam", "K určení polohy pomocí GPS"], correct: 3, explain: "Pro běžnou komunikaci se satelity nepoužívají, ale určení polohy (GPS) na nich stojí &mdash; to využívá každá navigace."}
+      prompts:
+        - {type: didyouknow, id: l2s4-p1, concept: satelit, text: "Starlink řeší problém zpoždění tím, že jeho satelity létají mnohem níž - jen asi 480 km nad Zemí. Nabízí kolem 150 Mb/s kdekoli na Zemi, je ale poměrně drahý a optický kabel stejně nepřekoná."}
+        - {type: think, id: l2s4-p2, question: "Horská obec bez optiky i bez pořádného signálu BTS řeší, zda zaplatit drahé natažení optického kabelu, nebo pořídit satelitní internet. Kterou variantu bys hájil(a)? Jaké argumenty (rychlost, ping, cena, počasí, budoucnost) může mít druhá strana?", handoff: {bot: argumentacni-partner, minutes: 5}}
+
+    # ── L3: Digitální (datová) stopa (z 3H.js, variants.T) ──────────────────
+    - id: seg/l3-pakety-penize
+      title: "Rychlé opakování: pakety a peníze za internet"
+      concepts: [paket, poskytovatel-internetu, internet]
+      est_min: 5
+      blocks:
+        - {type: text, html: "<p>Z minula už víš: data se po internetu posílají rozdělená na <strong>pakety</strong>. Každý paket nese IP adresu odesílatele i příjemce, pakety mohou cestovat různými cestami přes různé routery a dorazit v libovolném pořadí — v cíli se složí podle čísel. Video se rozdělí na víc paketů než obrázek, protože je větší.</p><p>A kdo to všechno platí?</p><ul><li><strong>Připojení</strong> nikdy není úplně zdarma — vždy za něj někdo platí <strong>poskytovateli internetu (ISP)</strong>: doma rodiče, v McDonaldu majitel restaurace, u mobilních dat operátorovi ty. Žádný „ředitel internetu“ neexistuje.</li><li>Weby vydělávají hlavně na <strong>reklamě</strong>: čím víc návštěvníků a čím déle na stránce zůstanou, tím víc reklam se zobrazí a tím víc majitel vydělá. Když si zapneš <strong>AdBlock</strong>, reklamy se nezobrazí a majitel stránky o tento příjem přichází.</li></ul>"}
+      items:
+        - {id: l3s1-i1, concept: internet, q: "Jak se na výdělku majitele stránky projeví, když má návštěvník zapnutý AdBlock?", options: ["Majitel vydělá víc, protože stránka běží rychleji", "Nijak, reklamy s výdělkem nesouvisí", "AdBlock posílá majiteli peníze přímo", "Majitel přichází o příjem, protože se návštěvníkovi nezobrazí reklamy"], correct: 3, explain: "Weby vydělávají na zobrazování reklam — zablokovaná reklama znamená ušlý zisk."}
+        - {id: l3s1-i2, concept: poskytovatel-internetu, q: "Dostaneš se k internetu zcela zdarma?", options: ["Ano, internet je veřejná služba placená OSN", "Ano, pokud používám jen veřejnou Wi-Fi", "Ne, za připojení vždy někdo platí poskytovateli internetu (ISP)", "Ne, každý uživatel platí řediteli internetu"], correct: 2, explain: "I za veřejnou Wi-Fi v kavárně platí její majitel poskytovateli připojení — žádný ředitel internetu neexistuje."}
+        - {id: l3s1-i3, concept: paket, q: "Pakety jedné fotky dorazily v přeházeném pořadí. Co se stane?", options: ["Nic — v cíli se fotka složí podle pořadových čísel paketů", "Fotka se zobrazí přeházená", "Fotka se musí poslat celá znovu", "Dorazí jen část fotky"], correct: 0, explain: "Pakety mohou cestovat různými cestami a dorazit v libovolném pořadí — složí se podle pořadových čísel."}
+        - {id: l3s1-i4, concept: internet, q: "Proč je pro majitele webu výhodné, když na stránce trávíš hodně času?", options: ["Server se méně opotřebovává", "Zobrazí se ti víc reklam, a majitel tak víc vydělá", "Poskytovatel internetu mu za to platí", "Stránka se díky tomu rychleji načítá"], correct: 1, explain: "Weby se financují hlavně reklamou — víc návštěvníků a delší čas na stránce znamená víc zobrazených reklam."}
+      prompts:
+        - {type: didyouknow, id: l3s1-p1, concept: datova-stopa, text: "Reklama nefunguje jen tím, že na ni klikneš. Čím déle nebo častěji ji vidíš, tím víc se ti „zarývá do paměti“ a ovlivňuje, co si jednou koupíš."}
+        - {type: think, id: l3s1-p2, question: "Je fér používat AdBlock, když víš, že reklamy jsou hlavní příjem webů, které zdarma používáš? Připrav si argumenty pro obě strany — uživatele i majitele webu.", handoff: {bot: argumentacni-partner, minutes: 4}}
+
+    - id: seg/l3-digitalni-stopa
+      title: "Digitální stopa: co všechno o tobě internet ví"
+      concepts: [datova-stopa]
+      est_min: 9
+      blocks:
+        - {type: text, html: "<p><strong>Digitální (datová) stopa</strong> je jednoduše všechno, co na internetu děláš. Něco z toho tě napadne hned: tvoje příspěvky, fotky, poslané zprávy, komentáře. Ale patří sem i věci, na které by člověk nepomyslel: co o tobě sdílejí ostatní (třeba označení na fotce), co sis vyhledal(a), na co jsi klikl(a), co si prohlížíš v e-shopu, kolik času trávíš na které stránce, tvoje IP adresa i tvůj poskytovatel připojení.</p>"}
+        - {type: figure, src: "pbook/assets/svg/3H_prezentace_T/page-07.svg", alt: "Oblak třinácti barevných štítků se složkami digitální stopy: co o mně sdílí ostatní, moje IP adresa, posílané zprávy, na co jsme klikli, co si vyhledávám a další.", caption: "Digitální stopa má překvapivě mnoho složek — a servery si je umí předávat mezi sebou."}
+        - {type: text, html: "<p>Ze střípků digitální stopy lze poskládat velmi podrobnou <strong>digitální identitu</strong> každého uživatele. K čemu se používá?</p><ul><li><strong>Reklama a personalizace</strong> — ukazuje se ti to, co si spíš koupíš nebo u čeho zůstaneš déle.</li><li><strong>Zlepšování služeb</strong> — weby zjišťují, co lidem funguje a co ne.</li><li>Bohužel i <strong>zneužití</strong> — krádež identity nebo hesel, kyberšikana.</li><li>Tvoje stopa může jednou zajímat i <strong>budoucího zaměstnavatele</strong> — před pohovorem si tě nejspíš „progooglí“. A to, co na internet dáváš dnes, tam může najít i za mnoho let.</li></ul><p>Citlivá mohou být i data, která vypadají nevinně: například aplikace sledující zdraví ukládají velmi osobní informace a v některých zemích už se stalo, že se o taková data zajímaly úřady a mohla být použita proti uživatelům. Není to důvod k panice — ale dobrý důvod přemýšlet, komu jaká data svěřuješ.</p>"}
+        - {type: figure, src: "pbook/assets/svg/3H_prezentace_T/page-10.svg", alt: "Snímek obrazovky Google My Ad Center s odhady o uživateli: pohlaví žena, věk 25 až 34 let, tři jazyky, vztahy zadaní, vzdělání, vlastnictví nájemce.", caption: "Google My Ad Center: takhle vypadají odhady, které si o uživateli Google vede kvůli reklamám."}
+        - {type: activity, html: "<p><strong>Co o tobě odhaduje Google?</strong> Pokud máš účet Google s nastaveným věkem 18+, otevři si stránku <strong>myadcenter.google.com/controls</strong> a prohlédni si, co o tobě Google odhaduje (pohlaví, věk, zájmy…). Pokud stránku otevřít nemůžeš, prozkoumej aspoň obrázek výše. Odpověz si:</p><ol><li>Je něco, v čem se Google plete?</li><li>Je tam naopak něco, co by o tobě vědět neměl — a ví?</li></ol><p>Pamatuj: tyto informace nemusí mít jen Google a nemusí ležet jen na jeho serverech.</p>"}
+        - {type: figure, src: "pbook/assets/svg/3H_prezentace_T/page-11.svg", alt: "Vyhledávač Google s historií vyhledávání: je křeček vhodný k dítěti, nejlepší zš v praze, jak velkou klec potřebuji pro křečka.", caption: "Historie vyhledávání neznámého uživatele — podklad pro detektivní analýzu stop."}
+      items:
+        - {id: l3s2-i1, concept: datova-stopa, q: "Co z následujícího NENÍ součástí tvé digitální stopy?", options: ["Fotka, na které tě označil kamarád", "Čas strávený na webové stránce", "Barva tvého školního batohu", "Položky, které sis prohlížel(a) v e-shopu"], correct: 2, explain: "Digitální stopa je vše, co se o tobě na internetu zaznamenává — i to, co sdílejí ostatní; barva batohu do sítě sama nedoputuje."}
+        - {id: l3s2-i2, concept: datova-stopa, q: "Jak servery vyhodnocují digitální stopu uživatele?", options: ["S naprostou jistotou — mají o každém přesné údaje", "Na základě pravděpodobnosti — volí nejpravděpodobnější, ne nutně správnou variantu", "Ptají se uživatele na každou informaci zvlášť", "Vůbec ji nevyhodnocují, jen ji ukládají"], correct: 1, explain: "Servery odhadují — např. že si hledající chce koupit křečka — a stejně jako lidé se mohou plést."}
+        - {id: l3s2-i3, concept: datova-stopa, q: "Které tvrzení o digitální stopě je pravdivé?", options: ["Tvoří ji jen to, co sám aktivně zveřejním", "Patří do ní i to, co o mně sdílejí ostatní, moje IP adresa nebo čas strávený na stránce", "Ukládá se jen u mého poskytovatele internetu", "Po zavření prohlížeče se smaže"], correct: 1, explain: "Do stopy patří i data, která nevytváříš vědomě — označení od ostatních, kliknutí, IP adresa; servery si je navíc umí předávat."}
+        - {id: l3s2-i4, concept: datova-stopa, q: "Proč mohou být citlivá i data, která vypadají nevinně — třeba záznamy z aplikace sledující zdraví?", options: ["Protože zabírají hodně místa na serveru", "Protože zpomalují telefon", "Protože je aplikace posílá všem kontaktům", "Protože z nich lze vyvodit velmi osobní informace a v některých zemích už byla použita proti uživatelům"], correct: 3, explain: "Z nenápadných dat lze skládat velmi osobní závěry — proto se vyplatí přemýšlet, komu jaká data svěřuješ."}
+      prompts:
+        - {type: didyouknow, id: l3s2-p1, concept: datova-stopa, text: "Servery vyhodnocují datovou stopu na základě pravděpodobnosti. Volí nejpravděpodobnější variantu — ale ne nutně tu správnou."}
+        - {type: try, id: l3s2-p2, task: "Analýza stop: prohlédni si historii vyhledávání na obrázku (křeček, klec, ZŠ v Praze) a vymysli co nejvíc odhadů o tomto uživateli — vždy se zdůvodněním (muž, nebo žena? rodič, učitel, dítě? co plánuje?). Pak navrhni, jaké reklamy by se mu měly ukazovat. Nakonec spočítej, kolik odhadů je opravdu jistých.", answer: "Mohl by to být rodič, který vybírá školu a mazlíčka pro dítě — ale stejně dobře učitel(ka), starší sourozenec nebo chovatel; pohlaví ani věk z dotazů nepoznáš. Jistý není prakticky žádný odhad — servery také jen volí nejpravděpodobnější variantu. Reklamy: klece a vybavení pro křečky, krmivo, případně školy a kroužky.", to_item_pool: false}
+
+    - id: seg/l3-cookies
+      title: "Cookies v praxi"
+      concepts: [cookies]
+      est_min: 7
+      blocks:
+        - {type: text, html: "<p>Jak si servery všechny ty informace o nás pamatují? Díky souborům <strong>cookies</strong>. Funguje to jako šatna v divadle: ty dostaneš lístek s číslem a druhý lístek zůstane u kabátu — podle čísel se pozná, který kabát je tvůj. Když na webu potvrdíš cookies, uloží se do tvého zařízení <strong>malý soubor</strong>, podle kterého tě server při další návštěvě pozná (tebe, přesněji tvoje zařízení).</p>"}
+        - {type: figure, src: "pbook/assets/svg/3H_prezentace_T/page-16.svg", alt: "Web Restaurant Week překrytý cookies dialogem, který vyjmenovává, co uživatel souhlasem sdílí, a nabízí tlačítko Souhlasím s cookies.", caption: "Skutečný cookies dialog: přečti si někdy, co vlastně odklikáváš — včetně zmínky o „třetích stranách“ jako Google nebo Facebook."}
+        - {type: text, html: "<p>Co takový soubor cookie může obsahovat?</p><ul><li>tvůj <strong>jednoznačný identifikátor</strong> (aby tě stránka příště poznala),</li><li><strong>nastavení</strong> — jazyk, tmavý režim,</li><li>na co jsi klikl(a) a kolik času jsi kde strávil(a),</li><li>nákupní košík, herní skóre, přihlašovací údaje.</li></ul><p>Důležitý háček: servery si mohou nasbírané informace a přístup ke cookies <strong>předávat mezi sebou</strong> — často putují i k tzv. třetím stranám, jako jsou Google, Facebook nebo Instagram.</p>"}
+        - {type: figure, src: "pbook/assets/svg/3H_prezentace_T/page-18.svg", alt: "Barevné štítky s možným obsahem souboru cookie: jednoznačný identifikátor, nastavení, na co jsme klikli, strávený čas, nákupní košík, herní skóre, přihlašovací údaje.", caption: "Co všechno se může skrývat v jednom malém souboru cookie."}
+      items:
+        - {id: l3s3-i1, concept: cookies, q: "Co se stane v tvém zařízení, když na webu klikneš na „Souhlasím s cookies“?", options: ["Uloží se do něj malý soubor s identifikátorem, podle kterého tě stránka příště pozná", "Odešle se tvoje heslo majiteli stránky", "Nic — tlačítko je jen formalita bez účinku", "Nainstaluje se nová aplikace"], correct: 0, explain: "Cookie je malý soubor v tvém zařízení — jako šatnový lístek, podle kterého server pozná, že přišlo zase tvoje zařízení."}
+        - {id: l3s3-i2, concept: cookies, q: "Proč cookie soubor obsahuje jednoznačný identifikátor?", options: ["Aby počítač poznal, která stránka je bezpečná", "Aby stránka při další návštěvě poznala, že jde o stejné zařízení", "Aby se stránka rychleji načítala", "Aby fungovala klávesnice na mobilu"], correct: 1, explain: "Identifikátor funguje jako číslo na šatnovém lístku — server podle něj spáruje návštěvu s dříve uloženými údaji."}
+        - {id: l3s3-i3, concept: cookies, q: "Zůstávají informace nasbírané přes cookies vždy jen u stránky, která je uložila?", options: ["Ano, zákon předávání dat zakazuje bez výjimky", "Ano, technicky je předat nejde", "Ne, ale předávají se jen mezi českými weby", "Ne, servery si je mohou předávat, často i „třetím stranám“ jako Google nebo Facebook"], correct: 3, explain: "Cookies dialogy samy přiznávají, že některé údaje shromažďují třetí strany — data putují mezi různými společnostmi a servery."}
+        - {id: l3s3-i4, concept: cookies, q: "Kdy ti cookies dělají dobrou službu?", options: ["Když skrývají tvou IP adresu", "Když zrychlují připojení k internetu", "Když ti e-shop podrží košík, hra si pamatuje skóre a stránka jazyk", "Když mažou tvou digitální stopu"], correct: 2, explain: "Cookies mají i příjemnou stránku: uchovají košík, rozečtený článek, skóre nebo nastavení — proto je weby používají."}
+      prompts:
+        - {type: try, id: l3s3-p1, task: "Napiš aspoň 2 výhody cookies (kdy ti slouží) a 2 nevýhody (kdy ti dobrou službu nedělají). Kam bys zařadil(a) personalizovanou reklamu — mezi výhody, nevýhody, nebo obojí?", answer: "Výhody: košík v e-shopu vydrží, článek se otevře tam, kde jsi přestal(a) číst, hra si pamatuje skóre, uložený jazyk či tmavý režim. Nevýhody: ztráta anonymity, sledování polohy a chování, předávání dat třetím stranám. Personalizovaná reklama patří do obojího — šetří čas, ale vzniká sledováním tvého chování.", to_item_pool: true}
+
+    - id: seg/l3-pravidla
+      title: "Pět pravidel pro tvou stopu"
+      concepts: [datova-stopa, hacker]
+      est_min: 6
+      blocks:
+        - {type: text, html: "<p>Digitální stopu za sebou necháváme všichni — úplně se jí zbavit nejde a není to ani potřeba. Jde o to s ní zacházet vědomě, aby ji nikdo nemohl zneužít proti tobě.</p>"}
+        - {type: note, html: "Shrnutí celé lekce jednou větou: na internetu po nás zůstává mnoho stop — je důležité si to uvědomovat a podle toho se chovat."}
+      items:
+        - {id: l3s4-i1, concept: datova-stopa, q: "Proč by tě měla zajímat tvoje digitální stopa, i když „nemáš co skrývat“?", options: ["Protože ze střípků stopy lze složit podrobnou identitu, která se dá i zneužít a bude dohledatelná i za roky", "Protože za velkou stopu se platí poplatek poskytovateli", "Protože kvůli ní zpomaluje připojení k internetu", "Nemusí — digitální stopa se každý rok automaticky maže"], correct: 0, explain: "Stopa se sama nemaže: může ji jednou číst budoucí zaměstnavatel a v horším případě poslouží ke krádeži identity nebo kyberšikaně."}
+        - {id: l3s4-i2, concept: datova-stopa, q: "Které pravidlo nejlépe snižuje riziko, že tvou stopu někdo zneužije k tomu, aby věděl, kde tě najde?", options: ["Používat tmavý režim prohlížeče", "Mazat historii vyhledávání jednou měsíčně", "Nezveřejňovat, kde přesně právě jsem", "Přijímat cookies jen na českých webech"], correct: 2, explain: "Zveřejněná aktuální poloha je jedna z nejsnáze zneužitelných informací — proto ji rozumná pravidla nesdílejí."}
+        - {id: l3s4-i3, concept: datova-stopa, q: "Jde se digitální stopy úplně zbavit?", options: ["Ano, stačí smazat historii prohlížeče", "Ano, když nepoužívám sociální sítě", "Ano, přes nastavení Google účtu", "Ne — jde ale s ní zacházet vědomě, aby ji nikdo nemohl zneužít"], correct: 3, explain: "Stopu za sebou necháváme všichni (i díky tomu, co sdílejí ostatní) — cílem není se jí zbavit, ale rozhodovat se chytře."}
+        - {id: l3s4-i4, concept: hacker, q: "Proč je slabé heslo rizikem pro tvou digitální stopu?", options: ["Hacker se přes něj snáze dostane k tvým účtům a datům a může je zneužít", "Slabé heslo zpomaluje přihlašování", "Cookies se slabým heslem nefungují", "Poskytovatel internetu slabá hesla zakazuje"], correct: 0, explain: "Hacker je člověk, který se dokáže nabourat do cizí sítě či účtu — bezpečné heslo je základní obrana tvých dat."}
+      prompts:
+        - {type: try, id: l3s4-p1, task: "Zformuluj vlastními slovy 5 pravidel, jak zacházet se svou datovou stopou, aby nemohla být zneužita. Inspiraci můžeš hledat i na internetu. Tato pravidla použiješ i ve svém vystoupení (telling) v domácí přípravě.", answer: "Příklady rozumných pravidel: nezveřejňuji, kde přesně právě jsem; používám bezpečná hesla; počítám s tím, že ne všichni na internetu mají dobré úmysly; než něco zveřejním, ptám se, jestli bych se za to nestyděl(a) třeba před babičkou; rozmýšlím si označování kamarádů — nemůže jim to ublížit?; uvědomuji si, že data o mně může někdo zneužít.", to_item_pool: true}
+        - {type: think, id: l3s4-p2, question: "Co kdyby si kdokoli mohl zobrazit kompletní historii tvého vyhledávání a všech tvých lajků za poslední rok? Co by se změnilo na tom, jak internet používáš — a co z toho plyne pro tvá pravidla?", handoff: {bot: co-kdyby, minutes: 4}}
+
+    # ── L4: Velké opakování (z 4H.js, variants.T) ───────────────────────────
+    - id: seg/l4-opakovani
+      title: "Zopakuj si pojmy"
+      concepts: [internet, sit, datove-centrum, podmorske-kabely, sim-karta, speedtest, datova-stopa, cetin]
+      est_min: 12
+      blocks:
+        - {type: text, html: "<p><strong>Jak vypadá internet?</strong> <strong>Internet</strong> je celosvětová <strong>decentralizovaná</strong> počítačová síť — nemá žádné centrum ani hlavní počítač. Základem je <strong>síť</strong>: soustava zařízení propojených kabely, která ani nemusí být připojená k internetu. Služby poskytují <strong>servery</strong>; komunikace typicky běží v režimu <strong>klient-server</strong> — mnoho počítačů (klientů) posílá <strong>požadavky na server</strong>, jeden výkonný počítač je plní. Tisíce serverů pohromadě tvoří <strong>datové centrum</strong>, typicky ve vlastnictví velkých firem jako Microsoft nebo Google.</p><p>Data putují sítí rozdělená na <strong>pakety</strong>. Každý paket nese <strong>IP adresu příjemce</strong> (aby ho <strong>síťový router</strong> — chytrá křižovatka sítě — poslal správným směrem) a <strong>IP adresu odesílatele</strong> (aby bylo jasné, odkud byl poslán). <strong>IP adresa</strong> je jedinečná adresa zařízení v síti. Celé státy a kontinenty spojuje <strong>páteřní síť</strong> — největší kabely s nejvyšší přenosovou rychlostí, mezi kontinenty vedou <strong>podmořské kabely</strong>. Kudy přesně tvá data putují, ti prozradí aktivita <strong>traceroute</strong>: vypíše všechny servery a routery na cestě z tvého počítače ke stránce.</p>"}
+        - {type: text, html: "<p><strong>Jak se připojujeme?</strong> Bez drátu (<strong>bezdrátové připojení</strong>) se připojíš přes <strong>Wi-Fi</strong> — signál vysílá <strong>Wi-Fi router</strong>, chytrá křižovatka, kterou máš doma — nebo přes <strong>mobilní data</strong>: signál vysílá věž <strong>BTS</strong> a do mobilní sítě tě pouští <strong>SIM karta</strong> od operátora. Ze svého mobilu můžeš zapnout <strong>hotspot</strong> a sdílet připojení dalším lidem. Kabelové připojení má dvě podoby: <strong>kovový kabel</strong> funguje na docela velkou vzdálenost, ale zařízení fyzicky připoutá k síti; <strong>optický kabel</strong> přenáší data pomocí světla, je superrychlý a zvládne obrovské vzdálenosti. Připojit se dá i přes <strong>satelit</strong>, ten se ale hodí spíš na GPS. Kolik informací za sekundu připojení přenese, udává <strong>přenosová rychlost</strong> — změříš ji <strong>speedtestem</strong>. Tvou domácí síť připojuje k internetu <strong>poskytovatel internetu</strong>; o českou národní datovou infrastrukturu se stará firma <strong>CETIN</strong>.</p>"}
+        - {type: text, html: "<p><strong>Co po nás na internetu zůstává?</strong> Všechno, co na internetu děláš — lajky, kliknutí, prohlížení, komentáře — tvoří tvou <strong>datovou stopu</strong>. Servery si o tobě ukládají <strong>cookies</strong>, malé soubory, díky kterým se ti obsah přizpůsobuje. A <strong>hacker</strong> je člověk, který se dokáže nabourat do cizí sítě nebo provádět jinou nelegální aktivitu — další důvod, proč si svou datovou stopu hlídat.</p>"}
+        - {type: note, html: "Tučné pojmy jsou přesně ty, ze kterých se hraje Bingo i závěrečný kvíz. Ke kterémukoli se můžeš vrátit v lekcích 1 až 3."}
+        - {type: figure, src: "pbook/assets/svg/4H_pracovni_list_T/page-01.svg", alt: "Pracovní list s prázdnou mřížkou 3 krát 3 na Bingo a seznamem pojmů k vepsání do políček", caption: "Herní mřížka na Bingo — do každého políčka vepiš jeden pojem z nabídky."}
+      items:
+        - {id: l4s1-i1, concept: sit, q: "Co je počítačová síť?", options: ["Jiný název pro internet", "Soustava počítačových zařízení propojených kabely — nemusí být připojena k internetu", "Skupina serverů jedné firmy", "Program na sdílení souborů"], correct: 1, explain: "Síť je soustava propojených zařízení; internet je pak celosvětová decentralizovaná síť složená z menších sítí."}
+        - {id: l4s1-i2, concept: podmorske-kabely, q: "Co jsou podmořské kabely?", options: ["Kabely spojující kontinenty po dně oceánů", "Záložní kabely pro případ bouřky", "Kabely napájející majáky", "Kabely, které vedou jen televizní signál"], correct: 0, explain: "Kontinenty spojují kabely položené na mořském dně — většina mezikontinentálních dat putuje právě jimi."}
+        - {id: l4s1-i3, concept: sim-karta, q: "Co je SIM karta?", options: ["Paměťová karta na fotky", "Karta s heslem k Wi-Fi", "Malá kartička od operátora, která telefonu umožní připojit se do mobilní sítě", "Aplikace na měření rychlosti"], correct: 2, explain: "SIM karta (či eSIM) je vstupenka do mobilní sítě — bez ní se zařízení k BTS nepřipojí."}
+        - {id: l4s1-i4, concept: datove-centrum, q: "Co je datové centrum?", options: ["Hlavní řídící centrum internetu", "Obchod s počítači", "Kancelář poskytovatele internetu", "Místo, kde je mnoho serverů u sebe — typicky patří velké firmě, třeba Microsoftu nebo Googlu"], correct: 3, explain: "Datové centrum sdružuje tisíce serverů; po světě jich je asi 8000 a vlastní je hlavně velké firmy."}
+        - {id: l4s1-i5, concept: speedtest, q: "Kterou aktivitou otestuješ rychlost svého připojení k internetu?", options: ["Traceroutem", "Speedtestem", "Hotspotem", "Bingem"], correct: 1, explain: "Speedtest změří ping, jitter, download a upload tvého připojení; traceroute naproti tomu ukazuje cestu dat."}
+        - {id: l4s1-i6, concept: datova-stopa, q: "Co je datová stopa?", options: ["Všechno, co děláme na internetu — co lajkujeme, na co klikáme, co si prohlížíme a komentujeme", "Záznam o rychlosti připojení", "Otisk prstu na displeji", "Seznam nainstalovaných aplikací"], correct: 0, explain: "Datová stopa je záznam veškeré naší činnosti na internetu — a servery si ji umí předávat mezi sebou."}
+      prompts:
+        - {type: didyouknow, id: l4s1-p1, concept: cetin, text: "O českou národní datovou infrastrukturu se stará CETIN: páteřní síť má zhruba 38 000 km optických kabelů a přístupová síť asi 20 milionů km metalických kabelů — rozvádí internet až do obcí."}
+        - {type: try, id: l4s1-p2, task: "Zavři na chvíli p-book a zkus z hlavy vyjmenovat řetězec zařízení, přes která projde tvůj požadavek z mobilu až na server YouTube a zpět. Pak se zkontroluj podle textu výše.", answer: "Mobil (klient) → domácí Wi-Fi router, nebo BTS při mobilních datech → síťové routery poskytovatele a páteřní sítě (u mezikontinentální komunikace i podmořský kabel) → server v datovém centru — a odpověď rozdělená na pakety putuje stejnou logikou zpět.", to_item_pool: false}
+
+  # ── Tutorovaný úkol pro DP2 (tvar dle kontraktu §B) ───────────────────────
+  tutor_configs:
+    - id: tc/L2
+      bot: pruvodce-ukolem
+      goal: "Žák doma změří na speedtest.cesnet.cz parametry svého připojení (ping, jitter, download, upload) alespoň přes dva různé typy připojení, naměřené hodnoty správně interpretuje a s jejich pomocí vysvětlí rozdíl mezi kovovým (UTP) a optickým kabelem a roli páteřní sítě. Sokratovský princip: tutor vede otázkami a nikdy nesděluje finální řešení ani hotové definice."
+      rubric:
+        - "Provedl(a) měření alespoň přes dva typy připojení (Wi-Fi, mobilní data, hotspot, kabel) a zapsal(a) všechny čtyři veličiny."
+        - "Správně interpretuje význam pingu, jitteru, downloadu a uploadu a porovná své naměřené hodnoty mezi připojeními."
+        - "Vysvětlí rozdíl mezi kovovým (UTP) a optickým kabelem (princip přenosu, rychlost, dosah) a proč páteřní síť stojí na optice."
+        - "Formuluje vlastní závěr podložený naměřenými čísly: které připojení je pro danou situaci (online hra, nahrání videa, výlet) nejvhodnější a proč."
+      checkpoints:
+        - {id: c1, prompt: "Měření: zjisti, jaká připojení má žák k dispozici, a doveď ho k zápisu pingu, jitteru, downloadu a uploadu pro každé z nich. Ptej se, co naměřil a co ho na číslech překvapilo; hodnoty ani postup za něj nedoplňuj."}
+        - {id: c2, prompt: "Interpretace veličin: nech žáka vlastními slovy vysvětlit, co která veličina znamená a která z jeho hodnot je „dobrá“ či „špatná“. Naváděj otázkami (Co uvidíš ve hře při vysokém pingu? Kdy tě trápí nízký upload?), definice nikdy neříkej za něj."}
+        - {id: c3, prompt: "Cesta dat a páteřní síť: zeptej se, kudy jeho data při měření nejspíš putovala (může si pomoct traceroutem z 1. lekce). Otázkami na rychlost, dosah a princip přenosu ho doveď k porovnání UTP vs. optika a k roli páteřní sítě CETIN; srovnání nesestavuj za něj."}
+        - {id: c4, prompt: "Závěr: žák formuluje doporučení, které připojení kdy použít, a opře ho o svá naměřená čísla. Pokládej doplňující otázky (Čím to dokážeš? Které číslo to potvrzuje?), dokud závěr nestojí na datech; finální řešení neprozrazuj."}
+      scaffold_level: 2
+
+  # ── Boss kvíz L4 — 12 položek z 4H.js (variants.T.quiz), beze změny ───────
+  boss_quiz:
+    items:
+      - {id: bq-1, concept: internet, q: "Jak označujeme síť, která nemá žádné centrum ani hlavní řídicí počítač — jako je internet?", options: ["centralizovaná", "klient-server", "decentralizovaná", "páteřní"], correct: 2, explain: "Internet je decentralizovaná síť — nemá žádné centrum, které by ho celý řídilo."}
+      - {id: bq-2, concept: klient-server, q: "Jak se jmenuje přístup v síti, kdy mnoho počítačů posílá požadavky jednomu výkonnému počítači, který je plní?", options: ["peer-to-peer", "klient-server", "traceroute", "hotspot"], correct: 1, explain: "V modelu klient-server posílají klienti požadavky na server, který je vyřizuje."}
+      - {id: bq-3, concept: paterni-sit, q: "Jak se říká největším kabelům s nejvyšší přenosovou rychlostí, které spojují celé státy a kontinenty?", options: ["páteřní síť", "lokální síť", "hotspot", "mobilní data"], correct: 0, explain: "Páteřní síť tvoří největší a nejrychlejší kabely spojující státy a kontinenty."}
+      - {id: bq-4, concept: cetin, q: "Která firma se v Česku stará o národní datovou infrastrukturu?", options: ["Google", "Microsoft", "CETIN", "Kahoot"], correct: 2, explain: "O českou národní datovou infrastrukturu se stará firma CETIN."}
+      - {id: bq-5, concept: traceroute, q: "Kterou aktivitou zjistíš, přes jaké všechny servery a routery vede cesta z tvého počítače k webové stránce?", options: ["speedtestem", "hotspotem", "personalizací", "traceroutem"], correct: 3, explain: "Traceroute vypíše všechny routery a servery na cestě od tebe k cílové stránce."}
+      - {id: bq-6, concept: opticky-kabel, q: "Které připojení přenáší data pomocí světla a funguje na hodně velkou vzdálenost?", options: ["kovový kabel", "optický kabel", "Wi-Fi", "mobilní data"], correct: 1, explain: "Optický kabel přenáší data světlem — je superrychlý a zvládne obrovské vzdálenosti."}
+      - {id: bq-7, concept: prenosova-rychlost, q: "Jak se jmenuje veličina, která popisuje, kolik informací za sekundu dokáže dané připojení přenést?", options: ["přenosová rychlost", "IP adresa", "datová stopa", "frekvence"], correct: 0, explain: "Přenosová rychlost udává množství informací přenesených za sekundu."}
+      - {id: bq-8, concept: ip-adresa-odesilatele, q: "Proč musí paket obsahovat i IP adresu odesílatele?", options: ["aby byl paket těžší", "aby se paket nedal přečíst", "aby paket vypadal důvěryhodně", "aby router věděl, odkud byl paket poslán"], correct: 3, explain: "IP adresa odesílatele říká, odkud paket přišel — třeba aby bylo kam poslat odpověď."}
+      - {id: bq-9, concept: bts, q: "Co je BTS?", options: ["aplikace na měření rychlosti", "vysílač mobilního signálu, díky kterému fungují mobilní data", "malá kartička od operátora", "kabel spojující kontinenty"], correct: 1, explain: "BTS je vysílač mobilního signálu — díky němu se přes mobilní data připojíš k internetu."}
+      - {id: bq-10, concept: hotspot, q: "Jak se jmenuje funkce mobilu, kterou zapneš a umožníš tak připojení k internetu dalším lidem?", options: ["hotspot", "cookies", "SIM karta", "speedtest"], correct: 0, explain: "Hotspot sdílí internetové připojení tvého mobilu s dalšími zařízeními."}
+      - {id: bq-11, concept: cookies, q: "Co jsou cookies?", options: ["pakety s videem", "hesla uložená v prohlížeči", "malé soubory, které si o nás ukládají servery a přizpůsobují se nám", "viry, které ničí počítač"], correct: 2, explain: "Cookies jsou malé soubory, které si o nás ukládají servery — díky nim se nám obsah přizpůsobuje."}
+      - {id: bq-12, concept: hacker, q: "Kdo je hacker?", options: ["správce datového centra", "zaměstnanec poskytovatele internetu", "člověk, který opravuje routery", "člověk, který se dokáže nabourat do cizí sítě nebo dělat jinou nelegální aktivitu"], correct: 3, explain: "Hacker je člověk, který se nabourává do cizích sítí nebo provádí jinou nelegální aktivitu."}

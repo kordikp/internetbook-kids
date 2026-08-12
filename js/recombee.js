@@ -1,0 +1,891 @@
+// Recombee client for p-book — production version
+// Handles: HMAC auth, user identity, interactions, recommendations, search
+// Falls back to local simulation when API unavailable
+
+import { CONFIG } from './config.js';
+
+export class RecombeeClient {
+  constructor() {
+    this.config = { ...CONFIG.recombee };
+    // Enabled everywhere — local dev server provides proxy too
+    this.enabled = this.config.enabled;
+    this.userId = this.getOrCreateUserId();
+    this.interactions = []; // local log (always kept for offline reference)
+    this.allBlocks = [];
+    // Flush offline queue when connectivity returns
+    window.addEventListener('online', () => this.flushOfflineQueue());
+    // Also try flushing every 60 seconds
+    setInterval(() => this.flushOfflineQueue(), 60000);
+  }
+
+  // --- User identity (persistent across sessions) ---
+  getOrCreateUserId() {
+    let id = localStorage.getItem('pbook-uid');
+    if (!id) {
+      id = 'reader-' + crypto.randomUUID();
+      localStorage.setItem('pbook-uid', id);
+    }
+    return id;
+  }
+
+  setAllBlocks(blocks) { this.allBlocks = blocks; }
+
+
+  // --- API call via server-side proxy (avoids CORS) ---
+  async api(method, endpoint, body, _retry) {
+    if (!this.enabled) return null;
+    try {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 2500);
+      const res = await fetch('/api/recs', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ endpoint, body, method }),
+        signal: controller.signal,
+      });
+      clearTimeout(timeout);
+      if (res.ok) return await res.json();
+      if (res.status === 401) this.enabled = false;
+      // DIAGNOSTIC: x-vercel-id tells whether the response even came from Vercel
+      // (a 404 WITHOUT it = something between this browser and Vercel is answering)
+      let _msg = ''; try { _msg = (await res.clone().text()).slice(0, 140); } catch (e) {}
+      console.warn('[pbook] api', res.status, _msg, '| x-vercel-id:', res.headers.get('x-vercel-id') || 'MISSING (not from Vercel)');
+      // transient edge 404/5xx during deploy windows — one quiet retry after a beat
+      if (!_retry && (res.status === 404 || res.status >= 500)) {
+        await new Promise(r => setTimeout(r, 1200));
+        return this.api(method, endpoint, body, true);
+      }
+      return null;
+    } catch (e) {
+      // Offline or timeout — queue write operations for retry
+      if (method !== 'GET' && (e.name === 'AbortError' || e.name === 'TypeError' || !navigator.onLine)) {
+        this._queueOffline({ type: 'recombee', method, endpoint, body });
+      }
+      if (e.name !== 'AbortError') this.enabled = false;
+      return null;
+    }
+  }
+
+  // --- Offline queue: store failed calls, retry when online ---
+  _queueOffline(entry) {
+    try {
+      const queue = JSON.parse(localStorage.getItem('pbook-offline-queue') || '[]');
+      queue.push({ ...entry, ts: Date.now() });
+      // Cap at 200 entries
+      if (queue.length > 200) queue.splice(0, queue.length - 200);
+      localStorage.setItem('pbook-offline-queue', JSON.stringify(queue));
+    } catch (e) {}
+  }
+
+  async flushOfflineQueue() {
+    if (!navigator.onLine) return;
+    let queue;
+    try { queue = JSON.parse(localStorage.getItem('pbook-offline-queue') || '[]'); } catch { return; }
+    if (!queue.length) return;
+
+    const remaining = [];
+    const maxAge = 24 * 60 * 60 * 1000; // drop entries older than 24h
+    for (const entry of queue) {
+      if (entry.ts && Date.now() - entry.ts > maxAge) continue; // too old, drop
+      if ((entry.tries || 0) >= 3) continue;                     // gave it three shots, drop
+      try {
+        if (entry.type === 'recombee' && this.enabled) {
+          const res = await fetch('/api/recs', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ endpoint: entry.endpoint, body: entry.body, method: entry.method }),
+          });
+          // Any HTTP response = the request went through SOMETHING; only retry 5xx.
+          if (!res.ok && res.status >= 500) remaining.push({ ...entry, tries: (entry.tries || 0) + 1 });
+        } else if (entry.type === 'log') {
+          const res = await fetch('/api/log', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(entry.data),
+          });
+          if (!res.ok && res.status !== 409) remaining.push(entry);
+        } else {
+          remaining.push(entry); // unknown type, keep
+        }
+      } catch {
+        remaining.push(entry); // still offline, keep
+        break; // stop trying if network failed
+      }
+    }
+    localStorage.setItem('pbook-offline-queue', JSON.stringify(remaining));
+  }
+
+  // --- Analytics context ---
+  // Tracks how user discovered content for research comparison
+  // Modes: netflix, read, mission, map, search, tutor, recall, direct
+  setContext(mode, extra) {
+    this._ctx = { mode, ...extra, ts: Date.now() };
+  }
+
+  // --- Interactions (always stored locally + sent to Recombee) ---
+  async sendView(itemId, duration) {
+    const ctx = this._ctx || {};
+    const i = { type: 'detailview', itemId, userId: this.userId, ts: Date.now(), duration, mode: ctx.mode };
+    this.interactions.push(i);
+    this._saveInteractions();
+    const body = { userId: this.userId, itemId, cascadeCreate: true, timestamp: new Date().toISOString() };
+    if (duration) body.duration = duration;
+    if (this._lastRecommId) body.recommId = this._lastRecommId;
+    if (this.enabled) return this.api('POST', '/detailviews/', body);
+  }
+
+  async sendRating(itemId, rating) {
+    const ctx = this._ctx || {};
+    const i = { type: 'rating', itemId, userId: this.userId, ts: Date.now(), rating, mode: ctx.mode };
+    this.interactions.push(i);
+    this._saveInteractions();
+    if (this.enabled) return this.api('POST', '/ratings/', {
+      userId: this.userId, itemId, rating,
+      cascadeCreate: true, timestamp: new Date().toISOString()
+    });
+  }
+
+  async sendBookmark(itemId) {
+    const ctx = this._ctx || {};
+    const i = { type: 'bookmark', itemId, userId: this.userId, ts: Date.now(), mode: ctx.mode };
+    this.interactions.push(i);
+    this._saveInteractions();
+    if (this.enabled) return this.api('POST', '/bookmarks/', {
+      userId: this.userId, itemId,
+      cascadeCreate: true, timestamp: new Date().toISOString()
+    });
+  }
+
+
+  // Log navigation/mode events (local only — for research analytics)
+  logEvent(event, data) {
+    const entry = { type: 'event', event, userId: this.userId, ts: Date.now(), ...data };
+    this.interactions.push(entry);
+    this._saveInteractions();
+    // Also send as purchase with zero amount to Recombee (abusing purchases as event log)
+    if (this.enabled && event === 'mode_switch') {
+      this.api('POST', '/purchases/', {
+        userId: this.userId, itemId: `_event:${data.mode || event}`,
+        cascadeCreate: true, timestamp: new Date().toISOString()
+      });
+    }
+  }
+
+  async setUserProperties(props) {
+    if (!this.enabled) return;
+    // Set user values — properties must exist in Recombee DB first
+    // Uses !cascadeCreate in body per Recombee docs
+    try {
+      await this.api('POST', `/users/${this.userId}`, { ...props, '!cascadeCreate': true });
+    } catch (e) { /* ignore — properties might not be configured */ }
+  }
+
+  // Merge anonymous user into account user and switch identity
+  async switchUser(newUserId) {
+    const oldUserId = this.userId;
+    if (oldUserId === newUserId) return;
+    // Merge interactions from anonymous → account user in Recombee
+    if (this.enabled && oldUserId) {
+      try {
+        await this.api('PUT', `/users/${newUserId}/merge/${oldUserId}`, { cascadeCreate: true });
+      } catch (e) { /* merge might fail if old user doesn't exist in Recombee yet */ }
+    }
+    // Switch local identity
+    this.userId = newUserId;
+    localStorage.setItem('pbook-uid', newUserId);
+  }
+
+  // --- Server-side log (fire & forget, queues when offline) ---
+  _sendToLog(entry) {
+    if (!navigator.onLine) {
+      this._queueOffline({ type: 'log', data: entry });
+      return;
+    }
+    try {
+      fetch('/api/log', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(entry)
+      }).catch(() => this._queueOffline({ type: 'log', data: entry }));
+    } catch(e) {
+      this._queueOffline({ type: 'log', data: entry });
+    }
+  }
+
+  // --- Persist interactions locally ---
+  _saveInteractions() {
+    // Also send last interaction to server log
+    const last = this.interactions[this.interactions.length - 1];
+    if (last) this._sendToLog(last);
+    try {
+      // Keep last 500 interactions
+      const recent = this.interactions.slice(-500);
+      localStorage.setItem('pbook-interactions', JSON.stringify(recent));
+    } catch (e) {}
+  }
+
+  _loadInteractions() {
+    try {
+      const saved = JSON.parse(localStorage.getItem('pbook-interactions') || '[]');
+      this.interactions = saved;
+      // One-time sync: send unsent interactions to server log
+      this._syncHistorical();
+    } catch (e) {}
+  }
+
+  _syncHistorical() {
+    const key = 'pbook-synced-to-server';
+    if (localStorage.getItem(key)) return; // already synced
+    const toSync = this.interactions.filter(i => i.type && i.ts);
+    if (toSync.length === 0) return;
+    // Send in batches of 20 (fire & forget)
+    for (let i = 0; i < toSync.length; i += 20) {
+      const batch = toSync.slice(i, i + 20);
+      batch.forEach(entry => this._sendToLog(entry));
+    }
+    localStorage.setItem(key, String(Date.now()));
+  }
+
+  // --- ReQL helpers ---
+  reql(filters = {}) {
+    const parts = [];
+    if (filters.type) parts.push(`'type' == "${filters.type}"`);
+    if (filters.voice) parts.push(`'voice' in {${filters.voice.map(v => `"${v}"`).join(',')}}`);
+    if (filters.chapter) parts.push(`'chapter' == "${filters.chapter}"`);
+    if (filters.standalone) parts.push(`'standalone' == true`);
+    if (filters.maxTime) parts.push(`'readingTime' <= ${filters.maxTime}`);
+    return parts.length ? parts.join(' AND ') : undefined;
+  }
+
+  reqlBoost(userModel) {
+    // Boost items matching the reader's FACET profile (lens exact > generic > other;
+    // depth soft-matched). Replaces the legacy voice boost — facets are the taxonomy.
+    const target = userModel.getTargetFacets ? userModel.getTargetFacets() : {};
+    const parts = [];
+    if (target.lens && target.lens !== 'generic') {
+      parts.push(`(if 'lens' == "${target.lens}" then 2.0 else if 'lens' == "generic" then 1.2 else 0.8)`);
+    }
+    if (target.depth) {
+      parts.push(`(if 'depth' == "${target.depth}" then 1.5 else 1.0)`);
+    }
+    if (!parts.length) return undefined;
+    return parts.join(' * ');
+  }
+
+  // --- Recommendations (Recombee API with local fallback) ---
+  async getRecsForUser(scenario, count, filter, booster) {
+    if (this.enabled) {
+      const body = { count, cascadeCreate: true };
+      if (scenario) body.scenario = scenario;
+      if (filter) body.filter = filter;
+      if (booster) body.booster = booster;
+      let result = await this.api('POST', `/recomms/users/${this.userId}/items/`, body);
+      // Retry without scenario if it failed (scenario might not exist)
+      if (!result && scenario) {
+        delete body.scenario;
+        result = await this.api('POST', `/recomms/users/${this.userId}/items/`, body);
+      }
+      // Retry with minimal params if still failing (filter/booster might be invalid)
+      if (!result) {
+        result = await this.api('POST', `/recomms/users/${this.userId}/items/`, { count, cascadeCreate: true });
+      }
+      if (result) {
+        if (result.recommId) this._lastRecommId = result.recommId;
+        return result;
+      }
+    }
+    return this._localRecsForUser(scenario, count);
+  }
+
+  async getRecsForItem(itemId, count, filter, scenario) {
+    if (this.enabled) {
+      const body = { count, targetUserId: this.userId, cascadeCreate: true };
+      if (scenario) body.scenario = scenario;
+      if (filter) body.filter = filter;
+      let result = await this.api('POST', `/recomms/items/${itemId}/items/`, body);
+      if (!result && scenario) { delete body.scenario; result = await this.api('POST', `/recomms/items/${itemId}/items/`, body); }
+      if (result) {
+        if (result.recommId) this._lastRecommId = result.recommId;
+        return result;
+      }
+    }
+    return this._localRecsForItem(itemId, count);
+  }
+
+  // Share a reader-generated block into the community catalog (share gate, spec §6).
+  // The block becomes a Recombee item with state="community" — recommendable to similar
+  // readers immediately, body carried as an item property. Requires properties to exist
+  // in the DB (created by /api/sync-recombee ensure step).
+  async shareCommunityBlock(props) {
+    if (!this.enabled) return false;
+    const { itemId, ...values } = props;
+    const res = await this.api('POST', `/items/${encodeURIComponent(itemId)}`, {
+      ...values,
+      state: 'community',
+      sharedAt: new Date().toISOString(),
+      '!cascadeCreate': true,
+    });
+    return res !== null;
+  }
+
+  // Community blocks live in the Recombee catalog (state == "community") — the book's
+  // shared layer needs no extra storage and is immediately recommendable. Graceful [].
+  async listCommunityBlocks(conceptId, count = 10, states = ['community']) {
+    if (!this.enabled) return [];
+    // newer Recombee clusters reject GET — list via POST recomms with a filter
+    // (personalized order is a bonus; returnProperties gives us the bodies)
+    const stateExpr = '(' + states.map(s => `'state' == "${s}"`).join(' OR ') + ')';
+    // 'sharedAs' != null keeps GIT-synced blocks (also edited/core) out of the
+    // candidate set — recomms then reliably returns the few runtime tellings
+    const filter = stateExpr + ` AND 'sharedAs' != null` + (conceptId ? ` AND 'concept' == "${conceptId}"` : '');
+    const rec = await this.api('POST', `/recomms/users/${this.userId}/items/`, {
+      filter, count, cascadeCreate: true, returnProperties: true,
+    });
+    const res = (rec?.recomms || []).map(r => ({ itemId: r.id, ...(r.values || {}) }));
+    if (!Array.isArray(res)) return [];
+    return res.filter(it => it.body && /^(gen--|remix--)/.test(it.itemId)).map(it => {
+      const meta = { ...it, id: it.itemId, type: 'spine', state: it.state || 'community', generated: true };
+      // honest visuality for reader-shared items (mirrors api/generate.js clamp)
+      const words = (it.body || '').split(/\s+/).filter(Boolean).length;
+      if (meta.diagramSvg || /<svg/i.test(it.body)) meta.visuality = words < 130 ? 'visual-first' : 'balanced';
+      else if (/\n\|[^\n]*\|\s*\n\|[\s:|-]+\|/.test(it.body)) { if (meta.visuality === 'visual-first') meta.visuality = 'balanced'; }
+      else if (meta.visuality && meta.visuality !== 'text-first') meta.visuality = 'text-first';
+      return { meta, body: it.body };
+    });
+  }
+
+  async searchItems(query, count, filter, scenario) {
+    if (this.enabled) {
+      const body = { searchQuery: query, count, cascadeCreate: true };
+      if (scenario) body.scenario = scenario;
+      if (filter) body.filter = filter;
+      const result = await this.api('POST', `/search/users/${this.userId}/items/`, body);
+      if (result) return result;
+    }
+    return this._localSearch(query, count);
+  }
+
+  // --- Local fallback recommendations ---
+  _viewed() { return new Set(this.interactions.filter(i => i.type === 'detail-view').map(i => i.itemId)); }
+
+  _localRecsForUser(scenario, count) {
+    const viewed = this._viewed();
+    let pool = this.allBlocks.filter(b => !viewed.has(b.meta.id));
+    if (scenario === 'pbook:spine') pool = pool.filter(b => b.meta.type === 'spine');
+    if (scenario === 'pbook:popular') pool = this.allBlocks.filter(b => b.meta.standalone);
+    pool = pool.sort(() => Math.random() - 0.5);
+    return { recomms: pool.slice(0, count).map(b => ({ id: b.meta.id, values: b.meta })) };
+  }
+
+  _localRecsForItem(itemId, count) {
+    const block = this.allBlocks.find(b => b.meta.id === itemId);
+    if (!block) return { recomms: [] };
+    const ch = block.meta.chapter || block._chapter;
+    let pool = this.allBlocks.filter(b => b.meta.id !== itemId && (b.meta.chapter === ch || b._chapter === ch));
+    if (pool.length < count) pool = [...pool, ...this.allBlocks.filter(b => b.meta.id !== itemId)];
+    return { recomms: pool.sort(() => Math.random() - 0.5).slice(0, count).map(b => ({ id: b.meta.id, values: b.meta })) };
+  }
+
+  _localSearch(query, count) {
+    const q = query.toLowerCase();
+    const scored = this.allBlocks.map(b => {
+      let score = 0;
+      const title = (b.meta.title || '').toLowerCase();
+      const body = (b.body || '').toLowerCase();
+      if (title.includes(q)) score += 10;
+      for (const word of q.split(/\s+/)) {
+        if (word.length < 3) continue;
+        if (title.includes(word)) score += 3;
+        if (body.includes(word)) score += 1;
+      }
+      return { block: b, score };
+    }).filter(s => s.score > 0).sort((a, b) => b.score - a.score);
+    return { recomms: scored.slice(0, count).map(s => ({ id: s.block.meta.id, values: s.block.meta })) };
+  }
+
+  // --- Status ---
+  getStatus() {
+    return {
+      mode: this.enabled ? 'live' : 'local',
+      database: this.config.database,
+      region: this.config.region,
+      userId: this.userId,
+      interactions: this.interactions.length,
+      apiCalls: this._apiCalls || 0
+    };
+  }
+}
+
+// --- User Model (engagement tracking + profile) ---
+export class UserModel {
+  constructor() {
+    this.voiceScores = { explorer: 0, creator: 0, thinker: 0 };
+    // Facet affinities — learned distribution over facet values (soft, drifts with signals)
+    this.facetAffinity = {};      // { lens: {ecommerce: 3.5, ...}, depth: {...}, ... }
+    // Explicit steering preferences — strongest signal, set via knobs/onboarding/profile correction
+    this.steerPrefs = {};         // { lens: 'ecommerce', visuality: 'visual-first', ... }
+    this.goal = null;             // understand | build | decide | protect (onboarding)
+    this.readerMode = 'open';     // living book ON by default · 'safe' = core+edited only
+    this.readBlocks = new Set();
+    this.seenBlocks = new Set();
+    this.savedBlocks = new Set();
+    this.ratings = new Map();
+    this.notes = new Set();
+    this.signals = {};
+    this.totalInteractions = 0;
+    this.currentChapter = 0;
+    this.currentBlock = null;
+    this.preferredVoice = null;
+    this.firstVisit = null;
+    this.sessionCount = 0;
+    // Gamification (no streaks — safe for kids)
+    this.xp = 0;
+    this.level = 1;
+    this.achievements = [];
+    // Spaced repetition recall (Anki-style)
+    this.recall = {}; // blockId → { interval, ease, nextReview, lastReview, reps }
+    this.activePath = null; // current reading path id
+    this.completedMissions = [];
+    this.missionTitles = [];
+    this.missionBranches = {};
+    this.load();
+    this._trackSession();
+  }
+
+  _trackSession() {
+    if (!this.firstVisit) this.firstVisit = Date.now();
+    this.sessionCount++;
+    this.lastVisit = Date.now();
+    this.save();
+  }
+
+  load() {
+    try {
+      const s = JSON.parse(localStorage.getItem('pbook-user') || '{}');
+      if (s.voiceScores) this.voiceScores = s.voiceScores;
+      if (s.readBlocks) this.readBlocks = new Set(s.readBlocks);
+      if (s.seenBlocks) this.seenBlocks = new Set(s.seenBlocks);
+      if (s.savedBlocks) this.savedBlocks = new Set(s.savedBlocks);
+      if (s.ratings) this.ratings = new Map(s.ratings);
+      if (s.notes) this.notes = new Set(s.notes);
+      if (s.signals) this.signals = s.signals;
+      if (s.totalInteractions) this.totalInteractions = s.totalInteractions;
+      if (s.currentChapter !== undefined) this.currentChapter = s.currentChapter;
+      if (s.currentBlock) this.currentBlock = s.currentBlock;
+      if (s.preferredVoice) this.preferredVoice = s.preferredVoice;
+      if (s.firstVisit) this.firstVisit = s.firstVisit;
+      if (s.sessionCount) this.sessionCount = s.sessionCount;
+      if (s.xp) this.xp = s.xp;
+      if (s.level) this.level = s.level;
+      if (s.achievements) this.achievements = s.achievements;
+      if (s.recall) this.recall = s.recall;
+      if (s.activePath) this.activePath = s.activePath;
+      if (s.completedMissions) this.completedMissions = s.completedMissions;
+      if (s.missionTitles) this.missionTitles = s.missionTitles;
+      if (s.missionBranches) this.missionBranches = s.missionBranches;
+      if (s.facetAffinity) this.facetAffinity = s.facetAffinity;
+      if (s.steerPrefs) this.steerPrefs = s.steerPrefs;
+      if (s.goal) this.goal = s.goal;
+      if (s.personalMission) this.personalMission = s.personalMission;
+      if (s.readerMode) this.readerMode = s.readerMode;
+    } catch (e) {}
+  }
+
+  save() {
+    try {
+      localStorage.setItem('pbook-user', JSON.stringify({
+        voiceScores: this.voiceScores,
+        readBlocks: [...this.readBlocks],
+        seenBlocks: [...this.seenBlocks],
+        savedBlocks: [...this.savedBlocks],
+        ratings: [...this.ratings],
+        notes: [...this.notes],
+        signals: this.signals,
+        totalInteractions: this.totalInteractions,
+        currentChapter: this.currentChapter,
+        currentBlock: this.currentBlock,
+        preferredVoice: this.preferredVoice,
+        firstVisit: this.firstVisit,
+        sessionCount: this.sessionCount,
+        xp: this.xp,
+        level: this.level,
+        achievements: this.achievements,
+        recall: this.recall,
+        activePath: this.activePath,
+        completedMissions: this.completedMissions,
+        missionTitles: this.missionTitles,
+        missionBranches: this.missionBranches,
+        facetAffinity: this.facetAffinity,
+        steerPrefs: this.steerPrefs,
+        goal: this.goal,
+        personalMission: this.personalMission || null,
+        readerMode: this.readerMode,
+      }));
+    } catch (e) {}
+  }
+
+  // --- Facet affinity model (see _design-collective-pbook.md §4) ---
+  // Weight guide: read=1, like=2, explicit steer=3 (strongest — a labelled preference statement)
+  updateFacetAffinity(facets, weight = 1) {
+    if (!facets) return;
+    for (const [facet, value] of Object.entries(facets)) {
+      if (value === null || value === undefined || facet === 'concept' || facet === 'state') continue;
+      if (!this.facetAffinity[facet]) this.facetAffinity[facet] = {};
+      this.facetAffinity[facet][value] = (this.facetAffinity[facet][value] || 0) + weight;
+    }
+    this.save();
+  }
+
+  // Explicit preference (knobs, onboarding, profile correction) — overrides learned affinity
+  setSteerPref(facet, value) {
+    if (value === null || value === undefined) delete this.steerPrefs[facet];
+    else this.steerPrefs[facet] = value;
+    this.save();
+  }
+
+  // The reader's current target facet-vector: explicit prefs win, then learned argmax, then defaults
+  getTargetFacets() {
+    const defaults = { lens: 'generic', lang: 'en', visuality: 'balanced', depth: 'standard', formalism: 'none', lengthBand: 'standard' };
+    const target = { ...defaults };
+    for (const facet of Object.keys(defaults)) {
+      const learned = this.facetAffinity[facet];
+      if (learned) {
+        const entries = Object.entries(learned).sort((a, b) => b[1] - a[1]);
+        const total = entries.reduce((s, [, v]) => s + v, 0);
+        // only trust learned affinity once there's real signal (≥3 weighted interactions)
+        if (entries.length && total >= 3) target[facet] = entries[0][0];
+      }
+      if (this.steerPrefs[facet]) target[facet] = this.steerPrefs[facet];
+    }
+    // carriers: preference-only dimension (no default — absent means "no constraint");
+    // items carry it as a derived composition tag, readers may pin what they prefer
+    if (this.steerPrefs.carriers) target.carriers = this.steerPrefs.carriers;
+    return target;
+  }
+
+  // Human-readable affinity summary for the transparent profile view
+  getAffinitySummary() {
+    const out = [];
+    for (const [facet, values] of Object.entries(this.facetAffinity)) {
+      const entries = Object.entries(values).sort((a, b) => b[1] - a[1]);
+      const total = entries.reduce((s, [, v]) => s + v, 0);
+      if (!entries.length || total < 3) continue;
+      out.push({ facet, top: entries[0][0], pct: Math.round((entries[0][1] / total) * 100), explicit: !!this.steerPrefs[facet] });
+    }
+    return out;
+  }
+
+  _sig(id) { if (!this.signals[id]) this.signals[id] = {}; return this.signals[id]; }
+
+  trackSeen(blockId) {
+    this.seenBlocks.add(blockId);
+    const s = this._sig(blockId);
+    s.seen = true;
+    s.seenAt = Date.now();
+    this.save();
+  }
+
+  trackRead(blockId, voice, facets) {
+    this.readBlocks.add(blockId);
+    this.seenBlocks.add(blockId);
+    this._sig(blockId).read = true;
+    this.totalInteractions++;
+    // Update voice profile based on what the user actually reads
+    if (voice && voice !== 'universal' && this.voiceScores[voice] !== undefined) {
+      this.voiceScores[voice] = (this.voiceScores[voice] || 0) + 1;
+    }
+    // Drift facet affinities from actual reading behaviour (weight 1)
+    if (facets) this.updateFacetAffinity(facets, 1);
+    if (CONFIG.features.gamification !== false) { this.addXP(10); this.checkAchievements(); }
+    if (CONFIG.features.spaceRepetition !== false) this.scheduleRecall(blockId);
+    this.save();
+  }
+
+  trackDwell(blockId, ms) {
+    const s = this._sig(blockId);
+    s.dwellMs = (s.dwellMs || 0) + ms;
+    this.save();
+  }
+
+  trackPortion(blockId, portion) {
+    const s = this._sig(blockId);
+    s.portion = Math.max(s.portion || 0, portion);
+    this.save();
+  }
+
+
+  trackRating(blockId, rating) {
+    this.ratings.set(blockId, rating);
+    this._sig(blockId).rated = rating;
+    if (CONFIG.features.gamification !== false) this.addXP(3);
+    this.save();
+  }
+
+  trackSave(blockId) {
+    this.savedBlocks.add(blockId);
+    this._sig(blockId).saved = true;
+    if (CONFIG.features.gamification !== false) this.addXP(2);
+    this.save();
+  }
+
+  trackNote(blockId) {
+    this.notes.add(blockId);
+    this._sig(blockId).noted = true;
+    if (CONFIG.features.gamification !== false) this.addXP(5);
+    this.save();
+  }
+
+  setVoice(voice) { this.preferredVoice = voice; this.save(); }
+
+  getBlockSignals(blockId) { return this.signals[blockId] || {}; }
+
+  // --- Spaced repetition (Anki-style) ---
+  // Schedule a block for recall after it's read
+  scheduleRecall(blockId) {
+    if (this.recall[blockId]) return; // already scheduled
+    this.recall[blockId] = {
+      interval: 0,       // first review is same-session
+      ease: 2.5,         // ease factor (Anki default)
+      nextReview: Date.now() + 2 * 60 * 60 * 1000, // 2 hours from now
+      lastReview: Date.now(),
+      reps: 0
+    };
+    this.save();
+  }
+
+  // Process a recall response: quality 0-3 (forgot, hard, good, easy)
+  processRecall(blockId, quality) {
+    const card = this.recall[blockId];
+    if (!card) return;
+
+    card.reps++;
+    card.lastReview = Date.now();
+
+    if (quality < 1) {
+      // Forgot — review again in 4 hours
+      card.interval = 0;
+      card.ease = Math.max(1.3, card.ease - 0.2);
+    } else if (quality === 1) {
+      // Hard — 1 day minimum, small increase
+      card.interval = Math.max(1, Math.round((card.interval || 1) * 1.2));
+      card.ease = Math.max(1.3, card.ease - 0.15);
+    } else if (quality === 2) {
+      // Good — normal increase (minimum 1 day for first review, then grows)
+      card.interval = Math.max(1, Math.round((card.interval || 1) * card.ease));
+    } else {
+      // Easy — big increase (minimum 3 days, then grows fast)
+      card.interval = Math.max(3, Math.round((card.interval || 1) * card.ease * 1.3));
+      card.ease = Math.min(3.0, card.ease + 0.15);
+    }
+
+    // Cap at 30 days for kids
+    card.interval = Math.min(30, card.interval);
+    // Forgot (interval=0) → 4 hours. Everything else → interval in days.
+    card.nextReview = card.interval === 0
+      ? Date.now() + 4 * 60 * 60 * 1000
+      : Date.now() + card.interval * 24 * 60 * 60 * 1000;
+
+    const xpReward = quality >= 2 ? 8 : quality === 1 ? 5 : 2;
+    if (CONFIG.features.gamification !== false) { this.addXP(xpReward); this.checkAchievements(); }
+    this.save();
+    return xpReward;
+  }
+
+  // Get blocks that are due for review
+  getDueRecalls() {
+    if (CONFIG.features.spaceRepetition === false) return [];
+    const now = Date.now();
+    return Object.entries(this.recall)
+      .filter(([_, card]) => card.nextReview <= now)
+      .sort((a, b) => a[1].nextReview - b[1].nextReview)
+      .map(([blockId, card]) => ({ blockId, ...card }));
+  }
+
+  getAllRecalls() {
+    // All tracked blocks, sorted by least recently reviewed (for practice mode)
+    return Object.entries(this.recall)
+      .sort((a, b) => a[1].lastReview - b[1].lastReview)
+      .map(([blockId, card]) => ({ blockId, ...card }));
+  }
+
+  // --- Gamification ---
+  addXP(amount) {
+    this.xp += amount;
+    const newLevel = Math.floor(this.xp / 50) + 1;
+    if (newLevel > this.level) { this.level = newLevel; this._pendingLevelUp = newLevel; }
+  }
+
+  checkAchievements() {
+    const earned = new Set(this.achievements.map(a => a.id));
+    const checks = [
+      { id: 'first_read', name: 'First Steps', icon: '👣', desc: 'Read your first section', test: () => this.readBlocks.size >= 1 },
+      { id: 'reader_5', name: 'Bookworm', icon: '📚', desc: 'Read 5 sections', test: () => this.readBlocks.size >= 5 },
+      { id: 'reader_15', name: 'Speed Reader', icon: '⚡', desc: 'Read 15 sections', test: () => this.readBlocks.size >= 15 },
+      { id: 'reader_30', name: 'Knowledge Machine', icon: '🤖', desc: 'Read 30 sections', test: () => this.readBlocks.size >= 30 },
+      { id: 'first_like', name: 'Thumbs Up', icon: '❤️', desc: 'Like your first section', test: () => [...this.ratings.values()].some(r => r >= 0.7) },
+      { id: 'like_10', name: 'Super Fan', icon: '🌟', desc: 'Like 10 sections', test: () => [...this.ratings.values()].filter(r => r >= 0.7).length >= 10 },
+      { id: 'first_note', name: 'Note Taker', icon: '📝', desc: 'Write your first note', test: () => this.notes.size >= 1 },
+      { id: 'voice_all', name: 'Triple Threat', icon: '🎭', desc: 'Try all 3 depth voices', test: () => Object.values(this.voiceScores).every(v => v > 0) },
+      { id: 'curious_cat', name: 'Curious Cat', icon: '🐱', desc: 'Read sections from 3 different chapters', test: () => { const chs = new Set(); this.readBlocks.forEach(id => { for (const [k,v] of Object.entries(this.signals)) { if (k === id) chs.add(v.chapter || ''); }}); return chs.size >= 3 || this.readBlocks.size >= 12; }},
+      { id: 'quiz_master', name: 'Quiz Master', icon: '🧩', desc: 'Answer 3 questions', test: () => this.totalInteractions >= 15 },
+      { id: 'level_5', name: 'Level 5!', icon: '🏆', desc: 'Reach level 5', test: () => this.level >= 5 },
+      { id: 'save_5', name: 'Collector', icon: '🔖', desc: 'Save 5 sections', test: () => this.savedBlocks.size >= 5 },
+      { id: 'xp_200', name: 'XP Hunter', icon: '💎', desc: 'Earn 200 XP', test: () => this.xp >= 200 },
+      { id: 'deep_diver', name: 'Deep Diver', icon: '🤿', desc: 'Expand 10 depth cards', test: () => Object.values(this.voiceScores).reduce((s,v) => s+v, 0) >= 10 },
+      { id: 'recall_5', name: 'Memory Pro', icon: '🧠', desc: 'Complete 5 recall reviews', test: () => Object.values(this.recall).reduce((s, c) => s + c.reps, 0) >= 5 },
+    ];
+    checks.forEach(a => {
+      if (!earned.has(a.id) && a.test()) {
+        this.achievements.push({ id: a.id, name: a.name, icon: a.icon, desc: a.desc, earnedAt: Date.now() });
+        this._pendingAchievement = a;
+      }
+    });
+  }
+
+  getLevelTitle() {
+    const titles = ['Nováček', 'Zvědavec', 'Učeň', 'Průzkumník', 'Znalec', 'Expert', 'Kouzelník', 'Legenda', 'Velmistr', 'Guru internetu'];
+    return titles[Math.min(this.level - 1, titles.length - 1)];
+  }
+
+  getXPForNextLevel() { return this.level * 50; }
+  getXPInCurrentLevel() { return this.xp - (this.level - 1) * 50; }
+
+  getVisibleVoices() {
+    const allVoices = Object.keys(this.voiceScores);
+    const total = Object.values(this.voiceScores).reduce((s, v) => s + v, 0);
+    if (total < 5) return allVoices;
+    if (this.preferredVoice && this.preferredVoice !== 'universal') {
+      const visible = [this.preferredVoice];
+      for (const [v, score] of Object.entries(this.voiceScores)) {
+        if (v !== this.preferredVoice && score / total > 0.2) visible.push(v);
+      }
+      return visible;
+    }
+    return Object.entries(this.voiceScores)
+      .filter(([_, score]) => score / total > 0.1)
+      .map(([v]) => v)
+      .concat(total < 10 ? allVoices : [])
+      .filter((v, i, a) => a.indexOf(v) === i);
+  }
+
+  // LEGACY VIEW: voice is no longer a first-class preference — it is DERIVED from the
+  // facet model so legacy call sites (mission branches, old content voice tags) keep
+  // working. Source of truth: facetAffinity + steerPrefs.
+  getTopVoice() {
+    if (this.preferredVoice && this.preferredVoice !== 'universal') return this.preferredVoice; // old stored picks respected
+    const g = this.facetAffinity.genre || {};
+    const d = this.facetAffinity.depth || {};
+    const f = this.facetAffinity.formalism || {};
+    const scores = {
+      creator: (g['worked-example'] || 0) + (g['code-walkthrough'] || 0),
+      thinker: (d.technical || 0) + (d.research || 0) + (f.light || 0) + (f.full || 0),
+      explorer: (g.story || 0) + (g.explainer || 0) * 0.5 + (d.intro || 0),
+    };
+    const entries = Object.entries(scores).sort((x, y) => y[1] - x[1]);
+    return entries[0][1] >= 2 ? entries[0][0] : null;
+  }
+
+  getProgress(allBlocks) {
+    const spineBlocks = allBlocks.filter(b => b.meta.type === 'spine');
+    const read = spineBlocks.filter(b => this.readBlocks.has(b.meta.id));
+    const seen = spineBlocks.filter(b => this.seenBlocks.has(b.meta.id));
+    return {
+      read: read.length, seen: seen.length, total: spineBlocks.length,
+      pct: Math.round((read.length / Math.max(spineBlocks.length, 1)) * 100)
+    };
+  }
+
+  getSignalSummary() {
+    let views = 0, reads = 0, dwellTotal = 0, ratings = 0, saves = 0, notes = 0, expands = 0;
+    Object.values(this.signals).forEach(s => {
+      if (s.seen) views++;
+      if (s.read) reads++;
+      if (s.dwellMs) dwellTotal += s.dwellMs;
+      if (s.rated !== undefined) ratings++;
+      if (s.saved) saves++;
+      if (s.noted) notes++;
+      if (s.expanded) expands++;
+    });
+    return { views, reads, dwellTotal, ratings, saves, notes, expands };
+  }
+
+  // --- Reader profile summary ---
+  getProfile(allBlocks) {
+    const prog = this.getProgress(allBlocks);
+    const summary = this.getSignalSummary();
+    const totalVoice = Object.values(this.voiceScores).reduce((s, v) => s + v, 0) || 1;
+
+    // Top topics from read blocks
+    const topicCounts = {};
+    [...this.readBlocks].forEach(id => {
+      const block = allBlocks.find(b => b.meta.id === id);
+      if (!block) return;
+      const body = ((block.meta.title || '') + ' ' + (block.body || '')).toLowerCase();
+      const topics = {
+        'Collaborative Filtering': ['collaborative filter'],
+        'Deep Learning': ['deep learn', 'neural', 'transformer'],
+        'Cold Start': ['cold start', 'cold-start'],
+        'Evaluation': ['a/b test', 'evaluation', 'metric', 'ndcg'],
+        'Search': ['search', 'query', 'retrieval'],
+        'Objectives': ['objective', 'stakeholder', 'alignment'],
+        'Data': ['interaction data', 'item catalog', 'feedback'],
+      };
+      for (const [topic, kws] of Object.entries(topics)) {
+        if (kws.some(k => body.includes(k))) topicCounts[topic] = (topicCounts[topic] || 0) + 1;
+      }
+    });
+    const topTopics = Object.entries(topicCounts).sort((a, b) => b[1] - a[1]).slice(0, 5).map(([t]) => t);
+
+    // Liked blocks
+    const liked = [...this.ratings].filter(([_, r]) => r >= 0.7).map(([id]) => {
+      const b = allBlocks.find(x => x.meta.id === id);
+      return b ? b.meta.title : null;
+    }).filter(Boolean);
+
+    return {
+      userId: localStorage.getItem('pbook-uid'),
+      firstVisit: this.firstVisit ? new Date(this.firstVisit).toLocaleDateString() : null,
+      sessions: this.sessionCount,
+      totalInteractions: this.totalInteractions,
+      progress: prog,
+      signals: summary,
+      voicePreference: Object.fromEntries(
+        Object.entries(this.voiceScores).map(([v, s]) => [v, Math.round((s / totalVoice) * 100)])
+      ),
+      topTopics,
+      liked,
+      savedCount: this.savedBlocks.size,
+      notesCount: this.notes.size,
+      readingTimeMin: Math.round(summary.dwellTotal / 60000),
+    };
+  }
+
+  reset() {
+    this.voiceScores = { explorer: 0, creator: 0, thinker: 0 };
+    this.readBlocks = new Set();
+    this.seenBlocks = new Set();
+    this.savedBlocks = new Set();
+    this.ratings = new Map();
+    this.notes = new Set();
+    this.signals = {};
+    this.totalInteractions = 0;
+    this.currentChapter = 0;
+    this.currentBlock = null;
+    this.preferredVoice = null;
+    this.firstVisit = Date.now();
+    this.sessionCount = 0;
+    this.xp = 0;
+    this.level = 1;
+    this.achievements = [];
+    this.recall = {};
+    this.activePath = null;
+    this.completedMissions = [];
+    this.missionTitles = [];
+    this.missionBranches = {};
+    this.facetAffinity = {};
+    this.steerPrefs = {};
+    this.goal = null;
+    this.readerMode = 'open';
+    this.save();
+  }
+}

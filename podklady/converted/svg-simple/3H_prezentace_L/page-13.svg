@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" lang="cs">
+<title>Závěrečný slide — internet4kids</title>
+<desc>Závěrečný slide s adresou projektu a informacemi o grantech GA UK a GA ČR.</desc>
+<defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#555"/></marker><marker id="arrR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#a04030"/></marker><marker id="arrP" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#6a3fc0"/></marker></defs>
+<rect x="0" y="0" width="960" height="540" fill="#ffffff"/>
+<g aria-label="Stylizovaná síť: uzly propojené oblouky (metafora celosvětového internetu)">
+<title>Mapa světa s uzly internetové sítě propojenými oblouky</title>
+<path d="M140,150 Q220,80 300,90" fill="none" stroke="#e3c7dc" stroke-width="1.5"/>
+<path d="M300,90 Q410,70 520,130" fill="none" stroke="#e3c7dc" stroke-width="1.5"/>
+<path d="M520,130 Q620,75 720,100" fill="none" stroke="#e3c7dc" stroke-width="1.5"/>
+<path d="M720,100 Q780,105 840,190" fill="none" stroke="#e3c7dc" stroke-width="1.5"/>
+<path d="M140,150 Q170,185 200,300" fill="none" stroke="#e3c7dc" stroke-width="1.5"/>
+<path d="M200,300 Q325,240 450,260" fill="none" stroke="#e3c7dc" stroke-width="1.5"/>
+<path d="M450,260 Q565,240 680,300" fill="none" stroke="#e3c7dc" stroke-width="1.5"/>
+<path d="M680,300 Q750,290 820,360" fill="none" stroke="#e3c7dc" stroke-width="1.5"/>
+<path d="M520,130 Q485,155 450,260" fill="none" stroke="#e3c7dc" stroke-width="1.5"/>
+<path d="M200,300 Q160,310 120,400" fill="none" stroke="#e3c7dc" stroke-width="1.5"/>
+<path d="M450,260 Q485,155 520,130" fill="none" stroke="#e3c7dc" stroke-width="1.5"/>
+<path d="M300,90 Q375,135 450,260" fill="none" stroke="#e3c7dc" stroke-width="1.5"/>
+<circle cx="140" cy="150" r="5" fill="#d792bd"/>
+<circle cx="300" cy="90" r="5" fill="#d792bd"/>
+<circle cx="520" cy="130" r="5" fill="#d792bd"/>
+<circle cx="720" cy="100" r="5" fill="#d792bd"/>
+<circle cx="840" cy="190" r="5" fill="#d792bd"/>
+<circle cx="200" cy="300" r="5" fill="#d792bd"/>
+<circle cx="450" cy="260" r="5" fill="#d792bd"/>
+<circle cx="680" cy="300" r="5" fill="#d792bd"/>
+<circle cx="820" cy="360" r="5" fill="#d792bd"/>
+<circle cx="120" cy="400" r="5" fill="#d792bd"/>
+</g>
+<text x="480" y="250" font-family="sans-serif" font-size="36" font-weight="bold" text-anchor="middle" fill="#c2571a">internet4kids.mff.cuni.cz</text>
+<text x="480" y="380" font-family="sans-serif" font-size="16" font-weight="normal" text-anchor="middle" fill="#444">Výukové materiály vznikly díky grantům:</text>
+<text x="480" y="404" font-family="sans-serif" font-size="16" font-weight="normal" text-anchor="middle" fill="#444">GA UK 360322 Multimediální materiály pro výuku informatiky na 2. stupni ZŠ</text>
+<text x="480" y="428" font-family="sans-serif" font-size="16" font-weight="normal" text-anchor="middle" fill="#444">GA ČR 22-20771S Internet4Kids – Budování znalostí o internetu:</text>
+<text x="480" y="452" font-family="sans-serif" font-size="16" font-weight="normal" text-anchor="middle" fill="#444">perspektiva teorií konceptuální změny</text>
+<text x="40" y="528" font-family="sans-serif" font-size="13" font-weight="normal" text-anchor="start" fill="#999">matfyz  ·  Pedagogická fakulta UK</text>
+<text x="930" y="528" font-family="sans-serif" font-size="13" font-weight="normal" text-anchor="end" fill="#999">13</text>
+</svg>

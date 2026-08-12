@@ -1,0 +1,28 @@
+{
+  "id": "ch3-digitalni-stopa",
+  "number": 3,
+  "title": "Co o nás ví internet",
+  "subtitle": "Pakety, cookies a digitální stopa",
+  "directory": "ch3-digitalni-stopa",
+  "files": [
+    "01-spine-dinosaurus-v-nakladacich.md",
+    "02-spine-pakety-a-ip-adresa.md",
+    "03-spine-kdo-plati-internet.md",
+    "03a-sidebar-kolik-reklam.md",
+    "04-spine-cookies-satnovy-listek.md",
+    "04a-depth-thinker-cookies-v-praxi.md",
+    "05-spine-digitalni-stopa.md",
+    "05a-depth-thinker-co-odhaduje-google.md",
+    "05b-depth-creator-detektiv-krecek.md",
+    "06-game-stopa-sort.md",
+    "07-question-personalizace.md"
+  ],
+  "boss": {
+    "q": "Kamarádka říká: „Internet je zadarmo a nikdo neví, co na něm dělám.“ Obě části té věty jsou špatně — vysvětli proč.",
+    "hints": [
+      "Kdo platí provoz webů, když ty neplatíš nic? Čím se platí místo peněz?",
+      "Vzpomeň si na historii vyhledávání křečkaře — co všechno šlo poskládat ze tří dotazů?"
+    ]
+  },
+  "reward_title": "Vstupenka na 4. hodinu"
+}

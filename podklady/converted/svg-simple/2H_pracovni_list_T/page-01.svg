@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 794 1123" role="img" lang="cs">
+  <title>Pracovní list č. 2T — Typy připojení</title>
+  <desc>Pracovní list se čtyřmi úkoly: připojení k internetu na vodě (QR kódy map pokrytí operátorů), výhody a nevýhody kabelu a Wi-Fi, nejbližší BTS věž a měření rychlosti připojení přes speedtest.cesnet.cz se slovníčkem pojmů.</desc>
+  <g aria-label="Záhlaví">
+    <text x="45" y="42" font-family="sans-serif" font-size="16" fill="#333">PRACOVNÍ LIST č.2T</text>
+    <text x="440" y="42" font-family="sans-serif" font-size="15" fill="#777">jméno: _______________________</text>
+    <text x="45" y="80" font-family="sans-serif" font-size="26" font-weight="bold" fill="#111">TYPY PŘIPOJENÍ</text>
+  </g>
+  <g aria-label="Úkol 1: připojení na vodě">
+    <text x="45" y="118" font-family="sans-serif" font-size="16" font-weight="bold" fill="#111">1.  Jak by se šlo připojit k internetu na vodě?</text>
+    <g aria-label="QR kód polohy tábořiště">
+      <rect x="255" y="140" width="105" height="105" fill="#fff" stroke="#111" stroke-width="2"/>
+      <text x="307" y="185" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="bold" fill="#111">QR:</text>
+      <text x="307" y="205" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#111">mapa polohy</text>
+      <text x="307" y="221" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#111">tábořiště</text>
+      <text x="307" y="268" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="bold" fill="#111">poloha tábořiště</text>
+    </g>
+    <g aria-label="QR kódy map pokrytí operátorů">
+      <text x="555" y="130" text-anchor="middle" font-family="sans-serif" font-size="15" fill="#111">mapy připojení operátorů</text>
+      <path d="M 395 140 L 395 134 L 715 134 L 715 140" fill="none" stroke="#333" stroke-width="1.5"/>
+      <rect x="395" y="145" width="95" height="95" fill="#fff" stroke="#111" stroke-width="2"/>
+      <text x="442" y="185" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#111">QR:</text>
+      <text x="442" y="203" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#111">mapa pokrytí</text>
+      <text x="442" y="218" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#111">T-Mobile</text>
+      <text x="442" y="265" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#111">T-Mobile</text>
+      <rect x="508" y="145" width="95" height="95" fill="#fff" stroke="#111" stroke-width="2"/>
+      <text x="555" y="185" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#111">QR:</text>
+      <text x="555" y="203" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#111">mapa pokrytí</text>
+      <text x="555" y="218" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#111">Vodafone</text>
+      <text x="555" y="265" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#111">Vodafone</text>
+      <rect x="621" y="145" width="95" height="95" fill="#fff" stroke="#111" stroke-width="2"/>
+      <text x="668" y="185" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#111">QR:</text>
+      <text x="668" y="203" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#111">mapa pokrytí</text>
+      <text x="668" y="218" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#111">O2</text>
+      <text x="668" y="265" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#111">O2</text>
+    </g>
+    <text x="758" y="240" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#777" transform="rotate(90 758 190)">QR kódy platné v roce 2024</text>
+    <line x1="60" y1="310" x2="734" y2="310" stroke="#aaa" stroke-width="1"/>
+    <line x1="60" y1="345" x2="734" y2="345" stroke="#aaa" stroke-width="1"/>
+  </g>
+  <g aria-label="Úkol 2: výhody a nevýhody kabelu a Wi-Fi">
+    <text x="45" y="395" font-family="sans-serif" font-size="16" font-weight="bold" fill="#111">2.  Jaké jsou výhody a nevýhody kabelu a Wi-Fi?</text>
+    <g aria-label="Tabulka">
+      <line x1="45" y1="415" x2="749" y2="415" stroke="#333" stroke-width="1.5"/>
+      <line x1="45" y1="450" x2="749" y2="450" stroke="#333" stroke-width="1.5"/>
+      <line x1="45" y1="545" x2="749" y2="545" stroke="#333" stroke-width="1.5"/>
+      <line x1="45" y1="640" x2="749" y2="640" stroke="#333" stroke-width="1.5"/>
+      <line x1="160" y1="415" x2="160" y2="640" stroke="#333" stroke-width="1"/>
+      <line x1="455" y1="415" x2="455" y2="640" stroke="#333" stroke-width="1"/>
+      <text x="307" y="439" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="bold" fill="#111">VÝHODY</text>
+      <text x="602" y="439" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="bold" fill="#111">NEVÝHODY</text>
+      <text x="102" y="502" text-anchor="middle" font-family="sans-serif" font-size="15" fill="#111">kabel</text>
+      <text x="102" y="597" text-anchor="middle" font-family="sans-serif" font-size="15" fill="#111">Wi-Fi</text>
+    </g>
+  </g>
+  <g aria-label="Úkol 3: nejbližší BTS věž">
+    <text x="45" y="690" font-family="sans-serif" font-size="16" font-weight="bold" fill="#111">3.  Jaká je nejbližší BTS věž naší škole?</text>
+    <line x1="60" y1="730" x2="734" y2="730" stroke="#aaa" stroke-width="1"/>
+  </g>
+  <g aria-label="Úkol 4: rychlost připojení">
+    <text x="45" y="778" font-family="sans-serif" font-size="16" font-weight="bold" fill="#111">4.  Zjistěte rychlost připojení přes <tspan font-weight="normal">http://speedtest.cesnet.cz/</tspan></text>
+    <g aria-label="Tabulka měření">
+      <line x1="45" y1="798" x2="749" y2="798" stroke="#333" stroke-width="1.5"/>
+      <line x1="45" y1="830" x2="749" y2="830" stroke="#333" stroke-width="1.5"/>
+      <line x1="45" y1="868" x2="749" y2="868" stroke="#333" stroke-width="1"/>
+      <line x1="45" y1="906" x2="749" y2="906" stroke="#333" stroke-width="1"/>
+      <line x1="45" y1="944" x2="749" y2="944" stroke="#333" stroke-width="1.5"/>
+      <line x1="255" y1="798" x2="255" y2="944" stroke="#333" stroke-width="1"/>
+      <line x1="380" y1="798" x2="380" y2="944" stroke="#333" stroke-width="1"/>
+      <line x1="505" y1="798" x2="505" y2="944" stroke="#333" stroke-width="1"/>
+      <line x1="630" y1="798" x2="630" y2="944" stroke="#333" stroke-width="1"/>
+      <text x="150" y="820" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="bold" fill="#111">připojení přes</text>
+      <text x="317" y="820" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="bold" fill="#111">ping</text>
+      <text x="442" y="820" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="bold" fill="#111">jitter</text>
+      <text x="567" y="820" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="bold" fill="#111">download</text>
+      <text x="689" y="820" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="bold" fill="#111">upload</text>
+    </g>
+  </g>
+  <g aria-label="Slovníček pojmů s QR kódem">
+    <g aria-label="QR kód na speedtest.cesnet.cz">
+      <rect x="45" y="975" width="95" height="95" fill="#fff" stroke="#111" stroke-width="2"/>
+      <text x="92" y="1013" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="bold" fill="#111">QR:</text>
+      <text x="92" y="1030" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#111">speedtest.cesnet.cz</text>
+    </g>
+    <text x="165" y="990" font-family="sans-serif" font-size="13.5" fill="#111"><tspan font-weight="bold">přenosová rychlost</tspan> – jaké množství dat/informací se přenese za jednotku</text>
+    <text x="165" y="1008" font-family="sans-serif" font-size="13.5" fill="#111">času (typicky Mb/s)</text>
+    <text x="165" y="1026" font-family="sans-serif" font-size="13.5" fill="#111"><tspan font-weight="bold">ping</tspan> – rychlost odezvy vašeho připojení; čím je menší, tím lepší máme připojení</text>
+    <text x="165" y="1044" font-family="sans-serif" font-size="13.5" fill="#111"><tspan font-weight="bold">jitter</tspan> – odchylka v rychlosti připojení; čím vyšší, tím méně stabilní připojení</text>
+    <text x="165" y="1062" font-family="sans-serif" font-size="13.5" fill="#111"><tspan font-weight="bold">download/upload</tspan> – kolik dat za sekundu jsme schopni přijmout/odeslat</text>
+  </g>
+  <g aria-label="Zápatí">
+    <text x="45" y="1100" font-family="sans-serif" font-size="13" fill="#777">internet4kids.mff.cuni.cz</text>
+    <text x="740" y="1100" text-anchor="end" font-family="sans-serif" font-size="13" fill="#777">1</text>
+  </g>
+</svg>

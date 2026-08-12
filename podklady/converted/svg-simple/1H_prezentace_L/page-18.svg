@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" lang="cs">
+  <title>Zapište k novým pojmům číslo správného vysvětlení</title>
+  <desc>Přiřazovací úloha: čtyři pojmy (server, datové centrum, Wi-Fi router, síťový router) vlevo a čtyři očíslovaná vysvětlení vpravo. Žáci přiřazují čísla k pojmům.</desc>
+  <rect x="0" y="0" width="960" height="540" fill="#ffffff"/>
+  <text x="480" y="55" font-family="sans-serif" font-size="28" font-weight="bold" fill="#1a1a1a" text-anchor="middle">Zapište k novým pojmům číslo správného vysvětlení</text>
+  <g aria-label="Pojmy">
+    <rect x="60" y="110" width="220" height="60" rx="10" fill="#ffffff" stroke="#6644cc" stroke-width="3"/>
+    <text x="170" y="147" font-family="sans-serif" font-size="21" font-weight="bold" fill="#1a1a1a" text-anchor="middle">server</text>
+    <rect x="60" y="215" width="220" height="60" rx="10" fill="#ffffff" stroke="#6644cc" stroke-width="3"/>
+    <text x="170" y="252" font-family="sans-serif" font-size="21" font-weight="bold" fill="#1a1a1a" text-anchor="middle">datové centrum</text>
+    <rect x="60" y="320" width="220" height="60" rx="10" fill="#ffffff" stroke="#6644cc" stroke-width="3"/>
+    <text x="170" y="357" font-family="sans-serif" font-size="21" font-weight="bold" fill="#1a1a1a" text-anchor="middle">Wi-Fi router</text>
+    <rect x="60" y="425" width="220" height="60" rx="10" fill="#ffffff" stroke="#6644cc" stroke-width="3"/>
+    <text x="170" y="462" font-family="sans-serif" font-size="21" font-weight="bold" fill="#1a1a1a" text-anchor="middle">síťový router</text>
+  </g>
+  <g aria-label="Vysvětlení">
+    <text x="330" y="135" font-family="sans-serif" font-size="20" font-weight="bold" fill="#6644cc">1.</text>
+    <text x="360" y="135" font-family="sans-serif" font-size="18" fill="#1a1a1a">Prostor, kde se nachází velké množství serverů.</text>
+    <text x="330" y="215" font-family="sans-serif" font-size="20" font-weight="bold" fill="#6644cc">2.</text>
+    <text x="360" y="215" font-family="sans-serif" font-size="18" fill="#1a1a1a">Počítač, kde je uloženo velké množství dat (například</text>
+    <text x="360" y="240" font-family="sans-serif" font-size="18" fill="#1a1a1a">webové stránky, videa či naše zprávy), a který</text>
+    <text x="360" y="265" font-family="sans-serif" font-size="18" fill="#1a1a1a">poskytuje nějaké služby.</text>
+    <text x="330" y="330" font-family="sans-serif" font-size="20" font-weight="bold" fill="#6644cc">3.</text>
+    <text x="360" y="330" font-family="sans-serif" font-size="18" fill="#1a1a1a">Po internetové síti směruje data až k cíli</text>
+    <text x="360" y="355" font-family="sans-serif" font-size="18" fill="#1a1a1a">(např. k serveru webové stránky).</text>
+    <text x="330" y="440" font-family="sans-serif" font-size="20" font-weight="bold" fill="#6644cc">4.</text>
+    <text x="360" y="440" font-family="sans-serif" font-size="18" fill="#1a1a1a">Zařízení, které nám umožňuje se připojit přes Wi-Fi.</text>
+  </g>
+  <text x="930" y="522" font-family="sans-serif" font-size="12" fill="#999999" text-anchor="end">18</text>
+</svg>

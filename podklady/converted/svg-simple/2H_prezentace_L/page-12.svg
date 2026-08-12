@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" lang="cs">
+  <title>Kdo už někdy někomu udělal hotspot?</title>
+  <desc>Diskusní slide na korálovém pozadí se dvěma otázkami o zkušenosti žáků s hotspotem.</desc>
+  <rect x="0" y="0" width="960" height="540" fill="#e8635a"/>
+  <text x="480" y="245" text-anchor="middle" font-family="sans-serif" font-size="40" font-weight="bold" fill="#1a1a2e">Kdo už někdy někomu udělal <tspan fill="#ffffff">hotspot</tspan>?</text>
+  <text x="480" y="315" text-anchor="middle" font-family="sans-serif" font-size="40" font-weight="bold" fill="#1a1a2e">Kdo to někdy využil?</text>
+  <text x="930" y="525" text-anchor="end" font-family="sans-serif" font-size="14" fill="#a83a32">12</text>
+</svg>

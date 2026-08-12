@@ -1,0 +1,39 @@
+{
+  "type": "pairs",
+  "title": "Jednotky a rychlosti",
+  "instruction": "Přečti definici a vyber správný pojem.",
+  "pairs": [
+    {
+      "a": "Bajt (B)",
+      "b": "Má 8 bitů."
+    },
+    {
+      "a": "GB",
+      "b": "Je 1 000 MB."
+    },
+    {
+      "a": "Mb/s",
+      "b": "Jednotka rychlosti přenosu dat."
+    },
+    {
+      "a": "UTP kabel",
+      "b": "Typicky přenáší asi 100 Mb/s do 100 m."
+    },
+    {
+      "a": "Optický kabel",
+      "b": "Přenáší desítky Gb/s až asi 100 km."
+    },
+    {
+      "a": "Geostacionární satelit",
+      "b": "Je asi 35 000 km vysoko, proto má velký ping."
+    },
+    {
+      "a": "Ping",
+      "b": "Odezva spojení, měří se v milisekundách."
+    },
+    {
+      "a": "Paket",
+      "b": "Mívá zhruba 1 500 B."
+    }
+  ]
+}

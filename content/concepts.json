@@ -1,0 +1,456 @@
+{
+  "version": 1,
+  "generatedBy": "scripts/migrate-facets.js",
+  "concepts": [
+    {
+      "id": "ch1-servery",
+      "title": "Kde je to všechno uloženo?",
+      "chapter": "ch1-jak-vypada-internet",
+      "anchor": "ch1-servery",
+      "anchorPath": "ch1-jak-vypada-internet/01-spine-servery-a-datacentra.md",
+      "provenance": "anchored",
+      "blocks": [
+        "ch1-servery",
+        "ch1-klient-server",
+        "ch1-pocitame"
+      ],
+      "contract": {
+        "objective": "Všechna videa z YouTube by se do tvého mobilu nevešla ani náhodou. Tak kde vlastně jsou?",
+        "objectiveSource": "teaser-bootstrap",
+        "mustCover": [],
+        "recallQ": "Co je to server a k čemu slouží?",
+        "recallA": "Server je počítač s velkým úložištěm dat (videa, stránky, zprávy), který plní naše požadavky – anglicky serve znamená sloužit. Velké firmy jich mají tisíce v datových centrech.",
+        "forbidden": [
+          "invented statistics or benchmark numbers",
+          "invented citations, URLs, or paper titles",
+          "claiming a single method fully solves the problem"
+        ]
+      }
+    },
+    {
+      "id": "ch1-kabely",
+      "title": "Kabely přes půl světa",
+      "chapter": "ch1-jak-vypada-internet",
+      "anchor": "ch1-kabely",
+      "anchorPath": "ch1-jak-vypada-internet/02-spine-kabely.md",
+      "provenance": "anchored",
+      "blocks": [
+        "ch1-kabely",
+        "ch1-mapa-kabelu"
+      ],
+      "contract": {
+        "objective": "Video k tobě 'teče' jako voda hadicí – a klidně po dně oceánu.",
+        "objectiveSource": "teaser-bootstrap",
+        "mustCover": [],
+        "recallQ": "Jak se data nejčastěji dostanou přes oceán, třeba z Evropy do Ameriky?",
+        "recallA": "Podmořskými kabely po dně oceánu. Naprostá většina dat cestuje v kabelech – satelity se používají jen výjimečně.",
+        "forbidden": [
+          "invented statistics or benchmark numbers",
+          "invented citations, URLs, or paper titles",
+          "claiming a single method fully solves the problem"
+        ]
+      }
+    },
+    {
+      "id": "ch1-routery",
+      "title": "Routery: chytré křižovatky",
+      "chapter": "ch1-jak-vypada-internet",
+      "anchor": "ch1-routery",
+      "anchorPath": "ch1-jak-vypada-internet/03-spine-routery.md",
+      "provenance": "anchored",
+      "blocks": [
+        "ch1-routery",
+        "ch1-pakety",
+        "ch1-obsah-paketu",
+        "ch1-nakresli-sit",
+        "ch1-traceroute"
+      ],
+      "contract": {
+        "objective": "Na každé křižovatce sítě stojí dopravní policista, který ukazuje datům, kudy jet.",
+        "objectiveSource": "teaser-bootstrap",
+        "mustCover": [],
+        "recallQ": "K čemu slouží síťový router a jak se liší od Wi-Fi routeru doma?",
+        "recallA": "Síťový router je chytrá křižovatka – pozná, kam mají data dorazit, a pošle je správným směrem k cíli. Wi-Fi router je krabička doma, díky které se tvoje zařízení připojí k síti.",
+        "forbidden": [
+          "invented statistics or benchmark numbers",
+          "invented citations, URLs, or paper titles",
+          "claiming a single method fully solves the problem"
+        ]
+      }
+    },
+    {
+      "id": "ch1-nema-reditele",
+      "title": "Internet nemá ředitele",
+      "chapter": "ch1-jak-vypada-internet",
+      "anchor": "ch1-nema-reditele",
+      "anchorPath": "ch1-jak-vypada-internet/04-spine-internet-nema-reditele.md",
+      "provenance": "anchored",
+      "blocks": [
+        "ch1-nema-reditele",
+        "ch1-hra-decentralizace",
+        "ch1-komiks-nema-reditele",
+        "ch1-hra-paket-order"
+      ],
+      "contract": {
+        "objective": "Někdo překopne kabel mezi Prahou a Brnem. Dojde tvoje zpráva kamarádce? Ano – a tady je proč.",
+        "objectiveSource": "teaser-bootstrap",
+        "mustCover": [],
+        "recallQ": "Co znamená, že je internet decentralizovaný, a proč je to výhoda?",
+        "recallA": "Internet nemá žádné jedno řídící centrum ani ředitele – servery a routery jsou rozprostřeny po celém světě. Díky tomu je odolný (výpadek jednoho místa síť neochromí, routery najdou objížďku) a rychlý.",
+        "forbidden": [
+          "invented statistics or benchmark numbers",
+          "invented citations, URLs, or paper titles",
+          "claiming a single method fully solves the problem"
+        ]
+      }
+    },
+    {
+      "id": "ch1-shrnuti",
+      "title": "Co už víš o internetu",
+      "chapter": "ch1-jak-vypada-internet",
+      "anchor": "ch1-shrnuti",
+      "anchorPath": "ch1-jak-vypada-internet/06-spine-shrnuti.md",
+      "provenance": "anchored",
+      "blocks": [
+        "ch1-shrnuti",
+        "ch1-reflexe"
+      ],
+      "contract": {
+        "objective": "Servery, kabely, routery, žádný ředitel – celá kapitola na jedné stránce.",
+        "objectiveSource": "teaser-bootstrap",
+        "mustCover": [],
+        "recallQ": "Z čeho se skládá internet a proč funguje, i když se někde přeruší spojení?",
+        "recallA": "Ze serverů v datových centrech, kabelů (i podmořských) a routerů – chytrých křižovatek. Je decentralizovaný: nemá žádné centrum a routery umí data poslat objížďkou, takže výpadek jednoho místa síť nezastaví.",
+        "forbidden": [
+          "invented statistics or benchmark numbers",
+          "invented citations, URLs, or paper titles",
+          "claiming a single method fully solves the problem"
+        ]
+      }
+    },
+    {
+      "id": "ch2-wifi-router",
+      "title": "Wi-Fi a router: odkud se bere signál",
+      "chapter": "ch2-jak-se-pripojujeme",
+      "anchor": "ch2-wifi-router",
+      "anchorPath": "ch2-jak-se-pripojujeme/01-spine-wifi-a-router.md",
+      "provenance": "anchored",
+      "blocks": [
+        "ch2-wifi-router",
+        "ch2-prenosova-rychlost",
+        "ch2-stahovani-vypocet",
+        "ch2-hra-zapojeni"
+      ],
+      "contract": {
+        "objective": "Wi-Fi není jen tak kolem nás. Vysílá ji krabička, která musí být zapojená dvěma kabely — víš kterými?",
+        "objectiveSource": "teaser-bootstrap",
+        "mustCover": [],
+        "recallQ": "Co všechno musí být u Wi-Fi routeru zapojeno, aby ti doma fungoval internet?",
+        "recallA": "Dva kabely: napájení z elektřiny a kabel do internetové přípojky ve zdi — tudy do routeru internet přitéká. Bez něj Wi-Fi síť sice uvidíš, ale nic se nenačte.",
+        "forbidden": [
+          "invented statistics or benchmark numbers",
+          "invented citations, URLs, or paper titles",
+          "claiming a single method fully solves the problem"
+        ]
+      }
+    },
+    {
+      "id": "ch2-kabely",
+      "title": "Kabely: nejrychlejší cesta, i pod oceánem",
+      "chapter": "ch2-jak-se-pripojujeme",
+      "anchor": "ch2-kabely",
+      "anchorPath": "ch2-jak-se-pripojujeme/02-spine-kabelove-pripojeni.md",
+      "provenance": "anchored",
+      "blocks": [
+        "ch2-kabely",
+        "ch2-utp-vs-optika",
+        "ch2-opravy-kabelu"
+      ],
+      "contract": {
+        "objective": "Jak se dostane zpráva z Česka do Ameriky? Neuvěříš — většinu cesty pluje kabelem po dně oceánu.",
+        "objectiveSource": "teaser-bootstrap",
+        "mustCover": [],
+        "recallQ": "Jak se dostane zpráva z Česka přes oceán do Ameriky?",
+        "recallA": "Podmořským kabelem položeným na dně oceánu. Kontinenty propojují podmořské kabely — většinu cesty zpráva putuje kabelem, ne vzduchem ani přes satelit.",
+        "forbidden": [
+          "invented statistics or benchmark numbers",
+          "invented citations, URLs, or paper titles",
+          "claiming a single method fully solves the problem"
+        ]
+      }
+    },
+    {
+      "id": "ch2-mobilni-data",
+      "title": "Mobilní data a BTS vysílače",
+      "chapter": "ch2-jak-se-pripojujeme",
+      "anchor": "ch2-mobilni-data",
+      "anchorPath": "ch2-jak-se-pripojujeme/03-spine-mobilni-data-bts.md",
+      "provenance": "anchored",
+      "blocks": [
+        "ch2-mobilni-data"
+      ],
+      "contract": {
+        "objective": "V lese není Wi-Fi ani kabel — a mapa se stejně načte. Kdo ti to připojení posílá?",
+        "objectiveSource": "teaser-bootstrap",
+        "mustCover": [],
+        "recallQ": "K jakému zařízení se připojuje tvůj mobil, když používáš mobilní data?",
+        "recallA": "K nejbližšímu BTS vysílači — věži nebo anténě na střeše domu, která šíří mobilní signál do okolí asi 5 km. Přes BTS probíhá i volání a SMS.",
+        "forbidden": [
+          "invented statistics or benchmark numbers",
+          "invented citations, URLs, or paper titles",
+          "claiming a single method fully solves the problem"
+        ]
+      }
+    },
+    {
+      "id": "ch2-hotspot-satelity",
+      "title": "Hotspot a satelity: internet skoro všude",
+      "chapter": "ch2-jak-se-pripojujeme",
+      "anchor": "ch2-hotspot-satelity",
+      "anchorPath": "ch2-jak-se-pripojujeme/04-spine-hotspot-a-satelity.md",
+      "provenance": "anchored",
+      "blocks": [
+        "ch2-hotspot-satelity",
+        "ch2-satelity-starlink",
+        "ch2-komiks-satelit"
+      ],
+      "contract": {
+        "objective": "Kamarád nemá data? Půjč mu svůj internet! A co když jsi na lodi uprostřed oceánu?",
+        "objectiveSource": "teaser-bootstrap",
+        "mustCover": [],
+        "recallQ": "Co je to hotspot a kdy se k připojení používají satelity?",
+        "recallA": "Hotspot promění tvůj telefon v malý Wi-Fi router — sdílí svá mobilní data dalším zařízením. Satelity se používají jen v odlehlých oblastech (hory, oceán), kde nejsou kabely ani BTS vysílače; jsou drahé a signál může rušit počasí.",
+        "forbidden": [
+          "invented statistics or benchmark numbers",
+          "invented citations, URLs, or paper titles",
+          "claiming a single method fully solves the problem"
+        ]
+      }
+    },
+    {
+      "id": "ch2-shrnuti",
+      "title": "Shrnutí: které připojení kdy?",
+      "chapter": "ch2-jak-se-pripojujeme",
+      "anchor": "ch2-shrnuti",
+      "anchorPath": "ch2-jak-se-pripojujeme/05-spine-shrnuti.md",
+      "provenance": "anchored",
+      "blocks": [
+        "ch2-shrnuti",
+        "ch2-speedtest-experiment",
+        "ch2-game-pripojeni",
+        "ch2-hra-jednotky",
+        "ch2-q-chata"
+      ],
+      "contract": {
+        "objective": "Kabel, Wi-Fi, mobilní data, satelit — čtyři cesty na internet. Která je nejlepší? Přijde na to!",
+        "objectiveSource": "teaser-bootstrap",
+        "mustCover": [],
+        "recallQ": "Které připojení je typicky nejrychlejší a nejspolehlivější — a proč?",
+        "recallA": "Kabel. Nevadí mu zdi ani počasí a data po něm tečou nejrychleji — proto tvoří i páteř celého internetu. Nevýhoda: nejde jednoduše zapojit do mobilu a překáží.",
+        "forbidden": [
+          "invented statistics or benchmark numbers",
+          "invented citations, URLs, or paper titles",
+          "claiming a single method fully solves the problem"
+        ]
+      }
+    },
+    {
+      "id": "ch3-dino",
+      "title": "Dinosaurus v náklaďácích",
+      "chapter": "ch3-digitalni-stopa",
+      "anchor": "ch3-dino",
+      "anchorPath": "ch3-digitalni-stopa/01-spine-dinosaurus-v-nakladacich.md",
+      "provenance": "anchored",
+      "blocks": [
+        "ch3-dino"
+      ],
+      "contract": {
+        "objective": "Jak poslat obří kostru dinosaura do jiného města, když se nevejde do jednoho náklaďáku? Přesně takhle cestují data.",
+        "objectiveSource": "teaser-bootstrap",
+        "mustCover": [],
+        "recallQ": "Proč nevadí, že náklaďáky s kostmi dinosaura jedou každý jinou cestou?",
+        "recallA": "Kosti jsou očíslované a existuje plánek, jak kostra vypadá složená. V cíli se všechno složí správně, ať náklaďáky přijedou v jakémkoli pořadí. Úplně stejně cestují data po internetu.",
+        "forbidden": [
+          "invented statistics or benchmark numbers",
+          "invented citations, URLs, or paper titles",
+          "claiming a single method fully solves the problem"
+        ]
+      }
+    },
+    {
+      "id": "ch3-pakety",
+      "title": "Pakety: skládačka, která se složí sama",
+      "chapter": "ch3-digitalni-stopa",
+      "anchor": "ch3-pakety",
+      "anchorPath": "ch3-digitalni-stopa/02-spine-pakety-a-ip-adresa.md",
+      "provenance": "anchored",
+      "blocks": [
+        "ch3-pakety",
+        "ch3-kolik-paketu"
+      ],
+      "contract": {
+        "objective": "Fotka se před odesláním rozpadne na očíslované dílky. Jak je možné, že se poskládají u kamaráda, a ne u souseda?",
+        "objectiveSource": "teaser-bootstrap",
+        "mustCover": [],
+        "recallQ": "Co je to paket a podle čeho pozná cestu ke správnému zařízení?",
+        "recallA": "Paket je malý očíslovaný kousek dat, na které se rozdělí vše, co po internetu posíláme. Každý paket nese IP adresu odesílatele i příjemce — podle ní routery poznají, kam ho poslat.",
+        "forbidden": [
+          "invented statistics or benchmark numbers",
+          "invented citations, URLs, or paper titles",
+          "claiming a single method fully solves the problem"
+        ]
+      }
+    },
+    {
+      "id": "ch3-kdo-plati",
+      "title": "Kdo platí internet?",
+      "chapter": "ch3-digitalni-stopa",
+      "anchor": "ch3-kdo-plati",
+      "anchorPath": "ch3-digitalni-stopa/03-spine-kdo-plati-internet.md",
+      "provenance": "anchored",
+      "blocks": [
+        "ch3-kdo-plati",
+        "ch3-reklamy-sidebar"
+      ],
+      "contract": {
+        "objective": "Žádný ředitel internetu neexistuje. Kdo tedy platí všechny ty kabely, routery a servery?",
+        "objectiveSource": "teaser-bootstrap",
+        "mustCover": [],
+        "recallQ": "Kdo platí internet, když žádný „ředitel internetu“ neexistuje?",
+        "recallA": "Za připojení se platí poskytovatelům internetu (ISP) — doma rodiče, v kavárně její majitel. Spousta webů se navíc živí reklamou: firmy platí za to, že se jejich reklama zobrazí návštěvníkům.",
+        "forbidden": [
+          "invented statistics or benchmark numbers",
+          "invented citations, URLs, or paper titles",
+          "claiming a single method fully solves the problem"
+        ]
+      }
+    },
+    {
+      "id": "ch3-cookies",
+      "title": "Cookies: šatnový lístek internetu",
+      "chapter": "ch3-digitalni-stopa",
+      "anchor": "ch3-cookies",
+      "anchorPath": "ch3-digitalni-stopa/04-spine-cookies-satnovy-listek.md",
+      "provenance": "anchored",
+      "blocks": [
+        "ch3-cookies",
+        "ch3-cookies-d-think",
+        "ch3-cookie-kod",
+        "ch3-komiks-cookie"
+      ],
+      "contract": {
+        "objective": "Co se doopravdy stane, když klikneš na „Přijmout vše“? Pomůže ti šatna v divadle.",
+        "objectiveSource": "teaser-bootstrap",
+        "mustCover": [],
+        "recallQ": "Jak funguje cookie a proč ji přirovnáváme k šatnovému lístku?",
+        "recallA": "Cookie je malý soubor, který si stránka uloží do tvého zařízení. Funguje jako šatnový lístek s číslem: když se vrátíš, server podle něj pozná, že jsi to zase ty (tvoje zařízení), a vybaví si, co si o tobě uložil — košík, jazyk, skóre.",
+        "forbidden": [
+          "invented statistics or benchmark numbers",
+          "invented citations, URLs, or paper titles",
+          "claiming a single method fully solves the problem"
+        ]
+      }
+    },
+    {
+      "id": "ch3-stopa",
+      "title": "Tvoje digitální stopa",
+      "chapter": "ch3-digitalni-stopa",
+      "anchor": "ch3-stopa",
+      "anchorPath": "ch3-digitalni-stopa/05-spine-digitalni-stopa.md",
+      "provenance": "anchored",
+      "blocks": [
+        "ch3-stopa",
+        "ch3-google-d-think",
+        "ch3-detektiv-krecek",
+        "ch3-hra-stopa-sort",
+        "ch3-reflexe"
+      ],
+      "contract": {
+        "objective": "Projdi se čerstvým sněhem a zůstanou po tobě stopy. Na internetu je to stejné — jen se stopy samy nerozpustí.",
+        "objectiveSource": "teaser-bootstrap",
+        "mustCover": [],
+        "recallQ": "Co je digitální stopa a co z ní servery dělají?",
+        "recallA": "Digitální stopa je všechno, co po nás na internetu zůstává: fotky, lajky, komentáře, vyhledávání, kliknutí — i to, co o nás sdílejí ostatní. Servery z ní odhadují, co nás zajímá, ale jen podle pravděpodobnosti — mohou se plést.",
+        "forbidden": [
+          "invented statistics or benchmark numbers",
+          "invented citations, URLs, or paper titles",
+          "claiming a single method fully solves the problem"
+        ]
+      }
+    },
+    {
+      "id": "ch4-jak-vypada-internet",
+      "title": "Opakování: Jak vypadá internet",
+      "chapter": "ch4-velke-opakovani",
+      "anchor": "ch4-jak-vypada-internet",
+      "anchorPath": "ch4-velke-opakovani/01-spine-jak-vypada-internet.md",
+      "provenance": "anchored",
+      "blocks": [
+        "ch4-jak-vypada-internet",
+        "ch4-tezsi-pojmy"
+      ],
+      "contract": {
+        "objective": "Servery, routery, pakety a kabely na dně oceánu — zvládneš celou mapu internetu poskládat z hlavy?",
+        "objectiveSource": "teaser-bootstrap",
+        "mustCover": [],
+        "recallQ": "Co musí obsahovat každý paket, aby dorazil na správné místo a mohla se vrátit odpověď?",
+        "recallA": "IP adresu příjemce (aby ho routery poslaly správným směrem) a IP adresu odesílatele (aby se vědělo, odkud přišel a kam poslat odpověď).",
+        "forbidden": [
+          "invented statistics or benchmark numbers",
+          "invented citations, URLs, or paper titles",
+          "claiming a single method fully solves the problem"
+        ]
+      }
+    },
+    {
+      "id": "ch4-jak-se-pripojujeme",
+      "title": "Opakování: Jak se připojujeme",
+      "chapter": "ch4-velke-opakovani",
+      "anchor": "ch4-jak-se-pripojujeme",
+      "anchorPath": "ch4-velke-opakovani/02-spine-jak-se-pripojujeme.md",
+      "provenance": "anchored",
+      "blocks": [
+        "ch4-jak-se-pripojujeme"
+      ],
+      "contract": {
+        "objective": "Wi-Fi, mobilní data, kabel, nebo rovnou satelit? Rychlé shrnutí všech cest na internet.",
+        "objectiveSource": "teaser-bootstrap",
+        "mustCover": [],
+        "recallQ": "Jak se připojíš k internetu venku, kde není žádná Wi-Fi, a co k tomu potřebuješ?",
+        "recallA": "Přes mobilní data: signál vysílá věž BTS a do mobilní sítě tě pustí SIM karta od operátora. Z mobilu pak můžeš zapnout hotspot a připojit i další lidi.",
+        "forbidden": [
+          "invented statistics or benchmark numbers",
+          "invented citations, URLs, or paper titles",
+          "claiming a single method fully solves the problem"
+        ]
+      }
+    },
+    {
+      "id": "ch4-digitalni-stopa",
+      "title": "Opakování: Digitální stopa",
+      "chapter": "ch4-velke-opakovani",
+      "anchor": "ch4-digitalni-stopa",
+      "anchorPath": "ch4-velke-opakovani/03-spine-digitalni-stopa.md",
+      "provenance": "anchored",
+      "blocks": [
+        "ch4-digitalni-stopa",
+        "ch4-muj-telling",
+        "ch4-bingo",
+        "ch4-game-pojmy-match",
+        "ch4-reflexe"
+      ],
+      "contract": {
+        "objective": "Každý lajk, klik a komentář po tobě něco zanechá. Poslední velké téma k zopakování.",
+        "objectiveSource": "teaser-bootstrap",
+        "mustCover": [],
+        "recallQ": "Co je datová stopa a jak souvisí s cookies a personalizací?",
+        "recallA": "Datová stopa je záznam o všem, co na internetu děláš. Servery si o tobě ukládají malé soubory cookies a podle nich ti přizpůsobují obsah — tomu se říká personalizace.",
+        "forbidden": [
+          "invented statistics or benchmark numbers",
+          "invented citations, URLs, or paper titles",
+          "claiming a single method fully solves the problem"
+        ]
+      }
+    }
+  ]
+}

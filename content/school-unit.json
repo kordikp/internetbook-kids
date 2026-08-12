@@ -1,0 +1,149 @@
+{
+  "unit": "inf-zs2-internet",
+  "title": "Jak funguje internet — blok 4 hodin",
+  "grade": "6-9",
+  "ticketThreshold": 0.7,
+  "phases": [
+    {
+      "id": "DP1",
+      "kind": "home",
+      "title": "Domácí příprava 1",
+      "topic": "Jak vypadá internet",
+      "what": "Projdi misi: přečti 5 základních sekcí o serverech, kabelech a routerech a odpověz na boss otázku.",
+      "mission": "hodina1",
+      "exit": {
+        "type": "ticket",
+        "label": "Vstupenka na 2. hodinu"
+      },
+      "missionCore": [
+        "ch1-servery",
+        "ch1-kabely",
+        "ch1-routery",
+        "ch1-nema-reditele",
+        "ch1-shrnuti"
+      ],
+      "est": "~25 min"
+    },
+    {
+      "id": "H2",
+      "kind": "class",
+      "title": "2. hodina ve třídě",
+      "topic": "Jak se připojujeme",
+      "what": "Přines vstupenku (stačí obrazovka s kódem). Ve třídě: rozcvička z minula, aktivita k připojení, zadání další přípravy.",
+      "entry": {
+        "ticket": "DP1"
+      }
+    },
+    {
+      "id": "DP2",
+      "kind": "home",
+      "title": "Domácí příprava 2",
+      "topic": "Připojení + tutorovaný úkol",
+      "what": "Projdi misi o typech připojení a pak splň tutorovaný úkol: změř rychlost svého internetu a obhaj své závěry u AI zkoušejícího (3 checkpointy).",
+      "mission": "hodina2",
+      "tutored": {
+        "id": "tc-L2",
+        "title": "Změř a vysvětli svoje připojení",
+        "goal": "Změříš rychlost svého připojení na speedtest.cesnet.cz, vysvětlíš naměřená čísla a porovnáš dva typy připojení.",
+        "checkpoints": [
+          {
+            "id": "c1",
+            "prompt": "Změř rychlost svého připojení (speedtest.cesnet.cz nebo podobný). Napiš, KDE jsi měřil (Wi-Fi doma / mobilní data / jinde) a JAKÁ čísla ti vyšla (download, upload, případně ping).",
+            "hints": [
+              "konkrétní naměřené hodnoty",
+              "download",
+              "upload",
+              "kde měřil"
+            ]
+          },
+          {
+            "id": "c2",
+            "prompt": "Vysvětli vlastními slovy, co tvoje naměřená čísla znamenají: co říká download, co upload a k čemu je ping. Stačilo by tvoje připojení na videohovor celé třídy?",
+            "hints": [
+              "download = stahování dat",
+              "upload = odesílání",
+              "ping = odezva",
+              "úsudek o videohovoru"
+            ]
+          },
+          {
+            "id": "c3",
+            "prompt": "Porovnej svoje připojení s jedním JINÝM typem (kabel vs. Wi-Fi vs. mobilní data vs. satelit): které by bylo v tvé situaci lepší a proč?",
+            "hints": [
+              "srovnání dvou typů",
+              "výhoda a nevýhoda",
+              "vlastní situace"
+            ]
+          }
+        ]
+      },
+      "exit": {
+        "type": "ticket",
+        "label": "Vstupenka na 3. hodinu"
+      },
+      "missionCore": [
+        "ch2-wifi-router",
+        "ch2-kabely",
+        "ch2-mobilni-data",
+        "ch2-hotspot-satelity",
+        "ch2-shrnuti"
+      ],
+      "est": "~35 min"
+    },
+    {
+      "id": "H3",
+      "kind": "class",
+      "title": "3. hodina ve třídě",
+      "topic": "Co o nás ví internet",
+      "what": "Přines vstupenku a report z tutorovaného úkolu. Ve třídě: digitální stopa, start práce na tellingu.",
+      "entry": {
+        "ticket": "DP2"
+      }
+    },
+    {
+      "id": "DP3",
+      "kind": "home",
+      "title": "Domácí příprava 3",
+      "topic": "Digitální stopa + tvůj telling",
+      "what": "Projdi misi o digitální stopě a vytvoř svůj telling: vlastní podání jednoho tématu (text si můžeš nechat přepsat AI, nebo ho napiš sám).",
+      "mission": "hodina3",
+      "telling": {
+        "brief": "Vyber si jedno téma bloku (cesta paketu, Wi-Fi doma, cookies, digitální stopa…) a vytvoř VLASTNÍ podání pro mladšího spolužáka: vlastní přirovnání, aspoň 5 pojmů z bloku. Otevři sekci k tématu, označ text (nebo tlačítko Remix) a přepiš ji po svém — ručně, nebo popiš AI, jak to chceš říct jinak. Ulož si výsledek (Accept), případně sdílej se třídou (Accept & share).",
+        "peerReview": "Přehraj svůj telling spolužákovi nebo někomu doma: 1 věc, která se povedla + 1 tip na zlepšení. Poznámky si vezmi na obhajobu do 4. hodiny."
+      },
+      "exit": {
+        "type": "ticket",
+        "label": "Vstupenka na 4. hodinu"
+      },
+      "missionCore": [
+        "ch3-dino",
+        "ch3-pakety",
+        "ch3-kdo-plati",
+        "ch3-cookies",
+        "ch3-stopa"
+      ],
+      "est": "~35 min"
+    },
+    {
+      "id": "H4",
+      "kind": "class",
+      "title": "4. hodina: velké finále",
+      "topic": "Obhajoby a boss kvíz",
+      "what": "Obhajoby tellingů před třídou, velké opakování a závěrečný boss kvíz celého bloku. Pak si vyzvedni certifikát v Profilu.",
+      "entry": {
+        "ticket": "DP3"
+      },
+      "mission": "hodina4",
+      "exit": {
+        "type": "certificate",
+        "label": "Certifikát bloku"
+      },
+      "missionCore": [
+        "ch4-jak-vypada-internet",
+        "ch4-jak-se-pripojujeme",
+        "ch4-digitalni-stopa"
+      ],
+      "est": "~20 min"
+    }
+  ]
+}

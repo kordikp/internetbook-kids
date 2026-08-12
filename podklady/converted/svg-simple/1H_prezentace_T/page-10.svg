@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" lang="cs">
+  <title>DATOVÁ CENTRA</title>
+  <desc>Slide o datových centrech: po světě jich je asi 8000. Vlevo mapa světa s bublinovým kartogramem počtu datových center, vpravo náznak fotografie budovy datového centra.</desc>
+  <rect x="0" y="0" width="960" height="540" fill="#4a3a9e"/>
+  <text x="60" y="70" font-family="sans-serif" font-size="40" font-weight="bold" fill="#ffffff">DATOVÁ CENTRA</text>
+  <text x="60" y="115" font-family="sans-serif" font-size="24" fill="#d9d2f5">Po světě je jich asi <tspan font-weight="bold" fill="#f5c518">8000</tspan>.</text>
+  <g role="img" aria-label="Mapa počtu datových center ve světě">
+    <title>Bublinový kartogram „Number of data centers“: fialové kroužky podle počtu datových center (legenda 194, 100, 30, 15, 5, 1), zeleně země s podílem uživatelů internetu nad světovým průměrem 48 %. Nejvíce kroužků je v USA a západní Evropě.</title>
+    <rect x="55" y="150" width="530" height="310" rx="10" fill="#f2f6fa" stroke="#b9aee8" stroke-width="2"/>
+    <ellipse cx="170" cy="245" rx="70" ry="42" fill="#bfe3bf"/>
+    <ellipse cx="330" cy="235" rx="40" ry="30" fill="#bfe3bf"/>
+    <ellipse cx="460" cy="250" rx="65" ry="42" fill="#dddddd"/>
+    <ellipse cx="215" cy="345" rx="32" ry="45" fill="#dddddd"/>
+    <ellipse cx="360" cy="345" rx="30" ry="45" fill="#dddddd"/>
+    <ellipse cx="505" cy="380" rx="38" ry="20" fill="#bfe3bf"/>
+    <circle cx="135" cy="240" r="24" fill="#8a6fd0" fill-opacity="0.7"/>
+    <circle cx="200" cy="248" r="16" fill="#8a6fd0" fill-opacity="0.7"/>
+    <circle cx="328" cy="230" r="19" fill="#8a6fd0" fill-opacity="0.7"/>
+    <circle cx="490" cy="245" r="9" fill="#8a6fd0" fill-opacity="0.7"/>
+    <circle cx="415" cy="280" r="6" fill="#8a6fd0" fill-opacity="0.7"/>
+    <circle cx="225" cy="345" r="6" fill="#8a6fd0" fill-opacity="0.7"/>
+    <circle cx="368" cy="355" r="5" fill="#8a6fd0" fill-opacity="0.7"/>
+    <circle cx="508" cy="380" r="6" fill="#8a6fd0" fill-opacity="0.7"/>
+    <text x="90" y="415" font-family="sans-serif" font-size="13" font-weight="bold" fill="#333333">Number of data centers</text>
+    <circle cx="100" cy="438" r="12" fill="none" stroke="#8a6fd0" stroke-width="2"/>
+    <circle cx="128" cy="441" r="8" fill="none" stroke="#8a6fd0" stroke-width="2"/>
+    <circle cx="148" cy="443" r="5" fill="none" stroke="#8a6fd0" stroke-width="2"/>
+    <circle cx="163" cy="445" r="3" fill="none" stroke="#8a6fd0" stroke-width="2"/>
+    <text x="178" y="448" font-family="sans-serif" font-size="11" fill="#333333">194 / 100 / 30 / 15 / 5 / 1</text>
+    <rect x="330" y="430" width="12" height="12" fill="#bfe3bf"/>
+    <text x="348" y="441" font-family="sans-serif" font-size="10" fill="#333333">uživatelé internetu nad prům. 48 %</text>
+  </g>
+  <g role="img" aria-label="Budova datového centra">
+    <title>Fotografie moderní prosklené budovy datového centra při západu slunce.</title>
+    <rect x="620" y="150" width="300" height="310" rx="10" fill="#f0d0a0" stroke="#b9aee8" stroke-width="2"/>
+    <rect x="655" y="250" width="230" height="160" fill="#7a8ba8"/>
+    <rect x="668" y="265" width="40" height="130" fill="#b8cce0"/>
+    <rect x="716" y="265" width="40" height="130" fill="#b8cce0"/>
+    <rect x="764" y="265" width="40" height="130" fill="#b8cce0"/>
+    <rect x="812" y="265" width="40" height="130" fill="#b8cce0"/>
+    <circle cx="700" cy="205" r="24" fill="#e8a04a"/>
+    <text x="770" y="440" font-family="sans-serif" font-size="14" fill="#555555" text-anchor="middle">budova datového centra</text>
+  </g>
+  <text x="55" y="495" font-family="sans-serif" font-size="10" fill="#b9aee8">Zdroje: www.datacentermap.com; ITU, www.itu.int; PiDatacenters, CC BY-SA 4.0 Deed</text>
+  <text x="930" y="522" font-family="sans-serif" font-size="12" fill="#b9aee8" text-anchor="end">10</text>
+</svg>

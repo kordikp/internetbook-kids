@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" lang="cs">
+  <title>Kabely tvořící internet — kovový (UTP) kabel</title>
+  <desc>Kovový (UTP) kabel: přenosová rychlost 100 Mb/s, dosah 100 metrů. Doplněno fotografiemi switche, kabelů a serverového racku.</desc>
+  <text x="480" y="56" text-anchor="middle" font-family="sans-serif" font-size="34" font-weight="bold" fill="#2d1b69">KABELY TVOŘÍCÍ INTERNET</text>
+  <g aria-label="Parametry kovového kabelu">
+    <text x="480" y="110" text-anchor="middle" font-family="sans-serif" font-size="26" font-weight="bold" fill="#1a1a2e">KOVOVÝ (UTP) KABEL</text>
+    <text x="480" y="145" text-anchor="middle" font-family="sans-serif" font-size="20" fill="#1a1a2e">• přenosová rychlost 100 Mb/s</text>
+    <text x="480" y="175" text-anchor="middle" font-family="sans-serif" font-size="20" fill="#1a1a2e">• dosah 100 metrů</text>
+  </g>
+  <g role="img" aria-label="Fotografie switche na podlaze">
+    <title>Malý switch NETGEAR na dřevěné podlaze se změtí zapojených síťových kabelů.</title>
+    <rect x="60" y="220" width="260" height="200" fill="#f2f2f2" stroke="#999"/>
+    <rect x="130" y="310" width="120" height="32" rx="4" fill="#ddd" stroke="#555"/>
+    <path d="M 130 320 Q 90 300 85 340 M 250 320 Q 290 295 295 340" fill="none" stroke="#888" stroke-width="3"/>
+    <text x="190" y="445" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#555">switch se změtí kabelů</text>
+  </g>
+  <g role="img" aria-label="Fotografie kabelů">
+    <title>Detail smotaných kabelů — modrý UTP kabel s konektorem RJ-45 a žlutý optický kabel s modrými konektory.</title>
+    <rect x="350" y="220" width="260" height="200" fill="#f2f2f2" stroke="#999"/>
+    <circle cx="440" cy="320" r="42" fill="none" stroke="#4a9fd8" stroke-width="7"/>
+    <circle cx="530" cy="320" r="42" fill="none" stroke="#e8b021" stroke-width="7"/>
+    <text x="480" y="445" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#555">modrý UTP a žlutý optický kabel</text>
+  </g>
+  <g role="img" aria-label="Fotografie serverového racku">
+    <title>Serverový rack se switchi a mnoha zapojenými kabely se svítícími kontrolkami.</title>
+    <rect x="640" y="220" width="260" height="200" fill="#f2f2f2" stroke="#999"/>
+    <rect x="690" y="250" width="160" height="24" fill="#ddd" stroke="#555"/>
+    <rect x="690" y="290" width="160" height="24" fill="#ddd" stroke="#555"/>
+    <rect x="690" y="330" width="160" height="24" fill="#ddd" stroke="#555"/>
+    <circle cx="835" cy="262" r="4" fill="#3fae4a"/>
+    <circle cx="835" cy="302" r="4" fill="#3fae4a"/>
+    <circle cx="835" cy="342" r="4" fill="#3fae4a"/>
+    <text x="770" y="445" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#555">serverový rack se switchi</text>
+  </g>
+  <text x="930" y="525" text-anchor="end" font-family="sans-serif" font-size="14" fill="#999">7</text>
+</svg>

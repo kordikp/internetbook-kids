@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pro učitele · Jak funguje internet — p-book</title>
+<meta name="description" content="Stránka pro učitele: odkazy k rozeslání, jak fungují vstupenky, reporty tutorovaných úkolů a export learning signálů.">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="css/skola.css?v=1">
+</head>
+<body data-page="ucitel" data-accent="teacher">
+<header class="sk-top"><a class="sk-brand" href="/start">p-book<b>://</b>skola/internet</a><span class="sk-role">učitel</span></header>
+<div class="sk-route" id="skRoute"></div>
+<main class="sk-main">
+  <p class="sk-eyebrow">Pro učitele</p>
+  <h1>Blok řídíte odkazy, ne administrací</h1>
+  <p class="sk-lead">Žádné zakládání tříd a účtů. Po každé hodině pošlete žákům jeden odkaz na domácí přípravu — kamkoliv, kam jim posíláte úkoly (Tiny, Bakaláři, Teams…). Zbytek vede p-book.</p>
+
+  <h2 style="margin-top:28px">Odkazy k rozeslání</h2>
+  <div id="skLinks"></div>
+
+  <h2 style="margin-top:30px">Jak číst výstupní brány</h2>
+  <div class="sk-q"><b>🎫 Vstupenka</b> Binární doklad o dokončené přípravě (mise + boss otázka, práh 70 %, neomezené pokusy). Kód je odvozený z fáze a data — namátkově si ho můžete nechat ukázat. Nehodnotí kvalitu; slouží jako vstup do aktivit hodiny.</div>
+  <div class="sk-q"><b>📋 Report tutorovaného úkolu (DP2)</b> Žák prošel 3 checkpointy měření rychlosti; každou odpověď hodnotil AI zkoušející (verdikt, skóre, počet pokusů, samostatně/s dopomocí). Žák vám report ukáže nebo zkopíruje — je to podklad, ne známka.</div>
+  <div class="sk-q"><b>🎨 Telling (DP3)</b> Vlastní podání tématu (ručně či s AI, vždy označené). Hodnotí se obhajoba ve 4. hodině, ne artefakt. Sdílené tellingy vidíte v knize jako komunitní vrstvu — dobré můžete povýšit.</div>
+
+  <h2 style="margin-top:30px">Learning signály (příprava na tiny.school)</h2>
+  <p>Každá dokončená brána generuje learning signál ve formátu integračního kontraktu tiny.school (doména, kompetence, úroveň, jistota). Signály zůstávají v zařízení žáka; až bude škola propojená s Tiny, potečou automaticky do profilu žáka. Do té doby je žák může exportovat a poslat vám je.</p>
+  <p><button class="sk-btn" id="skExport">Exportovat signály z tohoto zařízení (<span id="skSigCount">0</span>)</button></p>
+
+  <h2 style="margin-top:30px">Eskalační žebřík nasazení</h2>
+  <p>Nemusíte hned všechno: <b>1)</b> jen rozcvička v hodině (nulová příprava) → <b>2)</b> domácí přípravy se vstupenkami → <b>3)</b> tutorovaný úkol → <b>4)</b> tellingy s obhajobami. Každý stupeň funguje samostatně.</p>
+</main>
+<footer class="sk-foot"><div class="in">
+  <span>Materiály vychází z Internet4Kids (MFF UK &amp; PedF UK), RVP I-9-4-03 a I-9-4-05.</span>
+  <a href="/start">← rozcestník</a>
+</div></footer>
+<script type="module" src="js/skola-page.js?v=1"></script>
+</body>
+</html>

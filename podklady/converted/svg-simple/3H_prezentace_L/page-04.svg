@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" lang="cs">
+<title>Pakety</title>
+<desc>Obrázek odesílaný z telefonu se rozdělí na očíslované pakety, které putují sítí samostatně; v detailu dva pakety nesou části obrázku hor jako dílky skládačky.</desc>
+<defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#555"/></marker><marker id="arrR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#a04030"/></marker><marker id="arrP" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#6a3fc0"/></marker></defs>
+<rect x="0" y="0" width="960" height="540" fill="#ffffff"/>
+<text x="480" y="60" font-family="sans-serif" font-size="44" font-weight="bold" text-anchor="middle" fill="#3b2b7a">PAKETY</text>
+<g role="img"><title>Chytrý telefon s chatovací aplikací odesílá obrázek hor; vedle ikony aplikací Messenger, WeChat, WhatsApp, Telegram</title>
+<rect x="80" y="170" width="120" height="220" rx="14" fill="none" stroke="#333" stroke-width="2"/>
+<rect x="95" y="190" width="90" height="24" rx="6" fill="#eee" stroke="#ccc" stroke-width="1"/>
+<rect x="95" y="222" width="90" height="24" rx="6" fill="#eee" stroke="#ccc" stroke-width="1"/>
+<rect x="95" y="256" width="90" height="70" rx="0" fill="none" stroke="#999" stroke-width="1.5"/>
+<rect x="96" y="257" width="88" height="68" fill="#e2f0d9" stroke="none"/>
+<polygon points="95,305 122,256 149,305" fill="#8a7fc9"/>
+<polygon points="136,308 160,256 185,308" fill="#6f9e6a"/>
+<text x="140" y="375" font-family="sans-serif" font-size="12" font-weight="normal" text-anchor="middle" fill="#777">chat</text>
+<rect x="38" y="190" width="30" height="150" rx="8" fill="none" stroke="#999" stroke-width="1.5"/>
+<text x="53" y="212" font-family="sans-serif" font-size="12" font-weight="bold" text-anchor="middle" fill="#6a3fc0">M</text>
+<text x="53" y="248" font-family="sans-serif" font-size="12" font-weight="bold" text-anchor="middle" fill="#6a3fc0">We</text>
+<text x="53" y="284" font-family="sans-serif" font-size="12" font-weight="bold" text-anchor="middle" fill="#6a3fc0">WA</text>
+<text x="53" y="320" font-family="sans-serif" font-size="12" font-weight="bold" text-anchor="middle" fill="#6a3fc0">T</text>
+</g>
+<g aria-label="Cesta sítí, po které putují očíslované pakety">
+<line x1="205" y1="430" x2="930" y2="430" stroke="#d9a441" stroke-width="8" marker-end="url(#arr)"/>
+<rect x="240" y="412" width="30" height="22" rx="3" fill="#f5d68a" stroke="#a3742c" stroke-width="1.5"/>
+<text x="255" y="428" font-family="sans-serif" font-size="13" font-weight="bold" text-anchor="middle" fill="#000">3.</text>
+<rect x="280" y="412" width="30" height="22" rx="3" fill="#f5d68a" stroke="#a3742c" stroke-width="1.5"/>
+<text x="295" y="428" font-family="sans-serif" font-size="13" font-weight="bold" text-anchor="middle" fill="#000">2.</text>
+<rect x="320" y="412" width="30" height="22" rx="3" fill="#f5d68a" stroke="#a3742c" stroke-width="1.5"/>
+<text x="335" y="428" font-family="sans-serif" font-size="13" font-weight="bold" text-anchor="middle" fill="#000">1.</text>
+<rect x="560" y="412" width="30" height="22" rx="3" fill="#f5d68a" stroke="#a3742c" stroke-width="1.5"/>
+<text x="575" y="428" font-family="sans-serif" font-size="13" font-weight="bold" text-anchor="middle" fill="#000">2.</text>
+<rect x="600" y="412" width="30" height="22" rx="3" fill="#f5d68a" stroke="#a3742c" stroke-width="1.5"/>
+<text x="615" y="428" font-family="sans-serif" font-size="13" font-weight="bold" text-anchor="middle" fill="#000">1.</text>
+<rect x="790" y="412" width="30" height="22" rx="3" fill="#f5d68a" stroke="#a3742c" stroke-width="1.5"/>
+<text x="805" y="428" font-family="sans-serif" font-size="13" font-weight="bold" text-anchor="middle" fill="#000">1.</text>
+</g>
+<circle cx="335" cy="423" r="28" fill="none" stroke="#6a3fc0" stroke-width="2"/>
+<line x1="335" y1="395" x2="335" y2="300" stroke="#6a3fc0" stroke-width="1.5"/>
+<g role="img"><title>Zvětšený detail: paket 1 nese horní část obrázku (nebe a vrcholky), paket 2 spodní část (hory a louka) — dílky skládačky</title>
+<rect x="280" y="100" width="600" height="200" rx="14" fill="none" stroke="#6a3fc0" stroke-width="2.5"/>
+<text x="370" y="135" font-family="sans-serif" font-size="26" font-weight="bold" text-anchor="middle" fill="#000">2.</text>
+<rect x="310" y="150" width="220" height="120" rx="0" fill="none" stroke="#999" stroke-width="1.5"/>
+<rect x="311" y="151" width="218" height="118" fill="#e2f0d9" stroke="none"/>
+<polygon points="310,234 376,150 442,234" fill="#8a7fc9"/>
+<polygon points="409,240 468,150 530,240" fill="#6f9e6a"/>
+<text x="420" y="290" font-family="sans-serif" font-size="13" font-weight="normal" text-anchor="middle" fill="#555">spodní část obrázku</text>
+<text x="690" y="135" font-family="sans-serif" font-size="26" font-weight="bold" text-anchor="middle" fill="#000">1.</text>
+<rect x="630" y="150" width="220" height="120" rx="0" fill="none" stroke="#999" stroke-width="1.5"/>
+<rect x="631" y="151" width="218" height="118" fill="#dbeafe" stroke="none"/>
+<polygon points="630,270 685,192 740,270 " fill="#93b8e8"/>
+<polygon points="718,270 780,180 850,270" fill="#7da4d8"/>
+<text x="740" y="290" font-family="sans-serif" font-size="13" font-weight="normal" text-anchor="middle" fill="#555">horní část obrázku</text>
+<line x1="540" y1="210" x2="615" y2="210" stroke="#a3742c" stroke-width="3" marker-end="url(#arr)"/>
+</g>
+<text x="930" y="528" font-family="sans-serif" font-size="13" font-weight="normal" text-anchor="end" fill="#999">4</text>
+</svg>

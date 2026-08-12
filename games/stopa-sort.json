@@ -1,0 +1,59 @@
+{
+  "type": "sort",
+  "title": "Zanechává to stopu?",
+  "instruction": "Rozhodni, zda činnost zanechává digitální stopu.",
+  "buckets": [
+    "Zanechává stopu",
+    "Nezanechává stopu"
+  ],
+  "items": [
+    {
+      "text": "Lajk na kamarádově fotce",
+      "answer": 0
+    },
+    {
+      "text": "Vyhledání „bolest zubů co pomáhá“",
+      "answer": 0
+    },
+    {
+      "text": "Nákup bot v e-shopu",
+      "answer": 0
+    },
+    {
+      "text": "Čtení papírové knihy bez aplikace",
+      "answer": 1
+    },
+    {
+      "text": "Přihlášení do online hry",
+      "answer": 0
+    },
+    {
+      "text": "Psaní do papírového sešitu",
+      "answer": 1
+    },
+    {
+      "text": "Zhlédnutí videa na YouTube",
+      "answer": 0
+    },
+    {
+      "text": "Běžný rozhovor o přestávce",
+      "answer": 1
+    },
+    {
+      "text": "Sdílení polohy v mapách",
+      "answer": 0
+    },
+    {
+      "text": "Kreslení na papír",
+      "answer": 1
+    },
+    {
+      "text": "Komentář pod videem",
+      "answer": 0
+    },
+    {
+      "text": "Kliknutí na „Přijmout vše“ na webu",
+      "answer": 0
+    }
+  ]
+}

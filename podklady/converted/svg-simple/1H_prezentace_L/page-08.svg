@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" lang="cs">
+  <title>Kolik je na světě serverů? – řešení</title>
+  <desc>Stejný hlasovací slide, ale správná odpověď D (více než 1 000 000 serverů) je zvýrazněna žlutě.</desc>
+  <rect x="0" y="0" width="960" height="540" fill="#ffffff"/>
+  <text x="480" y="110" font-family="sans-serif" font-size="40" font-weight="bold" fill="#1a1a1a" text-anchor="middle">Kolik je na světě serverů?</text>
+  <g aria-label="Možnost A">
+    <rect x="60" y="220" width="190" height="150" rx="10" fill="none" stroke="#999999" stroke-width="2"/>
+    <text x="155" y="270" font-family="sans-serif" font-size="34" font-weight="bold" fill="#6644cc" text-anchor="middle">A</text>
+    <text x="155" y="315" font-family="sans-serif" font-size="19" fill="#1a1a1a" text-anchor="middle">méně než <tspan font-weight="bold">10</tspan></text>
+  </g>
+  <g aria-label="Možnost B">
+    <rect x="275" y="220" width="190" height="150" rx="10" fill="none" stroke="#999999" stroke-width="2"/>
+    <text x="370" y="270" font-family="sans-serif" font-size="34" font-weight="bold" fill="#6644cc" text-anchor="middle">B</text>
+    <text x="370" y="308" font-family="sans-serif" font-size="18" fill="#1a1a1a" text-anchor="middle">více než <tspan font-weight="bold">10</tspan></text>
+    <text x="370" y="334" font-family="sans-serif" font-size="18" fill="#1a1a1a" text-anchor="middle">a méně než <tspan font-weight="bold">100</tspan></text>
+  </g>
+  <g aria-label="Možnost C">
+    <rect x="490" y="220" width="190" height="150" rx="10" fill="none" stroke="#999999" stroke-width="2"/>
+    <text x="585" y="270" font-family="sans-serif" font-size="34" font-weight="bold" fill="#6644cc" text-anchor="middle">C</text>
+    <text x="585" y="308" font-family="sans-serif" font-size="18" fill="#1a1a1a" text-anchor="middle">více než <tspan font-weight="bold">100</tspan></text>
+    <text x="585" y="334" font-family="sans-serif" font-size="18" fill="#1a1a1a" text-anchor="middle">a méně než <tspan font-weight="bold">10 000</tspan></text>
+  </g>
+  <g aria-label="Možnost D – správná odpověď">
+    <rect x="705" y="220" width="190" height="150" rx="10" fill="#fdeeb3" stroke="#c9a000" stroke-width="3"/>
+    <text x="800" y="270" font-family="sans-serif" font-size="34" font-weight="bold" fill="#c9a000" text-anchor="middle">D</text>
+    <text x="800" y="315" font-family="sans-serif" font-size="18" fill="#1a1a1a" text-anchor="middle">více než <tspan font-weight="bold">1 000 000</tspan></text>
+    <text x="800" y="400" font-family="sans-serif" font-size="16" font-weight="bold" fill="#c9a000" text-anchor="middle">správná odpověď</text>
+  </g>
+  <text x="30" y="522" font-family="sans-serif" font-size="12" fill="#999999">Matfyz · PedF UK</text>
+  <text x="930" y="522" font-family="sans-serif" font-size="12" fill="#999999" text-anchor="end">8</text>
+</svg>

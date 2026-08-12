@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" lang="cs">
+  <title>ROUTER (1/6) – silniční síť</title>
+  <desc>Analogie směrování: schéma silniční sítě s křižovatkami (routery) jako bílými kroužky; vlevo čeká náklaďák (balíček dat), který se chystá vyrazit. Routery směrují posílané informace po internetu.</desc>
+  <rect x="0" y="0" width="960" height="540" fill="#f5a623"/>
+  <g role="img" aria-label="Fotografie routeru Cisco">
+    <title>Fotografie skutečného routeru Cisco – plochá černá skříň do racku.</title>
+    <rect x="40" y="25" width="200" height="70" rx="8" fill="#2a2a30" stroke="#ffffff" stroke-width="3"/>
+    <circle cx="65" cy="60" r="6" fill="#555560"/>
+    <rect x="85" y="45" width="130" height="8" fill="#44444e"/>
+    <rect x="85" y="60" width="130" height="8" fill="#44444e"/>
+    <text x="140" y="88" font-family="sans-serif" font-size="10" fill="#aaaaaa" text-anchor="middle">router Cisco (foto)</text>
+  </g>
+  <text x="290" y="75" font-family="sans-serif" font-size="44" font-weight="bold" fill="#2d1b69">ROUTER</text>
+  <text x="540" y="72" font-family="sans-serif" font-size="20" fill="#1a1a1a"><tspan font-style="italic" font-weight="bold">route</tspan> – angl. směrovat</text>
+  <g aria-label="Silniční síť s routery na křižovatkách">
+    <rect x="50" y="125" width="860" height="310" rx="16" fill="#ffffff"/>
+    <g stroke="#2d1b69" stroke-width="7" aria-label="Silnice">
+      <line x1="50" y1="176" x2="255" y2="176"/>
+      <line x1="255" y1="125" x2="255" y2="435"/>
+      <line x1="50" y1="325" x2="255" y2="325"/>
+      <line x1="480" y1="125" x2="480" y2="435"/>
+      <line x1="255" y1="325" x2="480" y2="245"/>
+      <line x1="480" y1="245" x2="700" y2="169"/>
+      <line x1="480" y1="245" x2="700" y2="323"/>
+      <line x1="700" y1="125" x2="700" y2="169"/>
+      <line x1="700" y1="169" x2="910" y2="169"/>
+      <line x1="700" y1="323" x2="910" y2="323"/>
+      <line x1="700" y1="323" x2="910" y2="430"/>
+    </g>
+    <g aria-label="Routery na křižovatkách">
+      <circle cx="255" cy="176" r="12" fill="#ffffff" stroke="#2d1b69" stroke-width="4"/>
+      <circle cx="255" cy="325" r="12" fill="#ffffff" stroke="#2d1b69" stroke-width="4"/>
+      <circle cx="480" cy="245" r="12" fill="#ffffff" stroke="#2d1b69" stroke-width="4"/>
+      <circle cx="700" cy="169" r="12" fill="#ffffff" stroke="#2d1b69" stroke-width="4"/>
+      <circle cx="700" cy="323" r="12" fill="#ffffff" stroke="#2d1b69" stroke-width="4"/>
+    </g>
+    <g aria-label="Náklaďák – balíček dat">
+      <title>Fialový náklaďák představující posílaný balíček dat</title>
+      <rect x="80" y="290" width="34" height="20" rx="3" fill="#6644cc"/>
+      <path d="M 114 296 L 128 296 L 132 304 L 132 310 L 114 310 Z" fill="#6644cc"/>
+      <circle cx="92" cy="312" r="5" fill="#2d1b69"/>
+      <circle cx="122" cy="312" r="5" fill="#2d1b69"/>
+    </g>
+  </g>
+  <text x="60" y="475" font-family="sans-serif" font-size="24" fill="#1a1a1a">Routery <tspan font-weight="bold" fill="#2d1b69">směrují posílané informace</tspan> po internetu.</text>
+  <text x="930" y="522" font-family="sans-serif" font-size="12" fill="#7a5310" text-anchor="end">14</text>
+</svg>

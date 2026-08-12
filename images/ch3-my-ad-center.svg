@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420" font-family="system-ui,sans-serif">
+  <rect width="800" height="420" rx="14" fill="#FAFAF7" stroke="#E5E7EB"/>
+  <text x="400" y="36" text-anchor="middle" font-size="19" font-weight="700" fill="#1E1B4B">Co o tobě odhaduje Google</text>
+
+  <defs>
+    <marker id="arra" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#D97706"/>
+    </marker>
+    <marker id="arrg" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#6B7280"/>
+    </marker>
+  </defs>
+
+  <!-- karta uživatele -->
+  <rect x="230" y="60" width="400" height="304" rx="12" fill="#FFFFFF" stroke="#E5E7EB" stroke-width="1.5"/>
+
+  <!-- profil (fialová = člověk u zařízení) -->
+  <circle cx="280" cy="112" r="28" fill="#EDE9FE" stroke="#7C3AED" stroke-width="2"/>
+  <circle cx="280" cy="104" r="9" fill="#7C3AED"/>
+  <ellipse cx="280" cy="130" rx="14" ry="8" fill="#7C3AED"/>
+  <text x="322" y="106" font-size="14" font-weight="700" fill="#1E1B4B">uživatelka č. 4127</text>
+  <text x="322" y="124" font-size="11" fill="#6B7280">karta odhadů pro výběr reklam</text>
+  <text x="252" y="158" font-size="11" fill="#6B7280">„vychází z informací, které jste sdíleli, nebo z našich odhadů“</text>
+
+  <!-- štítky odhadů (jantarová = pozor, jen odhady) -->
+  <g>
+    <rect x="252" y="172" width="176" height="32" rx="16" fill="#FEF3C7" stroke="#D97706" stroke-width="1.5"/>
+    <circle cx="270" cy="188" r="8" fill="#FFFFFF" stroke="#D97706" stroke-width="1.2"/>
+    <text x="270" y="192" text-anchor="middle" font-size="11" font-weight="700" fill="#D97706">?</text>
+    <text x="286" y="192" font-size="12.5" fill="#1E1B4B">věk: 25–34 let</text>
+
+    <rect x="444" y="172" width="176" height="32" rx="16" fill="#FEF3C7" stroke="#D97706" stroke-width="1.5"/>
+    <circle cx="462" cy="188" r="8" fill="#FFFFFF" stroke="#D97706" stroke-width="1.2"/>
+    <text x="462" y="192" text-anchor="middle" font-size="11" font-weight="700" fill="#D97706">?</text>
+    <text x="478" y="192" font-size="12.5" fill="#1E1B4B">žena</text>
+
+    <rect x="252" y="214" width="176" height="32" rx="16" fill="#FEF3C7" stroke="#D97706" stroke-width="1.5"/>
+    <circle cx="270" cy="230" r="8" fill="#FFFFFF" stroke="#D97706" stroke-width="1.2"/>
+    <text x="270" y="234" text-anchor="middle" font-size="11" font-weight="700" fill="#D97706">?</text>
+    <text x="286" y="234" font-size="12.5" fill="#1E1B4B">zadaná</text>
+
+    <rect x="444" y="214" width="176" height="32" rx="16" fill="#FEF3C7" stroke="#D97706" stroke-width="1.5"/>
+    <circle cx="462" cy="230" r="8" fill="#FFFFFF" stroke="#D97706" stroke-width="1.2"/>
+    <text x="462" y="234" text-anchor="middle" font-size="11" font-weight="700" fill="#D97706">?</text>
+    <text x="478" y="234" font-size="12.5" fill="#1E1B4B">bydlí v nájmu</text>
+  </g>
+
+  <line x1="252" y1="268" x2="608" y2="268" stroke="#E5E7EB" stroke-width="1.5"/>
+
+  <!-- přepínač personalizace (vypnuto) -->
+  <text x="252" y="302" font-size="12.5" fill="#1E1B4B">personalizovaná reklama</text>
+  <rect x="502" y="286" width="46" height="24" rx="12" fill="#E5E7EB" stroke="#6B7280" stroke-width="1.5"/>
+  <circle cx="514" cy="298" r="9" fill="#FFFFFF" stroke="#6B7280" stroke-width="1.5"/>
+  <text x="525" y="330" text-anchor="middle" font-size="11" fill="#6B7280">vypnuto</text>
+
+  <!-- poznámky po stranách -->
+  <g font-size="12.5" fill="#D97706">
+    <text x="64" y="182">jen odhady —</text>
+    <text x="64" y="199">mohou se plést</text>
+  </g>
+  <line x1="156" y1="190" x2="244" y2="188" stroke="#D97706" stroke-width="1.5" marker-end="url(#arra)"/>
+
+  <g font-size="12.5" fill="#6B7280">
+    <text x="706" y="290" text-anchor="middle">odhadování</text>
+    <text x="706" y="307" text-anchor="middle">jde vypnout</text>
+  </g>
+  <line x1="668" y1="298" x2="556" y2="298" stroke="#6B7280" stroke-width="1.5" marker-end="url(#arrg)"/>
+
+  <text x="400" y="404" text-anchor="middle" font-size="12.5" fill="#6B7280">Karta z nástroje My Ad Center: samé odhady poskládané z digitální stopy. Mohou se plést — a jdou vypnout.</text>
+</svg>

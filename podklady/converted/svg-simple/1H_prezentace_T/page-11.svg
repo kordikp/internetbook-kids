@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" lang="cs">
+  <title>Komunikace KLIENT–SERVER</title>
+  <desc>Otázka, jak se data ze serveru dostanou až ke klientovi: vlevo rack se servery, vpravo dívka s tabletem, mezi nimi tečkovaná šipka přerušená otazníkem. (Slide 12; skrytý slide 11 v PDF chybí.)</desc>
+  <rect x="0" y="0" width="960" height="540" fill="#ffffff"/>
+  <defs>
+    <marker id="sipka" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto">
+      <path d="M 0 0 L 8 4 L 0 8 Z" fill="#6644cc"/>
+    </marker>
+  </defs>
+  <text x="480" y="70" font-family="sans-serif" font-size="38" font-weight="bold" fill="#1a1a1a" text-anchor="middle">Komunikace KLIENT–SERVER</text>
+  <text x="480" y="120" font-family="sans-serif" font-size="24" fill="#1a1a1a" text-anchor="middle">Jak se ale <tspan font-weight="bold">data ze serveru</tspan> dostanou až ke <tspan font-weight="bold">klientovi</tspan>?</text>
+  <g aria-label="Server – rack se čtyřmi servery">
+    <title>Kreslený rack se čtyřmi servery</title>
+    <rect x="120" y="200" width="200" height="200" rx="8" fill="none" stroke="#333333" stroke-width="3"/>
+    <rect x="135" y="215" width="170" height="38" rx="4" fill="#4a4a55"/>
+    <rect x="135" y="261" width="170" height="38" rx="4" fill="#4a4a55"/>
+    <rect x="135" y="307" width="170" height="38" rx="4" fill="#4a4a55"/>
+    <rect x="135" y="353" width="170" height="38" rx="4" fill="#4a4a55"/>
+    <circle cx="152" cy="234" r="4" fill="#7ee07e"/><circle cx="152" cy="280" r="4" fill="#7ee07e"/>
+    <circle cx="152" cy="326" r="4" fill="#7ee07e"/><circle cx="152" cy="372" r="4" fill="#7ee07e"/>
+    <text x="220" y="440" font-family="sans-serif" font-size="22" font-weight="bold" fill="#e05252" text-anchor="middle">server</text>
+  </g>
+  <g aria-label="Tečkovaná šipka s otazníkem">
+    <line x1="340" y1="300" x2="440" y2="300" stroke="#6644cc" stroke-width="4" stroke-dasharray="4 10"/>
+    <circle cx="490" cy="300" r="42" fill="#ffffff" stroke="#6644cc" stroke-width="3"/>
+    <text x="490" y="316" font-family="sans-serif" font-size="46" font-weight="bold" fill="#6644cc" text-anchor="middle">?</text>
+    <line x1="540" y1="300" x2="650" y2="300" stroke="#6644cc" stroke-width="4" stroke-dasharray="4 10" marker-end="url(#sipka)"/>
+  </g>
+  <g aria-label="Klient – dívka s tabletem">
+    <title>Kreslená dívka s tabletem – klient</title>
+    <circle cx="760" cy="235" r="32" fill="none" stroke="#333333" stroke-width="3"/>
+    <circle cx="749" cy="230" r="6" fill="none" stroke="#333333" stroke-width="2"/>
+    <circle cx="771" cy="230" r="6" fill="none" stroke="#333333" stroke-width="2"/>
+    <line x1="755" y1="230" x2="765" y2="230" stroke="#333333" stroke-width="2"/>
+    <line x1="760" y1="267" x2="760" y2="350" stroke="#333333" stroke-width="3"/>
+    <line x1="760" y1="292" x2="718" y2="320" stroke="#333333" stroke-width="3"/>
+    <rect x="678" y="310" width="52" height="38" rx="5" fill="#ffffff" stroke="#333333" stroke-width="3"/>
+    <line x1="760" y1="350" x2="738" y2="415" stroke="#333333" stroke-width="3"/>
+    <line x1="760" y1="350" x2="782" y2="415" stroke="#333333" stroke-width="3"/>
+    <text x="760" y="450" font-family="sans-serif" font-size="22" font-weight="bold" fill="#6644cc" text-anchor="middle">klient</text>
+  </g>
+  <text x="30" y="522" font-family="sans-serif" font-size="12" fill="#999999">Matfyz · PedF UK</text>
+  <text x="930" y="522" font-family="sans-serif" font-size="12" fill="#999999" text-anchor="end">12</text>
+</svg>

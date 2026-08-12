@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" lang="cs">
+  <title>Jak můžeme dinosaura rozebrat a poslat? – řešení</title>
+  <desc>Řešení úlohy: udělat plánek dinosaura, očíslovat kosti a uložit je do označených krabic. Dvě různé trasy náklaďáků mezi muzei ukazují, že náklaďáky (pakety) nemusí jet stejnou cestou.</desc>
+  <rect x="0" y="0" width="960" height="540" fill="#ffffff"/>
+  <text x="480" y="50" font-family="sans-serif" font-size="28" font-weight="bold" fill="#1a1a1a" text-anchor="middle">Jak můžeme dinosaura rozebrat a poslat z muzea do muzea?</text>
+  <g role="img" aria-label="Kostra dinosaura">
+    <title>Fotografie kostry dlouhokrkého dinosaura v muzejní expozici.</title>
+    <rect x="70" y="85" width="250" height="140" rx="10" fill="#f2f2f2" stroke="#999999" stroke-width="2"/>
+    <path d="M 100 195 C 140 190 170 185 205 180 C 250 173 270 165 282 145 C 290 130 286 115 278 108" fill="none" stroke="#8a7a5a" stroke-width="5"/>
+    <circle cx="277" cy="104" r="8" fill="none" stroke="#8a7a5a" stroke-width="3"/>
+    <line x1="140" y1="192" x2="140" y2="215" stroke="#8a7a5a" stroke-width="4"/>
+    <line x1="220" y1="178" x2="220" y2="215" stroke="#8a7a5a" stroke-width="4"/>
+    <text x="195" y="240" font-family="sans-serif" font-size="12" fill="#777777" text-anchor="middle">kostra dinosaura</text>
+  </g>
+  <g aria-label="Postup řešení">
+    <text x="380" y="115" font-family="sans-serif" font-size="21" fill="#1a1a1a">• Udělat si <tspan font-weight="bold">plánek</tspan> dinosaura</text>
+    <text x="380" y="152" font-family="sans-serif" font-size="21" fill="#1a1a1a">• <tspan font-weight="bold">Očíslovat</tspan> si kosti</text>
+    <text x="380" y="189" font-family="sans-serif" font-size="21" fill="#1a1a1a">• <tspan font-weight="bold">Uložit</tspan> je do označených krabic</text>
+  </g>
+  <text x="480" y="280" font-family="sans-serif" font-size="24" font-weight="bold" fill="#1a1a1a" text-anchor="middle">Náklaďáky nemusí jet stejnou cestou.</text>
+  <g aria-label="Dvě různé trasy náklaďáků mezi muzei">
+    <title>Horní červenohnědá a dolní fialová trasa mezi muzeem A a muzeem B; každá vede přes jiné uzly a obě se sbíhají v cíli – jako pakety putující různými cestami.</title>
+    <circle cx="140" cy="410" r="45" fill="none" stroke="#333333" stroke-width="3"/>
+    <rect x="117" y="402" width="46" height="27" fill="none" stroke="#333333" stroke-width="3"/>
+    <path d="M 112 402 L 140 384 L 168 402" fill="none" stroke="#333333" stroke-width="3"/>
+    <text x="140" y="478" font-family="sans-serif" font-size="14" fill="#333333" text-anchor="middle">muzeum A</text>
+    <!-- horní trasa -->
+    <path d="M 185 395 C 280 330 480 330 640 350 C 700 358 750 375 775 395" fill="none" stroke="#b04a3a" stroke-width="4"/>
+    <circle cx="330" cy="352" r="9" fill="#ffffff" stroke="#b04a3a" stroke-width="3"/>
+    <circle cx="510" cy="337" r="9" fill="#ffffff" stroke="#b04a3a" stroke-width="3"/>
+    <circle cx="670" cy="357" r="9" fill="#ffffff" stroke="#b04a3a" stroke-width="3"/>
+    <rect x="400" y="318" width="28" height="16" rx="3" fill="#b04a3a"/>
+    <circle cx="408" cy="336" r="4" fill="#5a2a20"/><circle cx="421" cy="336" r="4" fill="#5a2a20"/>
+    <!-- dolní trasa -->
+    <path d="M 185 425 C 280 480 480 485 640 465 C 700 457 750 440 775 425" fill="none" stroke="#6644cc" stroke-width="4"/>
+    <circle cx="330" cy="462" r="9" fill="#ffffff" stroke="#6644cc" stroke-width="3"/>
+    <circle cx="510" cy="477" r="9" fill="#ffffff" stroke="#6644cc" stroke-width="3"/>
+    <circle cx="670" cy="462" r="9" fill="#ffffff" stroke="#6644cc" stroke-width="3"/>
+    <rect x="400" y="488" width="28" height="16" rx="3" fill="#6644cc"/>
+    <circle cx="408" cy="506" r="4" fill="#2d1b69"/><circle cx="421" cy="506" r="4" fill="#2d1b69"/>
+    <circle cx="820" cy="410" r="45" fill="#fdeeb3" stroke="#c9a000" stroke-width="3"/>
+    <rect x="797" y="402" width="46" height="27" fill="none" stroke="#333333" stroke-width="3"/>
+    <path d="M 792 402 L 820 384 L 848 402" fill="none" stroke="#333333" stroke-width="3"/>
+    <text x="820" y="478" font-family="sans-serif" font-size="14" fill="#333333" text-anchor="middle">muzeum B</text>
+  </g>
+  <text x="930" y="530" font-family="sans-serif" font-size="12" fill="#999999" text-anchor="end">24</text>
+</svg>

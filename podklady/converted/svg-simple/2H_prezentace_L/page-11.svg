@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" lang="cs">
+  <title>BTS vysílače kolem naší školy</title>
+  <desc>Ukázka online mapy BTS vysílačů v České republice: nad mapou jsou kruhové značky s počty vysílačů v jednotlivých oblastech. Třída si na mapě najde vysílače v okolí školy.</desc>
+  <text x="480" y="52" text-anchor="middle" font-family="sans-serif" font-size="36" font-weight="bold" fill="#2d1b69">BTS vysílače kolem naší školy</text>
+  <g role="img" aria-label="Snímek webové mapy BTS vysílačů">
+    <title>Snímek obrazovky webové mapy České republiky s klastry BTS vysílačů — kruhové značky s čísly udávají počet vysílačů v dané oblasti.</title>
+    <rect x="150" y="90" width="660" height="380" fill="#eef4ea" stroke="#999"/>
+    <path d="M 220 260 Q 300 170 480 190 Q 660 170 740 260 Q 700 360 480 380 Q 280 370 220 260 Z" fill="#dce8d4" stroke="#8aa87e" stroke-width="2"/>
+    <text x="480" y="120" text-anchor="middle" font-family="sans-serif" font-size="16" fill="#555">Mapa BTS vysílačů (Česká republika)</text>
+    <g aria-label="Klastry vysílačů s počty">
+      <circle cx="330" cy="240" r="30" fill="#f0a63c" stroke="#b5760f"/>
+      <text x="330" y="246" text-anchor="middle" font-family="sans-serif" font-size="16" font-weight="bold" fill="#fff">670</text>
+      <circle cx="470" cy="290" r="27" fill="#f0a63c" stroke="#b5760f"/>
+      <text x="470" y="296" text-anchor="middle" font-family="sans-serif" font-size="15" font-weight="bold" fill="#fff">436</text>
+      <circle cx="610" cy="240" r="25" fill="#f0a63c" stroke="#b5760f"/>
+      <text x="610" y="246" text-anchor="middle" font-family="sans-serif" font-size="15" font-weight="bold" fill="#fff">301</text>
+      <circle cx="400" cy="200" r="20" fill="#f0c05c" stroke="#b5760f"/>
+      <text x="400" y="206" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="bold" fill="#fff">128</text>
+      <circle cx="560" cy="330" r="20" fill="#f0c05c" stroke="#b5760f"/>
+      <text x="560" y="336" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="bold" fill="#fff">95</text>
+    </g>
+  </g>
+  <text x="480" y="505" text-anchor="middle" font-family="sans-serif" font-size="15" fill="#555">Čísla ve značkách udávají počet BTS vysílačů v dané oblasti.</text>
+  <text x="930" y="525" text-anchor="end" font-family="sans-serif" font-size="14" fill="#999">11</text>
+</svg>

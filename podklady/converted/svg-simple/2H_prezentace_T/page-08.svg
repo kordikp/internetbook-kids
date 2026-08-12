@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" lang="cs">
+  <title>Kabely tvořící internet — srovnání UTP a optického kabelu</title>
+  <desc>Srovnávací metafora se silnicemi: kovový UTP kabel jako úzká silnice (100 Mb/s, dosah 100 m), optický kabel jako mnohaproudá dálnice (desítky Gb/s, dosah 100 km).</desc>
+  <text x="480" y="56" text-anchor="middle" font-family="sans-serif" font-size="34" font-weight="bold" fill="#2d1b69">KABELY TVOŘÍCÍ INTERNET</text>
+  <g role="img" aria-label="Úzká silnice — metafora UTP kabelu">
+    <title>Fotografie úzké dvouproudé silnice lesem — kovový UTP kabel je pomalejší a má kratší dosah.</title>
+    <rect x="60" y="90" width="400" height="330" fill="#e8f0e2" stroke="#999"/>
+    <path d="M 220 420 L 250 90 L 280 90 L 310 420 Z" fill="#9a9a9a"/>
+    <line x1="265" y1="420" x2="265" y2="90" stroke="#fff" stroke-width="3" stroke-dasharray="14 12"/>
+    <path d="M 100 150 l 15 40 h -30 Z M 390 220 l 15 40 h -30 Z" fill="#5f8a52"/>
+  </g>
+  <g aria-label="Parametry kovového kabelu">
+    <rect x="60" y="300" width="400" height="80" fill="#ffffff" fill-opacity="0.9" stroke="#555"/>
+    <text x="260" y="330" text-anchor="middle" font-family="sans-serif" font-size="19" font-weight="bold" fill="#1a1a2e">KOVOVÝ (UTP) KABEL</text>
+    <text x="260" y="360" text-anchor="middle" font-family="sans-serif" font-size="16" fill="#1a1a2e">rychlost 100 Mb/s • dosah 100 metrů</text>
+  </g>
+  <g role="img" aria-label="Dálnice — metafora optického kabelu">
+    <title>Fotografie mnohaproudé dálnice plné aut — optický kabel má obrovskou kapacitu a rychlost.</title>
+    <rect x="500" y="90" width="400" height="330" fill="#e8ecf0" stroke="#999"/>
+    <path d="M 560 420 L 620 90 L 780 90 L 840 420 Z" fill="#8a8a8a"/>
+    <line x1="655" y1="420" x2="675" y2="90" stroke="#fff" stroke-width="3" stroke-dasharray="14 12"/>
+    <line x1="700" y1="420" x2="700" y2="90" stroke="#fff" stroke-width="3" stroke-dasharray="14 12"/>
+    <line x1="745" y1="420" x2="725" y2="90" stroke="#fff" stroke-width="3" stroke-dasharray="14 12"/>
+    <rect x="620" y="250" width="22" height="34" rx="4" fill="#d63a2f"/>
+    <rect x="710" y="180" width="20" height="30" rx="4" fill="#3d7df4"/>
+    <rect x="760" y="290" width="24" height="36" rx="4" fill="#e8b021"/>
+  </g>
+  <g aria-label="Parametry optického kabelu">
+    <rect x="500" y="300" width="400" height="80" fill="#ffffff" fill-opacity="0.9" stroke="#555"/>
+    <text x="700" y="330" text-anchor="middle" font-family="sans-serif" font-size="19" font-weight="bold" fill="#1a1a2e">OPTICKÝ KABEL (ze skla či plastu)</text>
+    <text x="700" y="360" text-anchor="middle" font-family="sans-serif" font-size="16" fill="#1a1a2e">rychlost desítky Gb/s • dosah 100 kilometrů</text>
+  </g>
+  <text x="930" y="525" text-anchor="end" font-family="sans-serif" font-size="14" fill="#999">8</text>
+</svg>

@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" lang="cs">
+  <title>Překopnutý kabel Praha–Brno – ANO, data najdou objížďku</title>
+  <desc>Odpověď na druhou diskusní otázku: i po překopnutí kabelu mezi Prahou a Brnem si napíšeme, protože data mohou dojít různými cestami. Schéma mapy ČR: přímá trasa Praha–Brno je přerušena červeným křížkem, objízdná trasa vede přes třetí uzel.</desc>
+  <rect x="0" y="0" width="960" height="540" fill="#4a3a9e"/>
+  <g aria-label="Otázka s odpovědí ANO">
+    <rect x="100" y="25" width="600" height="145" rx="16" fill="#e05252"/>
+    <text x="400" y="60" font-family="sans-serif" font-size="19" fill="#ffffff" text-anchor="middle">Co by se stalo, kdyby někdo <tspan font-weight="bold">překopl internetový kabel</tspan></text>
+    <text x="400" y="87" font-family="sans-serif" font-size="19" fill="#ffffff" text-anchor="middle">vedoucí mezi Prahou a Brnem? Budeme moci z Brna</text>
+    <text x="400" y="114" font-family="sans-serif" font-size="19" fill="#ffffff" text-anchor="middle">napsat zprávu přes Instagram kamarádce,</text>
+    <text x="400" y="141" font-family="sans-serif" font-size="19" fill="#ffffff" text-anchor="middle">která je v Praze?</text>
+    <text x="815" y="120" font-family="sans-serif" font-size="64" font-weight="bold" fill="#ffffff" text-anchor="middle">ANO</text>
+  </g>
+  <text x="480" y="215" font-family="sans-serif" font-size="24" fill="#ffffff" text-anchor="middle">Posílaná data k nám mohou dojít různými cestami.</text>
+  <g aria-label="Schéma: překopnutý kabel Praha–Brno a objízdná trasa">
+    <title>Mapa ČR se žlutými uzly Praha a Brno; přímá jižní trasa je přerušena červeným křížkem, severní objížďka vede přes tyrkysový uzel (router) a je průchozí.</title>
+    <rect x="150" y="245" width="660" height="240" rx="14" fill="#3a2d85" stroke="#6a5ac0" stroke-width="2"/>
+    <!-- přímá (přerušená) trasa -->
+    <path d="M 340 315 C 420 360 520 400 640 430" fill="none" stroke="#cfd8cf" stroke-width="5"/>
+    <!-- objízdná trasa přes mezilehlý uzel -->
+    <path d="M 340 315 C 420 285 480 285 540 300 C 600 315 630 370 640 430" fill="none" stroke="#cfd8cf" stroke-width="5"/>
+    <!-- křížek na přímé trase -->
+    <g aria-label="Překopnutý kabel">
+      <line x1="470" y1="355" x2="510" y2="395" stroke="#e05252" stroke-width="14" stroke-linecap="round"/>
+      <line x1="510" y1="355" x2="470" y2="395" stroke="#e05252" stroke-width="14" stroke-linecap="round"/>
+    </g>
+    <!-- uzly -->
+    <circle cx="340" cy="315" r="20" fill="#f5c518"/><circle cx="340" cy="315" r="6" fill="#3a2d85"/>
+    <circle cx="540" cy="300" r="15" fill="#2ec4c4"/><circle cx="540" cy="300" r="5" fill="#3a2d85"/>
+    <circle cx="640" cy="430" r="20" fill="#f5c518"/><circle cx="640" cy="430" r="6" fill="#3a2d85"/>
+    <text x="310" y="323" font-family="sans-serif" font-size="28" font-weight="bold" fill="#f5c518" text-anchor="end">Praha</text>
+    <text x="672" y="440" font-family="sans-serif" font-size="28" font-weight="bold" fill="#f5c518">Brno</text>
+    <text x="540" y="275" font-family="sans-serif" font-size="14" fill="#9fe8e8" text-anchor="middle">objížďka přes další uzel</text>
+    <text x="452" y="430" font-family="sans-serif" font-size="14" fill="#f0a0a0" text-anchor="end">překopnutý kabel</text>
+  </g>
+  <text x="930" y="522" font-family="sans-serif" font-size="12" fill="#b9aee8" text-anchor="end">17</text>
+</svg>

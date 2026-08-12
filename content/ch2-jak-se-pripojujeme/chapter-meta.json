@@ -1,0 +1,32 @@
+{
+  "id": "ch2-jak-se-pripojujeme",
+  "number": 2,
+  "title": "Jak se připojujeme",
+  "subtitle": "Wi-Fi, kabely, mobilní data a satelity",
+  "directory": "ch2-jak-se-pripojujeme",
+  "files": [
+    "01-spine-wifi-a-router.md",
+    "01a-depth-thinker-prenosova-rychlost.md",
+    "01b-sidebar-jak-dlouho-stahovani.md",
+    "02-spine-kabelove-pripojeni.md",
+    "02a-depth-thinker-utp-vs-optika.md",
+    "02b-sidebar-opravy-kabelu.md",
+    "03-spine-mobilni-data-bts.md",
+    "04-spine-hotspot-a-satelity.md",
+    "04a-depth-thinker-satelity-starlink.md",
+    "04b-sidebar-komiks-satelit.md",
+    "05-spine-shrnuti.md",
+    "05a-depth-creator-speedtest.md",
+    "05b-game-pripojeni-sort.md",
+    "05c-game-jednotky.md",
+    "06-question-chata.md"
+  ],
+  "boss": {
+    "q": "Kamarád tvrdí: „Zpráva do Ameriky letí přes satelit, proto je internet občas pomalý.“ Vysvětli, kudy zpráva doopravdy putuje a proč je to rychlejší než satelit.",
+    "hints": [
+      "Vzpomeň si, co leží na dně oceánu a propojuje kontinenty.",
+      "Porovnej vzdálenosti: satelit létá 35 000 km vysoko, obvod celé Země je 40 075 km. Kudy je to blíž?"
+    ]
+  },
+  "reward_title": "Vstupenka na 3. hodinu"
+}

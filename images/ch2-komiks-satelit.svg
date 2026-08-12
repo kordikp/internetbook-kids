@@ -1,0 +1,115 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 640" font-family="system-ui,sans-serif">
+  <rect width="800" height="640" rx="14" fill="#FAFAF7" stroke="#E5E7EB"/>
+  <text x="400" y="38" text-anchor="middle" font-size="21" font-weight="700" fill="#1E1B4B">Trapné ticho dlouhé 70 000 km</text>
+
+  <defs>
+    <marker id="karr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#0EA5E9"/>
+    </marker>
+  </defs>
+
+  <!-- panely -->
+  <g fill="#FFFFFF" stroke="#E5E7EB">
+    <rect x="14" y="56" width="380" height="264" rx="10"/>
+    <rect x="406" y="56" width="380" height="264" rx="10"/>
+    <rect x="14" y="336" width="380" height="264" rx="10"/>
+    <rect x="406" y="336" width="380" height="264" rx="10"/>
+  </g>
+
+  <!-- P1: chata v horách -->
+  <g fill="#FFFFFF" stroke="#6B7280" stroke-width="1.5" opacity="0.6">
+    <path d="M30 246 L100 168 L170 246 Z"/>
+    <path d="M140 246 L230 148 L320 246 Z"/>
+  </g>
+  <line x1="26" y1="246" x2="382" y2="246" stroke="#6B7280" stroke-width="1.5" opacity="0.35"/>
+  <rect x="300" y="202" width="72" height="44" fill="#FFFFFF" stroke="#1E1B4B" stroke-width="1.5"/>
+  <path d="M292 202 L336 174 L380 202 Z" fill="#FFFFFF" stroke="#1E1B4B" stroke-width="1.5"/>
+  <path d="M350 182 L350 170" stroke="#1E1B4B" stroke-width="1.5"/>
+  <path d="M340 172 A 13 13 0 0 1 359 154 Z" fill="#FFFFFF" stroke="#1E1B4B" stroke-width="1.5"/>
+  <g stroke="#1E1B4B" stroke-width="2.5" stroke-linecap="round" fill="none">
+    <circle cx="240" cy="197" r="10" fill="#FFFFFF"/>
+    <path d="M240 207 L240 232 M240 232 L232 246 M240 232 L248 246 M240 214 L226 224 M240 214 L254 210"/>
+  </g>
+  <rect x="250" y="198" width="11" height="17" rx="2" fill="#EDE9FE" stroke="#7C3AED" stroke-width="1.5"/>
+  <rect x="60" y="100" width="250" height="46" rx="9" fill="#FFFFFF" stroke="#1E1B4B" stroke-width="1.5"/>
+  <path d="M228 146 L240 164 L250 146 Z" fill="#FFFFFF" stroke="#1E1B4B" stroke-width="1.5"/>
+  <rect x="229.5" y="143" width="19" height="4" fill="#FFFFFF"/>
+  <text x="185" y="119" text-anchor="middle" font-size="12.5" fill="#1E1B4B">Tady v horách není signál…</text>
+  <text x="185" y="137" text-anchor="middle" font-size="12.5" fill="#1E1B4B">…ale máme satelit! Volám Báře.</text>
+  <text x="204" y="306" text-anchor="middle" font-size="12" fill="#6B7280">Hory. Žádný kabel, žádný vysílač. Poslední možnost: vesmír.</text>
+
+  <!-- P2: vtip a ticho -->
+  <line x1="424" y1="224" x2="500" y2="224" stroke="#6B7280" stroke-width="1.5" opacity="0.35"/>
+  <g stroke="#1E1B4B" stroke-width="2.5" stroke-linecap="round" fill="none">
+    <circle cx="452" cy="166" r="10" fill="#FFFFFF"/>
+    <path d="M452 176 L452 206 M452 206 L444 222 M452 206 L460 222 M452 184 L438 194 M452 184 L470 176"/>
+  </g>
+  <rect x="466" y="164" width="11" height="18" rx="2" fill="#EDE9FE" stroke="#7C3AED" stroke-width="1.5"/>
+  <rect x="414" y="86" width="178" height="26" rx="9" fill="#FFFFFF" stroke="#1E1B4B" stroke-width="1.5"/>
+  <path d="M444 112 L452 128 L462 112 Z" fill="#FFFFFF" stroke="#1E1B4B" stroke-width="1.5"/>
+  <rect x="445.5" y="109" width="15" height="4" fill="#FFFFFF"/>
+  <text x="503" y="103" text-anchor="middle" font-size="12.5" fill="#1E1B4B">…a proto tučňák nelétá!</text>
+  <rect x="600" y="96" width="156" height="140" rx="10" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2"/>
+  <rect x="608" y="104" width="40" height="32" rx="4" fill="#EDE9FE" stroke="#7C3AED" stroke-width="1.5"/>
+  <circle cx="628" cy="116" r="7" fill="#FFFFFF" stroke="#1E1B4B" stroke-width="1.5"/>
+  <circle cx="628" cy="119" r="1.5" fill="#1E1B4B"/>
+  <circle cx="678" cy="164" r="16" fill="#FFFFFF" stroke="#1E1B4B" stroke-width="2"/>
+  <circle cx="672" cy="161" r="1.5" fill="#1E1B4B"/>
+  <circle cx="684" cy="161" r="1.5" fill="#1E1B4B"/>
+  <path d="M671 172 L685 172" stroke="#1E1B4B" stroke-width="1.5"/>
+  <text x="678" y="222" text-anchor="middle" font-size="11" fill="#6B7280">BÁRA</text>
+  <text x="678" y="258" text-anchor="middle" font-size="11" fill="#6B7280">videohovor přes satelit</text>
+  <text x="596" y="306" text-anchor="middle" font-size="12" fill="#6B7280">Ticho. Vteřina je najednou strašně dlouhá.</text>
+
+  <!-- P3: mluví přes sebe -->
+  <line x1="30" y1="504" x2="120" y2="504" stroke="#6B7280" stroke-width="1.5" opacity="0.35"/>
+  <g stroke="#1E1B4B" stroke-width="2.5" stroke-linecap="round" fill="none">
+    <circle cx="72" cy="446" r="10" fill="#FFFFFF"/>
+    <path d="M72 456 L72 486 M72 486 L64 502 M72 486 L80 502 M72 464 L58 474 M72 464 L90 456"/>
+  </g>
+  <rect x="86" y="444" width="11" height="18" rx="2" fill="#EDE9FE" stroke="#7C3AED" stroke-width="1.5"/>
+  <rect x="28" y="386" width="170" height="26" rx="9" fill="#FFFFFF" stroke="#1E1B4B" stroke-width="1.5"/>
+  <path d="M64 412 L72 428 L80 412 Z" fill="#FFFFFF" stroke="#1E1B4B" stroke-width="1.5"/>
+  <rect x="65.5" y="409" width="13" height="4" fill="#FFFFFF"/>
+  <text x="113" y="403" text-anchor="middle" font-size="12.5" fill="#1E1B4B">Promiň, blbej vtip…</text>
+  <rect x="214" y="376" width="156" height="148" rx="10" fill="#FFFFFF" stroke="#7C3AED" stroke-width="2"/>
+  <circle cx="292" cy="452" r="16" fill="#FFFFFF" stroke="#1E1B4B" stroke-width="2"/>
+  <path d="M284 456 Q 292 467 300 456 Z" fill="#1E1B4B"/>
+  <path d="M310 440 L316 434 M312 450 L320 448" stroke="#1E1B4B" stroke-width="1.5"/>
+  <text x="292" y="510" text-anchor="middle" font-size="11" fill="#6B7280">BÁRA</text>
+  <rect x="214" y="344" width="150" height="26" rx="9" fill="#FFFFFF" stroke="#1E1B4B" stroke-width="1.5"/>
+  <path d="M282 370 L290 382 L298 370 Z" fill="#FFFFFF" stroke="#1E1B4B" stroke-width="1.5"/>
+  <rect x="283.5" y="367" width="13" height="4" fill="#FFFFFF"/>
+  <text x="289" y="361" text-anchor="middle" font-size="12.5" fill="#1E1B4B">HAHAHA! Tučňák!</text>
+  <text x="204" y="586" text-anchor="middle" font-size="12" fill="#6B7280">Smích dorazil — jen letěl 70 000 kilometrů oklikou.</text>
+
+  <!-- P4: pointa — schéma cesty -->
+  <path d="M426 556 Q 596 496 766 556" fill="none" stroke="#6B7280" stroke-width="2" opacity="0.6"/>
+  <path d="M444 516 L468 498 L492 516 Z" fill="#FFFFFF" stroke="#1E1B4B" stroke-width="1.5"/>
+  <rect x="450" y="516" width="36" height="26" fill="#FFFFFF" stroke="#1E1B4B" stroke-width="1.5"/>
+  <rect x="700" y="498" width="30" height="42" fill="#FFFFFF" stroke="#1E1B4B" stroke-width="1.5"/>
+  <g fill="#6B7280">
+    <rect x="706" y="506" width="6" height="6"/>
+    <rect x="718" y="506" width="6" height="6"/>
+    <rect x="706" y="518" width="6" height="6"/>
+    <rect x="718" y="518" width="6" height="6"/>
+  </g>
+  <rect x="576" y="384" width="40" height="20" rx="3" fill="#E0F2FE" stroke="#0EA5E9" stroke-width="2"/>
+  <g fill="#FFFFFF" stroke="#0EA5E9" stroke-width="1.5">
+    <rect x="544" y="388" width="26" height="12"/>
+    <rect x="622" y="388" width="26" height="12"/>
+  </g>
+  <path d="M553 388 V400 M561 388 V400 M631 388 V400 M639 388 V400 M570 394 H576 M616 394 H622" stroke="#0EA5E9" stroke-width="1" fill="none"/>
+  <g fill="none" stroke="#0EA5E9" stroke-width="2" stroke-dasharray="6 5">
+    <path d="M484 500 C 504 448, 540 414, 572 400" marker-start="url(#karr)" marker-end="url(#karr)"/>
+    <path d="M620 400 C 660 414, 694 452, 712 494" marker-start="url(#karr)" marker-end="url(#karr)"/>
+  </g>
+  <text x="488" y="428" text-anchor="middle" font-size="11" fill="#6B7280">35 000 km</text>
+  <rect x="560" y="344" width="214" height="26" rx="9" fill="#FFFFFF" stroke="#1E1B4B" stroke-width="1.5"/>
+  <path d="M726 370 L736 384 L746 370 Z" fill="#FFFFFF" stroke="#1E1B4B" stroke-width="1.5"/>
+  <rect x="727.5" y="367" width="17" height="4" fill="#FFFFFF"/>
+  <text x="667" y="361" text-anchor="middle" font-size="12.5" fill="#1E1B4B">Tvůj vtip letěl do vesmíru!</text>
+  <text x="596" y="586" text-anchor="middle" font-size="12" fill="#6B7280">Trapné ticho nebylo trapné. Bylo jen 70 000 km dlouhé.</text>
+
+  <text x="400" y="626" text-anchor="middle" font-size="13" fill="#6B7280">Signál letí k satelitu 35 000 km a zpět — proto se odpověď vrací klidně až o vteřinu později.</text>
+</svg>

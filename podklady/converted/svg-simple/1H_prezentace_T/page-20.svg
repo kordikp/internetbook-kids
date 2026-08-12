@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" lang="cs">
+  <title>Jaké routery jsou po cestě? – TRACEROUTE</title>
+  <desc>Aktivita s nástrojem traceroute: otázky pro žáky, QR kód na traceroute-online.com, náznak mapy s trasou paketu a rekonstruovaný výstup příkazu tracert google.cz s šesti hopy.</desc>
+  <rect x="0" y="0" width="960" height="540" fill="#ffffff"/>
+  <text x="60" y="55" font-family="sans-serif" font-size="32" font-weight="bold" fill="#1a1a1a">Jaké routery jsou po cestě?</text>
+  <text x="60" y="95" font-family="sans-serif" font-size="22" font-weight="bold" fill="#6644cc">TRACEROUTE-ONLINE.COM</text>
+  <g aria-label="Otázky pro žáky">
+    <text x="60" y="140" font-family="sans-serif" font-size="18" fill="#1a1a1a">• Jaké <tspan font-weight="bold">země</tspan> vidíte na mapě?</text>
+    <text x="60" y="172" font-family="sans-serif" font-size="18" fill="#1a1a1a">• Na <tspan font-weight="bold">kolik hopů</tspan> se dostanete od sebe</text>
+    <text x="76" y="196" font-family="sans-serif" font-size="18" fill="#1a1a1a">k školnímu webu?</text>
+    <text x="60" y="228" font-family="sans-serif" font-size="18" fill="#1a1a1a">• Jakou <tspan font-weight="bold">IP adresu</tspan> má web naší školy?</text>
+  </g>
+  <g aria-label="QR kód">
+    <rect x="450" y="120" width="130" height="130" rx="6" fill="#ffffff" stroke="#333333" stroke-width="3"/>
+    <rect x="462" y="132" width="28" height="28" fill="#333333"/>
+    <rect x="540" y="132" width="28" height="28" fill="#333333"/>
+    <rect x="462" y="210" width="28" height="28" fill="#333333"/>
+    <rect x="505" y="175" width="20" height="20" fill="#333333"/>
+    <text x="515" y="272" font-family="sans-serif" font-size="13" fill="#333333" text-anchor="middle">QR: traceroute-online.com</text>
+  </g>
+  <g role="img" aria-label="Mapa s trasou paketu">
+    <title>Výřez mapy Atlantiku a Evropy s vyznačenou trasou paketu a popisky uzlů – výstup webového traceroute.</title>
+    <rect x="640" y="110" width="270" height="160" rx="8" fill="#f7edc8" stroke="#999999" stroke-width="2"/>
+    <ellipse cx="700" cy="170" rx="35" ry="45" fill="#e8d89a"/>
+    <ellipse cx="855" cy="160" rx="35" ry="30" fill="#e8d89a"/>
+    <path d="M 700 165 C 760 130 810 140 850 158" fill="none" stroke="#c0392b" stroke-width="3"/>
+    <circle cx="700" cy="165" r="6" fill="#c0392b"/>
+    <circle cx="778" cy="142" r="5" fill="#c0392b"/>
+    <circle cx="850" cy="158" r="6" fill="#c0392b"/>
+    <text x="775" y="250" font-family="sans-serif" font-size="12" fill="#555555" text-anchor="middle">trasa paketu přes Atlantik do Evropy</text>
+  </g>
+  <g aria-label="Výstup příkazu tracert google.cz">
+    <rect x="60" y="300" width="850" height="200" rx="6" fill="#101018"/>
+    <text x="80" y="328" font-family="monospace" font-size="15" fill="#d8d8d8">Tracing route to google.cz [142.251.36.131] over a maximum of 30 hops</text>
+    <text x="80" y="352" font-family="monospace" font-size="15" fill="#d8d8d8">  1    2 ms   192.168.1.1</text>
+    <text x="80" y="374" font-family="monospace" font-size="15" fill="#d8d8d8">  2    9 ms   62.141.5.9</text>
+    <text x="80" y="396" font-family="monospace" font-size="15" fill="#d8d8d8">  3   11 ms   89-24-28-9.customers.tmcz.cz [89.24.28.9]</text>
+    <text x="80" y="418" font-family="monospace" font-size="15" fill="#d8d8d8">  4   12 ms   172.253.50.249</text>
+    <text x="80" y="440" font-family="monospace" font-size="15" fill="#d8d8d8">  5   13 ms   142.251.224.127</text>
+    <text x="80" y="462" font-family="monospace" font-size="15" fill="#d8d8d8">  6   13 ms   prg03s12-in-f3.1e100.net [142.251.36.131]</text>
+    <text x="80" y="488" font-family="monospace" font-size="15" fill="#d8d8d8">Trace complete.</text>
+  </g>
+  <text x="930" y="522" font-family="sans-serif" font-size="12" fill="#999999" text-anchor="end">21</text>
+</svg>

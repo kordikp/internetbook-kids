@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" lang="cs">
+<title>Digitální stopa může být i nebezpečná</title>
+<desc>Článek deníku The Guardian o amerických ženách, které mažou aplikace na sledování menstruace z obav z trestního stíhání po zrušení rozsudku Roe v Wade.</desc>
+<defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#555"/></marker><marker id="arrR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#a04030"/></marker><marker id="arrP" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#6a3fc0"/></marker></defs>
+<rect x="0" y="0" width="960" height="540" fill="#ffffff"/>
+<g role="img"><title>Snímek obrazovky článku The Guardian s fotografií osoby držící telefon s menstruační aplikací</title>
+<rect x="50" y="60" width="570" height="400" rx="8" fill="none" stroke="#888" stroke-width="2"/>
+<text x="80" y="100" font-family="sans-serif" font-size="22" font-weight="bold" text-anchor="start" fill="#052962">The Guardian</text>
+<text x="80" y="145" font-family="sans-serif" font-size="24" font-weight="bold" text-anchor="start" fill="#000">Why US women are deleting their</text>
+<text x="80" y="177" font-family="sans-serif" font-size="24" font-weight="bold" text-anchor="start" fill="#000">period tracking apps</text>
+<text x="80" y="215" font-family="sans-serif" font-size="15" font-weight="normal" text-anchor="start" fill="#444">Even before the supreme court decision to overturn</text>
+<text x="80" y="237" font-family="sans-serif" font-size="15" font-weight="normal" text-anchor="start" fill="#444">Roe v Wade, the trend to ditch the apps began amid</text>
+<text x="80" y="259" font-family="sans-serif" font-size="15" font-weight="normal" text-anchor="start" fill="#444">fears of prosecution</text>
+<rect x="80" y="290" width="510" height="140" rx="6" fill="#f0f0f0" stroke="#ccc" stroke-width="1.5"/>
+<rect x="290" y="310" width="60" height="100" rx="8" fill="none" stroke="#999" stroke-width="1.5"/>
+<rect x="298" y="322" width="44" height="66" rx="0" fill="#e6dff2" stroke="none" stroke-width="1.5"/>
+<text x="335" y="450" font-family="sans-serif" font-size="12" font-weight="normal" text-anchor="middle" fill="#888">fotografie: telefon s kalendářovou aplikací</text>
+</g>
+<text x="790" y="130" font-family="sans-serif" font-size="28" font-weight="bold" text-anchor="middle" fill="#000">Digitální stopa</text>
+<text x="790" y="170" font-family="sans-serif" font-size="28" font-weight="bold" text-anchor="middle" fill="#000">může být i</text>
+<text x="790" y="210" font-family="sans-serif" font-size="28" font-weight="bold" text-anchor="middle" fill="#000">nebezpečná</text>
+<text x="60" y="505" font-family="sans-serif" font-size="14" font-weight="normal" text-anchor="start" fill="#888">1] Zdroj: The Guardian</text>
+<text x="930" y="528" font-family="sans-serif" font-size="13" font-weight="normal" text-anchor="end" fill="#999">9</text>
+</svg>

@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" lang="cs">
+  <title>Jak můžeme dinosaura rozebrat a poslat z muzea do muzea?</title>
+  <desc>Motivační úloha: jak převézt velkou kostru dinosaura třemi malými auty z jednoho muzea do druhého. Piktogram kostry dinosaura a schéma muzeum – otazník – muzeum.</desc>
+  <rect x="0" y="0" width="960" height="540" fill="#ffffff"/>
+  <text x="480" y="60" font-family="sans-serif" font-size="30" font-weight="bold" fill="#1a1a1a" text-anchor="middle">Jak můžeme dinosaura rozebrat a poslat</text>
+  <text x="480" y="98" font-family="sans-serif" font-size="30" font-weight="bold" fill="#1a1a1a" text-anchor="middle">z muzea do muzea?</text>
+  <g role="img" aria-label="Kostra dinosaura">
+    <title>Fotografie kostry dlouhokrkého dinosaura (sauropoda) v muzejní expozici.</title>
+    <rect x="90" y="140" width="330" height="180" rx="10" fill="#f2f2f2" stroke="#999999" stroke-width="2"/>
+    <path d="M 130 280 C 170 275 200 270 240 265 C 300 258 330 250 345 225 C 355 205 350 185 340 175" fill="none" stroke="#8a7a5a" stroke-width="6"/>
+    <circle cx="338" cy="170" r="10" fill="none" stroke="#8a7a5a" stroke-width="4"/>
+    <line x1="180" y1="272" x2="180" y2="300" stroke="#8a7a5a" stroke-width="5"/>
+    <line x1="280" y1="260" x2="280" y2="300" stroke="#8a7a5a" stroke-width="5"/>
+    <line x1="200" y1="268" x2="230" y2="250" stroke="#8a7a5a" stroke-width="3"/>
+    <line x1="220" y1="266" x2="250" y2="248" stroke="#8a7a5a" stroke-width="3"/>
+    <text x="255" y="312" font-family="sans-serif" font-size="13" fill="#777777" text-anchor="middle">kostra sauropoda v muzeu</text>
+  </g>
+  <g aria-label="Schéma přesunu z muzea do muzea">
+    <circle cx="180" cy="420" r="48" fill="none" stroke="#333333" stroke-width="3"/>
+    <rect x="155" y="410" width="50" height="30" fill="none" stroke="#333333" stroke-width="3"/>
+    <path d="M 150 410 L 180 390 L 210 410" fill="none" stroke="#333333" stroke-width="3"/>
+    <text x="180" y="490" font-family="sans-serif" font-size="15" fill="#333333" text-anchor="middle">muzeum A</text>
+    <line x1="240" y1="420" x2="420" y2="420" stroke="#6644cc" stroke-width="4" stroke-dasharray="5 9"/>
+    <circle cx="480" cy="420" r="38" fill="#ffffff" stroke="#6644cc" stroke-width="3"/>
+    <text x="480" y="434" font-family="sans-serif" font-size="38" font-weight="bold" fill="#6644cc" text-anchor="middle">?</text>
+    <line x1="530" y1="420" x2="710" y2="420" stroke="#6644cc" stroke-width="4" stroke-dasharray="5 9"/>
+    <path d="M 710 420 L 696 412 L 696 428 Z" fill="#6644cc"/>
+    <circle cx="770" cy="420" r="48" fill="#fdeeb3" stroke="#c9a000" stroke-width="3"/>
+    <rect x="745" y="410" width="50" height="30" fill="none" stroke="#333333" stroke-width="3"/>
+    <path d="M 740 410 L 770 390 L 800 410" fill="none" stroke="#333333" stroke-width="3"/>
+    <text x="770" y="490" font-family="sans-serif" font-size="15" fill="#333333" text-anchor="middle">muzeum B (cíl)</text>
+  </g>
+  <text x="640" y="230" font-family="sans-serif" font-size="18" fill="#555555">Úkol: vymyslete, jak velkou kostru</text>
+  <text x="640" y="258" font-family="sans-serif" font-size="18" fill="#555555">převézt třemi malými auty.</text>
+  <text x="930" y="522" font-family="sans-serif" font-size="12" fill="#999999" text-anchor="end">23</text>
+</svg>

@@ -1,0 +1,25 @@
+{
+  "id": "ch4-velke-opakovani",
+  "number": 4,
+  "title": "Velké opakování",
+  "subtitle": "Boss kvíz, Bingo a tvůj telling",
+  "directory": "ch4-velke-opakovani",
+  "files": [
+    "01-spine-jak-vypada-internet.md",
+    "01a-depth-thinker-tezsi-pojmy.md",
+    "02-spine-jak-se-pripojujeme.md",
+    "03-spine-digitalni-stopa.md",
+    "03a-depth-creator-muj-telling.md",
+    "04-sidebar-bingo.md",
+    "05-game-pojmy-match.md",
+    "06-question-zaverecna-reflexe.md"
+  ],
+  "boss": {
+    "q": "Popiš celou cestu zprávy od tvého telefonu ke kamarádovi na druhém konci světa — a co po ní zůstane. Použij co nejvíc pojmů z bloku (paket, router, Wi-Fi, IP adresa, podmořský kabel, server, digitální stopa…).",
+    "hints": [
+      "Začni u sebe doma: jak se zpráva dostane z telefonu do sítě? Na co se rozdělí?",
+      "Kudy překoná oceán a kdo jí cestou ukazuje směr? A co se o celé cestě někde zapíše?"
+    ]
+  },
+  "reward_title": "Certifikát bloku"
+}

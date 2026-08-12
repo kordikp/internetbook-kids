@@ -1,0 +1,13 @@
+{
+  "type": "order",
+  "title": "Cesta zprávy internetem",
+  "instruction": "Seřaď cestu zprávy internetem.",
+  "steps": [
+    "Napíšeš zprávu a dáš Odeslat",
+    "Zpráva se rozdělí na pakety",
+    "Pakety nesou adresu příjemce",
+    "Routery je posílají dál",
+    "V cíli se pakety seřadí a složí",
+    "Kamarádovi se zobrazí zpráva"
+  ]
+}

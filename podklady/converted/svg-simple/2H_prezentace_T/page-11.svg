@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" lang="cs">
+  <title>Jaké jsou výhody a nevýhody kabelu a Wi-Fi?</title>
+  <desc>Diskusní slide s prázdnou tabulkou: sloupce Výhody a Nevýhody, řádky Kabel a Wi-Fi; čtyři prázdné rámečky doplní žáci (odpovídá úloze 2 v pracovním listu T).</desc>
+  <text x="480" y="60" text-anchor="middle" font-family="sans-serif" font-size="32" font-weight="bold" fill="#1a1a2e">Jaké jsou výhody a nevýhody <tspan fill="#f5a623">kabelu</tspan> a <tspan fill="#6c3df4">Wi-Fi</tspan>?</text>
+  <g aria-label="Záhlaví sloupců">
+    <rect x="280" y="100" width="280" height="50" rx="10" fill="#f5c542" stroke="#b5850f" stroke-width="2"/>
+    <text x="420" y="132" text-anchor="middle" font-family="sans-serif" font-size="22" font-weight="bold" fill="#1a1a2e">VÝHODY</text>
+    <rect x="600" y="100" width="280" height="50" rx="10" fill="#e8635a" stroke="#a83a32" stroke-width="2"/>
+    <text x="740" y="132" text-anchor="middle" font-family="sans-serif" font-size="22" font-weight="bold" fill="#ffffff">NEVÝHODY</text>
+  </g>
+  <g aria-label="Řádek Kabel">
+    <text x="160" y="255" text-anchor="middle" font-family="sans-serif" font-size="24" font-weight="bold" fill="#1a1a2e">KABEL</text>
+    <rect x="280" y="180" width="280" height="140" rx="10" fill="#ffffff" stroke="#888" stroke-width="2"/>
+    <rect x="600" y="180" width="280" height="140" rx="10" fill="#ffffff" stroke="#888" stroke-width="2"/>
+    <text x="420" y="255" text-anchor="middle" font-family="sans-serif" font-size="15" fill="#aaa">(doplní žáci)</text>
+    <text x="740" y="255" text-anchor="middle" font-family="sans-serif" font-size="15" fill="#aaa">(doplní žáci)</text>
+  </g>
+  <g aria-label="Řádek Wi-Fi">
+    <text x="160" y="425" text-anchor="middle" font-family="sans-serif" font-size="24" font-weight="bold" fill="#1a1a2e">WI-FI</text>
+    <rect x="280" y="350" width="280" height="140" rx="10" fill="#ffffff" stroke="#888" stroke-width="2"/>
+    <rect x="600" y="350" width="280" height="140" rx="10" fill="#ffffff" stroke="#888" stroke-width="2"/>
+    <text x="420" y="425" text-anchor="middle" font-family="sans-serif" font-size="15" fill="#aaa">(doplní žáci)</text>
+    <text x="740" y="425" text-anchor="middle" font-family="sans-serif" font-size="15" fill="#aaa">(doplní žáci)</text>
+  </g>
+  <text x="930" y="525" text-anchor="end" font-family="sans-serif" font-size="14" fill="#999">11</text>
+</svg>

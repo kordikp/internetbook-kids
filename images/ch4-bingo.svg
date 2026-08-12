@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420" font-family="system-ui,sans-serif">
+  <rect width="800" height="420" rx="14" fill="#FAFAF7" stroke="#E5E7EB"/>
+  <text x="400" y="36" text-anchor="middle" font-size="19" font-weight="700" fill="#1E1B4B">Bingo s pojmy</text>
+
+  <!-- mřížka 3×3 -->
+  <g>
+    <rect x="235" y="62" width="330" height="270" rx="10" fill="#FFFFFF" stroke="#1E1B4B" stroke-width="2"/>
+    <g stroke="#E5E7EB" stroke-width="1.5">
+      <line x1="345" y1="62" x2="345" y2="332"/>
+      <line x1="455" y1="62" x2="455" y2="332"/>
+      <line x1="235" y1="152" x2="565" y2="152"/>
+      <line x1="235" y1="242" x2="565" y2="242"/>
+    </g>
+    <!-- vyplněné pojmy -->
+    <g text-anchor="middle" font-size="12.5" fill="#1E1B4B">
+      <text x="290" y="112">server</text>
+      <text x="400" y="112">cookie</text>
+      <text x="510" y="112">router</text>
+      <text x="290" y="202">Wi-Fi</text>
+      <text x="400" y="202">paket</text>
+      <text x="510" y="202">optika</text>
+      <text x="290" y="292">ping</text>
+      <text x="400" y="292">IP adresa</text>
+      <text x="510" y="292">stopa</text>
+    </g>
+    <!-- vyhraná diagonála (jantarová) -->
+    <g stroke="#D97706" stroke-width="2.5" stroke-linecap="round">
+      <line x1="272" y1="90" x2="308" y2="122"/><line x1="308" y1="90" x2="272" y2="122"/>
+      <line x1="382" y1="180" x2="418" y2="212"/><line x1="418" y1="180" x2="382" y2="212"/>
+      <line x1="492" y1="270" x2="528" y2="302"/><line x1="528" y1="270" x2="492" y2="302"/>
+    </g>
+    <line x1="268" y1="88" x2="532" y2="306" stroke="#D97706" stroke-width="3" stroke-linecap="round" opacity="0.55"/>
+  </g>
+
+  <!-- pravidla vlevo/vpravo -->
+  <g font-size="12.5" fill="#1E1B4B">
+    <text x="52" y="120">1. Vyber si 9 pojmů</text>
+    <text x="52" y="144" fill="#6B7280">a vepiš je do mřížky.</text>
+    <text x="52" y="196">2. Učitel čte definice,</text>
+    <text x="52" y="220" fill="#6B7280">svůj pojem si škrtni.</text>
+  </g>
+  <g font-size="12.5" fill="#1E1B4B">
+    <text x="608" y="150">3. Tři škrtnuté</text>
+    <text x="608" y="174">v řadě = </text>
+    <text x="668" y="174" font-weight="700" fill="#D97706">BINGO!</text>
+  </g>
+
+  <text x="400" y="392" text-anchor="middle" font-size="12.5" fill="#6B7280">Hraje se i doma: jeden čte vysvětlení pojmů, druhý škrtá — pak si role vyměňte.</text>
+</svg>

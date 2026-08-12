@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" lang="cs">
+<title>Co si o vás myslí Instagram?</title>
+<desc>Úkol: podle doporučeného obsahu na Instagramu odhadnout, jak si žáka Instagram představuje, a porovnat se spolužáky.</desc>
+<defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#555"/></marker><marker id="arrR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#a04030"/></marker><marker id="arrP" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#6a3fc0"/></marker></defs>
+<rect x="0" y="0" width="960" height="540" fill="#ffffff"/>
+<g role="img"><title>Kreslený chytrý telefon s logem Instagramu na displeji</title>
+<rect x="100" y="140" width="170" height="300" rx="20" fill="none" stroke="#333" stroke-width="2.5"/>
+<rect x="145" y="210" width="80" height="80" rx="22" fill="none" stroke="#d94f90" stroke-width="4"/>
+<circle cx="185" cy="250" r="22" fill="none" stroke="#d94f90" stroke-width="4"/>
+<circle cx="212" cy="224" r="5" fill="#d94f90"/>
+</g>
+<text x="600" y="100" font-family="sans-serif" font-size="32" font-weight="bold" text-anchor="middle" fill="#000">Co si o vás myslí instagram?</text>
+<text x="340" y="200" font-family="sans-serif" font-size="22" font-weight="normal" text-anchor="start" fill="#000">Podle doporučeného obsahu na Instagramu</text>
+<text x="340" y="234" font-family="sans-serif" font-size="22" font-weight="normal" text-anchor="start" fill="#000">zkuste odhadnout, jak si vás Instagram</text>
+<text x="340" y="268" font-family="sans-serif" font-size="22" font-weight="normal" text-anchor="start" fill="#000">nejspíš představuje?</text>
+<text x="340" y="340" font-family="sans-serif" font-size="22" font-weight="bold" text-anchor="start" fill="#000">Budete se lišit od svých spolužáků?</text>
+<text x="340" y="374" font-family="sans-serif" font-size="22" font-weight="bold" text-anchor="start" fill="#000">V čem?</text>
+<text x="930" y="528" font-family="sans-serif" font-size="13" font-weight="normal" text-anchor="end" fill="#999">6</text>
+</svg>

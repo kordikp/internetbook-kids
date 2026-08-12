@@ -1,0 +1,2068 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>p-book Admin — Content & Marketing Pipeline</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<style>
+:root{--bg:#f3f4f6;--surface:#fff;--text:#111827;--text2:#6b7280;--text3:#9ca3af;--border:#e5e7eb;--accent:#d97706;--accent-bg:#fef3c7;--eng:#2563eb;--prod:#059669;--biz:#d97706;--side:#7c3aed;--radius:10px;--shadow:0 1px 3px rgba(0,0,0,.06);--font:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}body{font-family:var(--font);color:var(--text);background:var(--bg);font-size:14px;line-height:1.5}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+a{color:var(--accent);text-decoration:none}
+
+/* Layout */
+.app{display:grid;grid-template-columns:240px 1fr;grid-template-rows:52px 1fr;height:100vh;overflow:hidden}
+.header{grid-column:1/-1;background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 1.2em;gap:.8em;z-index:10}
+.header h1{font-size:.85rem;font-weight:700;color:var(--accent);white-space:nowrap}
+.header nav{display:flex;gap:.2em}
+.header nav button{padding:.4em .7em;border-radius:6px;font-size:.78rem;font-weight:600;color:var(--text2);transition:all .15s}
+.header nav button:hover{background:var(--border)}
+.header nav button.active{background:var(--accent-bg);color:var(--accent)}
+.spacer{flex:1}
+.hstat{font-size:.72rem;color:var(--text3)}
+
+/* Sidebar */
+.sidebar{background:var(--surface);border-right:1px solid var(--border);overflow-y:auto;padding:.8em;font-size:.78rem}
+.sf-title{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text3);margin:1em 0 .4em}
+.sf-item{display:flex;align-items:center;gap:.4em;padding:.3em .5em;border-radius:5px;cursor:pointer;transition:background .12s}
+.sf-item:hover{background:var(--accent-bg)}
+.sf-item.active{background:var(--accent-bg);font-weight:600;color:var(--accent)}
+.sf-count{margin-left:auto;font-size:.62rem;color:var(--text3);background:var(--border);padding:.1em .4em;border-radius:8px}
+.sf-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.sf-pipe{display:flex;align-items:center;gap:.3em;padding:.25em .5em;border-radius:5px;cursor:pointer;font-size:.75rem;transition:background .12s}
+.sf-pipe:hover{background:var(--accent-bg)}
+.sf-pipe .sf-dot{width:8px;height:8px}
+.sf-pipe.active{background:var(--accent-bg);font-weight:600}
+
+/* Main */
+.main{overflow-y:auto;padding:1.5em}
+
+/* Cards grid */
+.cg{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:.8em;margin-bottom:1.5em}
+.cg-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:.8em;text-align:center}
+.cg-card h4{font-size:.62rem;font-weight:600;text-transform:uppercase;color:var(--text3);margin-bottom:.3em}
+.cg-num{font-size:1.6rem;font-weight:800;color:var(--accent)}
+.cg-sub{font-size:.7rem;color:var(--text2)}
+
+/* Status dots everywhere */
+.sdot{width:8px;height:8px;border-radius:50%;display:inline-block;flex-shrink:0}
+.sdot-draft{background:#d1d5db}.sdot-review{background:#fbbf24}.sdot-approved{background:#60a5fa}.sdot-published{background:#34d399}.sdot-none{background:transparent;border:1.5px dashed #d1d5db}
+
+/* Content list */
+.cl{display:flex;flex-direction:column;gap:.4em}
+.cl-item{display:grid;grid-template-columns:8px 2.5em 1fr auto auto auto auto;gap:.6em;align-items:center;padding:.55em .7em;background:var(--surface);border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all .12s;font-size:.8rem}
+.cl-item:hover{border-color:var(--accent);box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.cl-ch{font-size:.65rem;color:var(--text3);font-weight:600}
+.cl-title{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cl-voice{font-size:.6rem;font-weight:700;text-transform:uppercase;padding:.12em .4em;border-radius:3px;color:#fff}
+.cl-pillar{font-size:.6rem;padding:.12em .4em;border-radius:3px;border:1px solid var(--border);color:var(--text2);max-width:10em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cl-stdc{font-size:.6rem;font-weight:600;padding:.1em .35em;border-radius:3px}
+.cl-actions{display:flex;gap:.2em}
+.cl-act{font-size:.85rem;padding:.15em .25em;border-radius:4px;transition:background .12s;color:var(--text3)}
+.cl-act:hover{background:var(--accent-bg);color:var(--accent)}
+
+/* Detail / Editor - full right panel */
+.editor{position:fixed;top:52px;right:0;bottom:0;width:560px;background:var(--surface);border-left:1px solid var(--border);box-shadow:-4px 0 20px rgba(0,0,0,.08);transform:translateX(100%);transition:transform .25s ease;z-index:100;display:flex;flex-direction:column;overflow:hidden}
+.editor.open{transform:translateX(0)}
+.ed-head{padding:.8em 1.2em;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:.6em;flex-shrink:0}
+.ed-head h2{font-size:1rem;font-weight:700;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ed-close{font-size:1.1rem;color:var(--text3);padding:.3em}
+.ed-tabs{display:flex;border-bottom:1px solid var(--border);flex-shrink:0}
+.ed-tab{padding:.5em 1em;font-size:.78rem;font-weight:600;color:var(--text3);border-bottom:2px solid transparent;transition:all .12s}
+.ed-tab:hover{color:var(--text)}
+.ed-tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+.ed-body{flex:1;overflow-y:auto;padding:1.2em}
+.ed-section{margin-bottom:1.2em}
+.ed-label{font-size:.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.04em;color:var(--text3);margin-bottom:.4em}
+.ed-tags{display:flex;flex-wrap:wrap;gap:.3em}
+.ed-tag{font-size:.72rem;padding:.3em .7em;border-radius:6px;border:1.5px solid var(--border);color:var(--text2);transition:all .12s}
+.ed-tag:hover{border-color:var(--text2)}
+.ed-tag.on{border-color:var(--accent);background:var(--accent-bg);color:var(--accent);font-weight:600}
+
+/* Content preview — styled like reader */
+.ed-preview{background:#fff;border:1px solid var(--border);border-radius:8px;padding:1.2em;font-size:.88rem;line-height:1.7;max-height:500px;overflow-y:auto;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
+.ed-preview p{margin-bottom:.8em}
+.ed-preview h2,.ed-preview h3,.ed-preview h4{font-weight:700;margin:1em 0 .4em}
+.ed-preview h2{font-size:1.1rem} .ed-preview h3{font-size:.95rem} .ed-preview h4{font-size:.88rem}
+.ed-preview ul,.ed-preview ol{padding-left:1.4em;margin-bottom:.8em}
+.ed-preview li{margin-bottom:.3em}
+.ed-preview strong{font-weight:700}
+.ed-preview em{font-style:italic}
+.ed-preview code{font-family:monospace;font-size:.82rem;background:#f3f4f6;padding:.1em .3em;border-radius:3px}
+.ed-preview pre{background:#f3f4f6;padding:.8em;border-radius:6px;overflow-x:auto;margin:.8em 0}
+.ed-preview blockquote{border-left:3px solid var(--accent);padding-left:.8em;color:var(--text2);margin:.8em 0}
+.ed-preview table{width:100%;border-collapse:collapse;margin:.8em 0;font-size:.8rem}
+.ed-preview th,.ed-preview td{border:1px solid var(--border);padding:.4em .6em;text-align:left}
+.ed-preview th{background:#f9fafb;font-weight:600}
+.ed-preview hr{border:none;border-top:1px solid var(--border);margin:1em 0}
+.ed-preview img{max-width:100%;border-radius:6px}
+
+/* Social output */
+.ed-output{width:100%;min-height:200px;border:1px solid var(--border);border-radius:8px;padding:.8em;font-family:var(--font);font-size:.82rem;line-height:1.5;resize:vertical;background:var(--bg);color:var(--text)}
+.ed-format-tabs{display:flex;gap:.2em;flex-wrap:wrap;margin-bottom:.6em}
+.ed-fmt{font-size:.7rem;padding:.3em .6em;border-radius:5px;border:1.5px solid var(--border);color:var(--text2)}
+.ed-fmt.active{border-color:var(--accent);background:var(--accent-bg);color:var(--accent);font-weight:600}
+.ed-fmt .fmt-rec{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--accent);margin-left:.2em}
+.ed-btn-row{display:flex;gap:.4em;margin-top:.6em;flex-wrap:wrap}
+.ed-btn{font-size:.75rem;padding:.4em .8em;border-radius:6px;font-weight:600;border:1.5px solid var(--border);color:var(--text2);transition:all .12s}
+.ed-btn:hover{border-color:var(--accent);color:var(--accent)}
+.ed-btn-primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.ed-btn-primary:hover{background:#b45309}
+.ed-btn-push{background:#059669;color:#fff;border-color:#059669}
+
+/* Workflow notes */
+.ed-notes{width:100%;min-height:80px;border:1px solid var(--border);border-radius:8px;padding:.6em;font-family:var(--font);font-size:.8rem;resize:vertical;background:var(--surface)}
+.ed-history{max-height:200px;overflow-y:auto}
+.ed-history-item{padding:.4em 0;border-bottom:1px solid var(--border);font-size:.75rem}
+.ed-history-item:last-child{border:none}
+.ed-history-meta{font-size:.65rem;color:var(--text3)}
+
+/* Pipeline kanban */
+.pipeline{display:grid;grid-template-columns:repeat(5,1fr);gap:.6em;min-height:400px}
+.pcol{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:.6em;display:flex;flex-direction:column}
+.pcol-head{font-size:.68rem;font-weight:700;text-transform:uppercase;color:var(--text3);margin-bottom:.6em;display:flex;justify-content:space-between;align-items:center;padding-bottom:.4em;border-bottom:2px solid var(--border)}
+.pcol-head.draft{border-color:#d1d5db}.pcol-head.review{border-color:#fbbf24}.pcol-head.approved{border-color:#60a5fa}.pcol-head.ready{border-color:#a78bfa}.pcol-head.published{border-color:#34d399}
+.pcol-count{background:var(--border);padding:.1em .4em;border-radius:8px;font-size:.6rem}
+.pcol-list{flex:1;display:flex;flex-direction:column;gap:.3em;overflow-y:auto}
+.pcard{padding:.5em;background:var(--bg);border-radius:6px;cursor:pointer;border-left:3px solid var(--border);transition:all .12s;font-size:.75rem}
+.pcard:hover{border-left-color:var(--accent);background:var(--accent-bg)}
+.pcard-title{font-weight:600;margin-bottom:.15em;line-height:1.2}
+.pcard-meta{font-size:.62rem;color:var(--text3);display:flex;gap:.4em;flex-wrap:wrap}
+.pcard-meta .cl-voice{font-size:.55rem}
+
+/* Toast */
+.toast{position:fixed;bottom:1.5em;left:50%;transform:translateX(-50%) translateY(100px);background:var(--text);color:#fff;padding:.6em 1.2em;border-radius:8px;font-size:.82rem;font-weight:600;z-index:999;transition:transform .3s;opacity:0}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+
+/* Edit fields */
+.ed-fields{display:flex;flex-direction:column;gap:.4em}
+.ed-field{display:flex;align-items:center;gap:.5em}
+.ed-field label{font-size:.7rem;font-weight:600;color:var(--text3);width:7em;flex-shrink:0}
+.ed-field .ed-input{flex:1;padding:.35em .5em;border:1px solid var(--border);border-radius:6px;font-family:var(--font);font-size:.8rem;color:var(--text);background:var(--bg)}
+.ed-field .ed-input:focus{border-color:var(--accent);outline:none}
+.ed-field select.ed-input{appearance:auto}
+.ed-body-edit{width:100%;min-height:350px;border:1px solid var(--border);border-radius:8px;padding:.8em;font-family:'SF Mono',Monaco,Consolas,monospace;font-size:.78rem;line-height:1.5;resize:vertical;background:var(--bg);color:var(--text);tab-size:2}
+.ed-body-edit:focus{border-color:var(--accent);outline:none}
+@media(max-width:1000px){.app{grid-template-columns:1fr}.sidebar{display:none}.editor{width:100%}.pipeline{grid-template-columns:repeat(3,1fr)}}
+</style>
+</head>
+<body>
+<!-- Login gate -->
+<div id="loginGate" style="position:fixed;inset:0;background:var(--bg);z-index:1000;display:flex;align-items:center;justify-content:center">
+  <div style="text-align:center;max-width:320px;padding:1em">
+    <h1 style="font-size:1.2rem;margin-bottom:.8em">&#128218; p-book Admin</h1>
+    <div id="loginForm">
+      <input type="password" id="adminPwd" placeholder="Admin password" style="width:100%;padding:.5em;border:1.5px solid var(--border);border-radius:6px;font-size:.9rem;text-align:center" onkeydown="if(event.key==='Enter')checkPwd()">
+      <button onclick="checkPwd()" style="margin-top:.5em;width:100%;padding:.5em;background:var(--accent);color:#fff;border:none;border-radius:6px;font-weight:600;font-size:.85rem;cursor:pointer">Enter</button>
+      <p style="font-size:.68rem;color:var(--text3);margin-top:.5em">Default password: <b>pbook</b> — change it after first login.</p>
+    </div>
+    <div id="changePwdForm" style="display:none">
+      <p style="font-size:.82rem;color:var(--accent);font-weight:600;margin-bottom:.5em">Set your own password</p>
+      <input type="password" id="newPwd1" placeholder="New password" style="width:100%;padding:.5em;border:1.5px solid var(--border);border-radius:6px;font-size:.9rem;text-align:center;margin-bottom:.4em">
+      <input type="password" id="newPwd2" placeholder="Confirm password" style="width:100%;padding:.5em;border:1.5px solid var(--border);border-radius:6px;font-size:.9rem;text-align:center" onkeydown="if(event.key==='Enter')savePwd()">
+      <button onclick="savePwd()" style="margin-top:.5em;width:100%;padding:.5em;background:var(--accent);color:#fff;border:none;border-radius:6px;font-weight:600;font-size:.85rem;cursor:pointer">Save & continue</button>
+      <button onclick="skipPwd()" style="margin-top:.3em;width:100%;padding:.4em;background:none;border:none;font-size:.75rem;color:var(--text3);cursor:pointer">Skip for now</button>
+    </div>
+    <p id="pwdErr" style="color:#dc2626;font-size:.75rem;margin-top:.3em"></p>
+  </div>
+</div>
+<script>
+function hashPwd(pwd){return String(Math.abs(Array.from(new Uint8Array(new TextEncoder().encode(pwd))).reduce((h,b)=>(h*31+b)|0,0)))}
+function checkPwd(){
+  const pwd=document.getElementById('adminPwd').value;
+  const stored=localStorage.getItem('pbook-admin-hash');
+  if(!stored && pwd==='pbook'){
+    // First login with default password — force change
+    document.getElementById('loginForm').style.display='none';
+    document.getElementById('changePwdForm').style.display='block';
+  } else if(stored && hashPwd(pwd)===stored){
+    document.getElementById('loginGate').style.display='none';
+    localStorage.setItem('pbook-admin-session','1');
+  } else if(!stored && pwd==='pbook'){
+    document.getElementById('loginGate').style.display='none';
+    localStorage.setItem('pbook-admin-session','1');
+  } else {
+    document.getElementById('pwdErr').textContent='Wrong password';
+  }
+}
+function savePwd(){
+  const p1=document.getElementById('newPwd1').value;
+  const p2=document.getElementById('newPwd2').value;
+  if(p1.length<3){document.getElementById('pwdErr').textContent='At least 3 characters';return}
+  if(p1!==p2){document.getElementById('pwdErr').textContent='Passwords don\'t match';return}
+  localStorage.setItem('pbook-admin-hash',hashPwd(p1));
+  localStorage.setItem('pbook-admin-session','1');
+  document.getElementById('loginGate').style.display='none';
+}
+function skipPwd(){
+  localStorage.setItem('pbook-admin-session','1');
+  document.getElementById('loginGate').style.display='none';
+}
+window.changePwd=function(){
+  localStorage.removeItem('pbook-admin-session');
+  document.getElementById('loginForm').style.display='none';
+  document.getElementById('changePwdForm').style.display='block';
+  document.getElementById('loginGate').style.display='flex';
+  document.getElementById('newPwd1').focus();
+};
+if(localStorage.getItem('pbook-admin-session')==='1') document.getElementById('loginGate').style.display='none';
+</script>
+
+<div class="app">
+  <header class="header">
+    <h1>&#128218; p-book Admin</h1>
+    <nav id="mainNav"></nav>
+    <div class="spacer"></div>
+    <button onclick="newBlock()" style="font-size:.75rem;font-weight:600;padding:.35em .8em;border-radius:6px;background:var(--accent);color:#fff">+ New Block</button>
+    <button onclick="showRCSetup()" style="font-size:.75rem;font-weight:600;padding:.35em .8em;border-radius:6px;border:1.5px solid var(--accent);color:var(--accent)">Recombee</button>
+    <button onclick="syncRecombee()" id="syncBtn" style="font-size:.75rem;font-weight:600;padding:.35em .8em;border-radius:6px;border:1.5px solid #10B981;color:#10B981">Sync Items</button>
+    <button onclick="changePwd()" style="font-size:.65rem;color:var(--text3)">Change password</button>
+    <button onclick="localStorage.removeItem('pbook-admin-session');location.reload()" style="font-size:.65rem;color:var(--text3)">Logout</button>
+    <span class="hstat" id="hstat"></span>
+  </header>
+  <aside class="sidebar" id="sidebar"></aside>
+  <div class="main" id="main"></div>
+</div>
+<div class="editor" id="editor"></div>
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import { renderMarkdown } from './js/markdown.js';
+window.renderMD = renderMarkdown;
+
+const PIL = ['Configurable Intelligence','Production Reality','Scientific Depth','Applied Use Cases','Future of Discovery'];
+const SER = ['In Control','Production Notes','Behind the Algorithm','Use Case Breakdown','Build vs Buy'];
+const STDC = ['SEE','THINK','DO','CARE'];
+const PER = ['Eva (PM)','Daniel (CEO)'];
+const FMT = ['LinkedIn Post','LinkedIn Carousel','X Thread','Blog Article','YouTube Script','Newsletter','Gabriela LinkedIn'];
+const STAGES = ['draft','review','approved','ready_for_pr','published'];
+const STAGE_LABELS = {draft:'Draft',review:'In Review',approved:'Approved',ready_for_pr:'Ready for PR',published:'Published'};
+const STAGE_COLORS = {draft:'#d1d5db',review:'#fbbf24',approved:'#60a5fa',ready_for_pr:'#a78bfa',published:'#34d399'};
+// Tabs follow the content lifecycle: readers create DEMAND → AI drafts PROPOSALS
+// (interest-tested as ghost items) → COMMUNITY tellings earn adoption → HEALTH
+// keeps shipped content working → CATALOG is the source of truth → REACH measures
+// growth (invites, editors) → STUDIO is where editors write. Legacy tools in More.
+const TABS = ['📥 Demand','🌱 Proposals','⚡ Community','🩺 Health','📚 Catalog','📈 Reach','✍️ Studio','⚙️ More'];
+
+let book,allBlocks=[],mktg={},currentTab='📥 Demand',sideFilter=null,editorBlock=null;
+// These must be on window because onclick handlers run in global scope
+window.editorTab='preview';
+try{mktg=JSON.parse(localStorage.getItem('pbook-mktg')||'{}')}catch(e){}
+function save(){localStorage.setItem('pbook-mktg',JSON.stringify(mktg))}
+
+async function init(){
+  book=await(await fetch('content/book.json')).json();
+  for(const ch of book.chapters){const dir=`content/${ch.directory}`;for(const f of ch.files){try{const t=await(await fetch(`${dir}/${f}`)).text();const{meta,body}=parseFM(t);allBlocks.push({...meta,body,_ch:ch.id,_cn:ch.number,_ct:ch.title,_f:f})}catch(e){}}}
+  // Apply saved content status overrides
+  try{const st=JSON.parse(localStorage.getItem('pbook-content-statuses')||'{}');Object.entries(st).forEach(([id,s])=>{const b=allBlocks.find(x=>x.id===id);if(b)b.status=s})}catch(e){}
+  document.getElementById('hstat').textContent=`${allBlocks.length} blocks · ${book.chapters.length} chapters`;
+  document.getElementById('mainNav').innerHTML=TABS.map(t=>`<button class="${t===currentTab?'active':''}" onclick="ST('${t}')">${t}</button>`).join('');
+  renderSidebar();showMain();
+}
+
+function parseFM(t){const m=t.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);if(!m)return{meta:{},body:t};const meta={};for(const l of m[1].split('\n')){const kv=l.match(/^(\w[\w-]*)\s*:\s*(.*)/);if(kv){let v=kv[2].trim();if(v==='true')v=true;else if(v==='false')v=false;else if(v==='null')v=null;else if(/^\d+$/.test(v))v=parseInt(v);else v=v.replace(/^["']|["']$/g,'');meta[kv[1]]=v}}return{meta,body:m[2].trim()}}
+
+function renderSidebar(){
+  const sb=document.getElementById('sidebar');
+  const stages={};STAGES.forEach(s=>stages[s]=0);
+  Object.values(mktg).forEach(m=>{if(m.status&&stages[m.status]!==undefined)stages[m.status]++});
+  const untagged=allBlocks.length-Object.keys(mktg).length;
+
+  let h=`<div class="sf-title">Pipeline</div>`;
+  h+=`<div class="sf-pipe ${!sideFilter?'active':''}" onclick="SF(null)"><span class="sf-dot" style="background:var(--accent)"></span> All <span class="sf-count">${allBlocks.length}</span></div>`;
+  h+=`<div class="sf-pipe ${sideFilter==='untagged'?'active':''}" onclick="SF('untagged')"><span class="sf-dot sdot-none"></span> Untagged <span class="sf-count">${untagged}</span></div>`;
+  STAGES.forEach(s=>{h+=`<div class="sf-pipe ${sideFilter===s?'active':''}" onclick="SF('${s}')"><span class="sf-dot" style="background:${STAGE_COLORS[s]}"></span> ${STAGE_LABELS[s]} <span class="sf-count">${stages[s]}</span></div>`});
+
+  h+=`<div class="sf-title">Chapters</div>`;
+  book.chapters.forEach((ch,i)=>{
+    const cnt=(allBlocks.filter(b=>b._cn===ch.number)).length;
+    h+=`<div class="sf-item ${sideFilter==='ch'+ch.number?'active':''}" onclick="SF('ch${ch.number}')"><span style="font-weight:700;color:var(--accent);width:1.2em">${ch.number}</span> ${ch.title} <span class="sf-count">${cnt}</span></div>`;
+  });
+
+  // Content status counts
+  const draftC=allBlocks.filter(b=>b.status==='draft').length;
+  const reviewC=allBlocks.filter(b=>b.status==='review').length;
+  const acceptC=allBlocks.filter(b=>b.status==='accepted'||!b.status).length;
+  h+=`<div class="sf-title">Content Status</div>`;
+  if(draftC)h+=`<div class="sf-pipe" onclick="ST('Editorial')"><span class="sdot" style="background:#D97706"></span> Draft <span class="sf-count">${draftC}</span></div>`;
+  if(reviewC)h+=`<div class="sf-pipe" onclick="ST('Editorial')"><span class="sdot" style="background:#3B82F6"></span> In Review <span class="sf-count">${reviewC}</span></div>`;
+  h+=`<div class="sf-pipe" onclick="ST('Editorial')"><span class="sdot sdot-published"></span> Accepted <span class="sf-count">${acceptC}</span></div>`;
+
+  h+=`<div class="sf-title">Actions</div>`;
+  h+=`<div class="sf-item" onclick="autoTag()">&#9881; Auto-tag all</div>`;
+  h+=`<div class="sf-item" onclick="exportCSV()">&#128190; Export CSV</div>`;
+  sb.innerHTML=h;
+}
+
+window.SF=function(f){
+  sideFilter=sideFilter===f?null:f;
+  // Switch to Content tab to show filtered results
+  if(sideFilter && currentTab!=='Content'){currentTab='Content';document.querySelectorAll('#mainNav button').forEach(b=>b.classList.toggle('active',b.textContent==='Content'));}
+  renderSidebar();showMain();
+};
+window.CSI=function(v){contentSearch=v;renderContent(document.getElementById('main'))};
+window.CSC=function(){contentSearch='';renderContent(document.getElementById('main'))};
+window.ST=function(t){currentTab=t;document.querySelectorAll('#mainNav button').forEach(b=>b.classList.toggle('active',b.textContent===t));showMain()};
+
+function showMain(){
+  const m=document.getElementById('main');
+  if(currentTab==='📥 Demand')renderDemand(m);
+  else if(currentTab==='🌱 Proposals')renderProposals(m);
+  else if(currentTab==='⚡ Community')renderCommunity(m);
+  else if(currentTab==='🩺 Health')renderHealth(m);
+  else if(currentTab==='📚 Catalog')renderCatalog(m);
+  else if(currentTab==='📈 Reach')renderReach(m);
+  else if(currentTab==='✍️ Studio')renderEditorial(m);
+  else if(currentTab==='⚙️ More')renderMore(m);
+  // legacy tools reachable from More
+  else if(currentTab==='Content')renderContent(m);
+  else if(currentTab==='Feedback')renderFeedback(m);
+  else if(currentTab==='Certificates')renderCertificates(m);
+  else if(currentTab==='PR Pipeline')renderPipeline(m);
+  else if(currentTab==='PR Push')renderPR(m);
+  else renderDemand(m);
+}
+
+function renderMore(m){
+  m.innerHTML=`<h2 style="font-size:1.05rem;font-weight:800;margin-bottom:.5em">More tools</h2>
+    <p style="font-size:.75rem;color:var(--text3);margin-bottom:1em">Utilities that sit outside the everyday editorial loop.</p>
+    <div style="display:flex;flex-wrap:wrap;gap:.6em">
+      ${['Feedback','Content','Certificates','PR Pipeline','PR Push'].map(x=>`<button onclick="ST('${x}')" style="font-size:.78rem;padding:.5em 1em;border:1.5px solid var(--border);border-radius:8px">${x}</button>`).join('')}
+    </div>
+    <h3 style="font-size:.85rem;font-weight:700;margin:1.4em 0 .4em">How this works</h3>
+    <p style="font-size:.75rem;color:var(--text3)">The pipeline (tabs left → right) mirrors how content is made: readers create <b>Demand</b> (steering misses, concept wishes, goals) → the AI drafts <b>Proposals</b>, interest-tested as 🌱 ghost cards → readers' own tellings earn adoption in <b>Community</b> → <b>Health</b> watches shipped content → <b>Catalog</b> is the source of truth → <b>Reach</b> tracks growth and the editor track → <b>Studio</b> is where you write. Guides: <a href="HUMANS.md" target="_blank">HUMANS.md</a> (roles) · <a href="AGENTS.md" target="_blank">AGENTS.md</a> (AI collaborators) · <a href="PERSONALIZATION.md" target="_blank">implementation</a>.</p>`;
+}
+
+// ===== COVERAGE — the redakce cockpit (spec §12): concept × lens matrix,
+// steering demand from reader logs, community nomination queue =====
+const LENSES=['generic','ecommerce','media','social-feeds','education','jobs'];
+// subspace-aware: "a|b" sets and "a..b" ranges count for every covered value
+const LENS_ORDER=LENSES;
+function facetCovers(raw,val,allVals){
+  if(!raw)return val==='generic';
+  const s=String(raw);
+  if(s.includes('..')){const[a,b]=s.split('..');const i=allVals.indexOf(a.trim()),j=allVals.indexOf(b.trim()),t=allVals.indexOf(val);return i>=0&&j>=i&&t>=i&&t<=j}
+  return s.split('|').map(x=>x.trim()).includes(val);
+}
+const ADOPTION_K=5; // distinct readers with positive signal → nominated (spec §7)
+let _concepts=null,_commItems=null,_logRows=null;
+
+let _logRowsP=null;
+function getLogRows(){                       // ONE shared fetch for every tab
+  if(_logRows)return Promise.resolve(_logRows);
+  if(!_logRowsP)_logRowsP=fetch('/api/log').then(r=>r.ok?r.json():[]).then(x=>{_logRows=Array.isArray(x)?x:[];return _logRows}).catch(()=>{_logRows=[];return _logRows});
+  return _logRowsP;
+}
+async function _loadCoverageData(){
+  await Promise.all([                        // parallel, not a waterfall
+    (async()=>{if(!_concepts){try{_concepts=(await(await fetch('content/concepts.json')).json()).concepts||[]}catch(e){_concepts=[]}}})(),
+    (async()=>{if(!_commItems){
+      try{
+        const r=await fetch('/api/recs',{method:'POST',headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({endpoint:'/recomms/users/admin-console/items/',method:'POST',
+            body:{filter:`('state' == "community" OR 'state' == "edited" OR 'state' == "core") AND 'sharedAs' != null`,returnProperties:true,count:200,cascadeCreate:true}})});
+        const d=r.ok?await r.json():{};
+        _commItems=Array.isArray(d)?d:(d.recomms||[]).map(x=>({itemId:x.id,...(x.values||{})}));
+      }catch(e){_commItems=[]}
+    }})(),
+    getLogRows(),
+  ]);
+}
+
+// All tagging dimensions for the Catalog matrix (values mirror config.js)
+const ADMIN_FACETS = {
+  lens: ['generic','ecommerce','media','social-feeds','education','jobs'],
+  depth: ['intro','standard','technical','research'],
+  visuality: ['text-first','balanced','visual-first'],
+  genre: ['explainer','story','worked-example','code-walkthrough','comic','animation'],
+  lang: ['en','cs'],
+  carriers: ['prose','table','diagram','image','animation','formula','code'],
+};
+window._catDim = window._catDim || 'lens';
+
+async function renderCatalog(m){
+  m.innerHTML='<div style="padding:2em;color:var(--text3)">Loading catalog (content + community)…</div>';
+  await _loadCoverageData();
+  const esc=s=>String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const dim=window._catDim, VALS=ADMIN_FACETS[dim];
+  const conceptsOfBlock=b=>String(b.concept||'').split('|').map(s=>s.trim()).filter(Boolean);
+  const chips=b=>{
+    const bits=[];
+    if(b.lens&&b.lens!=='generic')bits.push(b.lens);
+    if(b.lang&&b.lang!=='en')bits.push(String(b.lang).toUpperCase());
+    if(b.depth)bits.push(b.depth);
+    if(b.visuality&&b.visuality!=='text-first')bits.push(b.visuality);
+    if(b.genre&&b.genre!=='explainer')bits.push(b.genre);
+    return bits.map(x=>`<span style="font-size:.6rem;border:1px solid var(--border);border-radius:999px;padding:.02em .4em;color:var(--text3)">${esc(x)}</span>`).join(' ');
+  };
+
+  let h='<h2 style="font-size:1.15rem;font-weight:800;margin-bottom:.3em">📚 Catalog — source of truth</h2>';
+  h+=`<div style="display:flex;align-items:center;gap:.6em;flex-wrap:wrap;margin:.3em 0 .6em">
+    <label style="font-size:.72rem">Dimension:
+      <select onchange="window._catDim=this.value;ST('📚 Catalog')" style="font-size:.72rem;padding:.15em .3em;border-radius:5px;border:1px solid var(--border)">
+        ${Object.keys(ADMIN_FACETS).map(d=>`<option value="${d}" ${d===dim?'selected':''}>${d}</option>`).join('')}
+      </select></label>
+    <button onclick="ST('🌱 Proposals')" style="font-size:.72rem;padding:.25em .7em;border:1.5px solid var(--accent);border-radius:6px;color:var(--accent)">＋ Propose new concept</button>
+    <span style="font-size:.68rem;color:var(--text3)">Editors go first: fill the gaps that matter, then Sync Items (top right). Click a concept to see its articles + actions; ↗ opens the anchor in the book.</span>
+  </div>`;
+  h+=`<p style="font-size:.72rem;color:var(--text3);margin-bottom:.5em"><b style="color:#7C3AED">■ core</b> · <b style="color:#10B981">■ edited</b> · <b style="color:#D97706">■ community</b> · · = gap (＋ downloads a prefilled draft). ⚠ = incomplete contract (blocks generation).</p>`;
+  h+='<div style="overflow-x:auto"><table style="border-collapse:collapse;font-size:.7rem;width:100%">';
+  h+='<tr><th style="text-align:left;padding:.3em .5em;position:sticky;left:0;background:var(--bg)">Concept</th>'+VALS.map(l=>`<th style="padding:.3em .5em">${l}</th>`).join('')+'</tr>';
+  for(const c of _concepts){
+    const gap=!c.contract?.recallQ||!(c.contract?.mustCover||[]).length;
+    const arts=allBlocks.filter(b=>conceptsOfBlock(b).includes(c.id));
+    const comm=_commItems.filter(i=>String(i.concept||'').split('|').includes(c.id));
+    // řádek s rozbalením: články + akce přímo pod konceptem
+    h+=`<tr><td style="padding:.25em .5em;border-top:1px solid var(--border);position:sticky;left:0;background:var(--bg);white-space:nowrap">
+      <details style="display:inline-block"><summary style="cursor:pointer;list-style:none">${gap?'<span title="contract incomplete (missing recallQ or mustCover)">⚠</span> ':''}<b>${esc(c.title)}</b><span style="color:var(--text3)"> · ${esc(c.chapter)} · ${arts.length+comm.length}</span></summary>
+        <div style="padding:.3em 0 .4em .8em;white-space:normal;max-width:34em">
+          <div style="margin:.15em 0"><a href="/#${esc(c.anchor)}" target="_blank" style="color:var(--accent);font-size:.68rem">↗ open anchor in the book</a>
+            <span style="color:var(--text3);font-size:.64rem"> · recallQ: ${esc(c.contract?.recallQ||'—')}</span></div>
+          ${arts.map(b=>`<div style="font-size:.7rem;padding:.08em 0"><span style="color:${b.state==='core'?'#7C3AED':'#10B981'}">●</span> ${b.id===c.anchor?'⚓ ':''}<a href="/#${esc(b.id)}" target="_blank" style="color:inherit">${esc(b.title)}</a> ${conceptsOfBlock(b).length>1?'<span style="font-size:.58rem;color:#D97706;border:1px solid #D97706;border-radius:4px;padding:0 .25em">multi</span>':''} ${chips(b)}</div>`).join('')}
+          ${comm.map(i=>`<div style="font-size:.7rem;padding:.08em 0"><span style="color:#D97706">●</span> ⚡ ${esc(i.title||i.itemId)} ${chips(i)} <span style="color:var(--text3);font-size:.6rem">by ${esc(i.sharedAs||'anonymous')}</span></div>`).join('')}
+        </div>
+      </details></td>`;
+    for(const val of VALS){
+      const git=arts.filter(b=>facetCovers(b[dim],val,VALS));
+      const cm=comm.filter(i=>facetCovers(i[dim],val,VALS));
+      const cells=[];
+      if(git.some(b=>b.state==='core'))cells.push(`<span style="color:#7C3AED">■${git.filter(b=>b.state==='core').length}</span>`);
+      if(git.some(b=>b.state!=='core'))cells.push(`<span style="color:#10B981">■${git.filter(b=>b.state!=='core').length}</span>`);
+      if(cm.length)cells.push(`<span style="color:#D97706">■${cm.length}</span>`);
+      h+=`<td style="padding:.25em .5em;border-top:1px solid var(--border);text-align:center">${cells.join(' ')||`<button title="no ${val} telling — download a prefilled draft" onclick="downloadTellingSkeleton('${esc(c.id)}','${dim}','${esc(val)}')" style="border:none;background:none;color:var(--text3);cursor:pointer">＋</button>`}</td>`;
+    }
+    h+='</tr>';
+  }
+  h+='</table></div>';
+  m.innerHTML=h;
+}
+
+// Prefilled .md draft for a (concept × dimension value) gap — editors go first.
+window.downloadTellingSkeleton=function(conceptId,dim,val){
+  const c=_concepts.find(x=>x.id===conceptId);if(!c)return;
+  const f={lens:'generic',depth:'standard',visuality:'text-first',formalism:'none',lengthBand:'standard',genre:'explainer',lang:'en'};
+  if(dim in f)f[dim]=val;
+  const slugVal=String(val).replace(/[^a-z0-9]+/gi,'-');
+  const md=`---
+id: ${conceptId}-${slugVal}-draft
+type: spine
+title: "${(c.title||conceptId)} — ${val} telling (DRAFT)"
+readingTime: 3
+standalone: true
+core: false
+status: draft
+voice: universal
+concept: ${conceptId}
+recallQ: "${(c.contract?.recallQ||'').replace(/"/g,"'")}"
+recallA: "${(c.contract?.recallA||'').replace(/"/g,"'")}"
+state: edited
+lens: ${f.lens}
+visuality: ${f.visuality}
+depth: ${f.depth}
+formalism: ${f.formalism}
+lengthBand: ${f.lengthBand}
+genre: ${f.genre}
+lang: ${f.lang}
+---
+
+<!-- DRAFT skeleton for the ${dim}=${val} gap of concept "${conceptId}".
+Contract (every telling must let the reader answer the recallQ):
+${(c.contract?.mustCover||[]).map(mc=>'- '+(mc.point||mc)).join('\n')}
+Place into content/${c.chapter}/NN?-sidebar-*.md AFTER the anchor, register in book.json, migrate + validate. -->
+
+# ${(c.title||conceptId)}
+
+*(write the ${val} telling here)*
+`;
+  const blob=new Blob([md],{type:'text/markdown'});
+  const aEl=document.createElement('a');aEl.href=URL.createObjectURL(blob);
+  aEl.download=`${conceptId}--${dim}-${slugVal}.md`;aEl.click();
+};
+
+async function renderDemand(m){
+  m.innerHTML='<div style="padding:2em;color:var(--text3)">Loading reader demand (logs)…</div>';
+  await _loadCoverageData();
+  const esc=s=>String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  let h='<h2 style="font-size:1.15rem;font-weight:800;margin-bottom:.3em">📥 Demand — what readers ask for</h2>';
+  h+='<p style="font-size:.75rem;color:var(--text3);margin-bottom:.8em">Reader demand allocates editorial attention. Three streams: unmet steering (missing tellings), concept wishes (missing concepts — feed 🌱 Proposals), and stated learning goals (personal missions).</p>';
+
+  // 1. Steering demand
+  const steer=_logRows.filter(r=>r.event==='steer'||r.event==='steer_miss'||(r.data&&(r.data.event==='steer'||r.data.event==='steer_miss')));
+  const genReq=_logRows.filter(r=>(r.event||r.data?.event)==='generate_request');
+  const missMap={};
+  steer.forEach(r=>{
+    const d=r.data||r;const ev=d.event||r.event;
+    if(ev!=='steer_miss')return;
+    const t=d.target||{};const key=`${d.concept||'?'} → ${t.lens||'generic'}·${t.depth||'std'}·${t.visuality||'text'}`;
+    missMap[key]=missMap[key]||{n:0,users:new Set()};missMap[key].n++;missMap[key].users.add(r.user_id||d.userId||'?');
+  });
+  const misses=Object.entries(missMap).sort((a,b)=>b[1].users.size-a[1].users.size).slice(0,15);
+  h+='<h3 style="font-size:.9rem;font-weight:700;margin:1em 0 .5em">Missing tellings — the to-write list</h3>';
+  h+=`<p style="font-size:.72rem;color:var(--text3)">Steer events: ${steer.length} · generate requests: ${genReq.length}. Ranked by distinct readers.</p>`;
+  h+=misses.length?('<table style="font-size:.72rem;border-collapse:collapse;width:100%">'+misses.map(([k,v])=>`<tr><td style="padding:.25em .5em;border-top:1px solid var(--border)">${esc(k)}</td><td style="padding:.25em .5em;border-top:1px solid var(--border);text-align:right">${v.users.size} readers · ${v.n}×</td></tr>`).join('')+'</table>'):'<p style="font-size:.75rem;color:var(--text3)">No unmet steering demand logged yet.</p>';
+
+  // 2. Concept wishes
+  const wishes=_logRows.filter(r=>(r.event==='concept_wish'||r.data?.event==='concept_wish'));
+  const wishTexts={};
+  wishes.forEach(r=>{const d=r.data?.data||r.data||{};const txt=(d.text||'').trim();if(!txt)return;
+    (wishTexts[txt.toLowerCase()]=wishTexts[txt.toLowerCase()]||{text:txt,users:new Set()}).users.add(r.userId||r.data?.userId||'?');});
+  const wishList=Object.values(wishTexts).sort((x,y)=>y.users.size-x.users.size);
+  h+='<h3 style="font-size:.9rem;font-weight:700;margin:1.2em 0 .4em">Missing concepts — reader wishes</h3>';
+  h+=wishList.length?`<div style="font-size:.72rem;margin-bottom:.4em">${wishList.slice(0,15).map(w=>`<div>· "${esc(w.text)}" <span style="color:var(--text3)">(${w.users.size} reader${w.users.size>1?'s':''})</span></div>`).join('')}</div><p style="font-size:.7rem;color:var(--text3)">Draft contracts from these in <a href="#" onclick="ST('🌱 Proposals');return false">🌱 Proposals</a>.</p>`
+    :'<p style="font-size:.72rem;color:var(--text3)">No reader concept wishes logged yet.</p>';
+
+  // 3. Learning goals (personal missions)
+  const goals=_logRows.filter(r=>(r.event||r.data?.event)==='personal_mission');
+  const goalTexts={};
+  goals.forEach(r=>{const d=r.data?.data||r.data||{};const g=(d.goal||'').trim();if(!g)return;
+    (goalTexts[g.toLowerCase()]=goalTexts[g.toLowerCase()]||{text:g,n:0}).n++;});
+  const goalList=Object.values(goalTexts).sort((a,b)=>b.n-a.n).slice(0,15);
+  h+='<h3 style="font-size:.9rem;font-weight:700;margin:1.2em 0 .4em">Learning goals — what readers came to learn</h3>';
+  h+=goalList.length?`<div style="font-size:.72rem">${goalList.map(g=>`<div>· "${esc(g.text)}" <span style="color:var(--text3)">(${g.n}×)</span></div>`).join('')}</div>`
+    :'<p style="font-size:.72rem;color:var(--text3)">No personal-mission goals logged yet.</p>';
+  m.innerHTML=h;
+}
+
+// One-click adoption: flip the item's trust state in Recombee (instantly changes
+// serving: edited/core go to ALL readers) + archive the decision in Supabase.
+// Git stays the canonical home — use the .md download to commit core content.
+window.loadFullBlock=async function(blockId,elId){
+  const el=document.getElementById(elId);if(!el)return;
+  el.textContent='Loading full content…';
+  try{const rows=await(await fetch('/api/log?full=1&blockId='+encodeURIComponent(blockId))).json();
+    const d=rows[0]?.data||{};
+    el.textContent=d.body||'(no archived body)';
+    if(d.svg){const w=document.createElement('div');w.style.maxWidth='420px';w.innerHTML=d.svg;el.after(w);}
+  }catch(e){el.textContent='Load failed: '+e.message}
+};
+
+window.setBlockState=async function(itemId,state){
+  if(state!=='community'&&!confirm(`Set "${itemId}" to state=${state}? ${state==='core'?'CORE serves to everyone and counts toward certification.':state==='edited'?'Serves to everyone (including safe mode).':''}`))return;
+  try{
+    const r=await fetch('/api/recs',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({endpoint:`/items/${encodeURIComponent(itemId)}`,method:'POST',
+        body:{state,adoptedAt:new Date().toISOString(),'!cascadeCreate':true}})});
+    if(!r.ok){alert('State change failed: HTTP '+r.status+' — '+(await r.text()).slice(0,120));return;}
+    fetch('/api/log',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({type:'content',event:'block_saved',ts:Date.now(),userId:'admin-console',
+        action:state==='community'?'demoted':'adopted',blockId:itemId,state,title:'',concept:'',facets:{},remixLog:[],body:'',svg:''})}).catch(()=>{});
+    _commItems=null;                              // force refresh
+    ST(currentTab);
+    alert(`✓ ${itemId} → ${state}. It now serves ${state==='community'?'in open mode only':'to every reader'}. For CORE, also commit the .md to git (canonical).`);
+  }catch(e){alert('State change failed: '+e.message)}
+};
+
+async function renderCommunity(m){
+  m.innerHTML='<div style="padding:2em;color:var(--text3)">Loading community layer…</div>';
+  await _loadCoverageData();
+  const esc=s=>String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const commSignals={};
+  _logRows.forEach(r=>{
+    const id=r.item_id||r.data?.itemId;if(!id||!String(id).startsWith('gen--'))return;
+    commSignals[id]=commSignals[id]||{views:new Set(),likes:new Set()};
+    if(r.type==='detailview')commSignals[id].views.add(r.user_id);
+    if(r.type==='rating'&&(r.rating>=0.7))commSignals[id].likes.add(r.user_id);
+  });
+  // Durable content archive (Supabase block_saved events) — the truth about what
+  // readers create; Recombee items are the serving copy. Merge both, archive wins.
+  const archived={};
+  const edits=[];
+  _logRows.forEach(r=>{
+    if((r.event||r.data?.event)!=='block_saved')return;
+    const d=r.data||{};
+    const rec={itemId:d.blockId,title:d.title,concept:d.concept,body:d.body,svg:d.svg,bodyLen:d.bodyLen,hasSvg:d.hasSvg,
+      remixOf:d.remixOf,remixLog:JSON.stringify(d.remixLog||[]),sharedAs:d.sharedAs||'anonymous',
+      lens:d.facets?.lens,depth:d.facets?.depth,visuality:d.facets?.visuality,
+      action:d.action,state:d.state,user:(d.userId||r.user_id||'?').slice(-8),ts:d.ts||r.server_ts};
+    edits.push(rec);
+    if(d.action==='shared'||d.state==='community'){
+      if(!archived[rec.itemId]||archived[rec.itemId].ts<rec.ts)archived[rec.itemId]=rec;
+    }
+  });
+  const commMap={};
+  _commItems.forEach(i=>{commMap[i.itemId]=i;});
+  Object.values(archived).forEach(a2=>{commMap[a2.itemId]={...commMap[a2.itemId],...a2};});
+  const merged=Object.values(commMap);
+
+  const nominated=merged.map(i=>{
+    const s=commSignals[i.itemId]||{views:new Set(),likes:new Set()};
+    return {item:i,readers:s.views.size,likes:s.likes.size,score:s.likes.size*3+s.views.size};
+  }).sort((a,b)=>b.score-a.score);
+  let h=`<h2 style="font-size:1.15rem;font-weight:800;margin-bottom:.3em">⚡ Community — nomination queue (${merged.length})</h2>`;
+  h+=`<p style="font-size:.75rem;color:var(--text3);margin-bottom:.8em">Reader-shared tellings, ranked by traction. Adoption threshold: ≥${ADOPTION_K} distinct readers with positive signal. Adopt = download .md, review against the concept contract (HUMANS.md checklist), commit (state: edited), Sync Items. Adoption promotes the author on their 🛠 Editor track.</p>`;
+  h+=nominated.length?nominated.map(({item,readers,likes})=>{
+    const ready=likes>=ADOPTION_K;
+    let wishes='';
+    try{const lg=JSON.parse(item.remixLog||'[]');
+      if(Array.isArray(lg)&&lg.length)wishes='<div style="margin:.25em 0;padding:.3em .5em;background:var(--bg2,#f6f6f4);border-radius:6px;font-size:.68rem"><b>🎯 what the reader asked for:</b>'+lg.slice(-4).map(e=>`<div>· "${esc(e.instruction||'')}"${e.diagram?' <span style="color:var(--text3)">(diagram)</span>':''}</div>`).join('')+'<div style="color:var(--text3)">changes are ⟦highlighted⟧ in the downloaded .md</div></div>';
+    }catch(_){}
+    return `<div style="border:1.5px solid ${ready?'#10B981':'var(--border)'};border-radius:8px;padding:.5em .7em;margin:.4em 0;font-size:.75rem">
+      <span style="font-size:.6rem;font-weight:800;padding:.1em .4em;border-radius:4px;color:#fff;background:${item.state==='core'?'#7C3AED':item.state==='edited'?'#10B981':'#D97706'}">${esc(item.state||'community')}</span>
+      <b>${esc(item.title||item.itemId)}</b> ${item.remixOf?'<span style="font-size:.6rem;color:#D97706;border:1px solid #D97706;border-radius:4px;padding:0 .3em">remix of '+esc(item.remixOf)+'</span>':''} ${ready?'<span style="color:#10B981;font-weight:700">· READY TO ADOPT</span>':''}
+      <div style="color:var(--text3);font-size:.68rem">${esc(item.concept)} · ${esc(item.lens)}/${esc(item.depth)}/${esc(item.visuality)} · shared by ${esc(item.sharedAs||'anonymous')} · ${readers} readers · ${likes} likes</div>
+      ${wishes}
+      ${item.body?`<details style="margin:.25em 0"><summary style="cursor:pointer;font-size:.68rem;color:var(--accent)">📄 preview content${item.svg||item.hasSvg?' (+ visual)':''}</summary><div id="full-${esc(item.itemId)}" style="white-space:pre-wrap;font-size:.7rem;max-height:260px;overflow:auto;background:var(--bg2,#f6f6f4);border-radius:6px;padding:.5em;margin-top:.25em">${esc(item.body.slice(0,3000))}</div>${item.svg?`<div style="max-width:420px;margin:.4em 0">${item.svg}</div>`:''}${(item.bodyLen||item.hasSvg)&&!item.svg?`<button onclick="loadFullBlock('${esc(item.itemId)}','full-${esc(item.itemId)}')" style="font-size:.64rem;margin-top:.2em;border:1px solid var(--border);border-radius:6px;padding:.15em .5em;color:var(--accent)">⤓ load full content${item.hasSvg?' + visual':''}</button>`:''}</details>`:''}
+      <div style="margin-top:.3em;display:flex;gap:.4em;flex-wrap:wrap">
+        <button onclick="setBlockState('${esc(item.itemId)}','edited')" style="font-size:.68rem;padding:.2em .6em;border-radius:6px;border:1.5px solid #10B981;color:#065F46;font-weight:700">✓ Adopt → edited (serves to everyone)</button>
+        <button onclick="setBlockState('${esc(item.itemId)}','core')" style="font-size:.68rem;padding:.2em .6em;border-radius:6px;border:1.5px solid var(--accent);color:var(--accent);font-weight:700">★ Promote → core</button>
+        <button onclick="setBlockState('${esc(item.itemId)}','community')" style="font-size:.68rem;padding:.2em .6em;border-radius:6px;border:1px solid var(--border);color:var(--text3)">↩ back to community</button>
+        <button onclick="adoptCommunity('${esc(item.itemId)}')" style="font-size:.68rem;padding:.2em .6em;border-radius:6px;border:1px dashed var(--border);color:var(--text3)" title="canonical path: commit the markdown to git">⬇ .md for git</button>
+      </div>
+    </div>`;
+  }).join(''):'<p style="font-size:.75rem;color:var(--text3)">No community blocks shared yet.</p>';
+
+  // What readers are editing right now (private layer) — visibility without
+  // exposure: bodies open on demand, nothing here is servable until shared.
+  const recentEdits=edits.filter(e=>e.action!=='shared').sort((a2,b2)=>b2.ts-a2.ts).slice(0,25);
+  h+=`<h2 style="font-size:1.05rem;font-weight:800;margin:1.2em 0 .3em">✏️ What readers are editing (private layer, ${recentEdits.length} recent)</h2>
+  <p style="font-size:.72rem;color:var(--text3);margin-bottom:.5em">Every generated / remixed / manually edited telling is archived here (Supabase) even before sharing — reload-proof for readers, visible for editors. Private content is not servable; treat it as signal.</p>`;
+  h+=recentEdits.length?recentEdits.map(e=>{
+    const when=e.ts?new Date(e.ts).toISOString().slice(5,16).replace('T',' '):'—';
+    let wl='';
+    try{const lg=JSON.parse(e.remixLog||'[]');if(lg.length)wl=' · 🎯 "'+esc(String(lg[lg.length-1].instruction||'').slice(0,80))+'"';}catch(_){}
+    return `<div style="border:1px solid var(--border);border-radius:8px;padding:.4em .6em;margin:.3em 0;font-size:.72rem">
+      <span style="font-size:.6rem;font-weight:800;color:#fff;background:${e.action==='generated'?'#7C3AED':e.action==='accepted'?'#10B981':'#D97706'};border-radius:4px;padding:.1em .4em">${esc(e.action||'edit')}</span>
+      <b>${esc(e.title||e.itemId)}</b> <span style="color:var(--text3)">· ${esc(e.concept)} · reader …${esc(e.user)} · ${when}${wl}</span>
+      ${e.body?`<details style="margin-top:.2em"><summary style="cursor:pointer;font-size:.66rem;color:var(--accent)">preview</summary><div id="efull-${esc(e.itemId)}-${e.ts}" style="white-space:pre-wrap;font-size:.68rem;max-height:200px;overflow:auto;background:var(--bg2,#f6f6f4);border-radius:6px;padding:.4em;margin-top:.2em">${esc(e.body.slice(0,2000))}</div>${(e.bodyLen||e.hasSvg)?`<button onclick="loadFullBlock('${esc(e.itemId)}','efull-${esc(e.itemId)}-${e.ts}')" style="font-size:.62rem;margin-top:.15em;border:1px solid var(--border);border-radius:6px;padding:.1em .45em;color:var(--accent)">⤓ full${e.hasSvg?' + visual':''}</button>`:''}</details>`:''}
+    </div>`;
+  }).join(''):'<p style="font-size:.72rem;color:var(--text3)">No reader edits archived yet.</p>';
+  m.innerHTML=h;
+}
+
+async function renderProposals(m){
+  m.innerHTML='<div style="padding:2em;color:var(--text3)">Loading proposals + interest…</div>';
+  await _loadCoverageData();
+  // Server state: live proposals + interest stats (event-sourced in Supabase).
+  let srv={proposals:[],deleted:[],stats:{}};
+  try{const r=await fetch('/api/proposals?stats=1');if(r.ok){const d=await r.json();if(d&&d.ok)srv=Object.assign(srv,d);}}catch(_){}
+  let fileProps=[];
+  try{fileProps=(await (await fetch('content/concept-proposals.json')).json()).proposals||[];}catch(_){}
+  // merge: git file = shipped layer; server wins on slug; server deletes hide git entries
+  const bySlug=new Map();
+  fileProps.forEach(p=>bySlug.set(p.slug,{...p,origin:'git'}));
+  srv.proposals.forEach(p=>bySlug.set(p.slug,{...p,origin:bySlug.has(p.slug)?'git+live':'live'}));
+  (srv.deleted||[]).forEach(sl=>bySlug.delete(sl));
+  const props=[...bySlug.values()];
+  window._propsMerged=props;window._propsStats=srv.stats||{};
+
+  const esc=s=>String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const WRITE_K=5;
+  const statLine=p=>{
+    const st=window._propsStats[p.slug]||{seen:0,want:0,skip:0,voters:{}};
+    const rate=st.seen?Math.round(100*st.want/st.seen):0;
+    const aud=Object.entries(st.voters||{}).filter(([k])=>k.startsWith('want:')).sort((a,b)=>b[1]-a[1]).slice(0,3)
+      .map(([k,n])=>`${k.slice(5)} (${n})`).join(' · ');
+    return `<div style="font-size:.68rem;color:var(--text3)">interest: 👁 ${st.seen} seen · <b style="color:#10B981">👍 ${st.want} want</b> · 👎 ${st.skip} skip · want-rate <b>${rate}%</b> — threshold ${WRITE_K} readers</div>`+
+      (aud?`<div style="font-size:.66rem;color:var(--text3)">who wants it: ${esc(aud)}</div>`:'');
+  };
+  const cardHtml=p=>{
+    const st=window._propsStats[p.slug]||{want:0};
+    const ready=st.want>=WRITE_K;
+    return `<div id="prop-${esc(p.slug)}" style="border:1.5px solid ${ready?'#10B981':'#0EA5E9'};border-radius:8px;padding:.5em .7em;margin:.4em 0;font-size:.75rem">
+      <b>${esc(p.title)}</b> <code style="font-size:.66rem">${esc(p.slug)}</code> → <span style="color:var(--text3)">${esc(p.chapter||'?')}</span>
+      <span style="font-size:.6rem;border:1px solid var(--border);border-radius:4px;padding:0 .3em;color:var(--text3)">${p.origin||'live'}</span>
+      ${ready?'<span style="background:#10B981;color:#fff;font-size:.6rem;font-weight:800;padding:.1em .45em;border-radius:999px;margin-left:.3em">READY TO WRITE</span>':''}
+      <div style="margin:.2em 0;font-size:.7rem">${esc(p.objective||'')}</div>
+      ${p.recallQ?`<div style="font-size:.66rem;color:var(--text3)">recall: ${esc(p.recallQ)}</div>`:''}
+      ${statLine(p)}
+      <div style="margin-top:.35em;display:flex;gap:.4em;flex-wrap:wrap">
+        <button onclick="propEdit('${esc(p.slug)}')" style="font-size:.66rem;padding:.15em .5em;border-radius:6px;border:1.5px solid var(--border)">✏️ Edit</button>
+        <button onclick="propDelete('${esc(p.slug)}')" style="font-size:.66rem;padding:.15em .5em;border-radius:6px;border:1.5px solid #EF4444;color:#EF4444">🗑 Delete</button>
+        ${st.want>0?`<button onclick="tailoredDraft('${esc(p.slug)}')" style="font-size:.66rem;padding:.15em .5em;border-radius:6px;border:1.5px solid var(--accent);color:var(--accent)">🎯 Draft for this audience</button>`:''}
+        <button onclick='downloadProposal(JSON.stringify(window._propsMerged.find(x=>x.slug===${JSON.stringify(p.slug)})))' style="font-size:.66rem;padding:.15em .5em;border-radius:6px;border:1.5px solid var(--border)">⬇ .md</button>
+      </div>
+      <div id="propEdit-${esc(p.slug)}"></div><div id="propTail-${esc(p.slug)}"></div>
+    </div>`;
+  };
+
+  let h='<h2 style="font-size:1.15rem;font-weight:800;margin-bottom:.3em">🌱 Proposals — interest-tested before anyone writes</h2>';
+  h+='<p style="font-size:.75rem;color:var(--text3);margin-bottom:.8em">Proposals are shown to readers as labeled ghost cards; votes measure demand BEFORE writing effort. Saving here goes <b>live for readers immediately</b> (server-persisted); the git file content/concept-proposals.json remains the shipped snapshot you can export below.</p>';
+  h+=props.length?props.map(cardHtml).join(''):'<p style="font-size:.72rem;color:var(--text3)">No proposals yet — add your own below, or draft from demand signals.</p>';
+
+  // Demand signals — visible, the exact digest the AI mining receives
+  const sig=collectDemandSignals();
+  h+=`<details style="margin-top:1em"><summary style="cursor:pointer;font-size:.8rem;font-weight:700">🔍 Demand signals — what the AI mining sees (${sig.length})</summary>
+    <div style="font-size:.68rem;color:var(--text3);margin:.3em 0">Streams: WISH = reader typed a learning wish (onboarding/mission box) · MISS = steering asked for a telling that does not exist · FLAG = reported issue. Live from /api/log + this device's flags.</div>
+    ${sig.length?`<pre style="font-size:.66rem;background:var(--bg2,#f6f6f4);border:1px solid var(--border);border-radius:8px;padding:.5em .7em;white-space:pre-wrap;max-height:16em;overflow:auto">${esc(sig.join('\n'))}</pre>`:'<p style="font-size:.7rem;color:var(--text3)">No signals yet. They appear when readers type wishes, hit steering misses, or flag content.</p>'}
+  </details>`;
+
+  h+=`<h3 style="font-size:.85rem;font-weight:700;margin:1.2em 0 .3em">✍️ Your own proposal</h3>
+    <div style="border:1.5px solid var(--border);border-radius:8px;padding:.6em .7em;font-size:.74rem">
+      <textarea id="epDesc" rows="2" style="width:100%;font-size:.74rem;padding:.35em;border:1px solid var(--border);border-radius:6px" placeholder="Describe the concept in your own words — what should the reader understand after it? (AI completes the contract: objective, mustCover, recallQ/A)"></textarea>
+      <div style="display:flex;gap:.5em;align-items:center;margin-top:.4em;flex-wrap:wrap">
+        <label>Chapter:
+          <select id="epChapter" onchange="document.getElementById('epNewChap').style.display=this.value==='__new'?'inline-block':'none'" style="font-size:.72rem;padding:.15em .3em;border-radius:5px;border:1px solid var(--border)">
+            ${[...new Set(_concepts.map(c=>c.chapter))].map(ch=>`<option value="${ch}">${ch}</option>`).join('')}
+            <option value="__new">➕ new chapter…</option>
+          </select></label>
+        <input id="epNewChap" style="display:none;font-size:.72rem;padding:.15em .4em;border:1px solid var(--border);border-radius:5px;width:14em" placeholder="chNN-slug (e.g. ch15-agents)">
+        <button onclick="editorPropose()" id="epBtn" style="font-size:.72rem;font-weight:600;padding:.3em .7em;border-radius:6px;border:1.5px solid var(--accent);color:var(--accent)">✨ Complete with AI</button>
+      </div>
+      <div style="font-size:.64rem;color:var(--text3);margin-top:.3em">A new chapter is an arbiter decision (AGENTS.md stop-test) — the AI will place the concept there, but creating the chapter directory + book.json entry stays with you.</div>
+    </div>`;
+
+  h+=`<div style="margin-top:.8em"><button onclick="draftConceptProposals()" id="propBtn" style="font-size:.72rem;font-weight:600;padding:.3em .7em;border-radius:6px;border:1.5px solid var(--accent);color:var(--accent)">✨ Draft proposals from demand signals</button>
+  <span style="font-size:.66rem;color:var(--text3)"> — mines the signals above; you review, then 💾 save to go live (nothing is created automatically)</span></div>
+  <div id="conceptProposals"></div>
+  <div style="margin-top:.6em"><button onclick="exportMergedProposalsJson()" style="font-size:.66rem;padding:.2em .6em;border-radius:6px;border:1.5px solid #0EA5E9;color:#0EA5E9">⬇ Export merged concept-proposals.json (git snapshot)</button></div>`;
+  m.innerHTML=h;
+}
+
+// Shared demand-signal extractor: one source of truth for the visible panel
+// AND the AI mining (they must never diverge).
+function collectDemandSignals(){
+  const lines=[];
+  (_logRows||[]).forEach(r=>{
+    const ev=r.event||r.data?.event;const d=r.data?.data||r.data||{};
+    if(ev==='concept_wish'&&d.text)lines.push(`WISH: ${d.text}`);
+    if(ev==='steer_miss')lines.push(`MISS: concept=${d.concept||'?'} wanted ${d.dim||d.action||'?'}=${d.value||'?'}${d.wish?` note="${d.wish}"`:''}`);
+    if(ev==='flag'&&d.text)lines.push(`FLAG(${d.type||'issue'}): ${d.text}`);
+  });
+  try{JSON.parse(localStorage.getItem('pbook-flags')||'[]').forEach(f=>{if(f.type==='concept-wish')lines.push(`WISH: ${f.text}`);});}catch(_){}
+  return [...new Set(lines)].slice(-80);
+}
+
+// Persist a proposal (goes live to readers immediately) and re-render.
+window.propSave=async function(p){
+  const r=await fetch('/api/proposals',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'save',proposal:p})});
+  const d=await r.json().catch(()=>({}));
+  if(!r.ok||!d.ok){alert('Save failed: '+(d.error||r.status));return false;}
+  return true;
+};
+window.propDelete=async function(slug){
+  if(!confirm('Delete proposal "'+slug+'"? Readers stop seeing its ghost card.'))return;
+  const r=await fetch('/api/proposals',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'delete',slug})});
+  const d=await r.json().catch(()=>({}));
+  if(!r.ok||!d.ok){alert('Delete failed: '+(d.error||r.status));return;}
+  renderProposals(document.getElementById('main'));
+};
+window.propEdit=function(slug){
+  const p=(window._propsMerged||[]).find(x=>x.slug===slug);if(!p)return;
+  const esc=s=>String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const el=document.getElementById('propEdit-'+slug);
+  el.innerHTML=`<div style="border-top:1px dashed var(--border);margin-top:.4em;padding-top:.4em">
+    <input id="pe-title-${slug}" value="${esc(p.title)}" style="width:100%;font-size:.72rem;padding:.25em;border:1px solid var(--border);border-radius:5px" placeholder="title">
+    <input id="pe-chapter-${slug}" value="${esc(p.chapter||'')}" style="width:100%;margin-top:.25em;font-size:.72rem;padding:.25em;border:1px solid var(--border);border-radius:5px" placeholder="chapter (chNN-slug)">
+    <textarea id="pe-objective-${slug}" rows="2" style="width:100%;margin-top:.25em;font-size:.72rem;padding:.25em;border:1px solid var(--border);border-radius:5px" placeholder="objective">${esc(p.objective||'')}</textarea>
+    <input id="pe-recallQ-${slug}" value="${esc(p.recallQ||'')}" style="width:100%;margin-top:.25em;font-size:.72rem;padding:.25em;border:1px solid var(--border);border-radius:5px" placeholder="recallQ">
+    <input id="pe-recallA-${slug}" value="${esc(p.recallA||'')}" style="width:100%;margin-top:.25em;font-size:.72rem;padding:.25em;border:1px solid var(--border);border-radius:5px" placeholder="recallA">
+    <textarea id="pe-mc-${slug}" rows="2" style="width:100%;margin-top:.25em;font-size:.72rem;padding:.25em;border:1px solid var(--border);border-radius:5px" placeholder="mustCover — one per line">${esc((p.mustCover||[]).join('\n'))}</textarea>
+    <button onclick="propEditSave('${esc(slug)}')" style="margin-top:.3em;font-size:.68rem;font-weight:700;padding:.2em .6em;border-radius:6px;border:1.5px solid #10B981;color:#10B981">💾 Save (goes live)</button>
+    <button onclick="document.getElementById('propEdit-${esc(slug)}').innerHTML=''" style="margin-top:.3em;font-size:.68rem;padding:.2em .6em;border-radius:6px;border:1.5px solid var(--border)">Cancel</button>
+  </div>`;
+};
+window.propEditSave=async function(slug){
+  const g=id=>document.getElementById('pe-'+id+'-'+slug)?.value||'';
+  const p=(window._propsMerged||[]).find(x=>x.slug===slug)||{slug};
+  const upd={...p,slug,title:g('title'),chapter:g('chapter'),objective:g('objective'),recallQ:g('recallQ'),recallA:g('recallA'),
+    mustCover:g('mc').split('\n').map(x=>x.trim()).filter(Boolean),source:p.source||'admin-edit'};
+  if(await propSave(upd))renderProposals(document.getElementById('main'));
+};
+
+// Audience-tailored draft: feed the proposal contract + its voters' facet
+// profile back to the AI, get a version aimed at the people who asked for it.
+window.tailoredDraft=async function(slug){
+  const p=(window._propsMerged||[]).find(x=>x.slug===slug);if(!p)return;
+  const st=(window._propsStats||{})[slug]||{voters:{}};
+  const aud=Object.entries(st.voters||{}).filter(([k])=>k.startsWith('want:')).sort((a,b)=>b[1]-a[1]).slice(0,5)
+    .map(([k,n])=>`${k.slice(5)} ×${n}`).join(', ')||'unknown';
+  const el=document.getElementById('propTail-'+slug);
+  el.innerHTML='<div style="font-size:.7rem;color:var(--text3);margin-top:.3em">🎯 Drafting for audience… (~25 s)</div>';
+  try{
+    const signals=`EDITOR PROPOSAL (authoritative seed — keep slug ${p.slug} and intent, refine the contract):\n${p.title}: ${p.objective}\nAUDIENCE (facet preferences of readers who voted WANT — tailor examples, depth and framing to them): ${aud}\nTARGET CHAPTER: ${p.chapter||'?'}`;
+    const res=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({mode:'propose-concepts',signals,count:1,existing:_concepts.map(c=>({id:c.id,title:c.title})),chapters:[...new Set(_concepts.map(c=>c.chapter))]})});
+    const data=await res.json();
+    if(!data.ok||!data.proposals?.length)throw new Error(data.error||'draft failed');
+    const esc=s=>String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    const q=data.proposals[0];q.slug=p.slug;q.source='audience-tailored';
+    el.innerHTML=`<div style="border:1.5px dashed var(--accent);border-radius:8px;padding:.45em .6em;margin-top:.35em;font-size:.72rem">
+      <b>🎯 ${esc(q.title)}</b> <span style="font-size:.62rem;color:var(--text3)">audience: ${esc(aud)}</span>
+      <div style="margin:.2em 0">${esc(q.objective||'')}</div>
+      <div style="font-size:.66rem;color:var(--text3)">must cover: ${(q.mustCover||[]).map(esc).join(' · ')}</div>
+      <button onclick='propSave(${JSON.stringify(JSON.stringify(q)).replace(/'/g,"&#39;")}) && renderProposals(document.getElementById("main"))' style="margin-top:.25em;font-size:.66rem;font-weight:700;padding:.2em .5em;border-radius:6px;border:1.5px solid #10B981;color:#10B981">💾 Replace live version</button>
+      <button onclick='downloadProposal(${JSON.stringify(JSON.stringify(q)).replace(/'/g,"&#39;")})' style="margin-top:.25em;font-size:.66rem;padding:.2em .5em;border-radius:6px;border:1.5px solid var(--border)">⬇ Anchor draft .md</button>
+    </div>`;
+  }catch(e){el.innerHTML='<div style="font-size:.7rem;color:#EF4444">Tailored draft error: '+e.message+'</div>';}
+};
+
+// Shared renderer for freshly AI-drafted proposals (editor-seeded or mined):
+// primary action is SAVE (goes live); downloads are the git-export path.
+function draftedCardsHtml(proposals,tag){
+  const esc=s=>String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  return proposals.map(p=>{
+    const pj=JSON.stringify(JSON.stringify(p)).replace(/'/g,"&#39;");
+    return `<div style="border:1.5px solid var(--accent);border-radius:8px;padding:.5em .7em;margin:.4em 0;font-size:.75rem">
+      <b>${esc(p.title)}</b> <code style="font-size:.66rem">${esc(p.slug)}</code> → <span style="color:var(--text3)">${esc(p.chapter||'?')}</span>${tag?` <span style="font-size:.6rem;color:var(--accent);border:1px solid var(--accent);border-radius:4px;padding:0 .3em">${tag}</span>`:''}
+      <div style="margin:.25em 0">${esc(p.objective||'')}</div>
+      <div style="font-size:.68rem;color:var(--text3)">must cover: ${(p.mustCover||[]).map(esc).join(' · ')}</div>
+      <div style="font-size:.68rem;color:var(--text3)">recall: ${esc(p.recallQ||'')}</div>
+      ${p.rationale?`<div style="font-size:.68rem;font-style:italic;color:var(--text3)">why: ${esc(p.rationale)}</div>`:''}
+      <button onclick='propSave(${pj}).then(ok=>ok&&renderProposals(document.getElementById("main")))' style="margin-top:.3em;font-size:.68rem;font-weight:700;padding:.2em .6em;border-radius:6px;border:1.5px solid #10B981;color:#10B981">💾 Save & go live</button>
+      <button onclick='downloadProposal(${pj})' style="margin-top:.3em;font-size:.68rem;padding:.2em .6em;border-radius:6px;border:1.5px solid var(--border)">⬇ Anchor draft .md</button>
+    </div>`;
+  }).join('');
+}
+
+// Editor-seeded proposal: description is authoritative, AI completes the contract
+window.editorPropose=async function(){
+  const desc=(document.getElementById('epDesc')?.value||'').trim();
+  if(desc.length<15){alert('Describe the concept in at least a sentence.');return;}
+  const sel=document.getElementById('epChapter').value;
+  const newChap=(document.getElementById('epNewChap')?.value||'').trim();
+  const chapter=sel==='__new'?(newChap||'chXX-new'):sel;
+  const chapters=[...new Set(_concepts.map(c=>c.chapter))];
+  if(!chapters.includes(chapter))chapters.push(chapter);
+  const btn=document.getElementById('epBtn');btn.disabled=true;btn.textContent='Completing… (~20 s)';
+  try{
+    const signals=`EDITOR PROPOSAL (authoritative seed — keep the intent, complete a full contract):\n${desc}\nTARGET CHAPTER: ${chapter}${sel==='__new'?' (a NEW chapter the editor is founding — use exactly this id)':''}`;
+    const res=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({mode:'propose-concepts',signals,count:1,existing:_concepts.map(c=>({id:c.id,title:c.title})),chapters})});
+    const data=await res.json();
+    if(!data.ok)throw new Error(data.error||'completion failed');
+    window._draftedProposals=(window._draftedProposals||[]).concat(data.proposals);
+    const el=document.getElementById('conceptProposals');
+    el.innerHTML=(el.innerHTML||'')+draftedCardsHtml(data.proposals,'editor-seeded');
+    document.getElementById('epDesc').value='';
+  }catch(e){alert('Editor proposal error: '+e.message);}
+  btn.disabled=false;btn.textContent='✨ Complete with AI';
+};
+
+// AI-drafted new-concept proposals from demand evidence (mode: propose-concepts)
+window.draftConceptProposals=async function(){
+  const btn=document.getElementById('propBtn');btn.disabled=true;btn.textContent='Drafting… (~30 s)';
+  try{
+    const lines=collectDemandSignals();
+    if(!lines.length){alert('No demand signals yet (wishes, misses, flags) — see the 🔍 panel above for what counts.');btn.disabled=false;btn.textContent='✨ Draft proposals from demand signals';return;}
+    const signals=lines.join('\n');
+    const chapters=[...new Set(_concepts.map(c=>c.chapter))];
+    const res=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({mode:'propose-concepts',signals,existing:_concepts.map(c=>({id:c.id,title:c.title})),chapters})});
+    const data=await res.json();
+    if(!data.ok)throw new Error(data.error||'drafting failed');
+    window._draftedProposals=data.proposals;
+    document.getElementById('conceptProposals').innerHTML=draftedCardsHtml(data.proposals,'from demand');
+  }catch(e){alert('Proposal drafting error: '+e.message);}
+  btn.disabled=false;btn.textContent='✨ Draft proposals from demand signals';
+};
+
+// Export the MERGED current state (git + live) as the git snapshot file.
+window.exportMergedProposalsJson=function(){
+  const ps=(window._propsMerged||[]).map(({origin,savedAt,...p})=>p);
+  const blob=new Blob([JSON.stringify({version:1,note:'Concept proposals under interest testing — see admin Proposals.',proposals:ps},null,2)],{type:'application/json'});
+  const aEl=document.createElement('a');aEl.href=URL.createObjectURL(blob);aEl.download='concept-proposals.json';aEl.click();
+};
+
+window.downloadProposal=function(pj){
+  const p=JSON.parse(pj);
+  const md=`---
+id: ${p.slug}
+type: spine
+title: "${p.title}"
+teaser: "${p.objective.replace(/"/g,"'")}"
+readingTime: 3
+core: false
+status: draft
+voice: universal
+concept: ${p.slug}
+conceptTitle: "${p.title.replace(/"/g,"'")}"
+recallQ: "${p.recallQ.replace(/"/g,"'")}"
+recallA: "${p.recallA.replace(/"/g,"'")}"
+highlights:
+${p.mustCover.map(m=>`  - "${m.replace(/"/g,"'")}"`).join('\n')}
+state: edited
+lens: generic
+visuality: text-first
+depth: standard
+formalism: none
+lengthBand: standard
+genre: explainer
+lang: en
+---
+
+<!-- AI-DRAFTED CONCEPT PROPOSAL — arbiter review required before this anchors a concept.
+Evidence: ${p.rationale.replace(/-->/g,'')}
+Place into content/${p.chapter}/NN-spine-${p.slug}.md, register in book.json, write the body, then migrate + validate. -->
+
+# ${p.title}
+
+*(draft body — objective: ${p.objective})*
+
+${p.mustCover.map(m=>`- ${m}`).join('\n')}
+`;
+  const blob=new Blob([md],{type:'text/markdown'});
+  const aEl=document.createElement('a');aEl.href=URL.createObjectURL(blob);
+  aEl.download=`NN-spine-${p.slug}.md`;aEl.click();
+};
+
+// ===== HEALTH — what readers actually read, and which content is failing them.
+// Problem content gets parked (status: review) or rewritten with AI, per reader signals. =====
+async function renderHealth(m){
+  m.innerHTML='<div style="padding:2em;color:var(--text3)">Crunching reader signals…</div>';
+  await _loadCoverageData();
+  const esc=s=>String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+
+  // Per-block signal aggregation from the interaction log
+  const sig={};
+  const S=id=>sig[id]=sig[id]||{viewers:new Set(),views:0,fin:0,likes:new Set(),dislikes:new Set(),steerAway:0,praise:0,remixReq:0,dwell:0,dwellN:0};
+  for(const r of _logRows){
+    const d=r.data||r;const id=r.item_id||d.itemId||d.blockId;if(!id)continue;const s=S(id);const uid=r.user_id||d.userId||'?';
+    const t=r.type||d.type,ev=r.event||d.event;
+    if(t==='detailview'){s.viewers.add(uid);s.views++;if(d.duration){s.dwell+=d.duration;s.dwellN++}
+      const _b=allBlocks.find(x=>x.id===id);const _thr=Math.min(12,((_b?_b.readingTime:3)||3)*60*0.15);
+      if((d.duration||0)>=_thr)s.fin++;}
+    if(t==='rating'&&(r.rating??d.rating)>=0.7)s.likes.add(uid);
+    if(t==='rating'&&(r.rating??d.rating)<0.5)s.dislikes.add(uid);
+    if(ev==='steer'&&d.action==='praise')s.praise++;
+    else if((ev==='steer'||ev==='steer_miss')&&d.blockId)S(d.blockId).steerAway++;
+    if(ev==='remix_request'&&d.blockId)S(d.blockId).remixReq++;
+  }
+  // Local reader flags (same-origin) count heavily
+  let flags=[];try{flags=JSON.parse(localStorage.getItem('pbook-flags')||'[]')}catch(e){}
+  const flagsBy={};flags.forEach(f=>{flagsBy[f.blockId]=(flagsBy[f.blockId]||[]);flagsBy[f.blockId].push(f)});
+
+  // Health rows for blocks with any traffic
+  const parked=(()=>{try{return JSON.parse(localStorage.getItem('pbook-content-statuses')||'{}')}catch(e){return{}}})();
+  const rows=allBlocks.filter(b=>sig[b.id]||flagsBy[b.id]).map(b=>{
+    const s=sig[b.id]||S(b.id);
+    const fl=(flagsBy[b.id]||[]).length;
+    const readers=s.viewers.size,likes=s.likes.size,dislikes=s.dislikes.size;
+    const expected=(b.readingTime||3)*60*0.15;                      // seconds to count as read
+    const avgDwell=s.dwellN?s.dwell/s.dwellN:0;
+    const shallow=readers>=3&&avgDwell>0&&avgDwell<expected*0.5;     // people open it, don't read it
+    const score=fl*3+dislikes*2+s.steerAway+s.remixReq+(shallow?2:0)-likes*2-s.praise;
+    return{b,s,fl,readers,likes,dislikes,avgDwell,shallow,score,isParked:parked[b.id]==='review'};
+  });
+  rows.sort((a,x)=>x.score-a.score);
+  const problems=rows.filter(r=>r.score>0);
+
+  let h='<h2 style="font-size:1.15rem;font-weight:800;margin-bottom:.3em">Content health</h2>';
+  h+=`<p style="font-size:.75rem;color:var(--text3)">${_logRows.length} interactions analyzed · ${rows.length} blocks with traffic · <b style="color:#EF4444">${problems.length} need attention</b>. Score = 3×flags + 2×dislikes + steers-away + remix-requests + shallow-reading − 2×likes − praise.</p>`;
+
+  // What readers read (engagement leaders — the healthy half of the picture)
+  const top=rows.filter(r=>r.readers>0).sort((a,x)=>x.readers-a.readers).slice(0,8);
+  if(top.length){
+    h+='<h3 style="font-size:.9rem;font-weight:700;margin:1em 0 .4em">📖 Most read right now</h3>';
+    h+=top.map(r=>`<span style="display:inline-block;font-size:.7rem;border:1px solid var(--border);border-radius:999px;padding:.15em .6em;margin:.15em" title="${r.s.views} served · ${r.s.fin} finished · ${r.s.views-r.s.fin} skipped">${esc(r.b.title)} <b>${r.s.views}</b> served · <b style="color:#10B981">${r.s.fin}</b> fin · ${r.s.views-r.s.fin} skip ${r.likes?`<span style="color:#10B981">${r.likes}❤</span>`:''}</span>`).join('');
+  }
+
+  h+='<h3 style="font-size:.9rem;font-weight:700;margin:1.2em 0 .4em">🚑 Problem content (ranked)</h3>';
+  if(!problems.length)h+='<p style="font-size:.78rem;color:var(--text3)">Nothing above the waterline — no flags, dislikes or steer-away clusters.</p>';
+  for(const r of problems.slice(0,30)){
+    const why=[];
+    if(r.fl)why.push(`${r.fl}× flagged (${(flagsBy[r.b.id]||[]).map(f=>f.type).join(', ')})`);
+    if(r.dislikes)why.push(`${r.dislikes} dislikes`);
+    if(r.s.steerAway)why.push(`${r.s.steerAway}× steered away`);
+    if(r.s.remixReq)why.push(`${r.s.remixReq}× remix-requested`);
+    if(r.shallow)why.push(`shallow reading (avg ${Math.round(r.avgDwell)}s of ~${Math.round((r.b.readingTime||3)*60*0.15)}s)`);
+    why.push(`${r.s.views} served → ${r.s.fin} finished / ${r.s.views-r.s.fin} skipped`);
+    const flagTexts=(flagsBy[r.b.id]||[]).map(f=>f.text).filter(Boolean).slice(0,2);
+    const rxWishes=_logRows.filter(x=>{const d=x.data?.data||x.data||{};return (x.event||x.data?.event)==='remix_request'&&d.blockId===r.b.id&&d.instruction;})
+      .map(x=>(x.data?.data||x.data).instruction).slice(-3);
+    h+=`<div style="border:1.5px solid ${r.isParked?'var(--border)':'#EF4444'};border-radius:10px;padding:.5em .7em;margin:.4em 0;font-size:.75rem;${r.isParked?'opacity:.6':''}">
+      <b>${esc(r.b.title)}</b> <span style="color:var(--text3)">· ${esc(r.b._ch)}/${esc(r.b._f)} · score ${r.score}</span> ${r.isParked?'<span style="color:#D97706;font-weight:700">⏸ PARKED</span>':''}
+      <div style="color:var(--text3);font-size:.68rem;margin:.2em 0">${why.join(' · ')||'—'}</div>
+      ${flagTexts.length?`<div style="font-size:.68rem;color:#D97706;margin:.2em 0">💬 "${esc(flagTexts.join('" · "'))}"</div>`:''}
+      ${rxWishes.length?`<div style="font-size:.68rem;color:#7C3AED;margin:.2em 0">✨ remix wishes: "${esc(rxWishes.join('" · "'))}"</div>`:''}
+      <div style="margin-top:.3em;display:flex;gap:.4em;flex-wrap:wrap">
+        <button onclick="parkBlock('${r.b.id}','${esc(r.b._ch)}','${esc(r.b._f)}')" style="font-size:.66rem;padding:.2em .6em;border-radius:6px;border:1.5px solid #D97706;color:#D97706">${r.isParked?'▶ Unpark':'⏸ Park'} (status: review)</button>
+        <button onclick="aiRewrite('${r.b.id}')" id="rw-${r.b.id}" style="font-size:.66rem;padding:.2em .6em;border-radius:6px;border:1.5px solid var(--accent);color:var(--accent)">✨ AI rewrite from signals</button>
+      </div>
+      <div id="rwout-${r.b.id}"></div>
+    </div>`;
+  }
+  m.innerHTML=h;
+}
+
+// Park = hide from readers until revised. Toggles the local override AND copies the
+// one-line file change (the file is the source of truth for deployed readers).
+window.parkBlock=function(id,ch,file){
+  let st={};try{st=JSON.parse(localStorage.getItem('pbook-content-statuses')||'{}')}catch(e){}
+  const parking=st[id]!=='review';
+  if(parking)st[id]='review';else delete st[id];
+  localStorage.setItem('pbook-content-statuses',JSON.stringify(st));
+  const b=allBlocks.find(x=>x.id===id);if(b)b.status=parking?'review':'accepted';
+  const dir=(book.chapters.find(c=>c.id===ch)||{}).directory||ch;
+  const cmd=parking
+    ?`sed -i 's/^status: accepted/status: review/' content/${dir}/${file}`
+    :`sed -i 's/^status: review/status: accepted/' content/${dir}/${file}`;
+  navigator.clipboard?.writeText(cmd);
+  toast((parking?'Parked':'Unparked')+' locally — file command copied to clipboard (run + deploy to affect readers)');
+  renderHealth(document.getElementById('main'));
+};
+
+// AI rewrite: regenerate the telling from its contract, steered by the reader signals
+window.aiRewrite=async function(id){
+  const b=allBlocks.find(x=>x.id===id);if(!b||!b.concept){toast('No concept for this block');return}
+  const btn=document.getElementById('rw-'+id),out=document.getElementById('rwout-'+id);
+  let flags=[];try{flags=JSON.parse(localStorage.getItem('pbook-flags')||'[]').filter(f=>f.blockId===id)}catch(e){}
+  const problems=[];
+  flags.slice(0,3).forEach(f=>problems.push(`reader flagged (${f.type}): "${(f.text||'').slice(0,120)}"`));
+  if(!problems.length)problems.push('readers disengage from this telling (short dwell / steer-away) — make the opening more concrete and tighten it');
+  const instructions=`This replaces a telling readers struggled with. Address these signals: ${problems.join('; ')}`.slice(0,300);
+  if(btn){btn.disabled=true;btn.textContent='✨ Rewriting…'}
+  try{
+    const res=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({concept:b.concept,facets:{lens:b.lens||'generic',visuality:b.visuality||'text-first',depth:b.depth||'standard',formalism:b.formalism||'none',lengthBand:b.lengthBand||'standard',genre:b.genre||'explainer'},instructions})});
+    const d=await res.json();
+    if(!res.ok||!d.ok)throw new Error(d.error||'generation failed');
+    const nb=d.block;
+    const fm=['---',`id: ${id}`,`type: spine`,`title: "${(nb.title||'').replace(/"/g,'\\"')}"`,`teaser: ""`,
+      `readingTime: ${Math.max(1,Math.round((nb.body||'').split(/\s+/).length/200))}`,`voice: ${b.voice||'universal'}`,
+      `concept: ${b.concept}`,`state: ${b.state||'edited'}`,`lens: ${b.lens||'generic'}`,`visuality: ${b.visuality||'text-first'}`,
+      `depth: ${b.depth||'standard'}`,`formalism: ${b.formalism||'none'}`,`lengthBand: ${b.lengthBand||'standard'}`,
+      nb.recallQ?`recallQ: "${nb.recallQ.replace(/"/g,'\\"')}"`:null,nb.recallA?`recallA: "${nb.recallA.replace(/"/g,'\\"')}"`:null,
+      `status: review`,'---','',nb.body||''].filter(Boolean).join('\n');
+    if(out)out.innerHTML=`<div style="border:1px dashed var(--accent);border-radius:8px;padding:.5em;margin-top:.4em;font-size:.7rem;max-height:14em;overflow:auto;white-space:pre-wrap">${esc((nb.body||'').slice(0,1200))}</div>
+      <button onclick="(function(){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([document.getElementById('rwsrc-${id}').textContent],{type:'text/markdown'}));a.download='${id}.rewrite.md';a.click()})()" style="font-size:.66rem;padding:.2em .6em;border-radius:6px;border:1.5px solid #10B981;color:#10B981;margin-top:.3em">⬇ Download .md (status: review) — review &amp; replace the file</button>
+      <pre id="rwsrc-${id}" style="display:none">${esc(fm)}</pre>`;
+  }catch(e){if(out)out.innerHTML=`<div style="font-size:.68rem;color:#EF4444;margin-top:.3em">${esc(e.message)}</div>`}
+  if(btn){btn.disabled=false;btn.textContent='✨ AI rewrite from signals'}
+};
+
+window.adoptCommunity=function(itemId){
+  const item=_commItems.find(i=>i.itemId===itemId);if(!item)return;
+  const fm=['---',`id: ${itemId}`,'type: spine',`title: "${(item.title||'').replace(/"/g,'\\"')}"`,
+    `teaser: ""`,`readingTime: ${Math.max(1,Math.round((item.body||'').split(/\s+/).length/200))}`,'voice: universal',
+    `concept: ${item.concept}`,'state: edited',`lens: ${item.lens||'generic'}`,`visuality: ${item.visuality||'text-first'}`,
+    `depth: ${item.depth||'standard'}`,`formalism: ${item.formalism||'none'}`,`lengthBand: ${item.lengthBand||'standard'}`,
+    item.recallQ?`recallQ: "${item.recallQ.replace(/"/g,'\\"')}"`:null,item.recallA?`recallA: "${item.recallA.replace(/"/g,'\\"')}"`:null,
+    `sharedAs: ${item.sharedAs||'anonymous'}`,'status: review','---','',item.body||''].filter(Boolean).join('\n');
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([fm],{type:'text/markdown'}));
+  a.download=`${itemId}.md`;a.click();URL.revokeObjectURL(a.href);
+  toast('Downloaded — review, place into content/chNN-…/, add to book.json, set status: accepted');
+};
+
+function filtered(){
+  let list=allBlocks;
+  if(sideFilter==='untagged')list=list.filter(b=>!mktg[b.id]);
+  else if(sideFilter&&sideFilter.startsWith('ch'))list=list.filter(b=>b._cn===parseInt(sideFilter.slice(2)));
+  else if(sideFilter)list=list.filter(b=>mktg[b.id]?.status===sideFilter);
+  return list;
+}
+
+// ---- Analytics: real Recombee data ----
+// ---- Analytics: from server-side log ----
+async function renderReach(m){
+  m.innerHTML='<div id="reachGrowth" style="margin-bottom:1.2em"></div><div id="reachAnalytics"></div>';
+  await _loadCoverageData();
+  const esc=s=>String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const g=document.getElementById('reachGrowth');
+  // invites: acceptance per code (readers) + editor invites
+  const inv={}, einv=[];
+  _logRows.forEach(r=>{
+    const ev=r.event||r.data?.event;const d=r.data?.data||r.data||{};
+    if(ev==='invite_accepted'&&d.code){(inv[d.code]=inv[d.code]||{n:0,users:new Set()});inv[d.code].n++;inv[d.code].users.add(r.user_id||d.userId||'?');}
+    if(ev==='editor_invite_accepted'&&d.code)einv.push({code:d.code,user:r.user_id||'?'});
+  });
+  // contributor leaderboard: shares, adoptions (approx via community_share), flags, ghost votes
+  const per={};
+  const bump=(u,k)=>{if(!u)return;(per[u]=per[u]||{share:0,flag:0,ghost:0,wish:0});per[u][k]++;};
+  _logRows.forEach(r=>{
+    const ev=r.event||r.data?.event;const u=r.user_id||r.data?.userId;
+    if(ev==='community_share')bump(u,'share');
+    if(ev==='flag')bump(u,'flag');
+    if(ev==='ghost_want'||ev==='ghost_skip')bump(u,'ghost');
+    if(ev==='concept_wish')bump(u,'wish');
+  });
+  const board=Object.entries(per).map(([u,s])=>({u,score:s.share*10+s.wish*3+s.flag*2+s.ghost,...s}))
+    .sort((a,b)=>b.score-a.score).slice(0,10);
+  let h='<h2 style="font-size:1.15rem;font-weight:800;margin-bottom:.3em">📈 Reach — growth & the editor track</h2>';
+  h+=`<div style="display:flex;gap:1.5em;flex-wrap:wrap;font-size:.8rem;margin:.4em 0 .8em">
+    <span>🔗 invite codes used: <b>${Object.keys(inv).length}</b> (${Object.values(inv).reduce((s,x)=>s+x.users.size,0)} readers)</span>
+    <span>🛠 editor invites accepted: <b>${einv.length}</b></span>
+  </div>`;
+  h+='<h3 style="font-size:.85rem;font-weight:700;margin:.6em 0 .3em">Top contributors</h3>';
+  h+=board.length?('<table style="font-size:.72rem;border-collapse:collapse">'+board.map((x,i)=>`<tr><td style="padding:.2em .6em">${i+1}.</td><td style="padding:.2em .6em"><code>${esc(String(x.u).slice(0,14))}…</code></td><td style="padding:.2em .6em">score ${x.score}</td><td style="padding:.2em .6em;color:var(--text3)">${x.share} shared · ${x.wish} wishes · ${x.flag} flags · ${x.ghost} votes</td></tr>`).join('')+'</table>')
+    :'<p style="font-size:.72rem;color:var(--text3)">No contribution events logged yet.</p>';
+  // editor invite generator (honor-system gate; admin is where seniors land)
+  h+=`<h3 style="font-size:.85rem;font-weight:700;margin:1em 0 .3em">Invite an editor</h3>
+    <p style="font-size:.72rem;color:var(--text3)">Seniors get editor status on arrival: send them this link. It sets the 🛠 editor role in their book, points them at the editor guide, and links back here.</p>
+    <button onclick="genEditorInvite()" style="font-size:.72rem;padding:.3em .7em;border:1.5px solid var(--accent);border-radius:6px;color:var(--accent)">＋ Generate editor invite link</button>
+    <div id="editorInviteOut" style="font-size:.74rem;margin-top:.4em"></div>`;
+  g.innerHTML=h;
+  renderAnalytics(document.getElementById('reachAnalytics'));
+}
+
+window.genEditorInvite=function(){
+  const code='E-'+Math.random().toString(36).slice(2,8).toUpperCase();
+  const url=`${location.origin}/?invite=${code}`;
+  const out=document.getElementById('editorInviteOut');
+  out.innerHTML=`<code style="user-select:all">${url}</code> <button onclick="navigator.clipboard.writeText('${url}');this.textContent='✓ copied'" style="font-size:.68rem;padding:.15em .5em;border:1px solid var(--border);border-radius:5px">copy</button>
+    <div style="color:var(--text3);font-size:.66rem;margin-top:.2em">Acceptances appear above (editor_invite_accepted, code ${code}).</div>`;
+};
+
+async function renderAnalytics(el){
+  el.innerHTML = '<div style="text-align:center;padding:2em;color:var(--text3)">Loading server-side analytics...</div>';
+
+  let interactions = [];
+  try {
+    const res={ok:true,json:async()=>await getLogRows()};
+    if (res.ok) {
+      const raw = await res.json();
+      // Normalize Supabase snake_case to camelCase + extract from data column
+      interactions = raw.map(r => {
+        const d = r.data || {};
+        return { userId: r.user_id || d.userId, type: r.type || d.type, itemId: r.item_id || d.itemId, mode: r.mode || d.mode, event: r.event || d.event, duration: r.duration || d.duration, rating: r.rating || d.rating, ts: r.server_ts || d.ts || Date.parse(r.created_at), ...d };
+      });
+    }
+  } catch(e) {}
+
+  // Fallback to localStorage if server has no data
+  if (!interactions.length) {
+    try { interactions = JSON.parse(localStorage.getItem('pbook-interactions') || '[]'); } catch(e) {}
+  }
+
+  const source = interactions.length && interactions[0].serverTs ? 'Server-side log' : 'Browser localStorage (fallback)';
+  const userId = localStorage.getItem('pbook-uid') || 'unknown';
+
+  // Parse interactions
+  const views = interactions.filter(i => i.type === 'detailview');
+  const ratings = interactions.filter(i => i.type === 'rating');
+  const bookmarks = interactions.filter(i => i.type === 'bookmark');
+  const events = interactions.filter(i => i.type === 'event');
+  const modeSwitches = events.filter(e => e.event === 'mode_switch');
+  const blockOpens = events.filter(e => e.event === 'open_block');
+
+  // Mode usage from mode_switch events
+  const modeCount = {};
+  modeSwitches.forEach(e => { modeCount[e.mode] = (modeCount[e.mode] || 0) + 1; });
+
+  // Blocks opened per mode
+  const modeBlocks = {};
+  blockOpens.forEach(e => {
+    if (!modeBlocks[e.mode]) modeBlocks[e.mode] = new Set();
+    modeBlocks[e.mode].add(e.blockId);
+  });
+
+  // Views per mode
+  const modeViews = {};
+  views.forEach(v => { const m = v.mode || 'unknown'; modeViews[m] = (modeViews[m] || 0) + 1; });
+
+  // View duration per mode
+  const modeDuration = {};
+  views.forEach(v => { if (v.duration) { const m = v.mode || 'unknown'; modeDuration[m] = (modeDuration[m] || 0) + v.duration; }});
+
+  // Most viewed items
+  const itemViews = {};
+  views.forEach(v => { itemViews[v.itemId] = (itemViews[v.itemId] || 0) + 1; });
+  const topItems = Object.entries(itemViews).sort((a,b) => b[1]-a[1]).slice(0, 15);
+
+  // Timeline (last 50 events)
+  const timeline = interactions.slice(-50).reverse();
+
+  let h = '<h2 style="font-size:1.15rem;font-weight:800;margin-bottom:.3em">Reader Analytics</h2>';
+  // Unique users across all interactions
+  const allUserIds = new Set();
+  interactions.forEach(i => { if (i.userId) allUserIds.add(i.userId); });
+
+  h += `<p style="font-size:.82rem;color:var(--text2);margin-bottom:1em">Source: <b>${source}</b> · ${allUserIds.size} reader${allUserIds.size!==1?'s':''} · ${interactions.length} interactions.</p>`;
+
+  // Summary
+  h += '<div class="cg">';
+  h += gc('Views', views.length, 'blocks read');
+  h += gc('Ratings', ratings.length, 'likes/dislikes');
+  h += gc('Bookmarks', bookmarks.length, 'saved');
+  h += gc('Mode Switches', modeSwitches.length, 'navigations');
+  h += gc('Block Opens', blockOpens.length, 'from various modes');
+  h += '</div>';
+
+  // Mode usage — key research metric
+  if (Object.keys(modeCount).length) {
+    h += '<h3 style="font-size:.9rem;font-weight:700;margin:1em 0 .5em">Mode Usage (switches)</h3>';
+    h += '<p style="font-size:.75rem;color:var(--text2);margin-bottom:.5em">How many times the reader switched to each mode. Key for comparing content serving approaches.</p>';
+    const maxMode = Math.max(...Object.values(modeCount), 1);
+    const modeColors = {netflix:'#7C3AED',read:'#2563EB',mission:'#D97706',map:'#059669',tutor:'#EC4899',search:'#6366F1',profile:'#6B7280',home:'#7C3AED'};
+    h += '<div style="display:flex;flex-direction:column;gap:.4em;max-width:500px">';
+    Object.entries(modeCount).sort((a,b) => b[1]-a[1]).forEach(([mode, count]) => {
+      const pct = Math.round(count / maxMode * 100);
+      const uniqueBlocks = modeBlocks[mode]?.size || 0;
+      const viewsInMode = modeViews[mode] || 0;
+      const durSec = modeDuration[mode] || 0;
+      h += `<div>
+        <div style="display:flex;align-items:center;gap:.5em">
+          <span style="width:5em;font-size:.75rem;font-weight:600;text-align:right">${mode}</span>
+          <div style="flex:1;height:18px;background:var(--border);border-radius:4px;overflow:hidden">
+            <div style="height:100%;width:${pct}%;background:${modeColors[mode]||'var(--accent)'};border-radius:4px"></div>
+          </div>
+          <span style="font-size:.72rem;color:var(--text2);width:2.5em">${count}x</span>
+        </div>
+        <div style="margin-left:5.5em;font-size:.65rem;color:var(--text3)">${viewsInMode} views · ${uniqueBlocks} unique blocks${durSec ? ' · ' + Math.round(durSec) + 's reading' : ''}</div>
+      </div>`;
+    });
+    h += '</div>';
+  }
+
+  // Top items
+  if (topItems.length) {
+    h += '<h3 style="font-size:.9rem;font-weight:700;margin:1.5em 0 .5em">Most Read Sections</h3>';
+    h += '<p style="font-size:.68rem;color:var(--text3)">served = views · finished = dwell ≥ min(12 s, 15 % of reading time) · skipped = the rest</p>';
+    h += '<div class="cl">';
+    topItems.forEach(([itemId, count]) => {
+      const b = allBlocks.find(x => x.id === itemId);
+      const thr = Math.min(12, ((b?.readingTime) || 3) * 60 * 0.15);
+      const fin = views.filter(v => (v.itemId === itemId) && (v.duration || 0) >= thr).length;
+      const skip = count - fin;
+      h += `<div class="cl-item" style="grid-template-columns:1fr auto"><span class="cl-title">${b ? b.title : itemId}</span><span style="font-size:.72rem;color:var(--text3)">${count} served · <b style="color:#10B981">${fin} finished</b> · ${skip} skipped</span></div>`;
+    });
+    h += '</div>';
+  }
+
+  // Timeline
+  if (timeline.length) {
+    h += '<details style="margin-top:1.5em"><summary style="font-size:.82rem;font-weight:600;cursor:pointer">Event Timeline (last 50)</summary>';
+    h += '<div class="cl" style="margin-top:.5em;font-size:.72rem">';
+    timeline.forEach(i => {
+      const time = i.ts && isFinite(i.ts) ? new Date(i.ts).toLocaleString() : '—';
+      const label = i.event ? `${i.event}: ${i.mode||''}` : `${i.type}: ${i.itemId||''}`;
+      h += `<div class="cl-item" style="grid-template-columns:auto 1fr;gap:.5em;padding:.2em .4em">
+        <span style="color:var(--text3);white-space:nowrap">${time}</span>
+        <span>${label}${i.duration ? ' ('+i.duration+'s)' : ''}${i.mode && i.type !== 'event' ? ' ['+i.mode+']' : ''}</span>
+      </div>`;
+    });
+    h += '</div></details>';
+  }
+
+  // Export
+  h += '<div style="margin-top:1.5em;display:flex;gap:.5em">';
+  h += '<button class="ed-btn ed-btn-primary" onclick="exportLocalAnalytics()">Export analytics (JSON)</button>';
+  h += '<button class="ed-btn" onclick="clearAnalytics()">Clear data</button>';
+  h += '</div>';
+
+  // Per-user summary
+  if (allUserIds.size > 1) {
+    h += '<h3 style="font-size:.9rem;font-weight:700;margin:1.5em 0 .5em">Per-Reader Summary</h3>';
+    h += '<div class="cl">';
+    [...allUserIds].forEach(uid => {
+      const uViews = views.filter(v => v.userId === uid).length;
+      const uModes = {};
+      events.filter(e => e.userId === uid && e.event === 'mode_switch').forEach(e => { uModes[e.mode] = (uModes[e.mode]||0)+1; });
+      const topMode = Object.entries(uModes).sort((a,b) => b[1]-a[1])[0];
+      h += `<div class="cl-item" style="grid-template-columns:1fr auto auto auto">
+        <span style="font-size:.7rem;font-family:monospace">${uid.substring(0,24)}...</span>
+        <span style="font-size:.68rem;color:var(--text3)">${uViews} views</span>
+        <span style="font-size:.68rem;color:var(--text3)">${Object.keys(uModes).length} modes</span>
+        <span style="font-size:.68rem;color:var(--accent)">${topMode ? topMode[0] : '—'}</span>
+      </div>`;
+    });
+    h += '</div>';
+  }
+
+  h += `<div style="margin-top:1em;padding:.8em;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);font-size:.75rem;color:var(--text2)">
+    <b>How it works:</b> Every reader interaction is sent to <b>Supabase</b> (persistent database) via the <code>/api/log</code> endpoint.
+    Data persists across deploys and is accessible from both localhost and production.
+  </div>`;
+
+  el.innerHTML = h;
+}
+
+window.exportLocalAnalytics = async function() {
+  let interactions = [];
+  // Try Supabase first (all users)
+  try {
+    const res={ok:true,json:async()=>await getLogRows()};
+    if (res.ok) interactions = await res.json();
+  } catch(e) {}
+  // Fallback to localStorage
+  if (!interactions.length) {
+    try { interactions = JSON.parse(localStorage.getItem('pbook-interactions') || '[]'); } catch(e) {}
+  }
+  const data = { exportedAt: new Date().toISOString(), source: interactions.length && interactions[0].user_id ? 'supabase' : 'localStorage', totalInteractions: interactions.length, interactions };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'pbook-analytics-' + new Date().toISOString().slice(0,10) + '.json';
+  a.click();
+  toast('Analytics exported');
+};
+
+window.clearAnalytics = function() {
+  if (!confirm('Clear all interaction data from this browser?')) return;
+  localStorage.removeItem('pbook-interactions');
+  toast('Analytics cleared');
+  showMain();
+};
+
+// ---- Editorial: review & accept content ----
+function renderEditorial(el){
+  const draft=allBlocks.filter(b=>b.status==='draft');
+  const review=allBlocks.filter(b=>b.status==='review');
+  const accepted=allBlocks.filter(b=>b.status==='accepted'||!b.status);
+
+  let h='<h2 style="font-size:1.15rem;font-weight:800;margin-bottom:.3em">Editorial</h2>';
+  h+='<p style="font-size:.82rem;color:var(--text2);margin-bottom:1em">Review content. Only <b>accepted</b> items are visible to readers.</p>';
+
+  // Quick stats
+  h+='<div class="cg">';
+  h+=gc('Draft',draft.length,'needs review');
+  h+=gc('In Review',review.length,'being checked');
+  h+=gc('Accepted',accepted.length,'live for readers');
+  h+=gc('Total',allBlocks.length,book.chapters.length+' chapters');
+  h+='</div>';
+
+  // Draft — needs action
+  if(draft.length){
+    h+='<div style="display:flex;align-items:center;gap:.5em;margin:1em 0 .5em"><h3 style="font-size:.9rem;font-weight:700;color:#D97706">Drafts ('+draft.length+')</h3>';
+    h+='<button class="ed-btn ed-btn-primary" style="font-size:.65rem;padding:.2em .6em" onclick="bulkStatus(\'draft\',\'accepted\')">Accept all</button></div>';
+    h+=editorialList(draft);
+  }
+
+  // In review
+  if(review.length){
+    h+='<div style="display:flex;align-items:center;gap:.5em;margin:1em 0 .5em"><h3 style="font-size:.9rem;font-weight:700;color:#3B82F6">In Review ('+review.length+')</h3>';
+    h+='<button class="ed-btn ed-btn-primary" style="font-size:.65rem;padding:.2em .6em" onclick="bulkStatus(\'review\',\'accepted\')">Accept all</button></div>';
+    h+=editorialList(review);
+  }
+
+  if(!draft.length && !review.length){
+    h+='<div style="text-align:center;padding:2em;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);color:var(--prod);font-weight:600">&#10003; All content accepted! Nothing to review.</div>';
+  }
+
+  // Accepted — collapsible
+  h+='<details style="margin-top:1.5em"><summary style="font-size:.82rem;font-weight:600;cursor:pointer;color:var(--text2)">Accepted ('+accepted.length+') — click to manage</summary>';
+  h+=editorialList(accepted);
+  h+='</details>';
+
+  el.innerHTML=h;
+}
+
+function editorialList(blocks){
+  let h='<div class="cl">';
+  blocks.forEach(b=>{
+    const statusColor={draft:'#D97706',review:'#3B82F6',accepted:'#34d399'}[b.status||'accepted']||'#34d399';
+    h+=`<div class="cl-item" style="grid-template-columns:8px 2.5em 1fr auto">
+      <span class="sdot" style="background:${statusColor}"></span>
+      <span class="cl-ch">Ch${b._cn}</span>
+      <span><span class="cl-title" style="cursor:pointer" onclick="OD('${b.id}')">${b.title}</span>
+        <span style="font-size:.6rem;color:var(--text3);margin-left:.3em">${b.type}${b.core?' · CORE':''}</span></span>
+      <span style="display:flex;gap:.2em;flex-shrink:0">
+        ${b.status!=='draft'?`<button class="ed-btn" style="font-size:.6rem;padding:.15em .4em;color:#D97706" onclick="event.stopPropagation();cStatus('${b.id}','draft')">Draft</button>`:''}
+        ${b.status!=='review'?`<button class="ed-btn" style="font-size:.6rem;padding:.15em .4em;color:#3B82F6" onclick="event.stopPropagation();cStatus('${b.id}','review')">Review</button>`:''}
+        ${(b.status||'accepted')!=='accepted'?`<button class="ed-btn ed-btn-primary" style="font-size:.6rem;padding:.15em .4em" onclick="event.stopPropagation();cStatus('${b.id}','accepted')">Accept</button>`:''}
+      </span>
+    </div>`;
+  });
+  h+='</div>';
+  return h;
+}
+
+window.cStatus=function(id,status){
+  const b=allBlocks.find(x=>x.id===id);if(!b)return;
+  b.status=status;
+  let st={};try{st=JSON.parse(localStorage.getItem('pbook-content-statuses')||'{}')}catch(e){}
+  st[id]=status;localStorage.setItem('pbook-content-statuses',JSON.stringify(st));
+  toast(b.title+' → '+status);renderSidebar();showMain();
+};
+
+window.bulkStatus=function(from,to){
+  let st={};try{st=JSON.parse(localStorage.getItem('pbook-content-statuses')||'{}')}catch(e){}
+  let n=0;allBlocks.forEach(b=>{if(b.status===from){b.status=to;st[b.id]=to;n++}});
+  localStorage.setItem('pbook-content-statuses',JSON.stringify(st));
+  toast(n+' items → '+to);renderSidebar();showMain();
+};
+
+// ---- Dashboard (stats overview) ----
+function renderDash(el){
+  const tagged=Object.keys(mktg).length;
+  const byStage={};STAGES.forEach(s=>byStage[s]=0);Object.values(mktg).forEach(m=>{if(m.status)byStage[m.status]++});
+  const pillarC={};PIL.forEach(p=>pillarC[p]=0);Object.values(mktg).forEach(m=>{if(m.pillar)pillarC[m.pillar]++});
+  const stdcC={};STDC.forEach(s=>stdcC[s]=0);Object.values(mktg).forEach(m=>{if(m.stdc)stdcC[m.stdc]++});
+  const fmtC={};FMT.forEach(f=>fmtC[f]=0);Object.values(mktg).forEach(m=>{(m.formats||[]).forEach(f=>fmtC[f]++)});
+
+  let h=`<h2 style="font-size:1.15rem;font-weight:800;margin-bottom:.8em">Content Dashboard</h2>`;
+  h+=`<div class="cg">`;
+  h+=gc('Total',allBlocks.length,'blocks across '+book.chapters.length+' chapters');
+  h+=gc('Tagged',tagged,Math.round(tagged/allBlocks.length*100)+'% of content');
+  h+=gc('In Pipeline',byStage.review+byStage.approved+byStage.ready_for_pr,'awaiting action');
+  h+=gc('Published',byStage.published,'pushed to marketing');
+  h+=gc('Ready for PR',byStage.ready_for_pr,'waiting for PR team');
+  h+=`</div>`;
+
+  // Pillar + STDC side by side
+  h+=`<div style="display:grid;grid-template-columns:1fr 1fr;gap:1em;margin-bottom:1.5em">`;
+  h+=`<div class="cg-card" style="padding:1em"><h4 style="font-size:.65rem;font-weight:600;text-transform:uppercase;color:var(--text3);margin-bottom:.6em">Content Pillars</h4>`;
+  const pillarColors=['#2563eb','#059669','#7c3aed','#d97706','#dc2626'];
+  const maxP=Math.max(...Object.values(pillarC),1);
+  PIL.forEach((p,i)=>{const pct=Math.round(pillarC[p]/maxP*100);h+=`<div style="display:flex;align-items:center;gap:.5em;margin-bottom:.35em;font-size:.75rem"><span style="width:7em;color:var(--text2)">${p.split(' ').slice(0,2).join(' ')}</span><div style="flex:1;height:5px;background:var(--border);border-radius:3px"><div style="height:100%;width:${pct}%;background:${pillarColors[i]};border-radius:3px"></div></div><span style="width:1.5em;text-align:right;color:var(--text3);font-size:.65rem">${pillarC[p]}</span></div>`});
+  h+=`</div>`;
+  h+=`<div class="cg-card" style="padding:1em"><h4 style="font-size:.65rem;font-weight:600;text-transform:uppercase;color:var(--text3);margin-bottom:.6em">STDC Funnel</h4>`;
+  const stdcColors=['#dbeafe','#fef3c7','#d1fae5','#fce7f3'];const stdcText=['#1e40af','#92400e','#065f46','#9d174d'];
+  h+=`<div style="display:flex;gap:.5em">`;STDC.forEach((s,i)=>{h+=`<div style="flex:1;text-align:center;padding:.6em .3em;background:${stdcColors[i]};border-radius:8px"><div style="font-size:1.3rem;font-weight:800;color:${stdcText[i]}">${stdcC[s]}</div><div style="font-size:.65rem;font-weight:600;color:${stdcText[i]}">${s}</div></div>`});
+  h+=`</div></div></div>`;
+
+  // Format distribution
+  h+=`<div class="cg-card" style="padding:1em;margin-bottom:1.5em"><h4 style="font-size:.65rem;font-weight:600;text-transform:uppercase;color:var(--text3);margin-bottom:.6em">Generated Formats</h4>`;
+  h+=`<div style="display:flex;flex-wrap:wrap;gap:.4em">`;
+  FMT.forEach(f=>{h+=`<span style="font-size:.72rem;padding:.25em .6em;background:var(--bg);border:1px solid var(--border);border-radius:5px">${f} <b>${fmtC[f]}</b></span>`});
+  h+=`</div></div>`;
+
+  el.innerHTML=h;
+}
+function gc(t,n,s){return`<div class="cg-card"><h4>${t}</h4><div class="cg-num">${n}</div><div class="cg-sub">${s}</div></div>`}
+
+// ---- Content list ----
+window.contentSearch='';
+window.contentTypeFilter=null;
+window.contentVoiceFilter=null;
+
+window.renderContent=function(el){
+  // Apply all filters
+  let list=filtered();
+  if(contentSearch){const q=contentSearch.toLowerCase();list=list.filter(b=>(b.title||'').toLowerCase().includes(q)||(b.body||'').toLowerCase().includes(q)||(b.teaser||'').toLowerCase().includes(q)||(b.id||'').toLowerCase().includes(q))}
+  if(contentTypeFilter)list=list.filter(b=>b.type===contentTypeFilter);
+  if(contentVoiceFilter)list=list.filter(b=>(b.voice||'universal')===contentVoiceFilter);
+
+  // Type and voice counts (from filtered, before type/voice filter)
+  const baseList=filtered();
+  const typeCounts={};baseList.forEach(b=>{typeCounts[b.type]=(typeCounts[b.type]||0)+1});
+  const voiceCounts={};baseList.forEach(b=>{const v=b.voice||'universal';voiceCounts[v]=(voiceCounts[v]||0)+1});
+
+  let h='';
+
+  // Search bar
+  h+='<div style="display:flex;gap:.6em;align-items:center;margin-bottom:.8em;flex-wrap:wrap">';
+  h+='<div style="flex:1;min-width:200px;display:flex;align-items:center;gap:.4em;padding:.45em .8em;background:var(--surface);border:1px solid var(--border);border-radius:8px">';
+  h+='<span style="color:var(--text3)">&#128269;</span>';
+  h+='<input type="text" value="'+escH(contentSearch)+'" oninput="CSI(this.value)" placeholder="Search by title, content, ID..." style="flex:1;border:none;background:none;font-family:var(--font);font-size:.82rem;color:var(--text);outline:none">';
+  if(contentSearch) h+='<button style="color:var(--text3);font-size:.8rem" onclick="CSC()">&#10005;</button>';
+  h+='</div>';
+  h+='<span style="font-size:.8rem;color:var(--text3)">'+list.length+' results</span>';
+  h+='</div>';
+
+  // Quick type filters
+  h+=`<div style="display:flex;gap:.25em;margin-bottom:.5em;flex-wrap:wrap">`;
+  h+=`<button class="ed-tag ${!contentTypeFilter?'on':''}" onclick="contentTypeFilter=null;renderContent(document.getElementById('main'))">All types</button>`;
+  Object.entries(typeCounts).sort((a,b)=>b[1]-a[1]).forEach(([t,c])=>{
+    h+=`<button class="ed-tag ${contentTypeFilter===t?'on':''}" onclick="contentTypeFilter=contentTypeFilter==='${t}'?null:'${t}';renderContent(document.getElementById('main'))">${t} <span style="font-size:.6rem;color:var(--text3)">${c}</span></button>`;
+  });
+  h+=`</div>`;
+
+  // Quick voice filters
+  h+=`<div style="display:flex;gap:.25em;margin-bottom:.8em;flex-wrap:wrap">`;
+  h+=`<button class="ed-tag ${!contentVoiceFilter?'on':''}" onclick="contentVoiceFilter=null;renderContent(document.getElementById('main'))">All voices</button>`;
+  Object.entries(voiceCounts).sort((a,b)=>b[1]-a[1]).forEach(([v,c])=>{
+    const color=v==='engineer'?'var(--eng)':v==='product'?'var(--prod)':v==='business'?'var(--biz)':'var(--text3)';
+    h+=`<button class="ed-tag ${contentVoiceFilter===v?'on':''}" style="${contentVoiceFilter===v?'border-color:'+color+';color:'+color:''}" onclick="contentVoiceFilter=contentVoiceFilter==='${v}'?null:'${v}';renderContent(document.getElementById('main'))">${v} <span style="font-size:.6rem;color:var(--text3)">${c}</span></button>`;
+  });
+  h+=`</div>`;
+
+  // Content list
+  h+=`<div class="cl">`;
+  list.forEach(b=>{
+    const mk=mktg[b.id]||{};
+    const stageColor=mk.status?STAGE_COLORS[mk.status]:'transparent';
+    const voiceClass=b.voice&&b.voice!=='universal'?b.voice:'';
+    const voiceTag=voiceClass?`<span class="cl-voice" style="background:var(--${voiceClass})">${voiceClass.slice(0,3)}</span>`:'';
+    const pillar=mk.pillar?`<span class="cl-pillar">${mk.pillar.split(' ').slice(0,2).join(' ')}</span>`:'';
+    const stdc=mk.stdc?`<span class="cl-stdc" style="background:${stdcBg(mk.stdc)};color:${stdcFg(mk.stdc)}">${mk.stdc}</span>`:'';
+    // Highlight search matches in title
+    let title=b.title;
+    if(contentSearch){const re=new RegExp(`(${contentSearch.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`,'gi');title=title.replace(re,'<mark style="background:var(--accent-bg);padding:0 .1em;border-radius:2px">$1</mark>')}
+    h+=`<div class="cl-item" onclick="OD('${b.id}')"><span class="sdot" style="background:${stageColor}"></span><span class="cl-ch">${b._cn}.${b.type==='spine'?'S':b.type==='depth'?'D':b.type==='sidebar'?'B':'Q'}</span><span class="cl-title">${title}</span>${voiceTag}${pillar}${stdc}<div class="cl-actions"><button class="cl-act" onclick="event.stopPropagation();quickStatus('${b.id}')" title="Advance status">&#9654;</button></div></div>`;
+  });
+  if(list.length===0)h+=`<div style="text-align:center;padding:2em;color:var(--text3)">No blocks match your filters</div>`;
+  h+=`</div>`;
+  el.innerHTML=h;
+}
+
+function stdcBg(s){return{SEE:'#dbeafe',THINK:'#fef3c7',DO:'#d1fae5',CARE:'#fce7f3'}[s]||'var(--bg)'}
+function stdcFg(s){return{SEE:'#1e40af',THINK:'#92400e',DO:'#065f46',CARE:'#9d174d'}[s]||'var(--text2)'}
+
+window.quickStatus=function(id){
+  if(!mktg[id])mktg[id]={status:'draft'};
+  const cur=mktg[id].status||'draft';
+  const next=STAGES[Math.min(STAGES.indexOf(cur)+1,STAGES.length-1)];
+  mktg[id].status=next;
+  addHistory(id,`Status → ${STAGE_LABELS[next]}`);
+  save();renderSidebar();showMain();
+  toast(`${STAGE_LABELS[next]}`);
+};
+
+// ---- Pipeline kanban ----
+function renderPipeline(el){
+  let h=`<h2 style="font-size:1.1rem;font-weight:700;margin-bottom:.8em">Content Pipeline</h2>`;
+  if(Object.keys(mktg).length===0){h+=`<div style="text-align:center;padding:3em;color:var(--text3)">No content tagged. <button style="color:var(--accent);text-decoration:underline" onclick="autoTag()">Auto-tag all</button></div>`;el.innerHTML=h;return}
+  h+=`<div class="pipeline">`;
+  STAGES.forEach(s=>{
+    const items=Object.entries(mktg).filter(([_,m])=>m.status===s).map(([id])=>allBlocks.find(b=>b.id===id)).filter(Boolean);
+    h+=`<div class="pcol"><div class="pcol-head ${s}">${STAGE_LABELS[s]} <span class="pcol-count">${items.length}</span></div><div class="pcol-list">`;
+    items.forEach(b=>{
+      const mk=mktg[b.id]||{};
+      const voiceTag=b.voice&&b.voice!=='universal'?`<span class="cl-voice" style="background:var(--${b.voice});font-size:.5rem;padding:.1em .3em">${b.voice.slice(0,3)}</span>`:'';
+      h+=`<div class="pcard" style="border-left-color:${STAGE_COLORS[s]}" onclick="OD('${b.id}')"><div class="pcard-title">${b.title}</div><div class="pcard-meta"><span>Ch${b._cn}</span>${voiceTag}${mk.pillar?'<span>'+mk.pillar.split(' ')[0]+'</span>':''}</div></div>`;
+    });
+    h+=`</div></div>`;
+  });
+  h+=`</div>`;
+  el.innerHTML=h;
+}
+
+// ---- PR Push ----
+function renderPR(el){
+  const ready=Object.entries(mktg).filter(([_,m])=>m.status==='ready_for_pr').map(([id])=>allBlocks.find(b=>b.id===id)).filter(Boolean);
+  const published=Object.entries(mktg).filter(([_,m])=>m.status==='published').map(([id])=>allBlocks.find(b=>b.id===id)).filter(Boolean);
+
+  let h=`<h2 style="font-size:1.1rem;font-weight:700;margin-bottom:.3em">PR & Marketing Push</h2>`;
+  h+=`<p style="font-size:.82rem;color:var(--text2);margin-bottom:1.2em">Content packages ready for the marketing team. Click to open, generate social variants, and push.</p>`;
+
+  h+=`<div style="display:grid;grid-template-columns:1fr 1fr;gap:1em;margin-bottom:1.5em">`;
+  h+=gc('Ready for PR',ready.length,'content blocks to process');
+  h+=gc('Published',published.length,'already pushed to channels');
+  h+=`</div>`;
+
+  if(ready.length){
+    h+=`<h3 style="font-size:.85rem;font-weight:700;margin-bottom:.6em">Ready for PR <span style="font-weight:400;color:var(--text3)">(${ready.length})</span></h3>`;
+    h+=`<div class="cl">`;
+    ready.forEach(b=>{
+      const mk=mktg[b.id]||{};
+      const formats=(mk.formats||[]).join(', ')||'No formats generated';
+      const persona=mk.persona||'—';
+      h+=`<div class="cl-item" style="grid-template-columns:8px 2.5em 1fr auto auto" onclick="OD('${b.id}')"><span class="sdot" style="background:#a78bfa"></span><span class="cl-ch">${b._cn}</span><span class="cl-title">${b.title}</span><span style="font-size:.65rem;color:var(--text3)">${persona}</span><span style="font-size:.65rem;color:var(--text3)">${formats}</span></div>`;
+    });
+    h+=`</div>`;
+    h+=`<div style="margin-top:.8em"><button class="ed-btn ed-btn-push" onclick="pushAllPR()">&#9654; Mark all as Published</button></div>`;
+  } else {
+    h+=`<div style="text-align:center;padding:2em;color:var(--text3);background:var(--surface);border:1px solid var(--border);border-radius:var(--radius)">No content ready for PR yet. Move items through the pipeline first.</div>`;
+  }
+
+  if(published.length){
+    h+=`<h3 style="font-size:.85rem;font-weight:700;margin:1.5em 0 .6em">Recently Published</h3>`;
+    h+=`<div class="cl">`;
+    published.slice(0,20).forEach(b=>{
+      const mk=mktg[b.id]||{};
+      h+=`<div class="cl-item" style="grid-template-columns:8px 2.5em 1fr auto;opacity:.6" onclick="OD('${b.id}')"><span class="sdot sdot-published"></span><span class="cl-ch">${b._cn}</span><span class="cl-title">${b.title}</span><span style="font-size:.65rem;color:var(--text3)">${(mk.formats||[]).length} formats</span></div>`;
+    });
+    h+=`</div>`;
+  }
+
+  el.innerHTML=h;
+}
+
+window.pushAllPR=function(){
+  Object.entries(mktg).filter(([_,m])=>m.status==='ready_for_pr').forEach(([id])=>{mktg[id].status='published';addHistory(id,'Pushed to marketing')});
+  save();renderSidebar();showMain();toast('All pushed to Published');
+};
+
+// ---- Editor ----
+window.OD=function(id){
+  editorBlock=allBlocks.find(b=>b.id===id);
+  if(!editorBlock)return;
+  if(!mktg[id])mktg[id]={};
+  window.editorTab='preview';
+  renderEditor();
+  document.getElementById('editor').classList.add('open');
+};
+window.CE=function(){document.getElementById('editor').classList.remove('open')};
+
+window.renderEditor=function(){
+  const b=editorBlock;if(!b)return;
+  const mk=mktg[b.id]||{};
+  const ed=document.getElementById('editor');
+
+  const statusColor={draft:'#D97706',review:'#3B82F6',accepted:'#34d399'}[b.status||'accepted']||'#34d399';
+  const statusLabel=b.status||'accepted';
+  let h=`<div class="ed-head">
+    <span class="sdot" style="background:${statusColor};width:10px;height:10px"></span>
+    <h2>${b.title}</h2>
+    <span style="font-size:.65rem;color:var(--text3);margin-left:.3em">Ch${b._cn} · ${b.type}${b.core?' · CORE':''}</span>
+    <div class="spacer"></div>
+    <span style="display:flex;gap:.3em">
+      ${statusLabel!=='accepted'?`<button class="ed-btn ed-btn-primary" style="font-size:.7rem;padding:.2em .6em" onclick="cStatus('${b.id}','accepted');renderEditor()">Accept</button>`:''}
+      ${statusLabel!=='review'?`<button class="ed-btn" style="font-size:.7rem;padding:.2em .6em" onclick="cStatus('${b.id}','review');renderEditor()">Review</button>`:''}
+      ${statusLabel!=='draft'?`<button class="ed-btn" style="font-size:.7rem;padding:.2em .6em;color:#D97706" onclick="cStatus('${b.id}','draft');renderEditor()">Draft</button>`:''}
+    </span>
+    <button class="ed-close" onclick="CE()">&#10005;</button>
+  </div>`;
+  h+=`<div class="ed-tabs">`;
+  ['preview','edit','tags','social'].forEach(t=>{h+=`<button class="ed-tab ${editorTab===t?'active':''}" onclick="window.editorTab='${t}';renderEditor()">${t==='tags'?'Tags & PR':t.charAt(0).toUpperCase()+t.slice(1)}</button>`});
+  h+=`</div>`;
+  h+=`<div class="ed-body">`;
+
+  // Meta bar always visible
+  h+=`<div style="display:flex;flex-wrap:wrap;gap:.3em;margin-bottom:.8em;font-size:.7rem">`;
+  h+=`<span style="color:var(--text3)">Ch${b._cn} · ${b.type} · ${b.voice||'universal'} · ${b.readingTime||3}m · ${b._f}</span>`;
+  h+=`</div>`;
+
+  if(editorTab==='edit'){
+    // Frontmatter fields
+    h+='<div class="ed-section"><div class="ed-label">Frontmatter</div>';
+    h+='<div class="ed-fields">';
+    h+=edField('ID','id',b.id);
+    h+=edField('Title','title',b.title);
+    h+=edSelect('Type','type',b.type,['spine','question','game']);
+    h+=edSelect('Voice','voice',b.voice||'universal',['universal','explorer','creator','thinker']);
+    h+=edSelect('Status','status',b.status||'accepted',['draft','review','accepted']);
+    h+=edSelect('Core','core',b.core?'true':'false',['true','false']);
+    h+=edField('Parent','parent',b.parent||'');
+    h+=edField('Reading time (min)','readingTime',b.readingTime||3);
+    h+=edField('Teaser','teaser',b.teaser||'');
+    h+=edField('Diagram','diagram',b.diagram||'');
+    h+=edSelect('Standalone','standalone',b.standalone?'true':'false',['true','false']);
+    h+='</div></div>';
+    // Body editor
+    h+='<div class="ed-section"><div class="ed-label">Content (Markdown)</div>';
+    h+='<textarea class="ed-body-edit" id="edBodyEdit">'+escH(b.body||'')+'</textarea>';
+    h+='</div>';
+    // Actions
+    h+='<div class="ed-btn-row">';
+    h+='<button class="ed-btn ed-btn-primary" onclick="saveBlock()">Download .md file</button>';
+    h+='<button class="ed-btn" onclick="previewBlock()">Preview</button>';
+    h+='<button class="ed-btn" style="color:#dc2626" onclick="deleteBlock()">Delete</button>';
+    h+='</div>';
+    h+='<div class="ed-section" style="margin-top:.8em"><div class="ed-label">File path</div>';
+    h+='<div style="font-size:.75rem;color:var(--text3);font-family:var(--font)">content/'+b._ch.replace('ch','ch')+'/'+b._f+'</div>';
+    h+='</div>';
+  }
+
+  if(editorTab==='preview'){
+    const bodyHtml=renderMD(b.body||'');
+    h+='<div class="ed-preview">'+bodyHtml+'</div>';
+    // Suggested formats
+    h+='<div class="ed-section" style="margin-top:1em"><div class="ed-label">Suggested formats for this content</div>';
+    const suggestions=suggestFormats(b);
+    h+='<div style="display:flex;flex-wrap:wrap;gap:.3em">';
+    suggestions.forEach(function(s){h+='<span style="font-size:.72rem;padding:.25em .6em;background:'+(s.match?'var(--accent-bg)':'var(--bg)')+';border:1px solid '+(s.match?'var(--accent)':'var(--border)')+';border-radius:5px;color:'+(s.match?'var(--accent)':'var(--text2)')+'">'+(s.match?'&#9733; ':'')+s.format+' → '+s.audience+'</span>'});
+    h+='</div></div>';
+  }
+
+  if(editorTab==='tags'){
+    h+=tagSection('Content Pillar','pillar',PIL);
+    h+=tagSection('Series','series',SER);
+    h+=tagSection('STDC Stage','stdc',STDC);
+    h+=tagSection('Target Persona','persona',PER);
+    h+=tagSection('Pipeline Status','status',STAGES.map(s=>STAGE_LABELS[s]),STAGES);
+  }
+
+  if(editorTab==='social'){
+    const genFmt=mk._genFmt||'LinkedIn Post';
+    h+=`<div class="ed-section"><div class="ed-label">Format</div><div class="ed-format-tabs">`;
+    FMT.forEach(f=>{
+      const isRec=suggestFormats(b).some(s=>s.match&&s.format===f);
+      h+=`<button class="ed-fmt ${genFmt===f?'active':''}" onclick="setGenFmt('${b.id}','${f}')">${f}${isRec?'<span class="fmt-rec"></span>':''}</button>`;
+    });
+    h+=`</div></div>`;
+    h+=`<div class="ed-section"><div class="ed-label">Generated content <span style="font-weight:400;color:var(--text3)">(edit freely)</span></div>`;
+    h+=`<textarea class="ed-output" id="genOut">${escH(generatePost(b,genFmt))}</textarea></div>`;
+    h+=`<div class="ed-btn-row">`;
+    h+=`<button class="ed-btn ed-btn-primary" onclick="copyOut()">Copy</button>`;
+    h+=`<button class="ed-btn" onclick="markFormat('${b.id}','${genFmt}')">Mark as generated</button>`;
+    h+=`<button class="ed-btn ed-btn-push" onclick="pushToPR('${b.id}')">Push to PR</button>`;
+    h+=`</div>`;
+    // Show which formats already generated
+    if(mk.formats&&mk.formats.length){
+      h+=`<div style="margin-top:.8em;font-size:.72rem;color:var(--text3)">Already generated: ${mk.formats.join(', ')}</div>`;
+    }
+  }
+
+  if(editorTab==='workflow'){
+    h+=`<div class="ed-section"><div class="ed-label">Add note (visible to team)</div>`;
+    h+=`<textarea class="ed-notes" id="wfNote" placeholder="Add a note for the team — editorial feedback, revision request, PR instructions..."></textarea>`;
+    h+=`<div class="ed-btn-row" style="margin-top:.4em"><button class="ed-btn ed-btn-primary" onclick="addNote('${b.id}')">Add Note</button>`;
+    STAGES.forEach(s=>{h+=`<button class="ed-btn" onclick="setStatus('${b.id}','${s}')" style="${mk.status===s?'background:var(--accent-bg);border-color:var(--accent);color:var(--accent)':''}">${STAGE_LABELS[s]}</button>`});
+    h+=`</div></div>`;
+    h+=`<div class="ed-section"><div class="ed-label">History</div><div class="ed-history">`;
+    const hist=mk.history||[];
+    if(hist.length){[...hist].reverse().forEach(entry=>{h+=`<div class="ed-history-item"><div>${escH(entry.text)}</div><div class="ed-history-meta">${entry.timestamp}</div></div>`})}
+    else{h+=`<div style="color:var(--text3);font-size:.78rem">No history yet</div>`}
+    h+=`</div></div>`;
+  }
+
+  h+=`</div>`;
+  ed.innerHTML=h;
+}
+
+function tagSection(label,key,options,values){
+  const mk=mktg[editorBlock.id]||{};
+  const vals=values||options;
+  let h=`<div class="ed-section"><div class="ed-label">${label}</div><div class="ed-tags">`;
+  options.forEach((o,i)=>{const v=vals[i];h+=`<button class="ed-tag ${mk[key]===v?'on':''}" onclick="setMK('${editorBlock.id}','${key}','${v}')">${o}</button>`});
+  h+=`</div></div>`;return h;
+}
+
+// Edit helpers
+function edField(label,key,value){
+  return '<div class="ed-field"><label>'+label+'</label><input type="text" data-key="'+key+'" value="'+escH(String(value||''))+'" class="ed-input"></div>';
+}
+function edSelect(label,key,value,options){
+  let h='<div class="ed-field"><label>'+label+'</label><select data-key="'+key+'" class="ed-input">';
+  options.forEach(function(o){h+='<option value="'+o+'"'+(o===String(value)?' selected':'')+'>'+o+'</option>'});
+  h+='</select></div>';
+  return h;
+}
+
+window.saveBlock=function(){
+  if(!editorBlock)return;
+  // Gather frontmatter from inputs
+  const fields={};
+  document.querySelectorAll('.ed-fields .ed-input').forEach(function(inp){
+    const key=inp.dataset.key;
+    let val=inp.value;
+    if(val==='true')val=true;else if(val==='false')val=false;else if(val==='null'||val==='')val=null;else if(/^\d+$/.test(val))val=parseInt(val);
+    fields[key]=val;
+  });
+  const body=document.getElementById('edBodyEdit')?.value||'';
+
+  // Build MD file
+  let md='---\n';
+  ['id','type','title','readingTime','standalone','teaser','voice','parent','diagram','status','core'].forEach(function(k){
+    const v=fields[k]!==undefined?fields[k]:(editorBlock[k]!==undefined?editorBlock[k]:null);
+    if(v===true)md+=k+': true\n';
+    else if(v===false)md+=k+': false\n';
+    else if(v===null||v===undefined||v==='')md+=k+': null\n';
+    else if(typeof v==='number')md+=k+': '+v+'\n';
+    else md+=k+': "'+String(v).replace(/"/g,'\\"')+'"\n';
+  });
+  md+='---\n\n'+body;
+
+  // Download as .md file
+  const filename=fields.id?fields.id.replace(/[^a-z0-9-]/g,'-')+'.md':'new-block.md';
+  const blob=new Blob([md],{type:'text/markdown'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download=filename;a.click();
+  URL.revokeObjectURL(url);
+  toast('Downloaded: '+filename);
+  addHistory(editorBlock.id,'Content edited and downloaded');
+};
+
+window.previewBlock=function(){
+  window.editorTab='preview';
+  // Update in-memory block with edited values
+  const body=document.getElementById('edBodyEdit')?.value;
+  if(body!==undefined)editorBlock.body=body;
+  document.querySelectorAll('.ed-fields .ed-input').forEach(function(inp){
+    editorBlock[inp.dataset.key]=inp.value;
+  });
+  renderEditor();
+};
+
+window.deleteBlock=function(){
+  if(!editorBlock)return;
+  if(!confirm('Remove "'+editorBlock.title+'" from the list? (The .md file on disk is not affected.)'))return;
+  const idx=allBlocks.findIndex(function(b){return b.id===editorBlock.id});
+  if(idx>=0)allBlocks.splice(idx,1);
+  delete mktg[editorBlock.id];
+  save();
+  CE();
+  renderSidebar();showMain();
+  toast('Removed from list');
+};
+
+window.newBlock=function(){
+  const id='new-'+Date.now().toString(36);
+  const b={id:id,type:'spine',title:'New block',voice:'universal',body:'',readingTime:3,_ch:'ch1-introduction',_cn:1,_ct:'Introduction',_f:'new.md',parent:null,teaser:'',diagram:null,standalone:false};
+  allBlocks.push(b);
+  editorBlock=b;
+  window.editorTab='edit';
+  renderEditor();
+  document.getElementById('editor').classList.add('open');
+  toast('New block created — edit and download');
+};
+
+window.setMK=function(id,k,v){if(!mktg[id])mktg[id]={};mktg[id][k]=mktg[id][k]===v?null:v;save();renderEditor();renderSidebar()};
+window.setGenFmt=function(id,f){if(!mktg[id])mktg[id]={};mktg[id]._genFmt=f;save();renderEditor()};
+window.markFormat=function(id,f){if(!mktg[id])mktg[id]={};if(!mktg[id].formats)mktg[id].formats=[];if(!mktg[id].formats.includes(f))mktg[id].formats.push(f);addHistory(id,`Generated: ${f}`);save();renderEditor();toast(`${f} marked`)};
+window.setStatus=function(id,s){if(!mktg[id])mktg[id]={};mktg[id].status=s;addHistory(id,`Status → ${STAGE_LABELS[s]}`);save();renderEditor();renderSidebar();showMain();toast(STAGE_LABELS[s])};
+window.pushToPR=function(id){setStatus(id,'ready_for_pr');toast('Pushed to PR')};
+window.addNote=function(id){const note=document.getElementById('wfNote')?.value?.trim();if(!note)return;addHistory(id,note);save();renderEditor();document.getElementById('wfNote').value='';toast('Note added')};
+window.copyOut=function(){const t=document.getElementById('genOut')?.value;navigator.clipboard?.writeText(t);toast('Copied!')};
+
+function addHistory(id,text){if(!mktg[id])mktg[id]={};if(!mktg[id].history)mktg[id].history=[];mktg[id].history.push({text,timestamp:new Date().toLocaleString()});}
+
+// ---- Format suggestions ----
+function suggestFormats(b){
+  const suggestions=[];
+  const hasMath=/\$\$/.test(b.body||'');
+  const hasTable=/^\|/m.test(b.body||'');
+  const isStandalone=b.standalone;
+  const isEngineer=b.voice==='engineer';
+  const isProduct=b.voice==='product';
+  const isBusiness=b.voice==='business';
+  const isSidebar=b.type==='sidebar';
+  const isSpine=b.type==='spine';
+
+  suggestions.push({format:'LinkedIn Post',audience:'Eva (PM)',match:isProduct||isSpine});
+  suggestions.push({format:'LinkedIn Carousel',audience:'Eva (PM)',match:hasTable||(isSpine&&!hasMath)});
+  suggestions.push({format:'X Thread',audience:'Tech community',match:isEngineer||hasMath});
+  suggestions.push({format:'Blog Article',audience:'SEO / organic',match:isSpine&&(b.readingTime||3)>=3});
+  suggestions.push({format:'YouTube Script',audience:'Eva + Daniel',match:hasMath||isEngineer});
+  suggestions.push({format:'Newsletter',audience:'Subscribers',match:isSidebar||isStandalone});
+  suggestions.push({format:'Gabriela LinkedIn',audience:'Daniel (CEO)',match:isBusiness||isSidebar});
+  return suggestions;
+}
+
+// ---- Social generator ----
+function generatePost(b,fmt){
+  const title=b.title||'';const teaser=b.teaser||'';
+  const body=(b.body||'').substring(0,1200);const ch=`Ch${b._cn}: ${b._ct}`;
+  const voice=b.voice==='engineer'?'Technical':b.voice==='product'?'Product':b.voice==='business'?'Business':'';
+
+  if(fmt==='LinkedIn Post'){
+    const voiceTag=voice?'['+voice+' perspective] ':'';
+    return teaser||title+'\n\n'+extractInsight(body)+'\n\n'+voiceTag+'From "Modern Recommender Systems" — '+ch+'\n\n#personalization #recommendersystems #recombee';
+  }
+  if(fmt==='LinkedIn Carousel'){
+    return`CAROUSEL: ${title}\n\nSlide 1: Hook — ${teaser||title}\nSlide 2: The Problem\n${extractFirst(body)}\nSlide 3: Key Insight\n${extractInsight(body)}\nSlide 4: Data / Evidence\n[Add relevant metrics or table]\nSlide 5: Takeaway\n${extractTakeaway(body)}\nSlide 6: CTA\nRead the full chapter at recombee.com/pbook`;
+  }
+  if(fmt==='X Thread'){
+    const sents=body.split(/\.\s+/).filter(s=>s.length>20).slice(0,6);
+    const thread=sents.map(function(s,i){return(i+1)+'/ '+s+'.'}).join('\n\n');
+    return'🧵 '+title+'\n\n'+thread+'\n\n'+(sents.length+1)+'/ Full deep-dive in "Modern Recommender Systems" 📖\n\n#recsys #ml #personalization';
+  }
+  if(fmt==='Blog Article'){
+    return`# ${title}\n\n*From "Modern Recommender Systems" by Pavel Kordik — ${ch}*\n\n${body.substring(0,800)}\n\n---\n\n[Continue reading →](https://recombee.com/pbook)`;
+  }
+  if(fmt==='YouTube Script'){
+    return`VIDEO: ${title}\n\n[INTRO - 30s]\n"${teaser||'Today we are looking at '+title}"\n\n[MAIN CONTENT - 3-5min]\n${extractInsight(body)}\n\n[KEY TAKEAWAY - 30s]\n${extractTakeaway(body)}\n\n[CTA - 15s]\n"Find the full deep-dive in our p-book at recombee.com"`;
+  }
+  if(fmt==='Newsletter'){
+    return`Subject: ${teaser||title}\n\nHi [name],\n\n${extractFirst(body)}\n\n${extractInsight(body)}\n\nRead the full section → [link]\n\nBest,\nThe Recombee Team`;
+  }
+  if(fmt==='Gabriela LinkedIn'){
+    return`After working with personalization systems for years, one thing keeps coming back:\n\n${extractInsight(body)}\n\nThis is what we explore in our latest deep-dive on ${title.toLowerCase()}.\n\nWhat's your experience with this? I'd love to hear.\n\n#personalization #productleadership`;
+  }
+  return`[${fmt}]\n\n${title}\n\n${body.substring(0,400)}`;
+}
+function extractFirst(t){return(t.match(/^[^.!?]+[.!?]/)||[t.substring(0,120)])[0]}
+function extractInsight(t){const b=t.match(/\*\*[^*]+\*\*/g);if(b&&b.length)return b.slice(0,2).map(x=>x.replace(/\*\*/g,'')).join('. ');return t.split(/\.\s+/).slice(1,3).join('. ').substring(0,250)}
+function extractTakeaway(t){const s=t.split(/\.\s+/).filter(x=>x.length>20);return(s[s.length-1]||'').substring(0,200)}
+function escH(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+
+// ---- Auto-tag ----
+window.autoTag=function(){
+  let count=0;
+  allBlocks.forEach(b=>{
+    if(mktg[b.id]&&mktg[b.id].pillar)return;
+    const mk=mktg[b.id]||{};const body=(b.body||'').toLowerCase();const title=(b.title||'').toLowerCase();
+    if(body.includes('configur')||title.includes('control')||body.includes('reql'))mk.pillar=PIL[0];
+    else if(body.includes('production')||body.includes('scale')||body.includes('latency'))mk.pillar=PIL[1];
+    else if(body.includes('algorithm')||body.includes('math')||/\$\$/.test(b.body||''))mk.pillar=PIL[2];
+    else if(body.includes('scenario')||body.includes('example')||body.includes('case'))mk.pillar=PIL[3];
+    else if(body.includes('future')||body.includes('llm'))mk.pillar=PIL[4];
+    if(b.type==='spine')mk.stdc='SEE';else if(b.voice==='product')mk.stdc='THINK';else if(b.voice==='business')mk.stdc='DO';else mk.stdc='THINK';
+    if(b.voice==='product'||b.voice==='engineer')mk.persona=PER[0];else if(b.voice==='business')mk.persona=PER[1];
+    if(!mk.status)mk.status='draft';
+    mktg[b.id]=mk;count++;
+  });
+  save();renderSidebar();showMain();toast(`Tagged ${count} blocks`);
+};
+
+// ---- Export ----
+window.exportCSV=function(){
+  let csv='id,chapter,title,type,voice,pillar,series,stdc,persona,status,formats\n';
+  allBlocks.forEach(b=>{const mk=mktg[b.id]||{};csv+=`"${b.id}","Ch${b._cn}: ${b._ct}","${(b.title||'').replace(/"/g,'""')}","${b.type}","${b.voice||''}","${mk.pillar||''}","${mk.series||''}","${mk.stdc||''}","${mk.persona||''}","${mk.status||''}","${(mk.formats||[]).join('; ')}"\n`});
+  const blob=new Blob([csv],{type:'text/csv'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='pbook-content-pipeline.csv';a.click();toast('CSV exported');
+};
+
+// ---- Reader Feedback ----
+async function renderCertificates(el){
+  el.innerHTML='<div style="text-align:center;padding:2em;color:var(--text3)">Loading certificates...</div>';
+  let certs=[];
+  try{
+    const res={ok:true,json:async()=>await getLogRows()};
+    if(res.ok){const data=await res.json();certs=data.filter(r=>r.type==='certificate').sort((a,b)=>(b.server_ts||0)-(a.server_ts||0))}
+  }catch(e){}
+  let h='<h2 style="font-size:1.1rem;font-weight:700;margin-bottom:.8em">Certificates & Reader Feedback</h2>';
+  // Summary cards
+  const withComment=certs.filter(c=>c.data?.comment);
+  const withEmail=certs.filter(c=>c.data?.email);
+  const avgStars=certs.filter(c=>c.data?.stars>0);
+  const avg=avgStars.length?((avgStars.reduce((s,c)=>s+c.data.stars,0)/avgStars.length).toFixed(1)):'—';
+  h+=`<div class="cg">
+    <div class="cg-card"><h4>Total Certificates</h4><div class="cg-num">${certs.length}</div></div>
+    <div class="cg-card"><h4>With Comments</h4><div class="cg-num">${withComment.length}</div></div>
+    <div class="cg-card"><h4>Avg Rating</h4><div class="cg-num">${avg}</div><div class="cg-sub">${avgStars.length} ratings</div></div>
+    <div class="cg-card"><h4>Email Subscribers</h4><div class="cg-num">${withEmail.length}</div></div>
+  </div>`;
+  // Email list (copyable)
+  if(withEmail.length){
+    h+=`<div style="margin-bottom:1.2em;padding:.8em;background:var(--surface);border:1px solid var(--border);border-radius:8px">
+      <h4 style="font-size:.72rem;font-weight:600;text-transform:uppercase;color:var(--text3);margin-bottom:.4em">Email Subscribers</h4>
+      <div style="font-size:.78rem;word-break:break-all;color:var(--text2)">${withEmail.map(c=>c.data.email).join(', ')}</div>
+      <button style="margin-top:.4em;font-size:.7rem;padding:.25em .6em;border:1px solid var(--border);border-radius:4px;color:var(--accent)" onclick="navigator.clipboard.writeText('${withEmail.map(c=>c.data.email).join(', ')}');this.textContent='Copied!'">Copy emails</button>
+    </div>`;
+  }
+  // Certificate table
+  if(certs.length){
+    h+=`<table style="width:100%;border-collapse:collapse;font-size:.78rem;background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden">
+      <thead><tr style="background:var(--bg)">
+        <th style="padding:.5em .6em;text-align:left;font-weight:600;color:var(--text3);font-size:.68rem;text-transform:uppercase">Name</th>
+        <th style="padding:.5em .6em;text-align:center">Rating</th>
+        <th style="padding:.5em .6em;text-align:left">Comment</th>
+        <th style="padding:.5em .6em;text-align:center">Level</th>
+        <th style="padding:.5em .6em;text-align:center">Sections</th>
+        <th style="padding:.5em .6em;text-align:left">Email</th>
+        <th style="padding:.5em .6em;text-align:left">Date</th>
+      </tr></thead><tbody>`;
+    certs.forEach(c=>{
+      const d=c.data||{};
+      const date=c.created_at?new Date(c.created_at).toLocaleDateString():(c.server_ts?new Date(c.server_ts).toLocaleDateString():'—');
+      const stars=d.stars?'★'.repeat(d.stars)+'☆'.repeat(5-d.stars):'—';
+      h+=`<tr style="border-top:1px solid var(--border)">
+        <td style="padding:.5em .6em;font-weight:600">${esc(d.name||'—')}</td>
+        <td style="padding:.5em .6em;text-align:center;color:#f59e0b">${stars}</td>
+        <td style="padding:.5em .6em;max-width:250px;color:var(--text2)">${esc((d.comment||'').substring(0,100))}${(d.comment||'').length>100?'…':''}</td>
+        <td style="padding:.5em .6em;text-align:center">${d.level||'—'}</td>
+        <td style="padding:.5em .6em;text-align:center">${d.sectionsRead||'—'}/${d.totalSections||'—'}</td>
+        <td style="padding:.5em .6em;font-size:.72rem;color:var(--text3)">${esc(d.email||'—')}</td>
+        <td style="padding:.5em .6em;font-size:.72rem;color:var(--text3)">${date}</td>
+      </tr>`;
+    });
+    h+='</tbody></table>';
+  }else{
+    h+='<p style="color:var(--text3);padding:2em;text-align:center">No certificates issued yet.</p>';
+  }
+  el.innerHTML=h;
+  function esc(s){return(s+'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+}
+
+function renderFeedback(el){
+  // Read from localStorage (same keys that reader.html writes to)
+  let flags=[], notes={};
+  try { flags=JSON.parse(localStorage.getItem('pbook-flags')||'[]'); } catch(e){}
+  try { notes=JSON.parse(localStorage.getItem('pbook-notes')||'{}'); } catch(e){}
+
+  let h='<h2 style="font-size:1.1rem;font-weight:700;margin-bottom:.3em">Reader Feedback</h2>';
+  h+='<p style="font-size:.82rem;color:var(--text2);margin-bottom:1.2em">Flags and notes from readers. In production, these would come from a backend API. Currently reading from this browser\'s localStorage.</p>';
+
+  // Flags (suggest edit)
+  h+='<h3 style="font-size:.9rem;font-weight:700;margin-bottom:.6em">Edit Suggestions ('+flags.length+')</h3>';
+  if(flags.length){
+    h+='<div class="cl">';
+    flags.forEach((f,i)=>{
+      const b=allBlocks.find(x=>x.id===f.blockId);
+      const typeColors={typo:'#6b7280',unclear:'#d97706',incorrect:'#dc2626',suggestion:'#2563eb',missing:'#7c3aed'};
+      h+='<div class="cl-item" style="grid-template-columns:auto 1fr auto" onclick="OD(\''+f.blockId+'\')">';
+      h+='<span style="font-size:.6rem;font-weight:700;padding:.15em .4em;border-radius:3px;background:'+(typeColors[f.type]||'#6b7280')+';color:#fff">'+f.type+'</span>';
+      h+='<span style="font-size:.8rem"><b>'+(b?b.title:f.blockId)+'</b><br><span style="color:var(--text2)">'+escH(f.text)+'</span></span>';
+      h+='<span style="font-size:.65rem;color:var(--text3)">'+new Date(f.timestamp).toLocaleDateString()+'</span>';
+      h+='</div>';
+    });
+    h+='</div>';
+  } else {
+    h+='<div style="padding:1.5em;text-align:center;color:var(--text3);background:var(--surface);border:1px solid var(--border);border-radius:var(--radius)">No edit suggestions yet. Readers can flag content using the ⚑ button on each block.</div>';
+  }
+
+  // Notes
+  const noteEntries=Object.entries(notes);
+  h+='<h3 style="font-size:.9rem;font-weight:700;margin:1.5em 0 .6em">Reader Notes ('+noteEntries.length+')</h3>';
+  if(noteEntries.length){
+    h+='<div class="cl">';
+    noteEntries.forEach(([id,text])=>{
+      const b=allBlocks.find(x=>x.id===id);
+      h+='<div class="cl-item" style="grid-template-columns:1fr" onclick="OD(\''+id+'\')">';
+      h+='<span style="font-size:.8rem"><b>'+(b?b.title:id)+'</b><br><span style="color:var(--text2);font-style:italic">"'+escH(text.substring(0,120))+(text.length>120?'...':'')+'"</span></span>';
+      h+='</div>';
+    });
+    h+='</div>';
+  } else {
+    h+='<div style="padding:1.5em;text-align:center;color:var(--text3);background:var(--surface);border:1px solid var(--border);border-radius:var(--radius)">No reader notes yet.</div>';
+  }
+
+  // How it works
+  h+='<div style="margin-top:2em;padding:1em;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius)">';
+  h+='<h4 style="font-size:.75rem;font-weight:600;text-transform:uppercase;color:var(--text3);margin-bottom:.5em">How feedback works</h4>';
+  h+='<div style="font-size:.8rem;color:var(--text2);line-height:1.5">';
+  h+='<p><b>Reader notes</b> are stored in the reader\'s browser (localStorage key: <code>pbook-notes</code>). In production, these would sync to a backend where authors can review them.</p>';
+  h+='<p style="margin-top:.5em"><b>Edit suggestions</b> (flags) are stored in <code>pbook-flags</code>. Each flag has: block ID, type (typo/unclear/incorrect/suggestion/missing), text, and timestamp.</p>';
+  h+='<p style="margin-top:.5em"><b>Content editing:</b> Authors edit the markdown files directly in <code>content/ch*/</code>. Each block is a separate .md file with YAML frontmatter. Changes are visible immediately after page refresh.</p>';
+  h+='<p style="margin-top:.5em"><b>In production:</b> Flags and notes would be sent to a Recombee-powered backend via API. Authors would receive notifications for new flags. Notes could optionally be shared (reader opt-in) for community annotation.</p>';
+  h+='</div></div>';
+
+  el.innerHTML=h;
+}
+
+// ---- Sync items to Recombee ----
+window.syncRecombee=async function(){
+  const btn=document.getElementById('syncBtn');
+  btn.textContent='Syncing...';btn.disabled=true;btn.style.opacity='.6';
+  try{
+    const res=await fetch('/api/sync-recombee',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({secret:localStorage.getItem('pbook-admin-pwd')||''})});
+    const raw=await res.text();
+    let data; try{data=JSON.parse(raw);}catch(_){data={ok:false,error:`endpoint returned ${res.status} — is /api/sync-recombee routed on this server?`};}
+    if(data.ok){
+      btn.textContent=`Synced ${data.imported}/${data.total}`;btn.style.color='#10B981';
+    }else{
+      btn.textContent='Sync failed';btn.style.color='#EF4444';
+      alert('Sync error: '+(data.error||'unknown')+((res.status===401||/401/.test(data.error||''))?'\n\nHint: RECOMBEE_TOKEN in .env is being rejected by the Recombee DB.':''));
+    }
+  }catch(e){btn.textContent='Sync error';btn.style.color='#EF4444';alert('Sync error: '+e.message);}
+  setTimeout(()=>{btn.textContent='Sync Items';btn.disabled=false;btn.style.opacity='1';btn.style.color='#10B981';},3000);
+};
+
+// ---- Recombee setup ----
+window.showRCSetup=function(){
+  const current=localStorage.getItem('pbook-rc-config')||'';
+  let parsed={database:'cvachond-land-free-pbook',token:'',region:'rapi-eu-west'};
+  try{parsed=JSON.parse(current)||parsed}catch(e){}
+  const el=document.getElementById('main');
+  let h='<h2 style="font-size:1.1rem;font-weight:700;margin-bottom:.8em">Recombee Configuration</h2>';
+  h+='<p style="font-size:.82rem;color:var(--text2);margin-bottom:1.2em">Set the Recombee API credentials. This is saved in your browser and shared with all readers on this device. For production, deploy with a server-side token proxy.</p>';
+  h+='<div style="max-width:500px;display:flex;flex-direction:column;gap:.6em">';
+  h+='<div class="ed-field"><label>Database</label><input class="ed-input" id="rcDb" value="'+escH(parsed.database)+'"></div>';
+  h+='<div class="ed-field"><label>Private Token</label><input class="ed-input" id="rcToken" type="password" value="'+escH(parsed.token)+'" placeholder="Paste private token from Recombee admin"></div>';
+  h+='<div class="ed-field"><label>Region</label><input class="ed-input" id="rcRegion" value="'+escH(parsed.region)+'"></div>';
+  h+='</div>';
+  h+='<div class="ed-btn-row" style="margin-top:1em">';
+  h+='<button class="ed-btn ed-btn-primary" onclick="saveRCConfig()">Save & activate</button>';
+  h+='<button class="ed-btn" onclick="testRC()">Test connection</button>';
+  h+='<button class="ed-btn" style="color:#dc2626" onclick="clearRCConfig()">Clear token</button>';
+  h+='</div>';
+  h+='<div id="rcStatus" style="margin-top:1em;font-size:.82rem"></div>';
+  // Show current status
+  const saved=localStorage.getItem('pbook-rc-config');
+  if(saved){
+    try{const c=JSON.parse(saved);h+='<div style="margin-top:1.5em;padding:1em;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);font-size:.8rem"><b>Active config:</b> '+c.database+' ('+c.region+')<br>Token: '+(c.token?'***'+c.token.slice(-8):'not set')+'</div>'}catch(e){}
+  }
+  el.innerHTML=h;
+};
+
+window.saveRCConfig=function(){
+  const config={
+    database:document.getElementById('rcDb').value.trim(),
+    token:document.getElementById('rcToken').value.trim(),
+    region:document.getElementById('rcRegion').value.trim()
+  };
+  if(!config.token){toast('Token is required');return}
+  localStorage.setItem('pbook-rc-config',JSON.stringify(config));
+  // Also set for reader (they share localStorage on same domain)
+  localStorage.setItem('pbook-rc-token',config.token);
+  toast('Recombee config saved — active for all readers on this domain');
+  document.getElementById('rcStatus').innerHTML='<span style="color:var(--prod)">&#10003; Config saved. Readers will connect to Recombee on next page load.</span>';
+};
+
+window.testRC=function(){
+  const db=document.getElementById('rcDb').value.trim();
+  const token=document.getElementById('rcToken').value.trim();
+  const region=document.getElementById('rcRegion').value.trim();
+  const statusEl=document.getElementById('rcStatus');
+  statusEl.innerHTML='Testing...';
+
+  // Use proxy (works on deployed site AND localhost with serve-local.js)
+  fetch('/.netlify/functions/recombee',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({endpoint:'/items/list/?count=1'})
+  })
+  .then(function(res){
+    if(res.ok) return res.json().then(function(data){statusEl.innerHTML='<span style="color:var(--prod)">&#10003; Connected via proxy! '+JSON.stringify(data).substring(0,100)+'</span>'});
+    else return res.text().then(function(text){statusEl.innerHTML='<span style="color:#dc2626">&#10007; Proxy error '+res.status+': '+text.substring(0,100)+'</span>'});
+  })
+  .catch(function(e){statusEl.innerHTML='<span style="color:#dc2626">&#10007; Connection failed: '+e.message+'</span>'});
+};
+
+window.clearRCConfig=function(){
+  localStorage.removeItem('pbook-rc-config');
+  localStorage.removeItem('pbook-rc-token');
+  toast('Recombee config cleared — readers will use local mode');
+  showRCSetup();
+};
+
+// ---- Toast ----
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2000)}
+
+init();
+</script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+{
+  "type": "order",
+  "title": "Jak zprovoznit domácí Wi-Fi",
+  "instruction": "Seřaď kroky, aby ses doma připojil k internetu.",
+  "steps": [
+    "Zapojíš router do elektřiny",
+    "Připojíš kabel od poskytovatele",
+    "Router se připojí k internetu",
+    "Router vysílá síť Wi-Fi",
+    "Připojíš zařízení k Wi-Fi"
+  ]
+}

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" lang="cs">
+  <title>Co musí obsahovat každý paket?</title>
+  <desc>Otázka pro žáky před odhalením odpovědi: co musí obsahovat každý paket. Uprostřed velký kroužek s otazníkem.</desc>
+  <rect x="0" y="0" width="960" height="540" fill="#ffffff"/>
+  <text x="480" y="120" font-family="sans-serif" font-size="42" font-weight="bold" fill="#1a1a1a" text-anchor="middle">Co musí obsahovat každý paket?</text>
+  <circle cx="480" cy="320" r="90" fill="#ffffff" stroke="#6644cc" stroke-width="5"/>
+  <text x="480" y="355" font-family="sans-serif" font-size="100" font-weight="bold" fill="#6644cc" text-anchor="middle">?</text>
+  <text x="30" y="522" font-family="sans-serif" font-size="12" fill="#999999">Matfyz · PedF UK</text>
+  <text x="930" y="522" font-family="sans-serif" font-size="12" fill="#999999" text-anchor="end">26</text>
+</svg>

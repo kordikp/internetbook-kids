@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" lang="cs">
+<title>Cookies lišta — otázky</title>
+<desc>Ukázka typické cookies lišty webové stránky a dvě otázky pro třídu: kdo se s ní už setkal a co se stane po potvrzení cookies.</desc>
+<defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#555"/></marker><marker id="arrR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#a04030"/></marker><marker id="arrP" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#6a3fc0"/></marker></defs>
+<rect x="0" y="0" width="960" height="540" fill="#ffffff"/>
+<g role="img"><title>Snímek obrazovky: cookies lišta webové stránky s tlačítky Přijmout vše a Zamítnout vše</title>
+<rect x="180" y="60" width="600" height="220" rx="10" fill="none" stroke="#888" stroke-width="2"/>
+<text x="210" y="100" font-family="sans-serif" font-size="20" font-weight="bold" text-anchor="start" fill="#000">Informace o cookies na této stránce</text>
+<text x="210" y="132" font-family="sans-serif" font-size="15" font-weight="normal" text-anchor="start" fill="#333">Tato webová stránka používá nezbytné soubory cookies k zajištění</text>
+<text x="210" y="154" font-family="sans-serif" font-size="15" font-weight="normal" text-anchor="start" fill="#333">správného fungování a další kategorie souborů cookies. Vše kromě</text>
+<text x="210" y="176" font-family="sans-serif" font-size="15" font-weight="normal" text-anchor="start" fill="#333">nezbytných cookies bude použito až po vašem souhlasu.</text>
+<text x="210" y="215" font-family="sans-serif" font-size="14" font-weight="normal" text-anchor="start" fill="#555" text-decoration="underline">Zobrazit nastavení</text>
+<rect x="210" y="230" width="150" height="36" rx="6" fill="#333" stroke="#333" stroke-width="1.5"/>
+<text x="285" y="254" font-family="sans-serif" font-size="15" font-weight="bold" text-anchor="middle" fill="#fff">Přijmout vše</text>
+<rect x="380" y="230" width="150" height="36" rx="6" fill="#fff" stroke="#888" stroke-width="1.5"/>
+<text x="455" y="254" font-family="sans-serif" font-size="15" font-weight="normal" text-anchor="middle" fill="#333">Zamítnout vše</text>
+</g>
+<rect x="110" y="340" width="340" height="130" rx="14" fill="none" stroke="#d97706" stroke-width="3"/>
+<text x="280" y="395" font-family="sans-serif" font-size="21" font-weight="bold" text-anchor="middle" fill="#000">Kdo jste se s tímto</text>
+<text x="280" y="427" font-family="sans-serif" font-size="21" font-weight="bold" text-anchor="middle" fill="#000">upozorněním už setkal?</text>
+<rect x="510" y="340" width="340" height="130" rx="14" fill="none" stroke="#6a3fc0" stroke-width="3"/>
+<text x="680" y="395" font-family="sans-serif" font-size="21" font-weight="bold" text-anchor="middle" fill="#000">Co se stane, když</text>
+<text x="680" y="427" font-family="sans-serif" font-size="21" font-weight="bold" text-anchor="middle" fill="#000">potvrdíme cookies?</text>
+<text x="930" y="528" font-family="sans-serif" font-size="13" font-weight="normal" text-anchor="end" fill="#999">8</text>
+</svg>

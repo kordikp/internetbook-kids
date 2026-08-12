@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" lang="cs">
+  <title>Myšlenková mapa — Typy připojení</title>
+  <desc>Shrnutí lekce myšlenkovou mapou: uzel Typy připojení se čtyřmi větvemi — Kabel (nejrychlejší, optické kabely jsou i pod mořem, musí se zakopat), Wi-Fi (Wi-Fi router, krátký dosah), Mobilní data (BTS vysílače, SIM karta, v přírodě) a Satelit (používá se jen v odlehlých oblastech).</desc>
+  <g aria-label="Spojnice větví">
+    <path d="M 400 235 Q 360 235 330 225" fill="none" stroke="#f5a623" stroke-width="3"/>
+    <path d="M 560 235 Q 620 235 660 240" fill="none" stroke="#6c3df4" stroke-width="3"/>
+    <path d="M 470 290 Q 420 340 400 385 " fill="none" stroke="#c05ce8" stroke-width="3"/>
+    <path d="M 540 290 Q 580 340 600 385" fill="none" stroke="#e8635a" stroke-width="3"/>
+    <path d="M 275 190 Q 250 140 235 105 M 275 200 Q 200 130 165 105 M 260 240 Q 220 280 195 305" fill="none" stroke="#f5a623" stroke-width="2"/>
+    <path d="M 720 215 Q 730 150 740 105 M 780 240 Q 830 230 855 210" fill="none" stroke="#6c3df4" stroke-width="2"/>
+    <path d="M 660 430 Q 700 435 745 440 M 640 460 Q 660 500 680 505 M 555 460 Q 520 490 490 495" fill="none" stroke="#e8635a" stroke-width="2"/>
+    <path d="M 360 445 Q 320 470 295 480" fill="none" stroke="#c05ce8" stroke-width="2"/>
+  </g>
+  <g aria-label="Centrální uzel">
+    <rect x="400" y="185" width="160" height="105" rx="12" fill="#ffffff" stroke="#2d1b69" stroke-width="4"/>
+    <text x="480" y="230" text-anchor="middle" font-family="sans-serif" font-size="26" font-weight="bold" fill="#2d1b69">TYPY</text>
+    <text x="480" y="264" text-anchor="middle" font-family="sans-serif" font-size="26" font-weight="bold" fill="#2d1b69">PŘIPOJENÍ</text>
+  </g>
+  <g aria-label="Větev Kabel">
+    <rect x="220" y="195" width="115" height="45" rx="8" fill="#f5a623" stroke="#b5760f" stroke-width="2"/>
+    <text x="277" y="224" text-anchor="middle" font-family="sans-serif" font-size="21" font-weight="bold" fill="#2d1b69">KABEL</text>
+    <rect x="175" y="55" width="125" height="40" rx="8" fill="#fff" stroke="#f5a623" stroke-width="3"/>
+    <text x="237" y="80" text-anchor="middle" font-family="sans-serif" font-size="16" fill="#1a1a2e">nejrychlejší</text>
+    <rect x="30" y="55" width="130" height="60" rx="8" fill="#fff" stroke="#f5a623" stroke-width="3"/>
+    <text x="95" y="80" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#1a1a2e">optické kabely</text>
+    <text x="95" y="99" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#1a1a2e">jsou i pod mořem</text>
+    <rect x="120" y="305" width="130" height="40" rx="8" fill="#fff" stroke="#f5a623" stroke-width="3"/>
+    <text x="185" y="330" text-anchor="middle" font-family="sans-serif" font-size="15" fill="#1a1a2e">musí se zakopat</text>
+  </g>
+  <g aria-label="Větev Wi-Fi">
+    <rect x="660" y="215" width="120" height="45" rx="8" fill="#6c3df4" stroke="#4b2e83" stroke-width="2"/>
+    <text x="720" y="244" text-anchor="middle" font-family="sans-serif" font-size="21" font-weight="bold" fill="#fff">Wi-Fi</text>
+    <rect x="685" y="55" width="115" height="40" rx="8" fill="#fff" stroke="#6c3df4" stroke-width="3"/>
+    <text x="742" y="80" text-anchor="middle" font-family="sans-serif" font-size="15" fill="#1a1a2e">Wi-Fi router</text>
+    <rect x="850" y="170" width="100" height="55" rx="8" fill="#fff" stroke="#6c3df4" stroke-width="3"/>
+    <text x="900" y="193" text-anchor="middle" font-family="sans-serif" font-size="15" fill="#1a1a2e">krátký</text>
+    <text x="900" y="213" text-anchor="middle" font-family="sans-serif" font-size="15" fill="#1a1a2e">dosah</text>
+  </g>
+  <g aria-label="Větev Mobilní data">
+    <rect x="510" y="385" width="180" height="48" rx="8" fill="#e8635a" stroke="#a83a32" stroke-width="2"/>
+    <text x="600" y="416" text-anchor="middle" font-family="sans-serif" font-size="20" font-weight="bold" fill="#2d1b69">MOBILNÍ DATA</text>
+    <rect x="745" y="415" width="120" height="55" rx="8" fill="#fff" stroke="#e8635a" stroke-width="3"/>
+    <text x="805" y="438" text-anchor="middle" font-family="sans-serif" font-size="15" fill="#1a1a2e">BTS</text>
+    <text x="805" y="458" text-anchor="middle" font-family="sans-serif" font-size="15" fill="#1a1a2e">vysílače</text>
+    <rect x="655" y="485" width="110" height="40" rx="8" fill="#fff" stroke="#e8635a" stroke-width="3"/>
+    <text x="710" y="510" text-anchor="middle" font-family="sans-serif" font-size="15" fill="#1a1a2e">SIM karta</text>
+    <rect x="395" y="480" width="105" height="40" rx="8" fill="#fff" stroke="#e8635a" stroke-width="3"/>
+    <text x="447" y="505" text-anchor="middle" font-family="sans-serif" font-size="15" fill="#1a1a2e">v přírodě</text>
+  </g>
+  <g aria-label="Větev Satelit">
+    <rect x="270" y="385" width="130" height="48" rx="8" fill="#c05ce8" stroke="#8a3aa8" stroke-width="2"/>
+    <text x="335" y="416" text-anchor="middle" font-family="sans-serif" font-size="20" font-weight="bold" fill="#fff">SATELIT</text>
+    <rect x="90" y="455" width="210" height="60" rx="8" fill="#fff" stroke="#c05ce8" stroke-width="3"/>
+    <text x="195" y="480" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#1a1a2e">používá se jen</text>
+    <text x="195" y="500" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#1a1a2e">v odlehlých oblastech</text>
+  </g>
+  <text x="930" y="530" text-anchor="end" font-family="sans-serif" font-size="14" fill="#999">17</text>
+</svg>

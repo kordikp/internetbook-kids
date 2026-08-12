@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" lang="cs">
+  <title>Wi-Fi router — schéma zapojení</title>
+  <desc>Schéma zapojení Wi-Fi routeru: žlutý kabel spojuje notebook s LAN portem, světle modrý kabel vede do datové přípojky k internetu ve zdi a tmavě fialový kabel do elektrické zásuvky.</desc>
+  <text x="480" y="52" text-anchor="middle" font-family="sans-serif" font-size="36" font-weight="bold" fill="#2d1b69">Wi-Fi router</text>
+  <g aria-label="Notebook">
+    <rect x="80" y="140" width="150" height="95" rx="6" fill="#f5f5fa" stroke="#333" stroke-width="2"/>
+    <rect x="95" y="152" width="120" height="60" fill="#fff" stroke="#888"/>
+    <line x1="65" y1="240" x2="245" y2="240" stroke="#333" stroke-width="4"/>
+    <text x="155" y="270" text-anchor="middle" font-family="sans-serif" font-size="16" fill="#333">Notebook</text>
+  </g>
+  <g aria-label="Wi-Fi router uprostřed">
+    <line x1="440" y1="185" x2="415" y2="130" stroke="#333" stroke-width="5"/>
+    <line x1="540" y1="185" x2="565" y2="130" stroke="#333" stroke-width="5"/>
+    <rect x="400" y="185" width="180" height="55" rx="8" fill="#e9e9f2" stroke="#333" stroke-width="2"/>
+    <circle cx="425" cy="212" r="8" fill="none" stroke="#6a3fb5" stroke-width="3"/>
+    <rect x="445" y="200" width="22" height="24" fill="none" stroke="#4a9fd8" stroke-width="3"/>
+    <rect x="475" y="200" width="22" height="24" fill="none" stroke="#e8b021" stroke-width="3"/>
+    <rect x="505" y="200" width="22" height="24" fill="none" stroke="#e8b021" stroke-width="3"/>
+    <rect x="535" y="200" width="22" height="24" fill="none" stroke="#e8b021" stroke-width="3"/>
+    <text x="490" y="265" text-anchor="middle" font-family="sans-serif" font-size="18" font-weight="bold" fill="#2d1b69">Wi-Fi router</text>
+  </g>
+  <g aria-label="Datová zásuvka ve zdi">
+    <rect x="680" y="150" width="80" height="70" rx="8" fill="#e6ddf5" stroke="#333" stroke-width="2"/>
+    <rect x="695" y="172" width="20" height="22" fill="none" stroke="#4a9fd8" stroke-width="3"/>
+    <rect x="725" y="172" width="20" height="22" fill="none" stroke="#888" stroke-width="3"/>
+    <text x="720" y="140" text-anchor="middle" font-family="sans-serif" font-size="15" fill="#333">datová zásuvka ve zdi</text>
+  </g>
+  <g aria-label="Elektrická zásuvka">
+    <rect x="680" y="380" width="80" height="70" rx="8" fill="#e6ddf5" stroke="#333" stroke-width="2"/>
+    <circle cx="720" cy="415" r="18" fill="none" stroke="#4b2e83" stroke-width="3"/>
+    <circle cx="712" cy="415" r="3" fill="#4b2e83"/>
+    <circle cx="728" cy="415" r="3" fill="#4b2e83"/>
+    <text x="720" y="470" text-anchor="middle" font-family="sans-serif" font-size="15" fill="#333">elektrická zásuvka</text>
+  </g>
+  <g aria-label="Kabely">
+    <path d="M 230 190 Q 320 165 400 210" fill="none" stroke="#f5c542" stroke-width="5"/>
+    <text x="300" y="160" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#b5850f">žlutý kabel (LAN)</text>
+    <path d="M 456 240 Q 560 300 705 194" fill="none" stroke="#7db9e8" stroke-width="5"/>
+    <text x="600" y="300" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#3a7fb0">modrý kabel (WAN)</text>
+    <path d="M 425 240 Q 480 400 680 415" fill="none" stroke="#3b2a70" stroke-width="5"/>
+    <text x="520" y="420" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#3b2a70">napájecí kabel</text>
+  </g>
+  <g aria-label="Popisky zapojení">
+    <text x="60" y="320" font-family="sans-serif" font-size="18" fill="#1a1a2e">Notebook či stolní počítač můžeme</text>
+    <text x="60" y="344" font-family="sans-serif" font-size="18" fill="#1a1a2e">přímo k routeru připojit <tspan font-weight="bold" fill="#6c3df4">kabelem</tspan></text>
+    <text x="770" y="180" font-family="sans-serif" font-size="15" fill="#1a1a2e">Router zapojíme</text>
+    <text x="770" y="200" font-family="sans-serif" font-size="15" fill="#1a1a2e">do <tspan font-weight="bold" fill="#6c3df4">přípojky</tspan> k internetu</text>
+    <text x="770" y="220" font-family="sans-serif" font-size="15" fill="#1a1a2e">ve zdi</text>
+    <text x="770" y="400" font-family="sans-serif" font-size="15" fill="#1a1a2e">Router musí být</text>
+    <text x="770" y="420" font-family="sans-serif" font-size="15" fill="#1a1a2e">zapojen do <tspan font-weight="bold" fill="#6c3df4">elektřiny</tspan></text>
+  </g>
+  <g role="img" aria-label="Fotografie skutečného routeru">
+    <title>Fotografie skutečného černého Wi-Fi routeru se třemi anténami.</title>
+    <rect x="220" y="430" width="180" height="80" fill="#f2f2f2" stroke="#999"/>
+    <text x="310" y="475" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#666">foto skutečného routeru</text>
+  </g>
+  <text x="930" y="525" text-anchor="end" font-family="sans-serif" font-size="14" fill="#999">5</text>
+</svg>

@@ -1,0 +1,194 @@
+/* Školní brány p-booku — sdílený styl.
+   Ladí s knihou (paper #FAFAF7, fialová #7C3AED), role mají vlastní akcent:
+   doma/žák fialová · třída modrá · učitel jantarová · rodič zelená. */
+
+:root {
+  --paper: #fafaf7;
+  --card: #ffffff;
+  --ink: #1d1d1f;
+  --ink-2: #5c5c66;
+  --line: #e6e4de;
+  --brand: #7c3aed;
+  --brand-soft: #ede9fe;
+  --class: #0284c7;
+  --class-soft: #e0f2fe;
+  --teacher: #b45309;
+  --teacher-soft: #fef3c7;
+  --parent: #15803d;
+  --parent-soft: #dcfce7;
+  --ok: #16a34a;
+  --warn: #b45309;
+  --mono: ui-monospace, "Cascadia Mono", Menlo, Consolas, monospace;
+  --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", sans-serif;
+  --r: 14px;
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--paper); color: var(--ink);
+  font-family: var(--sans); font-size: 16.5px; line-height: 1.55;
+}
+a { color: var(--brand); }
+:focus-visible { outline: 3px solid #fbbf24; outline-offset: 2px; }
+
+/* ---------- chrome ---------- */
+.sk-top {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 18px; background: var(--ink); color: #fff;
+}
+.sk-brand { font-family: var(--mono); font-size: 14.5px; color: #fff; text-decoration: none; letter-spacing: .03em; }
+.sk-brand b { color: #fbbf24; }
+.sk-role {
+  margin-left: auto; font-family: var(--mono); font-size: 11.5px; text-transform: uppercase;
+  letter-spacing: .1em; border: 1px solid rgba(255,255,255,.35); border-radius: 999px; padding: 3px 10px;
+}
+
+.sk-main { max-width: 680px; margin: 0 auto; padding: 22px 16px 70px; }
+.sk-foot {
+  border-top: 1px solid var(--line); background: var(--card);
+  padding: 16px; font-size: 13px; color: var(--ink-2);
+}
+.sk-foot .in { max-width: 680px; margin: 0 auto; display: flex; gap: 14px; flex-wrap: wrap; }
+.sk-foot a, .sk-foot button { color: var(--ink-2); background: none; border: 0; padding: 0; text-decoration: underline; font-size: 13px; cursor: pointer; }
+
+/* ---------- trasa bloku (podpis všech stránek) ---------- */
+.sk-route {
+  display: flex; align-items: center; justify-content: center; gap: 0;
+  padding: 14px 10px 10px; background: var(--card); border-bottom: 1px solid var(--line);
+  overflow-x: auto;
+}
+.sk-node { display: flex; flex-direction: column; align-items: center; min-width: 56px; text-decoration: none; }
+.sk-dot {
+  width: 26px; height: 26px; border-radius: 50%;
+  border: 2.5px solid var(--line); background: var(--card);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--mono); font-size: 10px; font-weight: 700; color: var(--ink-2);
+}
+.sk-node.home .sk-dot { border-color: #c4b5fd; }
+.sk-node.klass .sk-dot { border-color: #7dd3fc; }
+.sk-node.done .sk-dot { background: var(--ok); border-color: var(--ok); color: #fff; }
+.sk-node.now .sk-dot { border-color: var(--brand); color: var(--brand); box-shadow: 0 0 0 4px var(--brand-soft); }
+.sk-node small { font-family: var(--mono); font-size: 9.5px; color: var(--ink-2); margin-top: 4px; letter-spacing: .04em; }
+.sk-link { flex: none; width: 22px; height: 2.5px; background: var(--line); margin: 0 2px 16px; border-radius: 2px; }
+
+/* ---------- hero ---------- */
+.sk-eyebrow {
+  font-family: var(--mono); font-size: 12px; text-transform: uppercase; letter-spacing: .14em;
+  color: var(--brand); margin: .6em 0 .3em;
+}
+body[data-accent="class"] .sk-eyebrow { color: var(--class); }
+body[data-accent="teacher"] .sk-eyebrow { color: var(--teacher); }
+body[data-accent="parent"] .sk-eyebrow { color: var(--parent); }
+h1 { font-size: 29px; line-height: 1.15; margin: 0 0 8px; letter-spacing: -.01em; }
+.sk-lead { color: var(--ink-2); font-size: 17.5px; margin: 0 0 4px; }
+.sk-meta { font-family: var(--mono); font-size: 12.5px; color: var(--ink-2); margin: 6px 0 0; }
+
+/* ---------- brány ---------- */
+.sk-gate-in {
+  display: flex; gap: 10px; align-items: flex-start;
+  background: var(--teacher-soft); border-radius: 10px; padding: 10px 14px; margin: 18px 0 0;
+  font-size: 14.5px;
+}
+.sk-gate-in.open { background: var(--parent-soft); }
+
+/* ---------- kroky ---------- */
+.sk-steps { margin: 22px 0 0; padding: 0; list-style: none; counter-reset: krok; }
+.sk-step {
+  background: var(--card); border: 1px solid var(--line); border-radius: var(--r);
+  padding: 16px 18px 16px 54px; margin-bottom: 12px; position: relative;
+}
+.sk-step::before {
+  counter-increment: krok; content: counter(krok);
+  position: absolute; left: 16px; top: 16px;
+  width: 26px; height: 26px; border-radius: 8px;
+  background: var(--brand-soft); color: var(--brand);
+  font-family: var(--mono); font-weight: 700; font-size: 13px;
+  display: flex; align-items: center; justify-content: center;
+}
+.sk-step.done { border-color: #bbe8cd; }
+.sk-step.done::before { content: "✓"; background: var(--parent-soft); color: var(--ok); }
+.sk-step h3 { margin: 0 0 4px; font-size: 16.5px; }
+.sk-step p { margin: 0 0 8px; font-size: 14.5px; color: var(--ink-2); }
+.sk-progress { font-family: var(--mono); font-size: 12px; color: var(--ink-2); }
+.sk-bar { height: 6px; border-radius: 3px; background: var(--line); margin: 6px 0 10px; overflow: hidden; }
+.sk-bar i { display: block; height: 100%; background: var(--brand); border-radius: 3px; transition: width .3s; }
+
+/* ---------- tlačítka ---------- */
+.sk-btn {
+  display: inline-block; border: 0; border-radius: 10px; cursor: pointer;
+  padding: 11px 20px; font-weight: 650; font-size: 15.5px;
+  background: var(--brand); color: #fff; text-decoration: none;
+}
+.sk-btn:hover { filter: brightness(.93); }
+.sk-btn.ghost { background: var(--card); color: var(--ink); border: 1.5px solid var(--line); }
+.sk-btn.big { display: block; width: 100%; text-align: center; padding: 14px; font-size: 17px; }
+.sk-btn[disabled] { background: var(--line); color: var(--ink-2); cursor: not-allowed; }
+body[data-accent="class"] .sk-btn:not(.ghost) { background: var(--class); }
+body[data-accent="teacher"] .sk-btn:not(.ghost) { background: var(--teacher); }
+body[data-accent="parent"] .sk-btn:not(.ghost) { background: var(--parent); }
+
+/* ---------- checkpointy ---------- */
+.sk-cp { border: 1px solid var(--line); border-radius: 10px; background: var(--card); padding: 12px 14px; margin: 10px 0; }
+.sk-cp textarea {
+  width: 100%; min-height: 84px; margin-top: 8px;
+  border: 1px solid #cfcdc6; border-radius: 8px; padding: 9px; font: inherit; font-size: 14.5px; background: #fff;
+}
+.sk-fb { border-radius: 8px; padding: 9px 12px; font-size: 14px; margin-top: 8px; }
+.sk-fb.pass { background: var(--parent-soft); }
+.sk-fb.almost { background: var(--teacher-soft); }
+.sk-fb.fail { background: #fee2e2; }
+
+/* ---------- vstupenka ---------- */
+.sk-ticket {
+  max-width: 420px; margin: 20px auto; background: var(--card);
+  border-radius: 16px; border: 1px solid var(--line); overflow: hidden;
+  box-shadow: 0 8px 28px rgba(29,29,31,.09);
+}
+.sk-ticket-head { background: var(--brand); color: #fff; padding: 14px 18px; }
+.sk-ticket-head .sk-eyebrow { color: #fbbf24; margin: 0 0 2px; }
+.sk-ticket-head h2 { margin: 0; font-size: 19px; color: #fff; }
+.sk-ticket-body { padding: 14px 18px; font-family: var(--mono); font-size: 13.5px; line-height: 1.9; }
+.sk-ticket-code {
+  border-top: 2px dashed var(--line); background: var(--paper);
+  text-align: center; padding: 10px; font-family: var(--mono);
+  font-size: 17px; font-weight: 800; letter-spacing: .18em; color: var(--brand);
+}
+
+/* ---------- karty rozcestníku ---------- */
+.sk-hub { display: grid; gap: 12px; margin-top: 22px; }
+.sk-hub-card {
+  display: block; background: var(--card); border: 1px solid var(--line); border-radius: var(--r);
+  padding: 16px 18px; text-decoration: none; color: var(--ink);
+  border-left: 5px solid var(--brand); transition: transform .12s, box-shadow .12s;
+}
+.sk-hub-card:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(29,29,31,.08); }
+.sk-hub-card.klass { border-left-color: var(--class); }
+.sk-hub-card.teacher { border-left-color: var(--teacher); }
+.sk-hub-card.parent { border-left-color: var(--parent); }
+.sk-hub-card.book { border-left-color: #64748b; }
+.sk-hub-card h3 { margin: 0 0 3px; font-size: 17.5px; }
+.sk-hub-card p { margin: 0; font-size: 14px; color: var(--ink-2); }
+.sk-hub-card .sk-meta { margin-top: 6px; }
+
+/* ---------- rozcvička (projekce) ---------- */
+.sk-warm { background: var(--card); border: 1px solid var(--line); border-radius: var(--r); padding: 26px; text-align: center; margin-top: 20px; }
+.sk-warm .q { font-size: clamp(22px, 4.2vw, 34px); font-weight: 750; line-height: 1.3; margin: 8px 0 18px; }
+.sk-warm .a { font-size: clamp(17px, 3vw, 24px); background: var(--class-soft); border-radius: 10px; padding: 14px 18px; margin: 0 0 16px; text-align: left; }
+.sk-warm .n { font-family: var(--mono); font-size: 13px; color: var(--ink-2); }
+
+/* ---------- obecné ---------- */
+.sk-note { background: var(--brand-soft); border-radius: 10px; padding: 11px 14px; font-size: 14.5px; margin: 16px 0; }
+.sk-copy { font-family: var(--mono); font-size: 13px; background: var(--paper); border: 1px dashed #cfcdc6; border-radius: 8px; padding: 8px 10px; margin: 6px 0; display: flex; gap: 8px; align-items: center; justify-content: space-between; flex-wrap: wrap; word-break: break-all; }
+.sk-q { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 12px 16px; margin: 10px 0; }
+.sk-q b { display: block; margin-bottom: 3px; }
+.sk-q small { color: var(--ink-2); }
+
+@media (max-width: 480px) {
+  h1 { font-size: 24px; }
+  .sk-main { padding: 18px 13px 60px; }
+}
+@media print {
+  .sk-top, .sk-route, .sk-foot, .sk-btn, .no-print { display: none !important; }
+  body { background: #fff; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }

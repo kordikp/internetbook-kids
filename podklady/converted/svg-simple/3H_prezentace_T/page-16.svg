@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" lang="cs">
+<title>Jak fungují cookies? — cookies dialog (snímek 17)</title>
+<desc>Přes ztmavený web Restaurant Week je vyskakovací cookies dialog: co uživatel souhlasem sdílí, zmínka o třetích stranách (Google, Facebook, Instagram) a tlačítko Souhlasím s cookies.</desc>
+<defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#555"/></marker><marker id="arrR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#a04030"/></marker><marker id="arrP" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#6a3fc0"/></marker></defs>
+<rect x="0" y="0" width="960" height="540" fill="#ffffff"/>
+<text x="480" y="55" font-family="sans-serif" font-size="36" font-weight="bold" text-anchor="middle" fill="#6a3fc0">Jak fungují COOKIES?</text>
+<g aria-label="Ztmavená stránka Restaurant Week na pozadí">
+<rect x="100" y="85" width="760" height="420" rx="10" fill="#f2f2f2" stroke="#6a3fc0" stroke-width="2.5"/>
+<text x="130" y="125" font-family="sans-serif" font-size="17" font-weight="bold" text-anchor="start" fill="#bbb">RESTAURANT WEEK</text>
+<text x="830" y="125" font-family="sans-serif" font-size="13" font-weight="normal" text-anchor="end" fill="#ccc">FAQ    Registrujte se/Přihlaste se</text>
+</g>
+<g role="img"><title>Vyskakovací cookies dialog webu Restaurant Week</title>
+<rect x="270" y="140" width="420" height="350" rx="12" fill="#fff" stroke="#333" stroke-width="2.5"/>
+<text x="300" y="175" font-family="sans-serif" font-size="17" font-weight="bold" text-anchor="start" fill="#000">Díky cookies fungují naše stránky</text>
+<text x="300" y="199" font-family="sans-serif" font-size="17" font-weight="bold" text-anchor="start" fill="#000">správně (cookie)</text>
+<text x="300" y="235" font-family="sans-serif" font-size="13" font-weight="bold" text-anchor="start" fill="#000">Souhlasem s cookies:</text>
+<text x="300" y="258" font-family="sans-serif" font-size="12.5" font-weight="normal" text-anchor="start" fill="#000">1. Sdílíte informace o svém zařízení a typu prohlížeče.</text>
+<text x="300" y="276" font-family="sans-serif" font-size="12.5" font-weight="normal" text-anchor="start" fill="#000">2. Umožňujete správné fungování stránek (přihlášení,</text>
+<text x="300" y="294" font-family="sans-serif" font-size="12.5" font-weight="normal" text-anchor="start" fill="#000">    „nákupní košík“, zabezpečení) a udržování výkonu.</text>
+<text x="300" y="312" font-family="sans-serif" font-size="12.5" font-weight="normal" text-anchor="start" fill="#000">3. Budete dostávat doporučení spojená s historií</text>
+<text x="300" y="330" font-family="sans-serif" font-size="12.5" font-weight="normal" text-anchor="start" fill="#000">    vašich rezervací (vynecháme např. restaurace,</text>
+<text x="300" y="348" font-family="sans-serif" font-size="12.5" font-weight="normal" text-anchor="start" fill="#000">    kde jste již rezervaci měli).</text>
+<text x="300" y="375" font-family="sans-serif" font-size="12.5" font-weight="normal" text-anchor="start" fill="#444">Některé údaje automaticky shromažďují „třetí strany“,</text>
+<text x="300" y="393" font-family="sans-serif" font-size="12.5" font-weight="normal" text-anchor="start" fill="#444">jako jsou Google, Facebook a Instagram.</text>
+<rect x="310" y="415" width="340" height="38" rx="8" fill="#f0a820" stroke="#c78200" stroke-width="1.5"/>
+<text x="480" y="440" font-family="sans-serif" font-size="17" font-weight="bold" text-anchor="middle" fill="#4a2c00">Souhlasím s cookies</text>
+<text x="480" y="468" font-family="sans-serif" font-size="11" font-weight="normal" text-anchor="middle" fill="#c2571a">Správa souborů cookie</text>
+<text x="480" y="484" font-family="sans-serif" font-size="11" font-weight="normal" text-anchor="middle" fill="#c2571a">Více v Zásadách ochrany osobních údajů</text>
+</g>
+<text x="930" y="528" font-family="sans-serif" font-size="13" font-weight="normal" text-anchor="end" fill="#999">17</text>
+</svg>

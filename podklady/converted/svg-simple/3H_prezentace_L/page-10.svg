@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" lang="cs">
+<title>Co lze odhadnout z historie vyhledávání?</title>
+<desc>Snímek vyhledávače Google se třemi položkami historie vyhledávání o křečkovi a základní škole; otázka, jaké reklamy by se mohly začít ukazovat.</desc>
+<defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#555"/></marker><marker id="arrR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#a04030"/></marker><marker id="arrP" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#6a3fc0"/></marker></defs>
+<rect x="0" y="0" width="960" height="540" fill="#ffffff"/>
+<text x="480" y="60" font-family="sans-serif" font-size="30" font-weight="bold" text-anchor="middle" fill="#000">Co lze odhadnout z historie vyhledávání?</text>
+<g role="img"><title>Snímek obrazovky vyhledávače Google s historií vyhledávání: je křeček vhodný k dítěti; nejlepší zš v praze; jak velkou klec potřebuji pro křečka</title>
+<rect x="220" y="90" width="540" height="330" rx="12" fill="none" stroke="#6a3fc0" stroke-width="2.5"/>
+<text x="490" y="175" font-family="sans-serif" font-size="52" font-weight="bold" text-anchor="middle"><tspan fill="#4285F4">G</tspan><tspan fill="#EA4335">o</tspan><tspan fill="#FBBC05">o</tspan><tspan fill="#4285F4">g</tspan><tspan fill="#34A853">l</tspan><tspan fill="#EA4335">e</tspan></text>
+<rect x="280" y="240" width="420" height="40" rx="20" fill="none" stroke="#aaa" stroke-width="1.5"/>
+<circle cx="304" cy="260" r="8" fill="none" stroke="#777" stroke-width="2"/><line x1="310" y1="266" x2="318" y2="274" stroke="#777" stroke-width="2"/>
+<line x1="324" y1="250" x2="324" y2="270" stroke="#333" stroke-width="1.5"/>
+<circle cx="304" cy="296" r="8" fill="none" stroke="#777" stroke-width="1.5"/><path d="M304,291 L304,296 L309,298" fill="none" stroke="#777" stroke-width="1.5"/>
+<text x="324" y="301" font-family="sans-serif" font-size="17" font-weight="normal" text-anchor="start" fill="#6a3fc0">je křeček vhodný k dítěti</text>
+<circle cx="304" cy="328" r="8" fill="none" stroke="#777" stroke-width="1.5"/><path d="M304,323 L304,328 L309,330" fill="none" stroke="#777" stroke-width="1.5"/>
+<text x="324" y="333" font-family="sans-serif" font-size="17" font-weight="normal" text-anchor="start" fill="#6a3fc0">nejlepší zš v praze</text>
+<circle cx="304" cy="360" r="8" fill="none" stroke="#777" stroke-width="1.5"/><path d="M304,355 L304,360 L309,362" fill="none" stroke="#777" stroke-width="1.5"/>
+<text x="324" y="365" font-family="sans-serif" font-size="17" font-weight="normal" text-anchor="start" fill="#6a3fc0">jak velkou klec potřebuji pro křečka</text>
+</g>
+<text x="480" y="470" font-family="sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="#000">Jaké reklamy by se podle vás mohly začít ukazovat?</text>
+<text x="930" y="528" font-family="sans-serif" font-size="13" font-weight="normal" text-anchor="end" fill="#999">10</text>
+</svg>

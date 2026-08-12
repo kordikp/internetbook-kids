@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" lang="cs">
+  <title>Řešení – zjednodušený model internetu</title>
+  <desc>Vzorové řešení kreslicí úlohy: dům s mobilem a notebookem připojenými přes Wi-Fi k domácímu routeru, kabel pod zemí k síťovému routeru, dále k YouTube serveru (rack), přes další síťový router ke druhému domu se stolním počítačem. Řetězec: koncové zařízení → domácí Wi-Fi router → síťové routery → server a zpět.</desc>
+  <rect x="0" y="0" width="960" height="540" fill="#ffffff"/>
+  <!-- podzemní pás -->
+  <rect x="60" y="400" width="840" height="90" rx="20" fill="#f2cf7a" aria-label="Podzemí s kabely"/>
+  <line x1="60" y1="400" x2="900" y2="400" stroke="#3a2a80" stroke-width="3"/>
+  <!-- levý dům -->
+  <g aria-label="Dům s mobilem, notebookem a Wi-Fi routerem">
+    <title>Dům, v němž jsou mobil a notebook připojené přes Wi-Fi k domácímu Wi-Fi routeru s anténami.</title>
+    <path d="M 80 180 L 200 90 L 320 180 L 320 400 L 80 400 Z" fill="none" stroke="#3a2a80" stroke-width="4"/>
+    <rect x="105" y="150" width="42" height="72" rx="6" fill="none" stroke="#333333" stroke-width="3"/>
+    <rect x="112" y="162" width="28" height="20" fill="#6644cc"/>
+    <text x="126" y="245" font-family="sans-serif" font-size="12" fill="#555555" text-anchor="middle">mobil</text>
+    <rect x="185" y="150" width="100" height="62" rx="5" fill="none" stroke="#333333" stroke-width="3"/>
+    <rect x="196" y="160" width="40" height="24" fill="#e05252"/>
+    <rect x="244" y="160" width="32" height="12" fill="#f5c518"/>
+    <rect x="170" y="212" width="130" height="8" rx="4" fill="#333333"/>
+    <text x="235" y="245" font-family="sans-serif" font-size="12" fill="#555555" text-anchor="middle">notebook</text>
+    <!-- Wi-Fi signál -->
+    <path d="M 155 300 C 165 290 180 290 190 300" fill="none" stroke="#2ea8d8" stroke-width="3"/>
+    <path d="M 145 315 C 162 298 183 298 200 315" fill="none" stroke="#2ea8d8" stroke-width="3"/>
+    <path d="M 135 330 C 158 306 187 306 210 330" fill="none" stroke="#2ea8d8" stroke-width="3"/>
+    <!-- Wi-Fi router -->
+    <rect x="130" y="345" width="120" height="26" rx="5" fill="#3a3a44"/>
+    <line x1="145" y1="345" x2="135" y2="315" stroke="#333333" stroke-width="3"/>
+    <line x1="235" y1="345" x2="245" y2="315" stroke="#333333" stroke-width="3"/>
+    <circle cx="150" cy="358" r="3" fill="#7ee07e"/><circle cx="162" cy="358" r="3" fill="#f5c518"/>
+    <text x="190" y="390" font-family="sans-serif" font-size="13" font-weight="bold" fill="#3a2a80" text-anchor="middle">Wi-Fi router</text>
+  </g>
+  <!-- síťový router 1 -->
+  <g aria-label="Síťový router 1">
+    <rect x="365" y="345" width="110" height="30" rx="5" fill="#4a4a55" stroke="#3a2a80" stroke-width="2"/>
+    <rect x="430" y="352" width="35" height="16" fill="#2e2e38"/>
+    <circle cx="378" cy="360" r="3" fill="#7ee07e"/>
+    <text x="420" y="335" font-family="sans-serif" font-size="13" font-weight="bold" fill="#3a2a80" text-anchor="middle">síťový router</text>
+  </g>
+  <!-- server rack -->
+  <g aria-label="YouTube server (datové centrum)">
+    <title>Stojan serverů označený ikonou YouTube – datové centrum / server.</title>
+    <rect x="530" y="185" width="130" height="190" rx="6" fill="none" stroke="#3a2a80" stroke-width="4"/>
+    <rect x="542" y="200" width="106" height="24" rx="3" fill="#4a4a55"/>
+    <rect x="542" y="231" width="106" height="24" rx="3" fill="#4a4a55"/>
+    <rect x="542" y="262" width="106" height="24" rx="3" fill="#4a4a55"/>
+    <rect x="542" y="293" width="106" height="24" rx="3" fill="#4a4a55"/>
+    <rect x="542" y="324" width="106" height="24" rx="3" fill="#4a4a55"/>
+    <rect x="565" y="130" width="60" height="42" rx="10" fill="#e05252"/>
+    <path d="M 586 140 L 586 162 L 606 151 Z" fill="#ffffff"/>
+    <text x="595" y="120" font-family="sans-serif" font-size="13" font-weight="bold" fill="#e05252" text-anchor="middle">YouTube server</text>
+  </g>
+  <!-- síťový router 2 -->
+  <g aria-label="Síťový router 2">
+    <rect x="700" y="345" width="110" height="30" rx="5" fill="#4a4a55" stroke="#3a2a80" stroke-width="2"/>
+    <rect x="765" y="352" width="35" height="16" fill="#2e2e38"/>
+    <circle cx="713" cy="360" r="3" fill="#7ee07e"/>
+    <text x="755" y="335" font-family="sans-serif" font-size="13" font-weight="bold" fill="#3a2a80" text-anchor="middle">síťový router</text>
+  </g>
+  <!-- pravý dům -->
+  <g aria-label="Druhý dům se stolním počítačem">
+    <title>Druhý dům, kde je stolní počítač připojený kabelem přes domácí Wi-Fi router.</title>
+    <path d="M 830 220 L 900 165 L 940 195 L 940 400 L 830 400 Z" fill="none" stroke="#3a2a80" stroke-width="4"/>
+    <rect x="845" y="240" width="55" height="42" rx="4" fill="none" stroke="#333333" stroke-width="3"/>
+    <rect x="852" y="248" width="24" height="18" fill="#6644cc"/>
+    <rect x="905" y="235" width="24" height="60" rx="3" fill="#4a4a55"/>
+    <text x="885" y="305" font-family="sans-serif" font-size="12" fill="#555555" text-anchor="middle">počítač</text>
+    <rect x="845" y="345" width="80" height="24" rx="5" fill="#3a3a44"/>
+    <line x1="855" y1="345" x2="848" y2="322" stroke="#333333" stroke-width="3"/>
+    <line x1="915" y1="345" x2="922" y2="322" stroke="#333333" stroke-width="3"/>
+    <text x="885" y="390" font-family="sans-serif" font-size="12" font-weight="bold" fill="#3a2a80" text-anchor="middle">Wi-Fi router</text>
+  </g>
+  <!-- podzemní kabely -->
+  <g aria-label="Kabely pod zemí" stroke="#333333" stroke-width="4" fill="none">
+    <path d="M 190 371 L 190 440 C 190 455 210 455 230 455 L 380 455 C 400 455 405 440 405 430 L 405 375"/>
+    <path d="M 440 375 L 440 430 C 440 445 460 450 480 450 L 560 450 C 580 450 590 435 590 420 L 590 375"/>
+    <path d="M 620 375 L 620 420 C 620 440 640 445 660 445 L 720 445 C 740 445 745 430 745 420 L 745 375"/>
+    <path d="M 780 375 L 780 425 C 780 440 800 445 820 445 L 850 445 C 870 445 875 430 875 420 L 875 369"/>
+  </g>
+  <text x="480" y="520" font-family="sans-serif" font-size="15" fill="#555555" text-anchor="middle">Zařízení → domácí Wi-Fi router → síťové routery → server (a zpět); kabely vedou pod zemí.</text>
+  <text x="930" y="520" font-family="sans-serif" font-size="12" fill="#999999" text-anchor="end">29</text>
+</svg>

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" lang="cs">
+  <title>Jak se dostane zpráva přes celý oceán?</title>
+  <desc>Diskusní slide s otázkou na oranžovém pozadí; slova „celý oceán" jsou zvýrazněna fialově.</desc>
+  <rect x="0" y="0" width="960" height="540" fill="#f5a623"/>
+  <text x="480" y="255" text-anchor="middle" font-family="sans-serif" font-size="42" font-weight="bold" fill="#1a1a2e">Jak se dostane zpráva</text>
+  <text x="480" y="315" text-anchor="middle" font-family="sans-serif" font-size="42" font-weight="bold" fill="#1a1a2e">přes <tspan fill="#4b2e83">celý oceán</tspan>?</text>
+  <text x="930" y="525" text-anchor="end" font-family="sans-serif" font-size="14" fill="#a8720f">7</text>
+</svg>

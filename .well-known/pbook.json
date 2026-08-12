@@ -1,0 +1,90 @@
+{
+  "pbook_version": "2.0",
+  "title": "Jak funguje internet?",
+  "subtitle": "Doprovodný materiál k lekcím Internet4Kids (MFF UK & PedF UK)",
+  "author": "Internet4Kids (MFF UK & PedF UK)",
+  "author_affiliation": "MFF UK & PedF UK · interaktivní podoba: AI dětem",
+  "audience": "2. stupeň ZŠ (11-15 let), školní blok 4 hodin",
+  "language": "cs",
+  "license": "CC BY-NC-SA 4.0",
+  "repository": "https://github.com/kordikp/recsysbook-kids",
+  "content_index": "content/book.json",
+  "content_dir": "content/",
+  "games_dir": "games/",
+  "images_dir": "images/",
+  "content_format": {
+    "type": "markdown",
+    "frontmatter": "yaml",
+    "fields": {
+      "id": "Unique block identifier",
+      "type": "spine | question | game",
+      "title": "Display title",
+      "teaser": "One-sentence preview",
+      "readingTime": "Estimated minutes to read",
+      "voice": "universal | explorer | creator | thinker",
+      "core": "true if essential for certificate",
+      "status": "draft | review | accepted",
+      "game": "Reference to games/*.json file (if type=game)",
+      "diagram": "Reference to images/*.svg file",
+      "recallQ": "Spaced-repetition recall question (editable by creators)",
+      "recallA": "Answer to the recall question",
+      "concept": "Concept this block is a telling of (index: content/concepts.json)",
+      "state": "core | edited | community | private | archived — lifecycle rung",
+      "lens": "generic | ecommerce | media | social-feeds | education | jobs — example world (sets allowed: a|b)",
+      "visuality": "text-first | balanced | visual-first (ordered; ranges allowed: a..b)",
+      "depth": "intro | standard | technical | research (ordered; ranges allowed: a..b)",
+      "formalism": "none | light | full (ordered)",
+      "lengthBand": "tldr | standard | deep (ordered)",
+      "genre": "explainer | story | worked-example | code-walkthrough | comic | animation",
+      "lang": "en | cs"
+    }
+  },
+  "concepts_index": "content/concepts.json",
+  "personalization_docs": "PERSONALIZATION.md",
+  "agent_instructions": "AGENTS.md",
+  "api": {
+    "llm_index": "/.well-known/pbook.json",
+    "content_list": "content/book.json",
+    "content_files": "content/{chapter_directory}/{filename}",
+    "games": "games/{game_id}.json"
+  },
+  "integrations": {
+    "recombee": {
+      "description": "Recommendation engine for personalized content delivery",
+      "required": false,
+      "scenarios": [
+        "homepage-personal",
+        "homepage-voice",
+        "next-read",
+        "context-related",
+        "search"
+      ]
+    },
+    "tiny": {
+      "description": "Future: Tiny School (tiny.school) integration for chatbots and progress tracking",
+      "status": "planned"
+    },
+    "llm_tutor": {
+      "description": "Future: LLM-powered author persona with human failover",
+      "status": "mock"
+    },
+    "generation": {
+      "description": "On-demand, segment-scoped variant generation (anchored concepts only, contract-constrained, validated)",
+      "endpoint": "/api/generate",
+      "required": false,
+      "env": [
+        "ANTHROPIC_API_KEY",
+        "GEN_MODEL (optional)"
+      ]
+    }
+  },
+  "features": {
+    "gamification": "XP, levels, badges, completion certificate (can be disabled)",
+    "spaced_repetition": "Anki-style recall quizzes for long-term retention",
+    "missions": "Story-driven learning paths with branching and boss quizzes",
+    "mini_games": "8 interactive click-based games with 60s timer",
+    "personalization": "Voice-based content adaptation (Explorer/Creator/Thinker)",
+    "analytics": "Per-interaction mode tracking for research (netflix/read/mission/map/search)"
+  },
+  "human_guide": "HUMANS.md"
+}

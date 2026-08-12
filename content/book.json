@@ -1,0 +1,97 @@
+{
+  "title": "Jak funguje internet?",
+  "author": "Pavel Kordík · podle materiálů Internet4Kids (MFF UK & PedF UK)",
+  "version": "1.0",
+  "chapters": [
+    {
+      "id": "ch1-jak-vypada-internet",
+      "number": 1,
+      "title": "Jak vypadá internet",
+      "subtitle": "Servery, kabely a chytré křižovatky",
+      "directory": "ch1-jak-vypada-internet",
+      "files": [
+        "01-spine-servery-a-datacentra.md",
+        "01a-depth-thinker-klient-server.md",
+        "01c-sidebar-pocitame-servery.md",
+        "02-spine-kabely.md",
+        "02a-sidebar-mapa-kabelu.md",
+        "03-spine-routery.md",
+        "03a-depth-thinker-pakety.md",
+        "03b-depth-thinker-obsah-paketu.md",
+        "03c-depth-creator-nakresli-sit.md",
+        "03d-sidebar-traceroute.md",
+        "04-spine-internet-nema-reditele.md",
+        "04b-game-decentralizace.md",
+        "05x-sidebar-komiks-nema-reditele.md",
+        "05-game-paket-order.md",
+        "06-spine-shrnuti.md",
+        "07-question-co-te-prekvapilo.md"
+      ]
+    },
+    {
+      "id": "ch2-jak-se-pripojujeme",
+      "number": 2,
+      "title": "Jak se připojujeme",
+      "subtitle": "Wi-Fi, kabely, mobilní data a satelity",
+      "directory": "ch2-jak-se-pripojujeme",
+      "files": [
+        "01-spine-wifi-a-router.md",
+        "01a-depth-thinker-prenosova-rychlost.md",
+        "01b-sidebar-jak-dlouho-stahovani.md",
+        "01c-game-zapojeni.md",
+        "02-spine-kabelove-pripojeni.md",
+        "02a-depth-thinker-utp-vs-optika.md",
+        "02b-sidebar-opravy-kabelu.md",
+        "03-spine-mobilni-data-bts.md",
+        "04-spine-hotspot-a-satelity.md",
+        "04a-depth-thinker-satelity-starlink.md",
+        "04b-sidebar-komiks-satelit.md",
+        "05-spine-shrnuti.md",
+        "05a-depth-creator-speedtest.md",
+        "05b-game-pripojeni-sort.md",
+        "05c-game-jednotky.md",
+        "06-question-chata.md"
+      ]
+    },
+    {
+      "id": "ch3-digitalni-stopa",
+      "number": 3,
+      "title": "Co o nás ví internet",
+      "subtitle": "Pakety, cookies a digitální stopa",
+      "directory": "ch3-digitalni-stopa",
+      "files": [
+        "01-spine-dinosaurus-v-nakladacich.md",
+        "02-spine-pakety-a-ip-adresa.md",
+        "02b-sidebar-kolik-paketu.md",
+        "03-spine-kdo-plati-internet.md",
+        "03a-sidebar-kolik-reklam.md",
+        "04-spine-cookies-satnovy-listek.md",
+        "04a-depth-thinker-cookies-v-praxi.md",
+        "04b-sidebar-jak-vypada-cookie.md",
+        "04c-sidebar-komiks-cookie.md",
+        "05-spine-digitalni-stopa.md",
+        "05a-depth-thinker-co-odhaduje-google.md",
+        "05b-depth-creator-detektiv-krecek.md",
+        "06-game-stopa-sort.md",
+        "07-question-personalizace.md"
+      ]
+    },
+    {
+      "id": "ch4-velke-opakovani",
+      "number": 4,
+      "title": "Velké opakování",
+      "subtitle": "Boss kvíz, Bingo a tvůj telling",
+      "directory": "ch4-velke-opakovani",
+      "files": [
+        "01-spine-jak-vypada-internet.md",
+        "01a-depth-thinker-tezsi-pojmy.md",
+        "02-spine-jak-se-pripojujeme.md",
+        "03-spine-digitalni-stopa.md",
+        "03a-depth-creator-muj-telling.md",
+        "04-sidebar-bingo.md",
+        "05-game-pojmy-match.md",
+        "06-question-zaverecna-reflexe.md"
+      ]
+    }
+  ]
+}

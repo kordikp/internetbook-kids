@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" lang="cs">
+<title>Co o nás odhaduje Google? (snímek 11)</title>
+<desc>Rekonstrukce stránky Google My Ad Center s odhady o uživateli (pohlaví, věk, jazyk, kategorie reklam), QR kód na myadcenter.google.com/controls a varování, že tyto informace nemusí mít jen Google.</desc>
+<defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#555"/></marker><marker id="arrR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#a04030"/></marker><marker id="arrP" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#6a3fc0"/></marker></defs>
+<rect x="0" y="0" width="960" height="540" fill="#ffffff"/>
+<text x="480" y="55" font-family="sans-serif" font-size="32" font-weight="bold" text-anchor="middle" fill="#000">Co o nás odhaduje Google?</text>
+<g role="img"><title>Snímek obrazovky Google My Ad Center: odhady pohlaví, věku a jazyka a kategorie k zobrazování reklam</title>
+<rect x="40" y="85" width="590" height="420" rx="12" fill="none" stroke="#555" stroke-width="2"/>
+<text x="65" y="118" font-family="sans-serif" font-size="19" font-weight="bold" text-anchor="start" fill="#000">Informace o účtu Google</text>
+<text x="65" y="142" font-family="sans-serif" font-size="12" font-weight="normal" text-anchor="start" fill="#555">Tyto údaje se využívají k personalizaci reklam na základě informací,</text>
+<text x="65" y="159" font-family="sans-serif" font-size="12" font-weight="normal" text-anchor="start" fill="#555">které jste sdíleli, nebo našich odhadů.</text>
+<text x="65" y="193" font-family="sans-serif" font-size="12" font-weight="normal" text-anchor="start" fill="#1a66c2" text-decoration="underline">Spravovat v účtu Google</text>
+<rect x="65" y="205" width="175" height="60" rx="8" fill="none" stroke="#bbb" stroke-width="1.5"/>
+<text x="79" y="229" font-family="sans-serif" font-size="13" font-weight="normal" text-anchor="start" fill="#555">Pohlaví</text>
+<text x="79" y="251" font-family="sans-serif" font-size="14" font-weight="bold" text-anchor="start" fill="#000">Žena</text>
+<rect x="255" y="205" width="175" height="60" rx="8" fill="none" stroke="#bbb" stroke-width="1.5"/>
+<text x="269" y="229" font-family="sans-serif" font-size="13" font-weight="normal" text-anchor="start" fill="#555">Věk</text>
+<text x="269" y="251" font-family="sans-serif" font-size="14" font-weight="bold" text-anchor="start" fill="#000">25–34 let</text>
+<rect x="445" y="205" width="175" height="60" rx="8" fill="none" stroke="#bbb" stroke-width="1.5"/>
+<text x="459" y="229" font-family="sans-serif" font-size="13" font-weight="normal" text-anchor="start" fill="#555">Jazyk</text>
+<text x="459" y="251" font-family="sans-serif" font-size="14" font-weight="bold" text-anchor="start" fill="#000">3 jazyky</text>
+<text x="65" y="297" font-family="sans-serif" font-size="16" font-weight="bold" text-anchor="start" fill="#000">Kategorie k zobrazování vašich reklam</text>
+<text x="65" y="317" font-family="sans-serif" font-size="11" font-weight="normal" text-anchor="start" fill="#555">Reklamy vycházejí z vaší aktivity na Googlu; vše lze vypnout.</text>
+<rect x="65" y="330" width="102" height="84" rx="8" fill="none" stroke="#bbb" stroke-width="1.5"/>
+<text x="73" y="350" font-family="sans-serif" font-size="10" font-weight="normal" text-anchor="start" fill="#333">Vztahy</text>
+<text x="73" y="370" font-family="sans-serif" font-size="10" font-weight="bold" text-anchor="start" fill="#000">Zadaní</text>
+<text x="73" y="402" font-family="sans-serif" font-size="9" font-weight="normal" text-anchor="start" fill="#777">Zapnuto</text>
+<rect x="177" y="330" width="102" height="84" rx="8" fill="none" stroke="#bbb" stroke-width="1.5"/>
+<text x="185" y="350" font-family="sans-serif" font-size="10" font-weight="normal" text-anchor="start" fill="#333">Vzdělání</text>
+<text x="185" y="370" font-family="sans-serif" font-size="10" font-weight="bold" text-anchor="start" fill="#000">Vyšší než bakalář…</text>
+<text x="185" y="402" font-family="sans-serif" font-size="9" font-weight="normal" text-anchor="start" fill="#2a7d46">Ověřeno vámi</text>
+<rect x="289" y="330" width="102" height="84" rx="8" fill="none" stroke="#bbb" stroke-width="1.5"/>
+<text x="297" y="350" font-family="sans-serif" font-size="10" font-weight="normal" text-anchor="start" fill="#333">Obor</text>
+<text x="297" y="370" font-family="sans-serif" font-size="10" font-weight="bold" text-anchor="start" fill="#000">Chybí informace</text>
+<text x="297" y="402" font-family="sans-serif" font-size="9" font-weight="normal" text-anchor="start" fill="#777">Zapnuto</text>
+<rect x="401" y="330" width="102" height="84" rx="8" fill="none" stroke="#bbb" stroke-width="1.5"/>
+<text x="409" y="350" font-family="sans-serif" font-size="10" font-weight="normal" text-anchor="start" fill="#333">Velikost zaměstna…</text>
+<text x="409" y="370" font-family="sans-serif" font-size="10" font-weight="bold" text-anchor="start" fill="#000">Velký zaměstnav…</text>
+<text x="409" y="402" font-family="sans-serif" font-size="9" font-weight="normal" text-anchor="start" fill="#777">Zapnuto</text>
+<rect x="513" y="330" width="102" height="84" rx="8" fill="none" stroke="#bbb" stroke-width="1.5"/>
+<text x="521" y="350" font-family="sans-serif" font-size="10" font-weight="normal" text-anchor="start" fill="#333">Vlastnictví</text>
+<text x="521" y="370" font-family="sans-serif" font-size="10" font-weight="bold" text-anchor="start" fill="#000">Nájemci</text>
+<text x="521" y="402" font-family="sans-serif" font-size="9" font-weight="normal" text-anchor="start" fill="#777">Zapnuto</text>
+<text x="65" y="448" font-family="sans-serif" font-size="15" font-weight="bold" text-anchor="start" fill="#000">Aktivita používaná k personalizaci reklam</text>
+<text x="65" y="468" font-family="sans-serif" font-size="11" font-weight="normal" text-anchor="start" fill="#555">Vaše činnosti na webech a v aplikacích Google mohou být</text>
+<text x="65" y="483" font-family="sans-serif" font-size="11" font-weight="normal" text-anchor="start" fill="#555">používány k personalizaci reklam.</text>
+</g>
+<rect x="670" y="95" width="250" height="170" rx="8" fill="none" stroke="#333" stroke-width="2"/>
+<text x="795" y="165" font-family="sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="#000">QR:</text>
+<text x="795" y="191" font-family="sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="#000">myadcenter.google.com</text>
+<text x="795" y="217" font-family="sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="#000">/controls</text>
+<text x="795" y="295" font-family="sans-serif" font-size="15" font-weight="normal" text-anchor="middle" fill="#1a66c2" text-decoration="underline">myadcenter.google.com/controls</text>
+<text x="795" y="340" font-family="sans-serif" font-size="19" font-weight="bold" text-anchor="middle" fill="#000">Tyto informace nemusí mít</text>
+<text x="795" y="369" font-family="sans-serif" font-size="19" font-weight="bold" text-anchor="middle" fill="#000">jen Google a nemusí být</text>
+<text x="795" y="398" font-family="sans-serif" font-size="19" font-weight="bold" text-anchor="middle" fill="#000">jen na jeho serverech!</text>
+<text x="930" y="528" font-family="sans-serif" font-size="13" font-weight="normal" text-anchor="end" fill="#999">11</text>
+</svg>
