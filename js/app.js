@@ -34,16 +34,16 @@ class PBook {
     // reading history once (12 read blocks, recall cards due, XP) — never in normal use.
     if (location.search.includes('seed=demo') && !localStorage.getItem('pbook-demo-seeded')) {
       localStorage.setItem('pbook-demo-seeded', '1');
-      const ids = ['ch1-noticed','ch1-everywhere','ch1-not-magic','ch1-wrong-sidebar','ch1-patterns-d-think','ch1-history','ch1-three-jobs','ch1-wyr','ch1-personalization-spectrum','ch1-ws-match','ch2-footprints','ch2-track-d-exp'];
+      const ids = ['ch1-servery','ch1-klient-server','ch1-kabely','ch1-mapa-kabelu','ch1-routery','ch1-pakety','ch1-obsah-paketu','ch1-nema-reditele','ch1-komiks-nema-reditele','ch1-shrnuti','ch2-wifi-router','ch2-kabely'];
       const now = Date.now();
       const recall = {};
       ids.slice(0, 8).forEach((id, i) => { recall[id] = { reps: (i % 3) + 1, ease: 1.6 + (i % 4) * 0.35, interval: 1, nextReview: now - (i < 5 ? 3600000 * (i + 1) : -86400000), lastReview: now - 86400000 }; });
       localStorage.setItem('pbook-user', JSON.stringify({
-        readBlocks: ids, seenBlocks: ids, savedBlocks: ['ch2-clues'], ratings: [], notes: [],
+        readBlocks: ids, seenBlocks: ids, savedBlocks: ['ch2-satelity-starlink'], ratings: [], notes: [],
         signals: {}, totalInteractions: 40, currentChapter: 1, xp: 175, level: 4,
         achievements: [{ id: 'first_read' }, { id: 'reader_5' }], recall,
-        completedMissions: ['m1'], missionTitles: { m1: 'The Curious Beginning' },
-        facetAffinity: { lens: { ecommerce: 4 }, depth: { standard: 3 } }, steerPrefs: {}, goal: 'understand', readerMode: 'open',
+        completedMissions: ['m1'], missionTitles: { m1: 'Zvědavý začátek' },
+        facetAffinity: { lens: { home: 4 }, depth: { standard: 3 } }, steerPrefs: {}, goal: 'understand', readerMode: 'open',
       }));
       this.user.load();   // UserModel was constructed before init — re-read the seeded state
     }
@@ -153,6 +153,12 @@ class PBook {
         document.getElementById('onboarding').classList.add('hidden');
         this.updateXPBadge();
         this.switchView(hash.slice(5));
+      } else if (hash === 'cesta') {
+        // deep link na herní pole Cesty (sdílení učitelem, screenshoty)
+        document.getElementById('onboarding').classList.add('hidden');
+        this.updateXPBadge();
+        this._mapMode = 'cesta';
+        this.switchView('map');
       } else if (hash === 'coverage') {
         // deep link to the living-book coverage map (also used for paper screenshots)
         document.getElementById('onboarding').classList.add('hidden');
@@ -1354,6 +1360,7 @@ class PBook {
 
   // ===== VIEW SWITCHING =====
   switchView(view, auto) {
+    setTimeout(() => { const mb = document.getElementById('miniBoard'); if (mb) mb.style.display = view === 'read' && this._cmapData ? '' : 'none'; }, 0);
     this.currentView = view;
     const modeMap = { home: 'netflix', read: 'read', map: 'map', glossary: 'mission', quiz: 'quiz', chat: 'tutor', profile: 'profile' };
     this.rc.setContext(modeMap[view] || view);
@@ -1703,7 +1710,8 @@ class PBook {
 
     // Render current chapter
     const html = await this._renderChapterContent(ch, idx);
-    pane.innerHTML = this._whereAmIStrip().replace('class="fade-up"', 'class="fade-up feed-map-strip"') + html;
+    pane.innerHTML = html;
+    this._refreshMiniBoard();
     this._renderedChapter = idx;
     this._loadedChapters = new Set([idx]);
 
@@ -1904,6 +1912,7 @@ class PBook {
               this.showXPToast('+10 XP', 'xp');
               this.checkGamificationEvents();
               this._updateMissionBar();
+              this._refreshMiniBoard();
               clearInterval(this._dwellTimers[id]);
             }
 
@@ -3445,13 +3454,7 @@ class PBook {
     if (this._cmapData) {
       this._cmapNodes = {};
       this._cmapData.nodes.forEach(n => { this._cmapNodes[n.slug] = n; });
-      // mapa se načítá async — když už čtenář čte, mini-mapku doplň dodatečně
-      const pane = document.getElementById('readPane');
-      if (pane && !pane.querySelector('.feed-map-strip')) {
-        const div = document.createElement('div');
-        div.innerHTML = this._whereAmIStrip();
-        if (div.firstElementChild) { div.firstElementChild.classList.add('feed-map-strip'); pane.prepend(div.firstElementChild); }
-      }
+      this._refreshMiniBoard();
     }
     return this._cmapData;
   }
@@ -3471,40 +3474,109 @@ class PBook {
     await this._loadConceptMap();
     const cm = this._cmapData;
     if (!cm) return '';
-    const nodes = cm.nodes;
-    const per = 5, R = 30, DX = 150, DY = 128, X0 = 90, Y0 = 74;
-    const rows = Math.ceil(nodes.length / per);
-    const H = Y0 + rows * DY + 10;
-    const pos = nodes.map((n, i) => {
-      const r = Math.floor(i / per), c = i % per;
-      const x = X0 + (r % 2 === 0 ? c : per - 1 - c) * DX + (r % 2 === 0 ? 0 : 0);
-      return { x, y: Y0 + r * DY };
+    const temata = cm.temata.filter(t => cm.nodes.some(n => n.tema === t.id));
+    // rozměry: hadovitá stezka uvnitř každého regionu, výška regionu podle počtu řad
+    const cols = Math.min(2, temata.length) || 1;
+    const W = 800, colW = W / cols;
+    const perRow = Math.max(3, Math.floor((colW - 130) / 84));
+    const ROW_H = 88, PAD_TOP = 56, PAD_BOT = 34;
+    const geo = {};
+    temata.forEach((t, i) => {
+      const k = cm.nodes.filter(n => n.tema === t.id).length;
+      geo[t.id] = { col: i % cols, gridRow: Math.floor(i / cols), rows: Math.max(1, Math.ceil(k / perRow)) };
     });
-    const cur = nodes.findIndex(n => !this._conceptRead(n.slug));
-    let path = '';
-    for (let i = 1; i < pos.length; i++) {
-      const a = pos[i - 1], b = pos[i];
-      path += `M${a.x} ${a.y} ${a.y === b.y ? `L${b.x} ${b.y}` : `C ${a.x} ${a.y + DY / 2}, ${b.x} ${b.y - DY / 2}, ${b.x} ${b.y}`} `;
+    const nRows = Math.ceil(temata.length / cols);
+    const rowY = []; let acc = 34;
+    for (let r = 0; r < nRows; r++) {
+      rowY.push(acc);
+      const hs = temata.filter(t => geo[t.id].gridRow === r).map(t => geo[t.id].rows * ROW_H + PAD_TOP + PAD_BOT);
+      acc += Math.max(...hs, 0) + 22;
     }
-    let svg = `<svg viewBox="0 0 800 ${H}" style="width:100%;height:auto" font-family="system-ui,sans-serif">
-      <path d="${path}" fill="none" stroke="var(--border)" stroke-width="7" stroke-linecap="round"/>`;
-    nodes.forEach((n, i) => {
-      const t = cm.temata.find(x => x.id === n.tema) || {};
-      const read = this._conceptRead(n.slug);
-      const rem = this._conceptRemembered(n.slug);
+    const H = acc + 6;
+    // pozice políček: boustrofédon (had) — konec řady navazuje na políčko pod ním
+    const pos = {};
+    temata.forEach(t => {
+      const g = geo[t.id];
+      const nodes = cm.nodes.filter(n => n.tema === t.id);
+      const top = rowY[g.gridRow] + PAD_TOP;
+      nodes.forEach((n, i) => {
+        const r = Math.floor(i / perRow);
+        const rowCount = Math.min(perRow, nodes.length - r * perRow);
+        let c = i % perRow;
+        if (r % 2) c = rowCount - 1 - c;
+        const step = rowCount > 1 ? Math.min(96, (colW - 140) / (rowCount - 1)) : 0;
+        const x0 = g.col * colW + colW / 2 - step * (rowCount - 1) / 2;
+        pos[n.slug] = { x: x0 + c * step, y: top + r * ROW_H + (i % 2 ? 10 : -6) };
+      });
+    });
+    // stav políčka
+    const stat = {};
+    const now = Date.now();
+    cm.nodes.forEach(n => {
+      const pool = (this.conceptBlocks?.[n.slug] || []);
+      const readable = pool.filter(b => (b.meta?.type || b.type) === 'spine');
+      const read = readable.filter(b => this.user.readBlocks.has(b.meta?.id || b.id)).length;
+      const total = Math.max(1, readable.length);
+      const game = pool.find(b => (b.meta?.type || b.type) === 'game');
+      const due = pool.some(b => { const c = this.user.recall?.[b.meta?.id || b.id]; return c && c.nextReview <= now; });
+      stat[n.slug] = { read, total, done: read >= total, game: game ? (game.meta?.id || game.id) : null, due, rem: this._conceptRemembered(n.slug) };
+    });
+    const cur = cm.nodes.find(n => !stat[n.slug].done && !this._unmetPrereqs(n.slug).length) || cm.nodes.find(n => !stat[n.slug].done);
+    // cesta v pořadí učení — oblé úseky mezi políčky, mezi regiony se prohne
+    let road = '';
+    for (let i = 1; i < cm.nodes.length; i++) {
+      const a = pos[cm.nodes[i - 1].slug], b = pos[cm.nodes[i].slug];
+      const far = Math.abs(a.x - b.x) > 180 || Math.abs(a.y - b.y) > 120;
+      const mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2 + (far ? 40 : 12);
+      road += `M${a.x} ${a.y} Q ${mx} ${my}, ${b.x} ${b.y} `;
+    }
+    // šipky tvrdých prerekvizit
+    let arrows = '';
+    cm.nodes.forEach(n => (n.prereq || []).forEach(pr => {
+      const a = pos[pr], b = pos[n.slug];
+      if (!a || !b) return;
+      const mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2 - 34;
+      arrows += `<path d="M${a.x} ${a.y} Q ${mx} ${my}, ${b.x} ${b.y}" fill="none" stroke="#94A3B8" stroke-width="1.6" stroke-dasharray="5 5" marker-end="url(#jarr)" opacity="0.8"/>`;
+    }));
+    const R = 25;
+    let svg = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto" font-family="system-ui,sans-serif">
+      <defs><marker id="jarr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#94A3B8"/></marker></defs>`;
+    temata.forEach(t => {
+      const pts = cm.nodes.filter(n => n.tema === t.id).map(n => pos[n.slug]);
+      const minX = Math.min(...pts.map(p2 => p2.x)) - 54, maxX = Math.max(...pts.map(p2 => p2.x)) + 54;
+      const minY = Math.min(...pts.map(p2 => p2.y)) - 52, maxY = Math.max(...pts.map(p2 => p2.y)) + 52;
+      svg += `<rect x="${minX}" y="${minY}" width="${maxX - minX}" height="${maxY - minY}" rx="24" fill="${t.color}" opacity="0.07"/>
+        <text x="${minX + 14}" y="${minY + 20}" font-size="12.5" font-weight="700" fill="${t.color}">${this.escHtml(t.nazev)}</text>`;
+    });
+    svg += `<path d="${road}" fill="none" stroke="var(--border)" stroke-width="8" stroke-linecap="round" opacity="0.9"/>` + arrows;
+    const temaColor = {}; temata.forEach(t => { temaColor[t.id] = t.color; });
+    cm.nodes.forEach(n => {
+      const { x, y } = pos[n.slug];
+      const st = stat[n.slug];
+      const color = temaColor[n.tema] || '#6B7280';
       const anchorId = this.concepts?.[n.slug]?.anchor || n.slug;
-      const { x, y } = pos[i];
+      const pct = st.read / st.total;
+      const CIRC = 2 * Math.PI * (R + 4.5);
       svg += `<g style="cursor:pointer" onclick="app.switchView('read');app.openBlock('${anchorId}')">
-        <circle cx="${x}" cy="${y}" r="${R}" fill="${read ? '#D1FAE5' : 'var(--card, #fff)'}" stroke="${t.color || '#6B7280'}" stroke-width="3"${i === cur ? ' stroke-dasharray="5 4"' : ''}/>
-        <text x="${x}" y="${y + 5}" text-anchor="middle" font-size="15" font-weight="700" fill="${read ? '#15803D' : 'var(--text, #1b1b1f)'}">${read ? '✓' : i + 1}</text>
-        ${rem ? `<text x="${x + R - 8}" y="${y - R + 12}" font-size="13">⭐</text>` : ''}
-        ${i === cur ? `<text x="${x}" y="${y - R - 8}" text-anchor="middle" font-size="17">🧭</text>` : ''}
-        <text x="${x}" y="${y + R + 15}" text-anchor="middle" font-size="10.5" fill="var(--text-2, #666)">${this.escHtml(n.short || n.title.slice(0, 14))}</text>
+        <circle cx="${x}" cy="${y}" r="${R}" fill="${st.done ? '#D1FAE5' : 'var(--card, #fff)'}" stroke="${color}" stroke-width="3"/>
+        ${pct > 0 && !st.done ? `<circle cx="${x}" cy="${y}" r="${R + 4.5}" fill="none" stroke="${color}" stroke-width="3" stroke-linecap="round" stroke-dasharray="${(CIRC * pct).toFixed(1)} ${CIRC.toFixed(1)}" transform="rotate(-90 ${x} ${y})" opacity="0.85"/>` : ''}
+        <text x="${x}" y="${y + 5}" text-anchor="middle" font-size="${st.done ? 16 : 12.5}" font-weight="700" fill="${st.done ? '#15803D' : 'var(--text, #1b1b1f)'}">${st.done ? '✓' : `${st.read}/${st.total}`}</text>
+        ${st.rem ? `<text x="${x + R - 6}" y="${y - R + 8}" font-size="13"><title>dobře si pamatuješ</title>⭐</text>` : ''}
+        ${st.due ? `<text x="${x - R - 10}" y="${y + R + 4}" font-size="12" onclick="event.stopPropagation();app.switchView('quiz')"><title>čeká opakování — otevři Kvíz</title>⏰</text>` : ''}
+        ${cur && cur.slug === n.slug ? `<circle cx="${x}" cy="${y}" r="${R + 9}" fill="none" stroke="${color}" stroke-width="2" stroke-dasharray="3 5"/><text x="${x - R + 1}" y="${y - R + 7}" text-anchor="middle" font-size="15">🧭</text>` : ''}
+        <text x="${x}" y="${y + R + 16}" text-anchor="middle" font-size="10.5" fill="var(--text-2, #666)">${this.escHtml(n.short || n.title.slice(0, 16))}</text>
       </g>`;
+      if (st.game) {
+        svg += `<g style="cursor:pointer" onclick="app.switchView('read');app.openBlock('${st.game}')">
+          <circle cx="${x + R + 9}" cy="${y - R + 4}" r="10" fill="#FEF3C7" stroke="#D97706" stroke-width="1.6"/>
+          <text x="${x + R + 9}" y="${y - R + 8}" text-anchor="middle" font-size="10"><title>hra ke konceptu</title>🎮</text>
+        </g>`;
+      }
     });
     svg += '</svg>';
-    return `<div class="fade-up" style="max-width:820px;margin:0 auto">
-      <p style="font-size:.78rem;color:var(--text-2);margin:.2em 0 .6em">Doporučené pořadí, jak koncepty poznávat — jako na herním plánu. Zelené máš přečtené, ⭐ si dobře pamatuješ (podle chytrého opakování), figurka stojí na dalším doporučeném. Klikni na políčko a čti.</p>${svg}</div>`;
+    return `<div class="fade-up" style="max-width:840px;margin:0 auto">
+      <p style="font-size:.78rem;color:var(--text-2);margin:.2em 0 .2em">Herní pole knihy: každé políčko je koncept, číslo říká, kolik jeho článků už máš přečtených (✓ = všechny). Figurka 🧭 stojí na dalším doporučeném políčku.</p>
+      <p style="font-size:.68rem;color:var(--text-3);margin:0 0 .5em">✓ hotovo · 2/4 rozečteno · ⭐ pamatuješ si · ⏰ čeká opakování · 🎮 hra u políčka · ⇢ co znát předem</p>${svg}</div>`;
   }
 
   async renderConceptsMap() {
@@ -3576,25 +3648,42 @@ class PBook {
     return h;
   }
   // „Kam dál" pod sekcí: související koncepty z mapy (existující = odkaz, 🌱 = hlas)
-  _whereAmIStrip() {
+  // Plovoucí miniatura herního pole — malá, neinvazivní, pořád vidět při čtení;
+  // klik otevře Cestu. Nahrazuje dřívější pruh teček (byl moc na očích).
+  _refreshMiniBoard() {
     const cm = this._cmapData;
-    if (!cm || !cm.nodes?.length) return '';
-    const n = cm.nodes.length;
-    const cur = cm.nodes.findIndex(x => !this._conceptRead(x.slug));
-    const dots = cm.nodes.map((x, i) => {
-      const read = this._conceptRead(x.slug);
-      const rem = this._conceptRemembered(x.slug);
-      const t = cm.temata.find(tt => tt.id === x.tema) || {};
-      const bg = rem ? '#F59E0B' : read ? '#10B981' : 'var(--border)';
-      return `<span title="${this.escHtml(x.short || x.title)}${read ? ' ✓' : ''}${rem ? ' ⭐' : ''}" style="width:9px;height:9px;border-radius:50%;background:${bg};display:inline-block;${i === cur ? `outline:2px solid ${t.color || '#7C3AED'};outline-offset:1.5px;` : ''}"></span>`;
-    }).join('');
-    const label = 'Koncept {i}/{n}'.replace('{i}', Math.min(cur + 1, n)).replace('{n}', n);
-    const curName = cur >= 0 ? (cm.nodes[cur].short || cm.nodes[cur].title) : '';
-    return `<div class="fade-up" onclick="app.switchView('map');app.setMapMode('cesta')" style="cursor:pointer;display:flex;align-items:center;gap:.45em;flex-wrap:wrap;max-width:720px;margin:0 auto .7em;padding:.4em .7em;border:1px solid var(--border);border-radius:999px;background:var(--card,#fff)">
-      <span style="font-size:.72rem">🗺</span><span style="display:flex;gap:3.5px;align-items:center;flex-wrap:wrap">${dots}</span>
-      <span style="font-size:.68rem;color:var(--text-2);margin-left:auto">${label}${curName ? ' · ' + this.escHtml(curName) : ''}</span>
-    </div>`;
+    let el = document.getElementById('miniBoard');
+    if (!cm || !cm.nodes?.length) { if (el) el.style.display = 'none'; return; }
+    if (!el) {
+      el = document.createElement('div');
+      el.id = 'miniBoard';
+      el.title = 'Cesta knihou — otevřít herní pole';
+      el.style.cssText = 'position:fixed;right:10px;bottom:64px;z-index:60;width:96px;background:var(--card,#fff);border:1px solid var(--border,#ddd);border-radius:10px;padding:5px 5px 3px;box-shadow:0 2px 10px rgba(0,0,0,.12);cursor:pointer;opacity:.94';
+      el.onclick = () => { this.switchView('map'); this.setMapMode('cesta'); };
+      document.body.appendChild(el);
+    }
+    const N = cm.nodes.length;
+    const per = N > 40 ? 10 : 8;
+    const rows = Math.ceil(N / per);
+    const step = (96 - 16) / Math.max(per - 1, 1);
+    const W = 96, H = rows * 11 + 6;
+    const temaColor = {}; cm.temata.forEach(t => { temaColor[t.id] = t.color; });
+    const cur = cm.nodes.find(n => !this._conceptRead(n.slug) && !this._unmetPrereqs(n.slug).length) || cm.nodes.find(n => !this._conceptRead(n.slug));
+    let svg = `<svg viewBox="0 0 ${W} ${H}" style="display:block;width:100%">`;
+    cm.nodes.forEach((n, i) => {
+      const r = Math.floor(i / per);
+      let c = i % per;
+      if (r % 2) c = per - 1 - c;
+      const x = 8 + c * step, y = 7 + r * 11;
+      const read = this._conceptRead(n.slug), rem = this._conceptRemembered(n.slug);
+      const isCur = cur && cur.slug === n.slug;
+      svg += `<circle cx="${x}" cy="${y}" r="${isCur ? 3.8 : 2.8}" fill="${rem ? '#F59E0B' : read ? '#10B981' : 'var(--border,#ddd)'}" stroke="${temaColor[n.tema] || '#999'}" stroke-width="${isCur ? 1.8 : 0.8}"/>`;
+    });
+    svg += '</svg>';
+    el.innerHTML = svg;
+    el.style.display = this.currentView === 'read' ? '' : 'none';
   }
+
 
   _prereqBanner(block) {
     if (!block.concept || block.type !== 'spine') return '';
@@ -3626,6 +3715,14 @@ class PBook {
     const el = document.getElementById('mapContent');
     const prog = this.user.getProgress(this.allBlocks);
     const visibleVoices = this.user.getVisibleVoices();
+    if (this._vmapAvailable === undefined) {
+      this._vmapAvailable = null;   // probíhá zjištění
+      fetch('content/visual-map-data.json', { method: 'HEAD' }).then(r => {
+        this._vmapAvailable = r.ok;
+        if (!r.ok && this._mapMode === 'visual') this._mapMode = 'koncepty';
+        if (this.currentView === 'map') this.renderMap();
+      }).catch(() => { this._vmapAvailable = false; });
+    }
     const mapMode = this._mapMode || 'koncepty';
 
     const summary = this.user.getSignalSummary();
@@ -3647,7 +3744,7 @@ class PBook {
       <div class="map-mode-toggle">
         <button class="map-mode-btn ${mapMode === 'koncepty' ? 'active' : ''}" onclick="app.setMapMode('koncepty')">🧠 Koncepty</button>
         <button class="map-mode-btn ${mapMode === 'cesta' ? 'active' : ''}" onclick="app.setMapMode('cesta')">🎲 Cesta</button>
-        <button class="map-mode-btn ${mapMode === 'visual' ? 'active' : ''}" onclick="app.setMapMode('visual')">Vizuální</button>
+        ${this._vmapAvailable !== false ? `<button class="map-mode-btn ${mapMode === 'visual' ? 'active' : ''}" onclick="app.setMapMode('visual')">Vizuální</button>` : ''}
         <button class="map-mode-btn ${mapMode === 'list' ? 'active' : ''}" onclick="app.setMapMode('list')">Podrobný seznam</button>
         <button class="map-mode-btn ${mapMode === 'saved' ? 'active' : ''}" onclick="app.setMapMode('saved')">Uložené${this.user.savedBlocks.size ? ' (' + this.user.savedBlocks.size + ')' : ''}</button>
         <button class="map-mode-btn ${mapMode === 'notes' ? 'active' : ''}" onclick="app.setMapMode('notes')">Poznámky${this._getNoteCount() ? ' (' + this._getNoteCount() + ')' : ''}</button>
