@@ -5557,45 +5557,110 @@ class PBook {
   startAuthoring(slug) {
     const prop = (this.proposals || []).find(x => x.slug === slug);
     const conc = this.concepts?.[slug];
-    if (!prop && !conc) { this.showXPToast('?', 'xp'); return; }
-    const title = prop ? prop.title : (conc.title || slug);
+    const node = this._cmapNodes?.[slug];
+    if (!prop && !conc && !node) { this.showXPToast('?', 'xp'); return; }
+    const title = prop ? prop.title : (conc?.title || node?.title || slug);
     const contract = prop
       ? { objective: prop.objective, mustCover: prop.mustCover || [], recallQ: prop.recallQ }
-      : { objective: conc.contract?.objective, mustCover: (conc.contract?.mustCover || []).map(m => m.point || m), recallQ: conc.contract?.recallQ };
+      : conc
+        ? { objective: conc.contract?.objective, mustCover: (conc.contract?.mustCover || []).map(m => m.point || m), recallQ: conc.contract?.recallQ }
+        : { objective: node?.def || node?.teaser, mustCover: [], recallQ: undefined };
     this._studio = { slug, title, contract, isProposal: !!prop, questions: [] };
     const st = this._authorState()[slug] || {};
     document.getElementById('authorStudio')?.remove();
     const el = document.createElement('div');
     el.id = 'authorStudio';
     el.innerHTML = `<div style="position:fixed;inset:0;background:var(--bg,#fafaf7);z-index:250;overflow-y:auto">
-      <div style="max-width:680px;margin:0 auto;padding:1em 1em 4em">
+      <div style="max-width:1080px;margin:0 auto;padding:1em 1em 4em">
         <div style="display:flex;justify-content:space-between;align-items:center">
           <div style="font-weight:800;font-size:1.05rem">✍️ Autorské studio</div>
           <button class="note-cancel" onclick="document.getElementById('authorStudio').remove()">Zavřít</button>
         </div>
-        <div style="font-size:.75rem;color:var(--text-2,#666);margin:.2em 0 .7em">Rozpracuj koncept do knihy — AI tě koučuje, ale píšeš TY.</div>
-        <div style="border:1.5px solid var(--border,#ddd);border-radius:10px;padding:.6em .8em;font-size:.8rem;background:var(--card,#fff)">
-          <b>${this.escHtml(title)}</b>
-          ${contract.objective ? `<div style="margin-top:.25em"><span style="color:var(--text-2,#666)">Cíl:</span> ${this.escHtml(contract.objective)}</div>` : ''}
-          ${(contract.mustCover || []).length ? `<div style="margin-top:.25em;font-size:.74rem"><span style="color:var(--text-2,#666)">Musí pokrýt:</span> ${(contract.mustCover || []).map(x => `<span style="display:inline-block;border:1px solid var(--border,#ddd);border-radius:999px;padding:0 .5em;margin:.1em">${this.escHtml(x)}</span>`).join('')}</div>` : ''}
+        <div style="font-size:.75rem;color:var(--text-2,#666);margin:.2em 0 .7em">Rozpracuj koncept do knihy — AI tě koučuje, ale píšeš TY. Vpravo vidíš živý náhled, jak to uvidí čtenáři.</div>
+        <div style="display:flex;flex-wrap:wrap;gap:1em;align-items:flex-start">
+          <div style="flex:1 1 360px;min-width:0">
+            <div style="border:1.5px solid var(--border,#ddd);border-radius:10px;padding:.6em .8em;font-size:.8rem;background:var(--card,#fff)">
+              <b>${this.escHtml(title)}</b>
+              ${contract.objective ? `<div style="margin-top:.25em"><span style="color:var(--text-2,#666)">Cíl:</span> ${this.escHtml(contract.objective)}</div>` : ''}
+              ${(contract.mustCover || []).length ? `<div style="margin-top:.25em;font-size:.74rem"><span style="color:var(--text-2,#666)">Musí pokrýt:</span> ${(contract.mustCover || []).map(x => `<span style="display:inline-block;border:1px solid var(--border,#ddd);border-radius:999px;padding:0 .5em;margin:.1em">${this.escHtml(x)}</span>`).join('')}</div>` : ''}
+            </div>
+            <textarea id="stDraft" placeholder="Piš svůj text tady… (markdown funguje: **tučně**, odrážky)" style="width:100%;min-height:44vh;margin:.7em 0 .4em;padding:.7em;border:1.5px solid var(--border,#ddd);border-radius:10px;font:inherit;font-size:.9rem;line-height:1.55;background:var(--card,#fff)">${this.escHtml(st.text || '')}</textarea>
+            <div style="display:flex;gap:.5em;align-items:center;flex-wrap:wrap">
+              <button class="note-save" id="stSeedBtn" onclick="app.seedDraft()" style="border:1.5px solid var(--accent);background:transparent;color:var(--accent)">✨ Navrhnout kostru · ${CONFIG.aiEconomy?.prices.basic || 0} ⚡</button>
+              <button class="note-save" style="background:var(--accent)" id="stCoachBtn" onclick="app.coachRound()">🧭 Kouč · ${CONFIG.aiEconomy?.prices.basic || 0} ⚡</button>
+              <button class="note-save" id="stArtBtn" onclick="app.generateGraphic()" style="border:1.5px solid #D97706;background:transparent;color:#B45309">🎨 Generuj grafiku · ${CONFIG.aiEconomy?.prices.advanced || 0} ⚡</button>
+              <button class="note-save" id="stFinishBtn" onclick="app.finishAuthoring()" style="background:#10B981">📤 Odeslat do knihy</button>
+            </div>
+            <div id="stOut" style="margin-top:.7em"></div>
+            <div style="font-size:.68rem;color:var(--text-2,#666);margin-top:.5em">🎨 Označ v textu místo pro obrázek jako [DIAGRAM: co má ukázat] nebo [ANIMACE: co se hýbe] a klikni „Generuj grafiku" — hotový obrázek se vloží rovnou do textu a hned ho uvidíš v náhledu. Bez značky se nakreslí shrnutí celého textu.</div>
+          </div>
+          <div style="flex:1 1 360px;min-width:0">
+            <div style="font-size:.72rem;font-weight:700;color:var(--text-2,#666);margin:.1em 0 .35em">👀 Náhled — takhle to uvidí čtenáři</div>
+            <div id="stPreview" style="border:1.5px solid var(--border,#ddd);border-radius:12px;padding:.9em 1em;background:var(--card,#fff);max-height:74vh;overflow-y:auto"></div>
+          </div>
         </div>
-        <textarea id="stDraft" placeholder="Piš svůj text tady… (markdown funguje: **tučně**, odrážky)" style="width:100%;min-height:38vh;margin:.7em 0 .4em;padding:.7em;border:1.5px solid var(--border,#ddd);border-radius:10px;font:inherit;font-size:.9rem;line-height:1.55;background:var(--card,#fff)">${this.escHtml(st.text || '')}</textarea>
-        <div style="display:flex;gap:.5em;align-items:center;flex-wrap:wrap">
-          <button class="note-save" id="stSeedBtn" onclick="app.seedDraft()" style="border:1.5px solid var(--accent);background:transparent;color:var(--accent)">✨ Navrhnout kostru · ${CONFIG.aiEconomy?.prices.basic || 0} ⚡</button>
-          <button class="note-save" style="background:var(--accent)" id="stCoachBtn" onclick="app.coachRound()">🧭 Kouč · ${CONFIG.aiEconomy?.prices.basic || 0} ⚡</button>
-          <button class="note-save" id="stFinishBtn" onclick="app.finishAuthoring()" ${(st.best || 0) >= 70 ? '' : 'disabled'}>✅ Připravit prezentaci</button>
-          <span style="font-size:.68rem;color:var(--text-2,#666)">odemkne se při skóre ≥ 70 · ${st.best ? `max ${st.best}/100` : ''}</span>
-        </div>
-        <div id="stOut" style="margin-top:.7em"></div>
-        <div style="font-size:.68rem;color:var(--text-2,#666);margin-top:.5em">🎨 Vizuály: označ v textu místo pro obrázek jako [DIAGRAM: co má ukázat] nebo [ANIMACE: co se hýbe] — při adopci do knihy je dokreslíme. Kouč ti poradí, kde vizuál pomůže.</div>
       </div>
     </div>`;
     document.body.appendChild(el);
     const ta = document.getElementById('stDraft');
     ta.addEventListener('input', () => {
       const all = this._authorState(); (all[slug] = all[slug] || {}).text = ta.value; this._authorSave(all);
+      clearTimeout(this._stPvTimer);
+      this._stPvTimer = setTimeout(() => this._studioPreview(), 250);
     });
+    this._studioPreview();
     this.rc.logEvent('author_open', { slug });
+  }
+
+  // Živý náhled: markdown draftu vykreslený stejně jako blok v knize
+  _studioPreview() {
+    const stdo = this._studio; if (!stdo) return;
+    const pane = document.getElementById('stPreview'); if (!pane) return;
+    const draft = (document.getElementById('stDraft')?.value || '').trim();
+    if (!draft) { pane.innerHTML = `<div style="color:var(--text-3,#999);font-size:.8rem">Zatím prázdno — začni psát vlevo a náhled se vykreslí sám.</div>`; return; }
+    let html = renderMarkdown(draft);
+    html = html.replace(/\[(DIAGRAM|ANIMACE):\s*([^\]]*)\]/g, (_, k, w) =>
+      `<span style="display:block;border:1.5px dashed #7C3AED;border-radius:10px;padding:.5em .7em;margin:.4em 0;color:#7C3AED;font-size:.78rem">🎨 ${/^D/.test(k) ? 'DIAGRAM (zatím nenakreslený)' : 'ANIMACE (zatím nenakreslená)'}${w.trim() ? ': ' + w.trim() : ''}</span>`);
+    pane.innerHTML = `<article class="block-article" style="margin:0;padding:0;border:none;box-shadow:none"><h2 style="margin:.1em 0 .5em;font-size:1.15rem">${this.escHtml(stdo.title)}</h2><div class="block-content">${html}</div></article>`;
+  }
+
+  // 🎨 Nakresli k draftu grafiku (advanced): [DIAGRAM/ANIMACE: …] značka určí, co a kam
+  async generateGraphic() {
+    const stdo = this._studio; if (!stdo) return;
+    const out = document.getElementById('stOut');
+    const ta = document.getElementById('stDraft');
+    const draft = (ta?.value || '').trim();
+    if (draft.length < 40) { out.innerHTML = `<div style="background:#FEF3C7;border-radius:8px;padding:.5em .7em;font-size:.8rem">Napiš nejdřív text (aspoň pár vět) — grafika se kreslí z něj.</div>`; return; }
+    const pay = this.aiCanPay('advanced');
+    if (!pay.ok) { out.innerHTML = this.aiPaywallHtml('advanced'); return; }
+    const m = ta.value.match(/\[(DIAGRAM|ANIMACE):\s*([^\]]+)\]/);
+    const wantAnim = !!m && /^A/.test(m[1]);
+    const instruction = m ? `${wantAnim ? 'animace' : 'diagram'}: ${m[2].trim()}` : 'Nakresli jednoduchý diagram, který shrne hlavní myšlenku tohoto textu';
+    const btn = document.getElementById('stArtBtn');
+    btn.disabled = true; const orig = btn.textContent; btn.textContent = 'Kreslím…';
+    try {
+      const res = await fetch(CONFIG.steering.generateEndpoint, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ mode: 'insert', concept: stdo.isProposal ? undefined : stdo.slug,
+          instruction, context: draft.slice(0, 6000), wantSvg: true, auth: this._walletAuth() }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.ok) throw new Error(data.error || 'generate failed');
+      this._walletApply(data, 'advanced', pay);
+      if (!data.svg) { out.innerHTML = `<div style="background:#FEF3C7;border-radius:8px;padding:.5em .7em;font-size:.8rem">Model tentokrát grafiku nevrátil — zkus to znovu, nebo upřesni [DIAGRAM: …].</div>`; }
+      else {
+        const svgBlock = `\n\n⟦svg⟧\n${data.svg}\n⟦/svg⟧\n\n`;
+        ta.value = m ? ta.value.replace(m[0], svgBlock) : ta.value + svgBlock;
+        ta.dispatchEvent(new Event('input'));
+        this._studioPreview();
+        out.innerHTML = `<div style="border:1.5px solid #10B981;border-radius:8px;padding:.5em .7em;font-size:.8rem;background:var(--card,#fff)">Grafika vložena do textu — mrkni na náhled. Nelíbí se? Smaž blok ⟦svg⟧…⟦/svg⟧ a generuj znovu.</div>`;
+      }
+      this.rc.logEvent('author_graphic', { slug: stdo.slug, marked: !!m });
+    } catch (e) {
+      const pw = this._aiErrorPaywall(e, 'advanced');
+      out.innerHTML = pw || `<div style="background:#FEE2E2;border-radius:8px;padding:.5em .7em;font-size:.8rem">${this.escHtml(e.message)}</div>`;
+    }
+    btn.disabled = false; btn.textContent = orig;
   }
   async seedDraft() {
     const stdo = this._studio; if (!stdo) return;
@@ -5652,7 +5717,6 @@ class PBook {
       this._walletApply(data, 'basic', pay);
       st.best = Math.max(st.best || 0, c.score); this._authorSave(all);
       if (c.question) stdo.questions.push(c.question);
-      if (st.best >= 70) document.getElementById('stFinishBtn')?.removeAttribute('disabled');
       const bar = `<div style="height:8px;border-radius:4px;background:var(--border,#eee);overflow:hidden"><div style="height:100%;width:${c.score}%;background:${c.score >= 70 ? '#10B981' : c.score >= 40 ? '#D97706' : '#EF4444'}"></div></div>`;
       out.innerHTML = `<div style="border:1.5px solid var(--border,#ddd);border-radius:10px;padding:.7em .8em;background:var(--card,#fff);font-size:.82rem">
         <div style="display:flex;justify-content:space-between;align-items:center"><b>🧭 Kouč · kolo ${st.round}</b><b>${c.score}/100</b></div>${bar}
@@ -5672,7 +5736,7 @@ class PBook {
     const stdo = this._studio; if (!stdo) return;
     const all = this._authorState(); const st = all[stdo.slug] || {};
     const draft = (document.getElementById('stDraft')?.value || '').trim();
-    if (!draft || (st.best || 0) < 70) return;
+    if (draft.length < 80) { this.showXPToast('Nejdřív něco napiš — pošli aspoň pár vět.', 'xp'); return; }
     const id = `autor--${stdo.slug}--${Date.now().toString(36)}`;
     const block = {
       meta: { id, title: stdo.title, type: 'spine', state: 'private', authored: true, core: false,
@@ -5687,7 +5751,6 @@ class PBook {
     document.getElementById('authorStudio')?.remove();
     this._showMicroCert(null, { kind: 'author', slug: stdo.slug, conceptTitle: stdo.title, score: st.best, shareId: id, defense: (stdo.questions || []).slice(-3) });
   }
-
   completeMission(missionId) {
     const missions = this.getMissions();
     const m = missions.find(x => x.id === missionId);
