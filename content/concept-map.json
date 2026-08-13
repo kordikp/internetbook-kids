@@ -32,7 +32,9 @@
     "ch1-routery",
     "ch3-kdo-plati",
     "ch2-kabely"
-   ]
+   ],
+   "prereq": [],
+   "short": "Servery"
   },
   {
    "slug": "ch1-kabely",
@@ -44,7 +46,9 @@
     "ch2-kabely",
     "ch1-routery",
     "ch1-nema-reditele"
-   ]
+   ],
+   "prereq": [],
+   "short": "Kabely"
   },
   {
    "slug": "ch1-routery",
@@ -56,7 +60,9 @@
     "ch3-pakety",
     "ch1-nema-reditele",
     "ch2-wifi-router"
-   ]
+   ],
+   "prereq": [],
+   "short": "Routery"
   },
   {
    "slug": "ch1-nema-reditele",
@@ -67,7 +73,11 @@
    "rel": [
     "ch1-routery",
     "ch1-kabely"
-   ]
+   ],
+   "prereq": [
+    "ch1-routery"
+   ],
+   "short": "Bez ředitele"
   },
   {
    "slug": "ch1-shrnuti",
@@ -78,7 +88,9 @@
    "rel": [
     "ch4-jak-vypada-internet",
     "ch2-wifi-router"
-   ]
+   ],
+   "prereq": [],
+   "short": "Shrnutí 1"
   },
   {
    "slug": "ch2-wifi-router",
@@ -90,7 +102,9 @@
     "ch2-mobilni-data",
     "ch1-routery",
     "ch2-kabely"
-   ]
+   ],
+   "prereq": [],
+   "short": "Wi-Fi"
   },
   {
    "slug": "ch2-kabely",
@@ -102,7 +116,9 @@
     "ch1-kabely",
     "ch2-hotspot-satelity",
     "ch2-wifi-router"
-   ]
+   ],
+   "prereq": [],
+   "short": "UTP a optika"
   },
   {
    "slug": "ch2-mobilni-data",
@@ -113,7 +129,9 @@
    "rel": [
     "ch2-hotspot-satelity",
     "ch2-wifi-router"
-   ]
+   ],
+   "prereq": [],
+   "short": "Mobilní data"
   },
   {
    "slug": "ch2-hotspot-satelity",
@@ -124,7 +142,9 @@
    "rel": [
     "ch2-mobilni-data",
     "ch2-kabely"
-   ]
+   ],
+   "prereq": [],
+   "short": "Satelity"
   },
   {
    "slug": "ch2-shrnuti",
@@ -135,7 +155,9 @@
    "rel": [
     "ch4-jak-se-pripojujeme",
     "ch3-dino"
-   ]
+   ],
+   "prereq": [],
+   "short": "Shrnutí 2"
   },
   {
    "slug": "ch3-dino",
@@ -146,7 +168,9 @@
    "rel": [
     "ch3-pakety",
     "ch1-routery"
-   ]
+   ],
+   "prereq": [],
+   "short": "Dinosaurus"
   },
   {
    "slug": "ch3-pakety",
@@ -158,7 +182,9 @@
     "ch3-dino",
     "ch1-routery",
     "ch3-stopa"
-   ]
+   ],
+   "prereq": [],
+   "short": "Pakety"
   },
   {
    "slug": "ch3-kdo-plati",
@@ -170,7 +196,9 @@
     "ch3-cookies",
     "ch3-stopa",
     "ch1-servery"
-   ]
+   ],
+   "prereq": [],
+   "short": "Kdo platí?"
   },
   {
    "slug": "ch3-cookies",
@@ -181,7 +209,9 @@
    "rel": [
     "ch3-stopa",
     "ch3-kdo-plati"
-   ]
+   ],
+   "prereq": [],
+   "short": "Cookies"
   },
   {
    "slug": "ch3-stopa",
@@ -192,7 +222,9 @@
    "rel": [
     "ch3-cookies",
     "ch3-pakety"
-   ]
+   ],
+   "prereq": [],
+   "short": "Stopa"
   },
   {
    "slug": "ch4-jak-vypada-internet",
@@ -203,7 +235,12 @@
    "rel": [
     "ch1-shrnuti",
     "ch4-jak-se-pripojujeme"
-   ]
+   ],
+   "prereq": [
+    "ch1-servery",
+    "ch1-routery"
+   ],
+   "short": "Opakování 1"
   },
   {
    "slug": "ch4-jak-se-pripojujeme",
@@ -214,7 +251,12 @@
    "rel": [
     "ch2-shrnuti",
     "ch4-digitalni-stopa"
-   ]
+   ],
+   "prereq": [
+    "ch2-wifi-router",
+    "ch2-kabely"
+   ],
+   "short": "Opakování 2"
   },
   {
    "slug": "ch4-digitalni-stopa",
@@ -225,7 +267,12 @@
    "rel": [
     "ch3-stopa",
     "ch4-jak-vypada-internet"
-   ]
+   ],
+   "prereq": [
+    "ch3-pakety",
+    "ch3-stopa"
+   ],
+   "short": "Opakování 3"
   }
  ],
  "edges": []
