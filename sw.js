@@ -1,5 +1,5 @@
 // Service Worker for p-book — offline support
-const CACHE_NAME = 'pbook-internet-skolni-v17';
+const CACHE_NAME = 'pbook-internet-skolni-v18';
 
 const PRECACHE = [
   '/',
@@ -24,6 +24,7 @@ const PRECACHE = [
   '/css/skola.css',
   '/content/book.json',
   '/content/concepts.json',
+  '/content/concept-map.json',
   '/content/school-unit.json',
   '/content/concept-proposals.json',
   '/games/decentralizace-order.json',

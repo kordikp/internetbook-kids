@@ -1,0 +1,232 @@
+{
+ "temata": [
+  {
+   "id": "ch1-jak-vypada-internet",
+   "nazev": "Jak vypadá internet",
+   "color": "#0EA5E9"
+  },
+  {
+   "id": "ch2-jak-se-pripojujeme",
+   "nazev": "Jak se připojujeme",
+   "color": "#7C3AED"
+  },
+  {
+   "id": "ch3-digitalni-stopa",
+   "nazev": "Co o nás ví internet",
+   "color": "#D97706"
+  },
+  {
+   "id": "ch4-velke-opakovani",
+   "nazev": "Velké opakování",
+   "color": "#10B981"
+  }
+ ],
+ "nodes": [
+  {
+   "slug": "ch1-servery",
+   "title": "Kde je to všechno uloženo?",
+   "tema": "ch1-jak-vypada-internet",
+   "state": "core",
+   "teaser": "Všechna videa z YouTube by se do tvého mobilu nevešla ani náhodou. Tak kde vlastně jsou?",
+   "rel": [
+    "ch1-routery",
+    "ch3-kdo-plati",
+    "ch2-kabely"
+   ]
+  },
+  {
+   "slug": "ch1-kabely",
+   "title": "Kabely přes půl světa",
+   "tema": "ch1-jak-vypada-internet",
+   "state": "core",
+   "teaser": "Video k tobě 'teče' jako voda hadicí – a klidně po dně oceánu.",
+   "rel": [
+    "ch2-kabely",
+    "ch1-routery",
+    "ch1-nema-reditele"
+   ]
+  },
+  {
+   "slug": "ch1-routery",
+   "title": "Routery: chytré křižovatky",
+   "tema": "ch1-jak-vypada-internet",
+   "state": "core",
+   "teaser": "Na každé křižovatce sítě stojí dopravní policista, který ukazuje datům, kudy jet.",
+   "rel": [
+    "ch3-pakety",
+    "ch1-nema-reditele",
+    "ch2-wifi-router"
+   ]
+  },
+  {
+   "slug": "ch1-nema-reditele",
+   "title": "Internet nemá ředitele",
+   "tema": "ch1-jak-vypada-internet",
+   "state": "core",
+   "teaser": "Někdo překopne kabel mezi Prahou a Brnem. Dojde tvoje zpráva kamarádce? Ano – a tady je proč.",
+   "rel": [
+    "ch1-routery",
+    "ch1-kabely"
+   ]
+  },
+  {
+   "slug": "ch1-shrnuti",
+   "title": "Co už víš o internetu",
+   "tema": "ch1-jak-vypada-internet",
+   "state": "core",
+   "teaser": "Servery, kabely, routery, žádný ředitel – celá kapitola na jedné stránce.",
+   "rel": [
+    "ch4-jak-vypada-internet",
+    "ch2-wifi-router"
+   ]
+  },
+  {
+   "slug": "ch2-wifi-router",
+   "title": "Wi-Fi a router: odkud se bere signál",
+   "tema": "ch2-jak-se-pripojujeme",
+   "state": "core",
+   "teaser": "Wi-Fi není jen tak kolem nás. Vysílá ji krabička, která musí být zapojená dvěma kabely — víš kterými?",
+   "rel": [
+    "ch2-mobilni-data",
+    "ch1-routery",
+    "ch2-kabely"
+   ]
+  },
+  {
+   "slug": "ch2-kabely",
+   "title": "Kabely: nejrychlejší cesta, i pod oceánem",
+   "tema": "ch2-jak-se-pripojujeme",
+   "state": "core",
+   "teaser": "Jak se dostane zpráva z Česka do Ameriky? Neuvěříš — většinu cesty pluje kabelem po dně oceánu.",
+   "rel": [
+    "ch1-kabely",
+    "ch2-hotspot-satelity",
+    "ch2-wifi-router"
+   ]
+  },
+  {
+   "slug": "ch2-mobilni-data",
+   "title": "Mobilní data a BTS vysílače",
+   "tema": "ch2-jak-se-pripojujeme",
+   "state": "core",
+   "teaser": "V lese není Wi-Fi ani kabel — a mapa se stejně načte. Kdo ti to připojení posílá?",
+   "rel": [
+    "ch2-hotspot-satelity",
+    "ch2-wifi-router"
+   ]
+  },
+  {
+   "slug": "ch2-hotspot-satelity",
+   "title": "Hotspot a satelity: internet skoro všude",
+   "tema": "ch2-jak-se-pripojujeme",
+   "state": "core",
+   "teaser": "Kamarád nemá data? Půjč mu svůj internet! A co když jsi na lodi uprostřed oceánu?",
+   "rel": [
+    "ch2-mobilni-data",
+    "ch2-kabely"
+   ]
+  },
+  {
+   "slug": "ch2-shrnuti",
+   "title": "Shrnutí: které připojení kdy?",
+   "tema": "ch2-jak-se-pripojujeme",
+   "state": "core",
+   "teaser": "Kabel, Wi-Fi, mobilní data, satelit — čtyři cesty na internet. Která je nejlepší? Přijde na to!",
+   "rel": [
+    "ch4-jak-se-pripojujeme",
+    "ch3-dino"
+   ]
+  },
+  {
+   "slug": "ch3-dino",
+   "title": "Dinosaurus v náklaďácích",
+   "tema": "ch3-digitalni-stopa",
+   "state": "core",
+   "teaser": "Jak poslat obří kostru dinosaura do jiného města, když se nevejde do jednoho náklaďáku? Přesně takhle cestují data.",
+   "rel": [
+    "ch3-pakety",
+    "ch1-routery"
+   ]
+  },
+  {
+   "slug": "ch3-pakety",
+   "title": "Pakety: skládačka, která se složí sama",
+   "tema": "ch3-digitalni-stopa",
+   "state": "core",
+   "teaser": "Fotka se před odesláním rozpadne na očíslované dílky. Jak je možné, že se poskládají u kamaráda, a ne u souseda?",
+   "rel": [
+    "ch3-dino",
+    "ch1-routery",
+    "ch3-stopa"
+   ]
+  },
+  {
+   "slug": "ch3-kdo-plati",
+   "title": "Kdo platí internet?",
+   "tema": "ch3-digitalni-stopa",
+   "state": "core",
+   "teaser": "Žádný ředitel internetu neexistuje. Kdo tedy platí všechny ty kabely, routery a servery?",
+   "rel": [
+    "ch3-cookies",
+    "ch3-stopa",
+    "ch1-servery"
+   ]
+  },
+  {
+   "slug": "ch3-cookies",
+   "title": "Cookies: šatnový lístek internetu",
+   "tema": "ch3-digitalni-stopa",
+   "state": "core",
+   "teaser": "Co se doopravdy stane, když klikneš na „Přijmout vše“? Pomůže ti šatna v divadle.",
+   "rel": [
+    "ch3-stopa",
+    "ch3-kdo-plati"
+   ]
+  },
+  {
+   "slug": "ch3-stopa",
+   "title": "Tvoje digitální stopa",
+   "tema": "ch3-digitalni-stopa",
+   "state": "core",
+   "teaser": "Projdi se čerstvým sněhem a zůstanou po tobě stopy. Na internetu je to stejné — jen se stopy samy nerozpustí.",
+   "rel": [
+    "ch3-cookies",
+    "ch3-pakety"
+   ]
+  },
+  {
+   "slug": "ch4-jak-vypada-internet",
+   "title": "Opakování: Jak vypadá internet",
+   "tema": "ch4-velke-opakovani",
+   "state": "core",
+   "teaser": "Servery, routery, pakety a kabely na dně oceánu — zvládneš celou mapu internetu poskládat z hlavy?",
+   "rel": [
+    "ch1-shrnuti",
+    "ch4-jak-se-pripojujeme"
+   ]
+  },
+  {
+   "slug": "ch4-jak-se-pripojujeme",
+   "title": "Opakování: Jak se připojujeme",
+   "tema": "ch4-velke-opakovani",
+   "state": "core",
+   "teaser": "Wi-Fi, mobilní data, kabel, nebo rovnou satelit? Rychlé shrnutí všech cest na internet.",
+   "rel": [
+    "ch2-shrnuti",
+    "ch4-digitalni-stopa"
+   ]
+  },
+  {
+   "slug": "ch4-digitalni-stopa",
+   "title": "Opakování: Digitální stopa",
+   "tema": "ch4-velke-opakovani",
+   "state": "core",
+   "teaser": "Každý lajk, klik a komentář po tobě něco zanechá. Poslední velké téma k zopakování.",
+   "rel": [
+    "ch3-stopa",
+    "ch4-jak-vypada-internet"
+   ]
+  }
+ ],
+ "edges": []
+}
