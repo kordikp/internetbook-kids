@@ -85,7 +85,7 @@ export const CONFIG = {
   // z celoživotních XP a utrácením NEKLESAJÍ.
   aiEconomy: {
     enabled: true,
-    freeTrials: 1,                      // první použití základní AI zdarma
+    freeTrials: 3,                      // první použití základní AI zdarma
     prices: { basic: 10, advanced: 30 },// basic = textový přepis/vložení; advanced = varianta/diagram (silný model)
     earnManualEdit: 8,                  // odměna za ruční úpravu obsahu (jednou na sekci)
   },

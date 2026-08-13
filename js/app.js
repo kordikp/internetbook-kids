@@ -4344,6 +4344,21 @@ class PBook {
     h += '</div>';
 
     // XP breakdown
+    // AI peněženka — ať je vždy vidět, kolik ⚡ mám a jak fungují ceny
+    if (CONFIG.aiEconomy?.enabled) {
+      const pr = CONFIG.aiEconomy.prices;
+      h += '<div class="profile-section"><h3>⚡ AI peněženka</h3>';
+      if (this._getAuth()) {
+        h += `<div style="font-size:1.6rem;font-weight:800">⚡ ${this._srvBalance != null ? this._srvBalance : '…'}</div>
+          <div style="font-size:.75rem;color:var(--text-2)">zůstatek na serveru · základní AI (text) ${pr.basic} ⚡ · pokročilá (varianty a diagramy) ${pr.advanced} ⚡</div>
+          <div style="font-size:.75rem;color:var(--text-2);margin-top:.3em">Vyděláváš čtením (+10), kvízy (+2), hrami (+5), poznámkami (+3) a ruční úpravou (+${CONFIG.aiEconomy.earnManualEdit}). Denní strop výdělku hlídá server.</div>`;
+      } else {
+        const left = Math.max(0, (CONFIG.aiEconomy.freeTrials || 1) - this._trialsUsedLocal());
+        h += `<div style="font-size:.95rem"><b>${left}×</b> vyzkoušení AI zdarma na tomto zařízení</div>
+          <div style="font-size:.75rem;color:var(--text-2);margin-top:.3em">Po přihlášení (nahoře) se ti ⚡ počítají na serveru: uvítacích +100, přenos dosavadních XP a výdělky za práci s knihou. Ceny: text ${pr.basic} ⚡ · diagramy a varianty ${pr.advanced} ⚡.</div>`;
+      }
+      h += '<div style="font-size:.7rem;color:#15803D;margin-top:.35em">Vedeme k hospodárnému využívání AI — ruční práce a přemýšlení se cení víc. 🌱</div></div>';
+    }
     h += '<div class="profile-section"><h3>Jak získat XP</h3>';
     h += '<div style="font-size:.8rem;display:grid;grid-template-columns:auto 1fr;gap:.3em .8em">';
     h += '<span style="font-weight:600;color:var(--accent)">+10 XP</span><span>Přečti část</span>';
@@ -6778,7 +6793,8 @@ class PBook {
       if (d && d.ok) { this._srvBalance = d.balance; this.updateXPBadge(); }
     }, 4000);
   }
-  _trialUsedLocal() { return localStorage.getItem('pbook-ai-trial-used') === '1'; }
+  _trialsUsedLocal() { return parseInt(localStorage.getItem('pbook-ai-trials-used') || (localStorage.getItem('pbook-ai-trial-used') === '1' ? '1' : '0'), 10) || 0; }
+  _trialUsedLocal() { return this._trialsUsedLocal() >= (CONFIG.aiEconomy?.freeTrials || 1); }
   aiBalance() { return this._srvBalance == null ? 0 : this._srvBalance; }
   aiCanPay(tier) {
     const c = CONFIG.aiEconomy;
@@ -6796,8 +6812,8 @@ class PBook {
       else this.refreshAiBalance(false);
       this.showXPToast('−{p} ⚡ za AI · zbývá ⚡{b}'.replace('{p}', c.prices[tier]).replace('{b}', this.aiBalance()), 'xp');
     } else if (pay && pay.free) {
-      localStorage.setItem('pbook-ai-trial-used', '1');
-      this.showXPToast('První vyzkoušení AI zdarma 🌱', 'xp');
+      localStorage.setItem('pbook-ai-trials-used', String(this._trialsUsedLocal() + 1));
+      this.showXPToast('Vyzkoušení AI zdarma 🌱 (zbývá {n})'.replace('{n}', Math.max(0, (CONFIG.aiEconomy?.freeTrials || 1) - this._trialsUsedLocal())), 'xp');
     }
     this.rc.logEvent('ai_spend', { tier, price: this._getAuth() ? c.prices[tier] : 0, balance: this.aiBalance() });
   }
@@ -6827,7 +6843,7 @@ class PBook {
     const c = CONFIG.aiEconomy;
     if (!c || !c.enabled || !this._f('gamification')) return '';
     if (this._getAuth()) return 'AI se platí z XP na serveru: text {b} ⚡ · s diagramem {a} ⚡ — máš <b>⚡{bal}</b>. Ruční úprava je zdarma a vydělá +{me} XP.'.replace('{b}', c.prices.basic).replace('{a}', c.prices.advanced).replace('{bal}', this.aiBalance()).replace('{me}', c.earnManualEdit);
-    if (!this._trialUsedLocal()) return 'První vyzkoušení AI zdarma 🌱 — pak se přihlas a plať z vydělaných XP (text {b} ⚡, diagram {a} ⚡).'.replace('{b}', c.prices.basic).replace('{a}', c.prices.advanced);
+    if (!this._trialUsedLocal()) return ('Vyzkoušení AI zdarma: zbývá ' + Math.max(0, (c.freeTrials || 1) - this._trialsUsedLocal()) + ' 🌱 — pak se přihlas a plať z vydělaných XP (text {b} ⚡, diagram {a} ⚡).').replace('{b}', c.prices.basic).replace('{a}', c.prices.advanced);
     return 'AI po přihlášení (Profil) — platí se z XP vydělaných čtením a prací s knihou. Ruční úprava je zdarma.';
   }
 
