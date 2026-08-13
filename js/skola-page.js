@@ -184,8 +184,55 @@ async function renderHodina() {
   }
 }
 
+function b64u(obj) {
+  return btoa(unescape(encodeURIComponent(JSON.stringify(obj)))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+}
+
+async function renderMissionBuilder() {
+  const el = $('skBuilder');
+  if (!el) return;
+  let concepts = [];
+  try { concepts = (await (await fetch('/content/concepts.json')).json()).concepts || []; } catch (e) {}
+  let proposals = [];
+  try { const d = await (await fetch('/api/proposals')).json(); if (d.ok) proposals = d.proposals; } catch (e) {}
+  const byCh = {};
+  concepts.forEach(c => (byCh[c.chapter] = byCh[c.chapter] || []).push(c));
+  el.innerHTML = `
+    <h2 style="margin-top:30px">🎯 Mikromise z konceptů</h2>
+    <p>Vyberte koncepty k procvičení — <b>formu si žák volí sám</b> (text, komiks, ukázka kódu, jiné podání…). Z odkazu se žákovi sestaví krátká mise s boss otázkou; za zvládnutí dostane <b>mikrocertifikát</b>.</p>
+    <input id="mbTitle" placeholder="Název mikromise (nepovinné, např. Opakování na test)" style="width:100%;padding:9px;border:1px solid #cfcdc6;border-radius:8px;font:inherit;font-size:14.5px;margin:6px 0">
+    ${Object.entries(byCh).map(([ch, list]) => `
+      <div style="margin:.5em 0"><b style="font-family:var(--mono);font-size:12px">${esc(ch)}</b><br>
+      ${list.map(c => `<label style="display:inline-block;border:1px solid var(--line);border-radius:999px;padding:2px 10px;margin:3px 4px 0 0;font-size:13.5px;cursor:pointer;background:var(--card)">
+        <input type="checkbox" class="mbC" value="${esc(c.id)}" data-t="${esc(c.title)}" style="vertical-align:-2px"> ${esc(c.title)}</label>`).join('')}
+      </div>`).join('')}
+    <div class="sk-copy" id="mbOut" style="display:none"><span id="mbLink"></span><button class="sk-btn ghost" id="mbCopy">Kopírovat</button></div>
+
+    <h2 style="margin-top:30px">✍️ Autorské studio — rozpracování konceptu</h2>
+    <p>Žák dostane koncept a <b>rozpracuje ho do knihy pod vedením AI kouče</b>: iterativně píše, kouč hodnotí proti kontraktu (skóre, mezery, jedna otázka, jeden tip — nikdy nepíše za něj). Při skóre ≥ 70 vznikne autorský blok, certifikát s otázkami k obhajobě a žák může prezentovat ve třídě. Kouč stojí 10 ⚡ za kolo — psaní je zdarma.</p>
+    ${proposals.length ? proposals.map(pr => `<div class="sk-copy"><span><b>${esc(pr.title)}</b><br>${location.origin}/#autor-${esc(pr.slug)}</span>
+      <button class="sk-btn ghost" onclick="navigator.clipboard&&navigator.clipboard.writeText('${location.origin}/#autor-${esc(pr.slug)}')">Kopírovat</button></div>`).join('')
+      : '<p class="sk-meta">Zatím žádné návrhy konceptů — založte je v adminu (🌱 Proposals), nebo zadejte rozpracování existujícího konceptu odkazem #autor-&lt;id-konceptu&gt;.</p>'}
+  `;
+  const update = () => {
+    const sel = [...el.querySelectorAll('.mbC:checked')];
+    const out = $('mbOut');
+    if (!sel.length) { out.style.display = 'none'; return; }
+    const payload = { c: sel.map(x => x.value) };
+    const t = ($('mbTitle').value || '').trim();
+    if (t) payload.t = t.slice(0, 60);
+    const link = location.origin + '/#mise-' + b64u(payload);
+    out.style.display = '';
+    $('mbLink').innerHTML = `<b>${sel.length}× koncept</b> · odkaz pro žáky:<br>${esc(link)}`;
+    $('mbCopy').onclick = () => navigator.clipboard && navigator.clipboard.writeText(link);
+  };
+  el.addEventListener('change', update);
+  $('mbTitle').addEventListener('input', update);
+}
+
 function renderUcitel() {
   renderRoute(null);
+  renderMissionBuilder();
   const base = location.origin + location.pathname.replace(/[^/]*$/, '');
   const links = [
     ['Rozcestník pro žáky', base + 'start'],
