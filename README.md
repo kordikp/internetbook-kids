@@ -17,7 +17,10 @@ recall kvízy s chytrým opakováním, mise s AI zkoušejícím a certifikát.
 Kniha je **živá**: čtenář si může nechat kteroukoli sekci přegenerovat po svém
 (jednodušeji, do hloubky, jiné příklady), přidat vlastní text či AI diagram na
 označené místo, vytvořit vlastní „telling" a sdílet ho se třídou. Ověřené jádro
-zůstává nedotčené a vše generované je viditelně označené.
+zůstává nedotčené a vše generované je viditelně označené. **AI se platí z XP** —
+čtenář si na ni vydělá čtením, kvízy, poznámkami a ručními úpravami (první
+vyzkoušení zdarma): vedeme k hospodárnému, „zelenějšímu" využívání AI a ruční
+práce má větší cenu než generovaná.
 
 ## Školní režim — brány
 

@@ -80,6 +80,16 @@ export const CONFIG = {
 
   // Steering & generation (P1) + community catalog economics (P2)
   // Thresholds per _design-collective-pbook.md §5-§7 — tunable defaults for the pilot.
+  // Hospodárná AI: generování se platí z XP, které čtenář vydělá čtením,
+  // kvízy, hrami, poznámkami a ručními úpravami. Úrovně a odznaky se počítají
+  // z celoživotních XP a utrácením NEKLESAJÍ.
+  aiEconomy: {
+    enabled: true,
+    freeTrials: 1,                      // první použití základní AI zdarma
+    prices: { basic: 10, advanced: 30 },// basic = textový přepis/vložení; advanced = varianta/diagram (silný model)
+    earnManualEdit: 8,                  // odměna za ruční úpravu obsahu (jednou na sekci)
+  },
+
   steering: {
     serveThreshold: 0.75,     // facet match ≥ this → serve existing variant, no generate offer
     offerThreshold: 0.45,     // match ≥ this → serve nearest + offer exact generation

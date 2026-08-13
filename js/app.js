@@ -718,7 +718,7 @@ class PBook {
         <input type="text" id="gen-wish-${blockId}" class="gen-wish" maxlength="300" value="${this.escHtml(wish)}"
           oninput="(app._steerWish=app._steerWish||{})['${conceptId}']=this.value"
           placeholder="Nepovinná poznámka: chceš něco konkrétního? (např. 'vysvětli to na školní Wi-Fi')">
-        <button class="steer-chip steer-gen" onclick="app.generateVariant('${blockId}','${conceptId}')">&#10024; Vygenerovat přesně tohle (~30 s)</button>
+        <button class="steer-chip steer-gen" onclick="app.generateVariant('${blockId}','${conceptId}')">&#10024; Vygenerovat přesně tohle (~30 s) · ${CONFIG.aiEconomy?.prices.advanced || 0} ⚡</button>
         ${(target.genre === 'comic' || target.genre === 'animation') ? `<span style="font-size:.65rem;color:var(--text-3);flex-basis:100%">${target.genre === 'comic' ? 'Čtyřokénkový komiks' : 'Animované SVG'} se pro tuhle část nakreslí (~40 s).</span>` : (target.visuality === 'visual-first' || /diagram|image/.test(target.carriers || '')) ? `<span style="font-size:.65rem;color:var(--text-3);flex-basis:100%">U žánru komiks/animace generátor nakreslí skutečný obrázek; textové požadavky dostanou text, tabulky, vzorce a kód.</span>` : ''}`;
     } else if (canGen) {
       h += `<span>Tohle zatím žádné podání nepokrývá — zapni si <b>otevřený režim</b> v <a href="#" onclick="app.switchView('profile');return false">Profilu</a> a nech si ho vygenerovat.</span>`;
@@ -1012,6 +1012,8 @@ class PBook {
     const target = this._steerTargets?.[conceptId] || this.user.getTargetFacets();
     const offer = document.getElementById(`gen-offer-${blockId}`);
     if (offer) offer.innerHTML = '<span class="gen-spinner">&#9889; Píšu tvoje podání&hellip; (~30 s — stejný koncept, zkontrolovaný proti jeho zadání)</span>';
+    const payV = this.aiCanPay('advanced');
+    if (!payV.ok) { if (offer) offer.innerHTML = this.aiPaywallHtml('advanced'); return; }
     this.rc.logEvent('generate_request', { concept: conceptId, target });
     try {
       const existingVariants = this._conceptPool(conceptId).map(b => {
@@ -1039,6 +1041,7 @@ class PBook {
       if (offer) offer.remove();
       this._swapBlock(blockId, block, target);
       this.rc.logEvent('generate_served', { concept: conceptId, variantId: block.meta.id, cached: !!data.cached });
+      if (!data.cached) this.aiCharge('advanced', payV);
       this._setTellingChoice(conceptId, block.meta.id);
       if (this._f('gamification')) { this.user.addXP(2); this.user.save(); this.updateXPBadge(); }
     } catch (e) {
@@ -5672,9 +5675,10 @@ class PBook {
         <textarea id="remix-prompt-${blockId}" rows="2" placeholder="${insert ? `např. 'nakresli diagram vnitřního uspořádání routeru a vysvětli ho', 'přidej příklad ze školní sítě'` : `např. 'vysvětli to na příkladu školní sítě', 'jednodušší slova', 'přidej jedno konkrétní číslo'`}"
           style="width:100%;padding:.4em;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:.78rem"></textarea>` : ''}
         <div style="font-size:.68rem;color:var(--text-3);margin:.25em 0">Originál zůstane v obou případech nedotčený — dostaneš vlastní verzi se zvýrazněnou změnou a sám/sama rozhodneš, jestli si ji necháš nebo ji nasdílíš.</div>
+        <div style="font-size:.66rem;color:var(--text-3);margin:.15em 0">${this.aiEconHint()}</div>
         <div class="note-actions">
           <button class="note-save" onclick="app.submitManualEdit('${blockId}')">${insert ? '💾 Vložit můj text' : '💾 Uložit mou úpravu'}</button>
-          ${canGen ? `<button class="note-save" style="background:var(--accent)" onclick="app.submitRemix('${blockId}')">${insert ? '✨ Napsat pomocí AI' : '✨ Přepsat pomocí AI'}</button>` : ''}
+          ${canGen ? `<button class="note-save" style="background:var(--accent)" onclick="app.submitRemix('${blockId}')">${insert ? '✨ Napsat pomocí AI' : '✨ Přepsat pomocí AI'} · od ${CONFIG.aiEconomy?.prices.basic || 0} ⚡</button>` : ''}
           <button class="note-cancel" onclick="document.getElementById('remix-form-${blockId}').remove()">Zrušit</button>
         </div>
         <div id="remix-status-${blockId}"></div>`;
@@ -5733,6 +5737,20 @@ class PBook {
     document.getElementById(`remix-form-${blockId}`)?.remove();
     this._swapBlock(blockId, block, this._blockFacets(block.meta) || {});
     this.rc.logEvent('manual_edit', { blockId, remixId: id });
+    // Ruční práce plní AI peněženku — jednorázově na sekci, jen podstatná změna.
+    try {
+      const mk = 'pbook-manual-edit-rewarded';
+      const done = JSON.parse(localStorage.getItem(mk) || '[]');
+      const rootFor = src.remixOf || src.id;
+      const substantive = (newMid || '').length >= 20 || Math.abs((newMid || '').length - (oldMid || '').length) >= 20;
+      if (!done.includes(rootFor) && substantive && this._f('gamification') && CONFIG.aiEconomy?.enabled) {
+        done.push(rootFor); localStorage.setItem(mk, JSON.stringify(done));
+        const n = CONFIG.aiEconomy.earnManualEdit || 8;
+        this.user.addXP(n); this.user.save();
+        this.showXPToast('+{n} XP za ruční úpravu ✍️'.replace('{n}', n), 'xp');
+        this.updateXPBadge();
+      }
+    } catch (e) {}
     document.getElementById(`b-${id}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
     this._showRemixDecision(isReRemix ? rootId : blockId, id, oldMid || original, newMid || edited);
   }
@@ -5824,6 +5842,10 @@ class PBook {
     const entry = this._findAnyBlock(blockId);
     if (!entry) return;
     const status = document.getElementById(`remix-status-${blockId}`);
+    const wantsSvgAI = /\b(diagram|schema|schéma|obráz|obrazek|nákres|nakresli|animac|animation|visuali|draw|sketch)/i.test(instruction);
+    const remixTier = wantsSvgAI ? 'advanced' : 'basic';
+    const payR = this.aiCanPay(remixTier);
+    if (!payR.ok) { if (status) status.innerHTML = this.aiPaywallHtml(remixTier); return; }
     if (status) status.innerHTML = `<span class="gen-spinner">✨ ${isInsert ? 'Píšu nový kousek' : 'Přepisuji tu pasáž'}… (~20 s)</span>`;
     this.rc.logEvent('remix_request', { blockId, concept: this._conceptIds(entry.meta)[0], mode: isInsert ? 'insert' : 'remix', instruction: instruction.slice(0, 200) });
 
@@ -5872,6 +5894,7 @@ class PBook {
       const data = await res.json();
       if (!res.ok || !data.ok) throw new Error(data.error || (insertHere ? 'vložení selhalo' : 'remix selhal'));
       const replacement = insertHere ? data.addition : data.replacement;
+      this.aiCharge(remixTier, payR);
       const attachedSvg = data.svg || null;   // reader asked for a diagram → server drew one
 
       // A drawn diagram belongs WHERE the change is — attaching it to the block
@@ -5963,7 +5986,7 @@ class PBook {
           style="width:100%;padding:.4em;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:.78rem;margin-top:.3em"></textarea>
         <div style="font-size:.68rem;color:var(--text-3);margin:.25em 0">Originál zůstane nedotčený — dostaneš vlastní verzi označenou jako remix. Funguje i na animace.</div>
         <div class="note-actions">
-          <button class="note-save" onclick="app.submitDiagramRemix('${blockId}')">✨ Vygenerovat vylepšenou verzi</button>
+          <button class="note-save" onclick="app.submitDiagramRemix('${blockId}')">✨ Vygenerovat vylepšenou verzi · ${CONFIG.aiEconomy?.prices.advanced || 0} ⚡</button>
           <button class="note-cancel" onclick="document.getElementById('remix-form-${blockId}').remove()">Zrušit</button>
         </div>
         <div id="remix-status-${blockId}"></div>`;
@@ -5980,6 +6003,8 @@ class PBook {
     if (!entry) return;
     const status = document.getElementById(`remix-status-${blockId}`);
     if (status) status.innerHTML = '<span class="gen-spinner">✨ Překresluji… (~30–60 s u animací)</span>';
+    const payD = this.aiCanPay('advanced');
+    if (!payD.ok) { if (status) status.innerHTML = this.aiPaywallHtml('advanced'); return; }
     this.rc.logEvent('remix_request', { blockId, diagram: true, instruction: instruction.slice(0, 200) });
 
     try {
@@ -6003,6 +6028,7 @@ class PBook {
       });
       const data = await res.json();
       if (!res.ok || !data.ok) throw new Error(data.error || 'remix SVG selhal');
+      this.aiCharge('advanced', payD);
       const cleanSvg = this._sanitizeSvgClient(data.svg);
       if (!cleanSvg) throw new Error('remixované SVG neprošlo bezpečnostní kontrolou');
 
@@ -6528,6 +6554,56 @@ class PBook {
     ];
   }
 
+  // ===== AI EKONOMIKA (hospodárná AI) =====
+  // Zůstatek = celoživotní XP − utracené. Úrovně/odznaky čtou this.user.xp,
+  // takže utrácením nikdy neklesají. Peněženka žije mimo UserModel, ať se
+  // nedotýká jeho serializace.
+  _wallet() {
+    try { return JSON.parse(localStorage.getItem('pbook-ai-wallet')) || { spent: 0, trials: 0 }; }
+    catch (e) { return { spent: 0, trials: 0 }; }
+  }
+  aiBalance() { return Math.max(0, (this.user.xp || 0) - this._wallet().spent); }
+  aiCanPay(tier) {
+    const c = CONFIG.aiEconomy;
+    if (!c || !c.enabled || !this._f('gamification')) return { ok: true, free: false };
+    const w = this._wallet();
+    if (tier === 'basic' && (w.trials || 0) < (c.freeTrials || 0)) return { ok: true, free: true };
+    return { ok: this.aiBalance() >= c.prices[tier], free: false };
+  }
+  aiCharge(tier, pay) {
+    const c = CONFIG.aiEconomy;
+    if (!c || !c.enabled || !this._f('gamification')) return;
+    const w = this._wallet();
+    if (pay && pay.free) {
+      w.trials = (w.trials || 0) + 1;
+      localStorage.setItem('pbook-ai-wallet', JSON.stringify(w));
+      this.showXPToast('První vyzkoušení AI zdarma 🌱', 'xp');
+    } else {
+      w.spent = (w.spent || 0) + c.prices[tier];
+      localStorage.setItem('pbook-ai-wallet', JSON.stringify(w));
+      this.showXPToast('−{p} ⚡ za AI · zbývá {b}'.replace('{p}', c.prices[tier]).replace('{b}', '⚡' + this.aiBalance()), 'xp');
+    }
+    this.rc.logEvent('ai_spend', { tier, price: pay && pay.free ? 0 : c.prices[tier], balance: this.aiBalance() });
+    this.updateXPBadge();
+  }
+  aiPaywallHtml(tier) {
+    const c = CONFIG.aiEconomy;
+    const tierName = tier === 'advanced' ? 'Pokročilá AI (varianty a diagramy)' : 'Základní AI (text)';
+    return `<div style="border:1.5px solid #D97706;background:var(--card,#fff);border-radius:10px;padding:.55em .7em;font-size:.74rem;line-height:1.5">
+      <b>⚡ Na tohle zatím nemáš dost ⚡</b><br>
+      ${'{tier} stojí <b>{p} ⚡</b>, máš <b>{b} ⚡</b>. XP vyděláš prací s knihou:'.replace('{tier}', tierName).replace('{p}', c.prices[tier]).replace('{b}', this.aiBalance())}<br>
+      <span style="color:var(--text-2,#666)">${'přečtená sekce +10 · kvíz kartička +2 · hra +5 · poznámka +3 · <b>ruční úprava +{me}</b>'.replace('{me}', c.earnManualEdit)}</span><br>
+      <span style="color:#15803D;font-size:.68rem">Vedeme k hospodárnému využívání AI — ruční práce a přemýšlení se cení víc. 🌱</span>
+    </div>`;
+  }
+  aiEconHint() {
+    const c = CONFIG.aiEconomy;
+    if (!c || !c.enabled || !this._f('gamification')) return '';
+    const trial = this.aiCanPay('basic').free ? ' · první vyzkoušení zdarma 🌱' : '';
+    return 'AI se platí z XP: text {b} ⚡ · s diagramem {a} ⚡ — máš <b>⚡{bal}</b>{trial}. Ruční úprava je zdarma a vydělá +{me} XP.'.replace('{b}', c.prices.basic).replace('{a}', c.prices.advanced)
+      .replace('{bal}', this.aiBalance()).replace('{trial}', trial).replace('{me}', c.earnManualEdit);
+  }
+
   updateXPBadge() {
     const el = document.getElementById('xpBadge');
     if (!el) return;
@@ -6535,7 +6611,7 @@ class PBook {
     el.style.display = '';
     const reward = this.getLevelRewards().filter(r => r.level <= this.user.level).pop();
     const editor = this.getEditorTrack?.().tier === 'editor' ? '🛠 ' : '';
-    el.textContent = editor + (reward?.icon || '') + ' Úr. ' + this.user.level + ' · ' + this.user.xp + ' XP';
+    el.textContent = editor + (reward?.icon || '') + ' Úr. ' + this.user.level + ' · ' + this.user.xp + ' XP' + (CONFIG.aiEconomy?.enabled ? ' · ⚡' + this.aiBalance() : '');
     el.title = editor ? 'Redaktor — vysloužený přijatými příspěvky' : '';
     // Apply cosmetic theme
     this._applyLevelTheme();
