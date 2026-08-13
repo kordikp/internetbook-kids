@@ -1,279 +1,145 @@
 {
- "temata": [
-  {
-   "id": "ch1-jak-vypada-internet",
-   "nazev": "Jak vypadá internet",
-   "color": "#0EA5E9"
-  },
-  {
-   "id": "ch2-jak-se-pripojujeme",
-   "nazev": "Jak se připojujeme",
-   "color": "#7C3AED"
-  },
-  {
-   "id": "ch3-digitalni-stopa",
-   "nazev": "Co o nás ví internet",
-   "color": "#D97706"
-  },
-  {
-   "id": "ch4-velke-opakovani",
-   "nazev": "Velké opakování",
-   "color": "#10B981"
-  }
- ],
- "nodes": [
-  {
-   "slug": "ch1-servery",
-   "title": "Kde je to všechno uloženo?",
-   "tema": "ch1-jak-vypada-internet",
-   "state": "core",
-   "teaser": "Všechna videa z YouTube by se do tvého mobilu nevešla ani náhodou. Tak kde vlastně jsou?",
-   "rel": [
-    "ch1-routery",
-    "ch3-kdo-plati",
-    "ch2-kabely"
-   ],
-   "prereq": [],
-   "short": "Servery"
-  },
-  {
-   "slug": "ch1-kabely",
-   "title": "Kabely přes půl světa",
-   "tema": "ch1-jak-vypada-internet",
-   "state": "core",
-   "teaser": "Video k tobě 'teče' jako voda hadicí – a klidně po dně oceánu.",
-   "rel": [
-    "ch2-kabely",
-    "ch1-routery",
-    "ch1-nema-reditele"
-   ],
-   "prereq": [],
-   "short": "Kabely"
-  },
-  {
-   "slug": "ch1-routery",
-   "title": "Routery: chytré křižovatky",
-   "tema": "ch1-jak-vypada-internet",
-   "state": "core",
-   "teaser": "Na každé křižovatce sítě stojí dopravní policista, který ukazuje datům, kudy jet.",
-   "rel": [
-    "ch3-pakety",
-    "ch1-nema-reditele",
-    "ch2-wifi-router"
-   ],
-   "prereq": [],
-   "short": "Routery"
-  },
-  {
-   "slug": "ch1-nema-reditele",
-   "title": "Internet nemá ředitele",
-   "tema": "ch1-jak-vypada-internet",
-   "state": "core",
-   "teaser": "Někdo překopne kabel mezi Prahou a Brnem. Dojde tvoje zpráva kamarádce? Ano – a tady je proč.",
-   "rel": [
-    "ch1-routery",
-    "ch1-kabely"
-   ],
-   "prereq": [
-    "ch1-routery"
-   ],
-   "short": "Bez ředitele"
-  },
-  {
-   "slug": "ch1-shrnuti",
-   "title": "Co už víš o internetu",
-   "tema": "ch1-jak-vypada-internet",
-   "state": "core",
-   "teaser": "Servery, kabely, routery, žádný ředitel – celá kapitola na jedné stránce.",
-   "rel": [
-    "ch4-jak-vypada-internet",
-    "ch2-wifi-router"
-   ],
-   "prereq": [],
-   "short": "Shrnutí 1"
-  },
-  {
-   "slug": "ch2-wifi-router",
-   "title": "Wi-Fi a router: odkud se bere signál",
-   "tema": "ch2-jak-se-pripojujeme",
-   "state": "core",
-   "teaser": "Wi-Fi není jen tak kolem nás. Vysílá ji krabička, která musí být zapojená dvěma kabely — víš kterými?",
-   "rel": [
-    "ch2-mobilni-data",
-    "ch1-routery",
-    "ch2-kabely"
-   ],
-   "prereq": [],
-   "short": "Wi-Fi"
-  },
-  {
-   "slug": "ch2-kabely",
-   "title": "Kabely: nejrychlejší cesta, i pod oceánem",
-   "tema": "ch2-jak-se-pripojujeme",
-   "state": "core",
-   "teaser": "Jak se dostane zpráva z Česka do Ameriky? Neuvěříš — většinu cesty pluje kabelem po dně oceánu.",
-   "rel": [
-    "ch1-kabely",
-    "ch2-hotspot-satelity",
-    "ch2-wifi-router"
-   ],
-   "prereq": [],
-   "short": "UTP a optika"
-  },
-  {
-   "slug": "ch2-mobilni-data",
-   "title": "Mobilní data a BTS vysílače",
-   "tema": "ch2-jak-se-pripojujeme",
-   "state": "core",
-   "teaser": "V lese není Wi-Fi ani kabel — a mapa se stejně načte. Kdo ti to připojení posílá?",
-   "rel": [
-    "ch2-hotspot-satelity",
-    "ch2-wifi-router"
-   ],
-   "prereq": [],
-   "short": "Mobilní data"
-  },
-  {
-   "slug": "ch2-hotspot-satelity",
-   "title": "Hotspot a satelity: internet skoro všude",
-   "tema": "ch2-jak-se-pripojujeme",
-   "state": "core",
-   "teaser": "Kamarád nemá data? Půjč mu svůj internet! A co když jsi na lodi uprostřed oceánu?",
-   "rel": [
-    "ch2-mobilni-data",
-    "ch2-kabely"
-   ],
-   "prereq": [],
-   "short": "Satelity"
-  },
-  {
-   "slug": "ch2-shrnuti",
-   "title": "Shrnutí: které připojení kdy?",
-   "tema": "ch2-jak-se-pripojujeme",
-   "state": "core",
-   "teaser": "Kabel, Wi-Fi, mobilní data, satelit — čtyři cesty na internet. Která je nejlepší? Přijde na to!",
-   "rel": [
-    "ch4-jak-se-pripojujeme",
-    "ch3-dino"
-   ],
-   "prereq": [],
-   "short": "Shrnutí 2"
-  },
-  {
-   "slug": "ch3-dino",
-   "title": "Dinosaurus v náklaďácích",
-   "tema": "ch3-digitalni-stopa",
-   "state": "core",
-   "teaser": "Jak poslat obří kostru dinosaura do jiného města, když se nevejde do jednoho náklaďáku? Přesně takhle cestují data.",
-   "rel": [
-    "ch3-pakety",
-    "ch1-routery"
-   ],
-   "prereq": [],
-   "short": "Dinosaurus"
-  },
-  {
-   "slug": "ch3-pakety",
-   "title": "Pakety: skládačka, která se složí sama",
-   "tema": "ch3-digitalni-stopa",
-   "state": "core",
-   "teaser": "Fotka se před odesláním rozpadne na očíslované dílky. Jak je možné, že se poskládají u kamaráda, a ne u souseda?",
-   "rel": [
-    "ch3-dino",
-    "ch1-routery",
-    "ch3-stopa"
-   ],
-   "prereq": [],
-   "short": "Pakety"
-  },
-  {
-   "slug": "ch3-kdo-plati",
-   "title": "Kdo platí internet?",
-   "tema": "ch3-digitalni-stopa",
-   "state": "core",
-   "teaser": "Žádný ředitel internetu neexistuje. Kdo tedy platí všechny ty kabely, routery a servery?",
-   "rel": [
-    "ch3-cookies",
-    "ch3-stopa",
-    "ch1-servery"
-   ],
-   "prereq": [],
-   "short": "Kdo platí?"
-  },
-  {
-   "slug": "ch3-cookies",
-   "title": "Cookies: šatnový lístek internetu",
-   "tema": "ch3-digitalni-stopa",
-   "state": "core",
-   "teaser": "Co se doopravdy stane, když klikneš na „Přijmout vše“? Pomůže ti šatna v divadle.",
-   "rel": [
-    "ch3-stopa",
-    "ch3-kdo-plati"
-   ],
-   "prereq": [],
-   "short": "Cookies"
-  },
-  {
-   "slug": "ch3-stopa",
-   "title": "Tvoje digitální stopa",
-   "tema": "ch3-digitalni-stopa",
-   "state": "core",
-   "teaser": "Projdi se čerstvým sněhem a zůstanou po tobě stopy. Na internetu je to stejné — jen se stopy samy nerozpustí.",
-   "rel": [
-    "ch3-cookies",
-    "ch3-pakety"
-   ],
-   "prereq": [],
-   "short": "Stopa"
-  },
-  {
-   "slug": "ch4-jak-vypada-internet",
-   "title": "Opakování: Jak vypadá internet",
-   "tema": "ch4-velke-opakovani",
-   "state": "core",
-   "teaser": "Servery, routery, pakety a kabely na dně oceánu — zvládneš celou mapu internetu poskládat z hlavy?",
-   "rel": [
-    "ch1-shrnuti",
-    "ch4-jak-se-pripojujeme"
-   ],
-   "prereq": [
-    "ch1-servery",
-    "ch1-routery"
-   ],
-   "short": "Opakování 1"
-  },
-  {
-   "slug": "ch4-jak-se-pripojujeme",
-   "title": "Opakování: Jak se připojujeme",
-   "tema": "ch4-velke-opakovani",
-   "state": "core",
-   "teaser": "Wi-Fi, mobilní data, kabel, nebo rovnou satelit? Rychlé shrnutí všech cest na internet.",
-   "rel": [
-    "ch2-shrnuti",
-    "ch4-digitalni-stopa"
-   ],
-   "prereq": [
-    "ch2-wifi-router",
-    "ch2-kabely"
-   ],
-   "short": "Opakování 2"
-  },
-  {
-   "slug": "ch4-digitalni-stopa",
-   "title": "Opakování: Digitální stopa",
-   "tema": "ch4-velke-opakovani",
-   "state": "core",
-   "teaser": "Každý lajk, klik a komentář po tobě něco zanechá. Poslední velké téma k zopakování.",
-   "rel": [
-    "ch3-stopa",
-    "ch4-jak-vypada-internet"
-   ],
-   "prereq": [
-    "ch3-pakety",
-    "ch3-stopa"
-   ],
-   "short": "Opakování 3"
-  }
- ],
- "edges": []
+  "_pozn": "Mapa POJMŮ (ne kapitol) dle slovníčku Internet4Kids. Každý uzel: def = definice ze slovníčku, pool = konkrétní bloky knihy, které pojem pokrývají (id bloku, nebo id konceptu z frontmatteru — ověřitelné), prereq jen když je opravdu nutná a why ji zdůvodňuje jednou větou. Uzly bez poolu jsou 🌱 — čekají, až obsah přibude; pak jim pool doplňte a mapa poroste s knihou.",
+  "temata": [
+    { "id": "co-je-internet", "nazev": "Co je internet", "color": "#0EA5E9" },
+    { "id": "cesta-dat", "nazev": "Cesta dat sítí", "color": "#7C3AED" },
+    { "id": "pripojeni-doma", "nazev": "Připojení doma", "color": "#10B981" },
+    { "id": "mobilni-sit", "nazev": "Mobilní síť a vesmír", "color": "#D97706" },
+    { "id": "data-o-nas", "nazev": "Data o nás", "color": "#DB2777" }
+  ],
+  "nodes": [
+    { "slug": "sit", "title": "Síť", "short": "Síť", "tema": "co-je-internet", "state": "core",
+      "def": "Soustava počítačových zařízení propojená kabely nebo signálem — nemusí být připojená k internetu.",
+      "teaser": "Soustava počítačových zařízení propojená kabely nebo signálem — nemusí být připojená k internetu.",
+      "pool": ["ch1-nakresli-sit"], "rel": ["internet", "wifi-router"], "prereq": [] },
+    { "slug": "server", "title": "Server", "short": "Server", "tema": "co-je-internet", "state": "core",
+      "def": "Počítače připojené do sítě, které nám poskytují služby — ukazují web, ukládají fotky a videa.",
+      "teaser": "Počítače připojené do sítě, které nám poskytují služby — ukazují web, ukládají fotky a videa.",
+      "pool": ["ch1-servery", "ch1-pocitame"], "rel": ["klient-server", "datove-centrum", "poskytovatel-internetu"], "prereq": [] },
+    { "slug": "klient-server", "title": "Klient a server", "short": "Klient–server", "tema": "co-je-internet", "state": "core",
+      "def": "Přístup v síti, kdy počítače (klienti) posílají požadavky jednomu velkému počítači (serveru), který je plní.",
+      "teaser": "Přístup v síti, kdy počítače (klienti) posílají požadavky jednomu velkému počítači (serveru), který je plní.",
+      "pool": ["ch1-klient-server"], "rel": ["pozadavek-na-server", "server"],
+      "prereq": ["server"], "why": { "server": "Bez představy, co je server, nejde pochopit, kdo požadavky klientů plní." } },
+    { "slug": "pozadavek-na-server", "title": "Požadavek na server", "short": "Požadavek", "tema": "co-je-internet", "state": "core",
+      "def": "Úkol, který serveru pošle naše zařízení — třeba „pošli mi tohle video“.",
+      "teaser": "Úkol, který serveru pošle naše zařízení — třeba „pošli mi tohle video“.",
+      "pool": ["ch1-pocitame"], "rel": ["klient-server"],
+      "prereq": ["klient-server"], "why": { "klient-server": "Požadavek je zpráva klienta serveru — vychází přímo z modelu klient–server." } },
+    { "slug": "internet", "title": "Internet", "short": "Internet", "tema": "co-je-internet", "state": "core",
+      "def": "Celosvětová decentralizovaná počítačová síť — síť sítí bez ředitele.",
+      "teaser": "Celosvětová decentralizovaná počítačová síť — síť sítí bez ředitele.",
+      "pool": ["ch1-nema-reditele", "ch1-komiks-nema-reditele", "ch1-hra-decentralizace", "ch1-shrnuti", "ch4-jak-vypada-internet"],
+      "rel": ["sit", "router", "podmorske-kabely"],
+      "prereq": ["sit", "router"],
+      "why": { "sit": "Internet je propojení mnoha menších sítí — nejdřív si ujasni, co je jedna síť.", "router": "Že síť funguje bez šéfa, pochopíš až s routery, které pakety směrují samy." } },
+    { "slug": "datove-centrum", "title": "Datové centrum", "short": "Datacentrum", "tema": "co-je-internet", "state": "ghost",
+      "def": "Místo, kde stojí mnoho serverů pohromadě — typicky patří velké firmě, třeba Microsoftu nebo Googlu.",
+      "teaser": "Místo, kde stojí mnoho serverů pohromadě — typicky patří velké firmě, třeba Microsoftu nebo Googlu.",
+      "pool": [], "rel": ["server"], "prereq": [] },
+
+    { "slug": "paket", "title": "Paket", "short": "Paket", "tema": "cesta-dat", "state": "core",
+      "def": "Malá část informace, kterou posíláme přes internet — velké soubory se rozsekají na tisíce paketů.",
+      "teaser": "Malá část informace, kterou posíláme přes internet — velké soubory se rozsekají na tisíce paketů.",
+      "pool": ["ch1-pakety", "ch3-pakety", "ch3-kolik-paketu", "ch3-dino", "ch1-hra-paket-order"],
+      "rel": ["ip-adresa", "router"], "prereq": [] },
+    { "slug": "ip-adresa", "title": "IP adresa", "short": "IP adresa", "tema": "cesta-dat", "state": "core",
+      "def": "Jedinečná adresa zařízení v síti. Každý paket nese IP adresu příjemce i odesílatele, aby věděl kam a odkud jde.",
+      "teaser": "Jedinečná adresa zařízení v síti. Každý paket nese IP adresu příjemce i odesílatele, aby věděl kam a odkud jde.",
+      "pool": ["ch1-obsah-paketu"], "rel": ["paket", "router"],
+      "prereq": ["paket"], "why": { "paket": "Adresy příjemce a odesílatele poznáš jako povinný obsah paketu." } },
+    { "slug": "router", "title": "Síťový router", "short": "Router", "tema": "cesta-dat", "state": "core",
+      "def": "Chytré křižovatky uvnitř sítě, které směrují pakety k jejich příjemci.",
+      "teaser": "Chytré křižovatky uvnitř sítě, které směrují pakety k jejich příjemci.",
+      "pool": ["ch1-routery"], "rel": ["paket", "traceroute", "wifi-router"],
+      "prereq": ["ip-adresa"], "why": { "ip-adresa": "Router se rozhoduje podle IP adresy příjemce zapsané v paketu." } },
+    { "slug": "traceroute", "title": "Traceroute", "short": "Traceroute", "tema": "cesta-dat", "state": "core",
+      "def": "Aktivita, která vypíše, přes jaké servery a routery se tvůj počítač připojuje k nějaké stránce.",
+      "teaser": "Aktivita, která vypíše, přes jaké servery a routery se tvůj počítač připojuje k nějaké stránce.",
+      "pool": ["ch1-traceroute"], "rel": ["router"],
+      "prereq": ["router"], "why": { "router": "Traceroute vypisuje routery po cestě — nejdřív potřebuješ vědět, co router dělá." } },
+    { "slug": "podmorske-kabely", "title": "Podmořské kabely", "short": "Podmořské kabely", "tema": "cesta-dat", "state": "core",
+      "def": "Kabely na dně oceánů, které spojují kontinenty.",
+      "teaser": "Kabely na dně oceánů, které spojují kontinenty.",
+      "pool": ["ch1-kabely", "ch1-mapa-kabelu", "ch2-opravy-kabelu"], "rel": ["opticky-kabel", "paterni-sit"], "prereq": [] },
+    { "slug": "paterni-sit", "title": "Páteřní síť", "short": "Páteřní síť", "tema": "cesta-dat", "state": "core",
+      "def": "Největší kabely s nejvyšší přenosovou rychlostí — spojují celé státy a kontinenty.",
+      "teaser": "Největší kabely s nejvyšší přenosovou rychlostí — spojují celé státy a kontinenty.",
+      "pool": ["ch4-tezsi-pojmy"], "rel": ["podmorske-kabely", "cetin", "poskytovatel-internetu"], "prereq": [] },
+
+    { "slug": "wifi-router", "title": "Wi-Fi router", "short": "Wi-Fi router", "tema": "pripojeni-doma", "state": "core",
+      "def": "Krabička, která doma vytváří Wi-Fi signál a směruje data mezi domácností a internetem.",
+      "teaser": "Krabička, která doma vytváří Wi-Fi signál a směruje data mezi domácností a internetem.",
+      "pool": ["ch2-wifi-router", "ch2-hra-zapojeni"], "rel": ["wifi", "router", "sit"], "prereq": [] },
+    { "slug": "wifi", "title": "Wi-Fi", "short": "Wi-Fi", "tema": "pripojeni-doma", "state": "core",
+      "def": "Připojení k internetu pomocí signálu, který vysílá router — typicky doma nebo ve škole.",
+      "teaser": "Připojení k internetu pomocí signálu, který vysílá router — typicky doma nebo ve škole.",
+      "pool": ["ch2-wifi-router"], "rel": ["wifi-router", "bezdratove-pripojeni"], "prereq": [] },
+    { "slug": "kovovy-kabel", "title": "Kovový kabel (UTP)", "short": "Kovový kabel", "tema": "pripojeni-doma", "state": "core",
+      "def": "Připojení kabelem na docela velkou vzdálenost — zařízení ale fyzicky připoutá do sítě.",
+      "teaser": "Připojení kabelem na docela velkou vzdálenost — zařízení ale fyzicky připoutá do sítě.",
+      "pool": ["ch2-utp-vs-optika"], "rel": ["opticky-kabel", "wifi"], "prereq": [] },
+    { "slug": "opticky-kabel", "title": "Optický kabel", "short": "Optika", "tema": "pripojeni-doma", "state": "core",
+      "def": "Superrychlé připojení, které přenáší data světlem a funguje na obrovské vzdálenosti.",
+      "teaser": "Superrychlé připojení, které přenáší data světlem a funguje na obrovské vzdálenosti.",
+      "pool": ["ch2-kabely", "ch2-utp-vs-optika"], "rel": ["kovovy-kabel", "podmorske-kabely"], "prereq": [] },
+    { "slug": "bezdratove-pripojeni", "title": "Bezdrátové připojení", "short": "Bezdrát", "tema": "pripojeni-doma", "state": "core",
+      "def": "Připojení k internetu bez kabelu — Wi-Fi, mobilní data nebo satelit.",
+      "teaser": "Připojení k internetu bez kabelu — Wi-Fi, mobilní data nebo satelit.",
+      "pool": ["ch2-shrnuti", "ch2-game-pripojeni"], "rel": ["wifi", "mobilni-data", "satelit"], "prereq": [] },
+    { "slug": "prenosova-rychlost", "title": "Přenosová rychlost", "short": "Rychlost", "tema": "pripojeni-doma", "state": "core",
+      "def": "Veličina, která říká, kolik informací za sekundu dané připojení přenese (Mb/s).",
+      "teaser": "Veličina, která říká, kolik informací za sekundu dané připojení přenese (Mb/s).",
+      "pool": ["ch2-prenosova-rychlost", "ch2-stahovani-vypocet", "ch2-hra-jednotky"], "rel": ["speedtest", "opticky-kabel"], "prereq": [] },
+    { "slug": "speedtest", "title": "Speedtest", "short": "Speedtest", "tema": "pripojeni-doma", "state": "core",
+      "def": "Aktivita, kterou si změříš rychlost svého připojení k internetu.",
+      "teaser": "Aktivita, kterou si změříš rychlost svého připojení k internetu.",
+      "pool": ["ch2-speedtest-experiment"], "rel": ["prenosova-rychlost"],
+      "prereq": ["prenosova-rychlost"], "why": { "prenosova-rychlost": "Speedtest měří přenosovou rychlost — nejdřív pochop, co znamenají Mb/s." } },
+    { "slug": "poskytovatel-internetu", "title": "Poskytovatel internetu", "short": "Poskytovatel", "tema": "pripojeni-doma", "state": "core",
+      "def": "Firma, která tvoji domácí síť připojí k internetu — platíme jí za připojení.",
+      "teaser": "Firma, která tvoji domácí síť připojí k internetu — platíme jí za připojení.",
+      "pool": ["ch3-kdo-plati", "ch3-reklamy-sidebar", "ch4-tezsi-pojmy"], "rel": ["paterni-sit", "cetin"], "prereq": [] },
+
+    { "slug": "mobilni-data", "title": "Mobilní data", "short": "Mobilní data", "tema": "mobilni-sit", "state": "core",
+      "def": "Připojení k internetu pomocí mobilního signálu — funguje venku i na cestách.",
+      "teaser": "Připojení k internetu pomocí mobilního signálu — funguje venku i na cestách.",
+      "pool": ["ch2-mobilni-data"], "rel": ["bts", "sim-karta", "hotspot"], "prereq": [] },
+    { "slug": "bts", "title": "BTS vysílač", "short": "BTS", "tema": "mobilni-sit", "state": "core",
+      "def": "Vysílač mobilního signálu — díky němu se mobil připojí k internetu přes mobilní data.",
+      "teaser": "Vysílač mobilního signálu — díky němu se mobil připojí k internetu přes mobilní data.",
+      "pool": ["ch2-mobilni-data"], "rel": ["mobilni-data"], "prereq": [] },
+    { "slug": "sim-karta", "title": "SIM karta", "short": "SIM", "tema": "mobilni-sit", "state": "ghost",
+      "def": "Malá kartička od operátora, která telefonu umožňuje připojit se do mobilní sítě.",
+      "teaser": "Malá kartička od operátora, která telefonu umožňuje připojit se do mobilní sítě.",
+      "pool": [], "rel": ["mobilni-data"], "prereq": [] },
+    { "slug": "hotspot", "title": "Hotspot", "short": "Hotspot", "tema": "mobilni-sit", "state": "core",
+      "def": "Funkce mobilu, která sdílí jeho mobilní data — ostatní se přes něj připojí jako přes Wi-Fi.",
+      "teaser": "Funkce mobilu, která sdílí jeho mobilní data — ostatní se přes něj připojí jako přes Wi-Fi.",
+      "pool": ["ch2-hotspot-satelity"], "rel": ["mobilni-data", "wifi"],
+      "prereq": ["mobilni-data"], "why": { "mobilni-data": "Hotspot sdílí tvá mobilní data s okolím — bez nich nefunguje." } },
+    { "slug": "satelit", "title": "Satelit", "short": "Satelit", "tema": "mobilni-sit", "state": "core",
+      "def": "Zařízení ve vesmíru — pro GPS skvělé, pro internet kvůli velké vzdálenosti spíš pomalé řešení.",
+      "teaser": "Zařízení ve vesmíru — pro GPS skvělé, pro internet kvůli velké vzdálenosti spíš pomalé řešení.",
+      "pool": ["ch2-satelity-starlink", "ch2-komiks-satelit", "ch2-hotspot-satelity"], "rel": ["bezdratove-pripojeni"], "prereq": [] },
+    { "slug": "cetin", "title": "CETIN", "short": "CETIN", "tema": "mobilni-sit", "state": "core",
+      "def": "Firma, která se v Česku stará o národní datovou infrastrukturu — dráty, po kterých internet teče.",
+      "teaser": "Firma, která se v Česku stará o národní datovou infrastrukturu — dráty, po kterých internet teče.",
+      "pool": ["ch4-tezsi-pojmy"], "rel": ["paterni-sit", "poskytovatel-internetu"], "prereq": [] },
+
+    { "slug": "cookies", "title": "Cookies", "short": "Cookies", "tema": "data-o-nas", "state": "core",
+      "def": "Malé soubory, které si o nás servery ukládají, aby si nás pamatovaly a přizpůsobily se nám.",
+      "teaser": "Malé soubory, které si o nás servery ukládají, aby si nás pamatovaly a přizpůsobily se nám.",
+      "pool": ["ch3-cookies", "ch3-cookie-kod", "ch3-komiks-cookie", "ch3-cookies-d-think"], "rel": ["datova-stopa", "server"], "prereq": [] },
+    { "slug": "datova-stopa", "title": "Datová stopa", "short": "Datová stopa", "tema": "data-o-nas", "state": "core",
+      "def": "Všechno, co po nás na internetu zůstává — co se nám líbí, na co klikáme, co hledáme a komentujeme.",
+      "teaser": "Všechno, co po nás na internetu zůstává — co se nám líbí, na co klikáme, co hledáme a komentujeme.",
+      "pool": ["ch3-stopa", "ch3-detektiv-krecek", "ch3-google-d-think", "ch3-hra-stopa-sort", "ch4-digitalni-stopa"],
+      "rel": ["cookies", "hacker"], "prereq": [] },
+    { "slug": "hacker", "title": "Hacker", "short": "Hacker", "tema": "data-o-nas", "state": "ghost",
+      "def": "Člověk, který se dokáže nabourat do cizí sítě nebo dělat jinou nelegální aktivitu.",
+      "teaser": "Člověk, který se dokáže nabourat do cizí sítě nebo dělat jinou nelegální aktivitu.",
+      "pool": [], "rel": ["datova-stopa"], "prereq": [] }
+  ],
+  "edges": []
 }
