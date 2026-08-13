@@ -37,10 +37,13 @@ V jednom diagramu max 3 akcentové barvy + neutrály.
 - Šipky: `stroke-width="2"`, trojúhelníkový marker; přerušovaná čára `stroke-dasharray="6 5"` = bezdrát.
 - Písmo: pouze `system-ui,sans-serif`; velikosti 11 (minimum) / 12.5 / 14 / 19 (titulek); váhy 400 a 700.
 - Max ~12 vizuálních prvků, velkorysý prázdný prostor, texty se NIKDY nepřekrývají s tvary.
+- Popisky NIKDY neleží na šipce, kabelu ani jiné čáře — patří VEDLE (nad/pod tvar); když se
+  k tvaru nevejdou, použij tenkou vodicí čáru (`#9CA3AF`, width 1) a text stranou.
 - Česky, spisovně, krátce. Čísla s mezerou (35 000 km).
 
 ## Animace (jen když pohyb = význam)
 
+- Dráha animovaného prvku je taky tvar: NESMÍ procházet přes žádný text (zkontroluj celou trasu!).
 - Vše čitelné i v klidu. JEDNA jemná smyčka (3–6 s, linear/ease-in-out, infinite):
   putující paket (translate po trase / `stroke-dashoffset`), vlnky signálu (opacity).
 - Zápis: `<style>` uvnitř SVG s `@keyframes`; navrch vždy
@@ -58,6 +61,6 @@ V jednom diagramu max 3 akcentové barvy + neutrály.
 ## Kontrola před odevzdáním každého SVG
 
 1. Validní XML (`python3 -c "import sys,xml.etree.ElementTree as ET; ET.fromstring(open(f).read())"`).
-2. Žádný text mimo plátno, žádný text pod 11 px, žádný překryv textu s tvary.
+2. Žádný text mimo plátno, žádný text pod 11 px, žádný překryv textu s tvary, šipkami ani s celou dráhou animace.
 3. Jen povolené barvy; pozadí přesně dle systému; `font-family` jen system-ui,sans-serif.
 4. Vyrenderuj přes chromium a PODÍVEJ SE na výsledek (nástroj Read) — obrázek musí být pochopitelný sám o sobě.
