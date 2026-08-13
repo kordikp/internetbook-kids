@@ -23,6 +23,11 @@ const OPENAI_BASE = (process.env.OPENAI_BASE_URL || 'https://api.openai.com/v1')
 const PROVIDER = ANTHROPIC_KEY ? 'anthropic' : OPENAI_KEY ? 'openai-compatible' : null;
 const MODEL = process.env.GEN_MODEL
   || (PROVIDER === 'anthropic' ? 'claude-opus-4-8' : (process.env.OPENAI_MODEL || 'gpt-5.6-terra'));
+// Model routing: cheap MODEL for small text remixes and proposals; STRONG_MODEL
+// for the demanding modes (full variant generation, SVG drawing/remix), where
+// the small model visibly degrades output. Falls back to MODEL on error.
+const STRONG_MODEL = process.env.GEN_MODEL_STRONG
+  || (PROVIDER === 'anthropic' ? 'claude-opus-4-8' : 'gpt-5.6-terra');
 
 // Structured output schema — shared by both providers
 const BLOCK_SCHEMA = {
@@ -154,6 +159,13 @@ const REMIX_SCHEMA = {
   additionalProperties: false,
 };
 
+const INSERT_SCHEMA = {
+  type: 'object',
+  properties: { addition: { type: 'string' } },
+  required: ['addition'],
+  additionalProperties: false,
+};
+
 const SVG_SCHEMA = {
   type: 'object',
   properties: { svg: { type: 'string' } },
@@ -213,6 +225,102 @@ function sanitizeSvg(svg) {
 function parseFrontmatterBody(text) {
   const m = text.match(/^---\n[\s\S]*?\n---\n([\s\S]*)$/);
   return m ? m[1].trim() : text.trim();
+}
+
+// Sister p-book deployments (same account) may use this deployment as their LLM
+// gateway when they have no own key. They pass body.sourceHost so that concept
+// lookups (concepts.json, anchor, correction rules) read THEIR content instead
+// of this book's. Only allowlisted hosts are honored — anything else falls back
+// to this deployment's own host.
+const ALLOWED_SOURCE_HOSTS = ['pbook-internet.vercel.app'];
+function contentHost(req) {
+  const h = req.body && req.body.sourceHost;
+  return (h && ALLOWED_SOURCE_HOSTS.includes(h)) ? h : req.headers.host;
+}
+
+// ---- Sister-deployment gateway fallback ----
+// A deployment without its own LLM key forwards requests to the gateway
+// deployment (same account) that holds one; payload carries sourceHost so
+// content lookups read the caller's book. With a local key this never runs.
+const GATEWAY = process.env.PBOOK_GATEWAY_URL || 'https://recsys-pbook.vercel.app';
+
+async function forwardToGateway(req, res) {
+  try {
+    const opts = { method: req.method, headers: { 'Content-Type': 'application/json' } };
+    if (req.method === 'POST') {
+      const body = Object.assign({}, req.body || {}, { sourceHost: String(req.headers['x-forwarded-host'] || req.headers.host || '').split(',')[0].trim() });
+      opts.body = JSON.stringify(body);
+    }
+    const r = await fetch(GATEWAY + '/api/generate', opts);
+    const j = await r.json();
+    if (req.method === 'GET' && j && typeof j === 'object') j.provider = 'gateway:' + (j.provider || '?');
+    if (req.method === 'POST' && r.ok && j && j.ok && !j.cached) {
+      const wb = await walletCommit(req);
+      if (wb !== undefined) j.walletBalance = wb;
+    }
+    return res.status(r.status).json(j);
+  } catch (e) {
+    return res.status(502).json({ ok: false, available: false, error: 'gateway unreachable' });
+  }
+}
+
+// ---- AI wallet enforcement (server-authoritative XP economy) ----
+// Paid modes charge BEFORE the model runs: precheck reserves the decision,
+// commit writes the ledger row only after a successful, non-cached result.
+// Delegated requests (whitelisted sister deployments) are already enforced
+// at the caller and skipped here. Assessment (boss) and editor tools stay free.
+const { verifySession: _wVerify, ledger: _wLedger, write: _wWrite, bookOf: _wBook, sb: _wSb } = require('./wallet.js')._internals;
+const WALLET_PRICES = { basic: 10, advanced: 30 };
+
+function walletTier(body) {
+  const mode = body.mode || 'variant';
+  if (mode === 'variant' || mode === 'svg-remix') return 'advanced';
+  if (mode === 'remix' || mode === 'insert') {
+    const wantsSvg = body.wantSvg === true
+      || /\b(diagram|schema|schéma|obráz|obrazek|nákres|nakresli|animac|animation|visuali[sz]|draw|sketch)/i.test(String(body.instruction || ''));
+    return wantsSvg ? 'advanced' : 'basic';
+  }
+  return null; // propose-concepts, games-review: editor tools, free
+}
+
+async function walletPrecheck(req) {
+  try {
+    if (!process.env.SUPABASE_URL) return null;               // economy off without a ledger
+    const body = req.body || {};
+    if (ALLOWED_SOURCE_HOSTS.includes(body.sourceHost)) return null;   // delegated: caller enforced
+    const tier = walletTier(body);
+    if (!tier) return null;
+    const price = WALLET_PRICES[tier];
+    const book = _wBook(req);
+    const auth = body.auth || {};
+    const user = await _wVerify(auth.email, auth.token);
+    if (user) {
+      const led = await _wLedger(user, book);
+      if (led.balance < price) return { status: 402, body: { ok: false, error: 'insufficient_xp', balance: led.balance, price } };
+      req._walletPlan = { kind: 'spend', user, book, price, tier };
+      return null;
+    }
+    // Anonymous: a single basic-tier trial per device uid.
+    if (tier !== 'basic') return { status: 401, body: { ok: false, error: 'login_required' } };
+    const uid = String(auth.uid || '').slice(0, 80);
+    if (!uid) return { status: 401, body: { ok: false, error: 'login_required' } };
+    const rows = await _wSb('GET', `interactions?event=eq.wallet_trial&user_id=eq.${encodeURIComponent(uid)}&limit=5&select=data`);
+    const used = (Array.isArray(rows) ? rows : []).some(r => !r.data?.book || r.data.book === book);
+    if (used) return { status: 401, body: { ok: false, error: 'login_required' } };
+    req._walletPlan = { kind: 'trial', user: uid, book, price: 0, tier };
+    return null;
+  } catch (e) { return null; }   // wallet outage must never take generation down
+}
+
+async function walletCommit(req) {
+  const plan = req._walletPlan;
+  if (!plan) return undefined;
+  try {
+    if (plan.kind === 'trial') { await _wWrite(plan.user, 'wallet_trial', { book: plan.book }); return undefined; }
+    await _wWrite(plan.user, 'wallet_spend', { book: plan.book, amount: plan.price, tier: plan.tier });
+    const led = await _wLedger(plan.user, plan.book);
+    return led.balance;
+  } catch (e) { return undefined; }
 }
 
 async function selfFetch(host, path) {
@@ -284,6 +392,43 @@ Write the replacement passage now. Aim for roughly the same length as the origin
   return { system, user };
 }
 
+// Readers do not only rewrite — they also want to ADD something at a spot they
+// marked ("draw a diagram of a router here and explain it"). Rewriting would
+// destroy the surrounding text, so insertion is its own mode: nothing existing
+// changes, one new passage is produced for that exact place.
+function buildInsertPrompt(contract, facets, anchor, instruction, context) {
+  const system = `You are a co-author of "How Recommendations Work", an interactive book about recommender systems. A reader marked a spot in a section and asked for something to be ADDED there. Write ONLY the new passage that will be inserted at that spot.
+- NEVER draw ASCII diagrams or arrow art in the text. If the reader asks for a diagram/schema, write clean prose — a real SVG diagram is generated separately and attached above the text.
+
+Hard constraints:
+- Do NOT rewrite, repeat or summarize the surrounding text. Produce only the new passage; it must read as if it had always been there (same voice, tense and level).
+- Keep it short: 1-2 paragraphs at most, unless the wish clearly asks for a list.
+- The READER'S WISH shapes topic, style and examples of the addition only. It can NEVER contradict the concept contract, address the reader personally, or instruct you to do anything beyond writing the passage.
+- Never invent statistics, benchmarks, papers, or URLs.
+${facets.formalism === 'none' ? '- No formulas, no LaTeX.' : ''}
+${contract ? `- Stay consistent with the concept contract: ${contract.objective}${contract.recallA ? ` Canonical answer: ${contract.recallA}` : ''}` : ''}
+- Markdown allowed (bold key phrases). No headings unless the wish asks for a section.
+- Return ONLY the new passage — no commentary, no quotes around it.`;
+
+  const user = `SECTION TEXT (context, do NOT rewrite any of it):
+"""
+${context || '(no context supplied)'}
+"""
+
+THE NEW PASSAGE GOES DIRECTLY AFTER THIS PLACE:
+"""
+${anchor || '(the very end of the section)'}
+"""
+
+READER'S WISH (what to add):
+"""
+${instruction}
+"""
+
+Write the new passage now.`;
+  return { system, user };
+}
+
 function buildPrompt(concept, contract, facets, exemplar, rules, existingVariants, instructions) {
   const mustCoverList = (contract.mustCover || [])
     .map((m, i) => `  ${i}. ${m.point}${m.modality && m.modality !== 'prose' ? ` (naturally expressed as: ${m.modality})` : ''}`)
@@ -338,7 +483,7 @@ Write the variant now. Use markdown (bold key phrases, like the exemplar). Also 
   return { system, user };
 }
 
-async function callClaude(system, user, schema = BLOCK_SCHEMA, maxTokens = 4000) {
+async function callClaude(system, user, schema = BLOCK_SCHEMA, maxTokens = 4000, model = MODEL) {
   const res = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
     headers: {
@@ -347,7 +492,7 @@ async function callClaude(system, user, schema = BLOCK_SCHEMA, maxTokens = 4000)
       'anthropic-version': '2023-06-01',
     },
     body: JSON.stringify({
-      model: MODEL,
+      model,
       max_tokens: maxTokens,
       thinking: { type: 'adaptive' },
       system,
@@ -369,7 +514,7 @@ async function callClaude(system, user, schema = BLOCK_SCHEMA, maxTokens = 4000)
 // OpenAI-compatible fallback (local dev / gateways). Tries strict json_schema
 // response_format first; if the gateway rejects it, falls back to json_object
 // with the schema described in the prompt.
-async function callOpenAI(system, user, schema = BLOCK_SCHEMA, maxTokens = 4000) {
+async function callOpenAI(system, user, schema = BLOCK_SCHEMA, maxTokens = 4000, model = MODEL) {
   const attempt = async body => {
     const res = await fetch(`${OPENAI_BASE}/chat/completions`, {
       method: 'POST',
@@ -379,7 +524,7 @@ async function callOpenAI(system, user, schema = BLOCK_SCHEMA, maxTokens = 4000)
     return { res, text: await res.text() };
   };
   const base = {
-    model: MODEL,
+    model,
     max_completion_tokens: maxTokens,
     messages: [
       { role: 'system', content: system },
@@ -423,31 +568,19 @@ async function callOpenAI(system, user, schema = BLOCK_SCHEMA, maxTokens = 4000)
   return JSON.parse(content);
 }
 
-function callLLM(system, user, schema, maxTokens) {
-  return PROVIDER === 'anthropic' ? callClaude(system, user, schema, maxTokens) : callOpenAI(system, user, schema, maxTokens);
-}
-
-// Bez vlastního LLM klíče se požadavky přeposílají na sesterskou bránu
-// (recsys-pbook deployment téhož účtu); payload nese celý zdrojový text i
-// kontrakt, takže výstup je korektní i pro tuto knihu. S vlastním klíčem
-// (OPENAI/ANTHROPIC env) se použije lokální cesta.
-const GATEWAY = process.env.PBOOK_GATEWAY_URL || 'https://recsys-pbook.vercel.app';
-
-async function forwardToGateway(req, res) {
+async function callLLM(system, user, schema, maxTokens, model = MODEL) {
+  const call = m => PROVIDER === 'anthropic'
+    ? callClaude(system, user, schema, maxTokens, m)
+    : callOpenAI(system, user, schema, maxTokens, m);
   try {
-    const opts = { method: req.method, headers: { 'Content-Type': 'application/json' } };
-    if (req.method === 'POST') {
-      // brána načítá concepts.json/anchor z hosta v body.sourceHost (whitelistovaného),
-      // jinak by hledala koncepty ve své vlastní knize → "unknown concept"
-      const body = Object.assign({}, req.body || {}, { sourceHost: req.headers.host });
-      opts.body = JSON.stringify(body);
-    }
-    const r = await fetch(GATEWAY + '/api/generate', opts);
-    const j = await r.json();
-    if (req.method === 'GET' && j && typeof j === 'object') j.provider = 'gateway:' + (j.provider || '?');
-    return res.status(r.status).json(j);
+    return await call(model);
   } catch (e) {
-    return res.status(502).json({ ok: false, available: false, error: 'gateway unreachable' });
+    // strong model unavailable/rejected → degrade to the base model rather than fail
+    if (model !== MODEL) {
+      console.warn(`[generate] strong model ${model} failed (${String(e).slice(0, 160)}) — falling back to ${MODEL}`);
+      return call(MODEL);
+    }
+    throw e;
   }
 }
 
@@ -456,11 +589,15 @@ module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   if (req.method === 'OPTIONS') return res.status(200).end();
-  if (!PROVIDER && GATEWAY) return forwardToGateway(req, res);
 
   // Probe: the client shows the generate button only when this says available
-  if (req.method === 'GET') return res.status(200).json({ available: !!PROVIDER, provider: PROVIDER, model: PROVIDER ? MODEL : null });
+  if (req.method === 'GET') return res.status(200).json({ available: !!PROVIDER, provider: PROVIDER, model: PROVIDER ? MODEL : null, strongModel: PROVIDER ? STRONG_MODEL : null });
   if (req.method !== 'POST') return res.status(405).json({ error: 'POST only' });
+  {
+    const wg = await walletPrecheck(req);
+    if (wg) return res.status(wg.status).json(wg.body);
+  }
+  if (!PROVIDER && GATEWAY) return forwardToGateway(req, res);
   if (!PROVIDER) return res.status(501).json({ ok: false, error: 'generation not configured (set ANTHROPIC_API_KEY, or OPENAI_API_KEY for the dev fallback)' });
 
   try {
@@ -526,6 +663,104 @@ Draft the proposals now.`;
       return res.status(200).json({ ok: true, proposals, model: MODEL });
     }
 
+    // --- GAMES-REVIEW MODE: a locked game-designer pass over the book's mini-games.
+    // Input: engine mechanics spec + current games + concept list. Output: verdict
+    // and fixed JSON per game, plus at most two well-founded new game proposals.
+    if (mode === 'games-review') {
+      const games = Array.isArray(req.body.games) ? req.body.games.slice(0, 12) : [];
+      const engineSpec = String(req.body.engineSpec || '').slice(0, 6000);
+      const conceptsList = String(req.body.concepts || '').slice(0, 6000);
+      if (!games.length || !engineSpec) return res.status(400).json({ ok: false, error: 'games and engineSpec required' });
+      const GAMES_SCHEMA = {
+        type: 'object',
+        properties: {
+          reviews: { type: 'array', items: { type: 'object', properties: {
+            file: { type: 'string' },
+            verdict: { type: 'string', enum: ['keep', 'fix', 'replace'] },
+            problems: { type: 'array', items: { type: 'string' } },
+            fixedJson: { type: 'string' }
+          }, required: ['file', 'verdict', 'problems', 'fixedJson'], additionalProperties: false } },
+          newGames: { type: 'array', items: { type: 'object', properties: {
+            file: { type: 'string' },
+            whyThisGame: { type: 'string' },
+            json: { type: 'string' },
+            blockTitle: { type: 'string' },
+            teaser: { type: 'string' },
+            concept: { type: 'string' }
+          }, required: ['file', 'whyThisGame', 'json', 'blockTitle', 'teaser', 'concept'], additionalProperties: false } }
+        },
+        required: ['reviews', 'newGames'],
+        additionalProperties: false
+      };
+      const system = `You are a game designer for a Czech school book about how the internet works (pupils 11-15, Czech language). You review data-driven mini-games against the ENGINE SPEC below. A game is good only if: the mechanic fits the content (classification->sort, sequence->order, term-definition->pairs), every answer is factually correct and unambiguous, texts are short enough for buttons, Czech is natural (tykání), and a pupil learns something by playing. Reply with JSON per the schema: for each game a verdict (keep/fix/replace) with concrete problems and the COMPLETE corrected JSON in fixedJson (even for keep — then identical). Propose at most 2 newGames, only if a listed concept has no game and one of the mechanics genuinely fits it; json must be complete and valid for the engine.
+
+ENGINE SPEC:
+${engineSpec}`;
+      const user = `CURRENT GAMES:
+${games.map(g => `--- ${g.file} ---\n${String(g.json).slice(0, 3000)}`).join('\n')}
+
+BOOK CONCEPTS (id: title — recall question):
+${conceptsList}
+
+Review all games now. Czech output inside JSON strings.`;
+      let out = await callLLM(system, user, GAMES_SCHEMA, 20000, STRONG_MODEL);
+      return res.status(200).json({ ok: true, result: out, model: STRONG_MODEL });
+    }
+
+    // --- INSERT MODE: write a NEW passage for a spot the reader marked ---
+    if (mode === 'insert') {
+      if (!instruction || typeof instruction !== 'string' || instruction.trim().length < 3) {
+        return res.status(400).json({ ok: false, error: 'instruction required' });
+      }
+      const host = contentHost(req);
+      let contract = null;
+      if (concept && /^[\w-]+$/.test(concept)) {
+        try {
+          const cd = await (await selfFetch(host, '/content/concepts.json')).json();
+          contract = (cd.concepts || []).find(c => c.id === concept)?.contract || null;
+        } catch (e) {}
+      }
+      const anchorText = typeof req.body.anchor === 'string' ? req.body.anchor.slice(0, 1200) : '';
+      const { system, user } = buildInsertPrompt(contract, facets, anchorText, instruction.slice(0, 500), (context || '').slice(0, 6000));
+      const gate = r => {
+        const p = [];
+        const add = (r.addition || '').trim();
+        if (add.length < 5) p.push('empty addition');
+        if (add.split(/\s+/).length > 260) p.push('addition too long (>260 words)');
+        if (facets.formalism === 'none' && /(\$\$|\\\(|\\frac|\\sum|\\cdot)/.test(add)) p.push('contains LaTeX but formalism is none');
+        if (/⟦/.test(add)) p.push('contains reserved marker characters');
+        return p;
+      };
+      let out = await callLLM(system, user, INSERT_SCHEMA, 6000, STRONG_MODEL);
+      let problems = gate(out);
+      if (problems.length) {
+        out = await callLLM(system, `${user}\n\nYour previous attempt had problems — fix ALL of them:\n${problems.map(p => `- ${p}`).join('\n')}`, INSERT_SCHEMA, 6000, STRONG_MODEL);
+        problems = gate(out);
+      }
+      if (problems.length) return res.status(502).json({ ok: false, error: 'insert failed the validation gate', problems });
+
+      let svgOut;
+      const wantsSvg = req.body.wantSvg === true
+        || /\b(diagram|schema|schéma|obrázek|obrazek|nákres|nakresli|animac|animation|visuali[sz]|draw|sketch)/i.test(instruction);
+      if (wantsSvg) {
+        try {
+          const wantAnim = /animac|animation|animov/i.test(instruction);
+          const vsys = `You draw one supporting SVG for a book section. ${DESIGN_SYSTEM}
+FORM: viewBox "0 0 800 420"; title inside the image at top (18-20px, #1E1B4B); one-line caption at the bottom (12-13px #6B7280); labels on every element; ${wantAnim ? 'ANIMATED: everything visible at rest, ONE subtle CSS loop.' : 'static, no animation.'} Output JSON {"svg": "..."} only.`;
+          const vuser = `The passage being added to the section says:
+---
+${out.addition.trim().slice(0, 2500)}
+---
+Reader's wish: "${instruction.slice(0, 300)}"
+${contract ? `Concept objective (stay consistent): ${contract.objective}` : ''}
+Draw the supporting ${wantAnim ? 'animated ' : ''}diagram now.`;
+          const v = await callLLM(vsys, vuser, SVG_SCHEMA, 14000, STRONG_MODEL);
+          if (v.svg && /<svg[\s\S]*<\/svg>/.test(v.svg) && v.svg.length < 60000) svgOut = sanitizeSvgServer(v.svg);
+        } catch (e) { /* diagram is best-effort — the text addition still succeeds */ }
+      }
+      return res.status(200).json({ ok: true, addition: out.addition.trim(), svg: svgOut, model: STRONG_MODEL, walletBalance: await walletCommit(req) });
+    }
+
     // --- REMIX MODE: rewrite one selected passage per the reader's instruction ---
     if (mode === 'remix') {
       if (!selection || typeof selection !== 'string' || selection.trim().length < 10) {
@@ -534,7 +769,7 @@ Draft the proposals now.`;
       if (!instruction || typeof instruction !== 'string' || instruction.trim().length < 3) {
         return res.status(400).json({ ok: false, error: 'instruction required' });
       }
-      const host = req.headers.host;
+      const host = contentHost(req);
       let contract = null;
       if (concept && /^[\w-]+$/.test(concept)) {
         try {
@@ -578,11 +813,11 @@ ${out.replacement.trim().slice(0, 2500)}
 Reader's wish: "${instruction.slice(0, 300)}"
 ${contract ? `Concept objective (stay consistent): ${contract.objective}` : ''}
 Draw the supporting ${wantAnim ? 'animated ' : ''}diagram now.`;
-          const v = await callLLM(vsys, vuser, { type: 'object', properties: { svg: { type: 'string' } }, required: ['svg'], additionalProperties: false }, 14000);
+          const v = await callLLM(vsys, vuser, { type: 'object', properties: { svg: { type: 'string' } }, required: ['svg'], additionalProperties: false }, 14000, STRONG_MODEL);
           if (v.svg && /<svg[\s\S]*<\/svg>/.test(v.svg) && v.svg.length < 60000) svgOut = sanitizeSvgServer(v.svg);
         } catch (e) { /* diagram is best-effort — the text remix still succeeds */ }
       }
-      return res.status(200).json({ ok: true, replacement: out.replacement.trim(), svg: svgOut, model: MODEL });
+      return res.status(200).json({ ok: true, replacement: out.replacement.trim(), svg: svgOut, model: MODEL, walletBalance: await walletCommit(req) });
     }
 
     // --- SVG REMIX MODE: modify a diagram/animation per the reader's instruction ---
@@ -616,14 +851,14 @@ Return the complete modified SVG now.`;
         else if (clean.length > Math.max(srcSvg.length * 3, 20000)) p.push('output SVG grew too much');
         return { p, clean };
       };
-      let out = await callLLM(system, user, SVG_SCHEMA, 16000);
+      let out = await callLLM(system, user, SVG_SCHEMA, 16000, STRONG_MODEL);
       let { p: problems, clean } = gate(out);
       if (problems.length) {
-        out = await callLLM(system, `${user}\n\nYour previous attempt had problems — fix ALL of them:\n${problems.map(x => `- ${x}`).join('\n')}`, SVG_SCHEMA, 16000);
+        out = await callLLM(system, `${user}\n\nYour previous attempt had problems — fix ALL of them:\n${problems.map(x => `- ${x}`).join('\n')}`, SVG_SCHEMA, 16000, STRONG_MODEL);
         ({ p: problems, clean } = gate(out));
       }
       if (problems.length) return res.status(502).json({ ok: false, error: 'svg remix failed the validation gate', problems });
-      return res.status(200).json({ ok: true, svg: clean, model: MODEL });
+      return res.status(200).json({ ok: true, svg: clean, model: MODEL, walletBalance: await walletCommit(req) });
     }
 
     // --- VARIANT MODE (default) ---
@@ -637,7 +872,7 @@ Return the complete modified SVG now.`;
     if (cache.has(id)) return res.status(200).json({ ok: true, block: cache.get(id), cached: true });
 
     // Load contract + exemplar from the deployed content itself (concepts.json is the source of truth)
-    const host = req.headers.host;
+    const host = contentHost(req);
     const conceptsData = await (await selfFetch(host, '/content/concepts.json')).json();
     const record = (conceptsData.concepts || []).find(c => c.id === concept);
     if (!record) return res.status(404).json({ ok: false, error: 'unknown concept' });
@@ -662,7 +897,7 @@ Return the complete modified SVG now.`;
     // Generate → validate → one corrective retry → fail honestly
     const runValidate = (blk) => visualGenre ? validateVisual(blk, record.contract) : validate(blk, facets, record.contract);
     const schema = visualGenre ? SVG_BLOCK_SCHEMA : BLOCK_SCHEMA;
-    let block = await callLLM(system, user, schema, visualGenre ? 16000 : undefined);
+    let block = await callLLM(system, user, schema, visualGenre ? 16000 : undefined, STRONG_MODEL);
     let problems = runValidate(block);
     if (problems.length) {
       const retryUser = `${user}\n\nYour previous attempt had these problems — fix ALL of them:\n${problems.map(p => `- ${p}`).join('\n')}`;
@@ -703,7 +938,7 @@ Return the complete modified SVG now.`;
       generatedAt: new Date().toISOString(),
     };
     cache.set(id, out);
-    return res.status(200).json({ ok: true, block: out, cached: false });
+    return res.status(200).json({ ok: true, block: out, cached: false, walletBalance: await walletCommit(req) });
   } catch (e) {
     return res.status(500).json({ ok: false, error: String(e.message).slice(0, 300) });
   }

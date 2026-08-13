@@ -191,6 +191,7 @@ class PBook {
     // Customize welcome screen for returning users
     this._customizeWelcome();
 
+    if (this._getAuth()) this.refreshAiBalance(true);
     // Auto-sync for logged-in users: save every 2 minutes
     setInterval(() => {
       if (this._getAuth()) this.syncProfile().catch(() => {});
@@ -1025,7 +1026,7 @@ class PBook {
       const res = await fetch(CONFIG.steering.generateEndpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ concept: conceptId, facets: target, existingVariants, instructions }),
+        body: JSON.stringify({ concept: conceptId, facets: target, existingVariants, instructions, auth: this._walletAuth() }),
       });
       const data = await res.json();
       if (!res.ok || !data.ok) throw new Error(data.error || 'generování selhalo');
@@ -1041,10 +1042,12 @@ class PBook {
       if (offer) offer.remove();
       this._swapBlock(blockId, block, target);
       this.rc.logEvent('generate_served', { concept: conceptId, variantId: block.meta.id, cached: !!data.cached });
-      if (!data.cached) this.aiCharge('advanced', payV);
+      if (!data.cached) this._walletApply(data, 'advanced', payV);
       this._setTellingChoice(conceptId, block.meta.id);
       if (this._f('gamification')) { this.user.addXP(2); this.user.save(); this.updateXPBadge(); }
     } catch (e) {
+      const pwV = this._aiErrorPaywall(e, 'advanced');
+      if (pwV) { if (offer) offer.innerHTML = pwV; return; }
       if (offer) offer.innerHTML = `<span>Generování se nepovedlo (${this.escHtml(e.message)}). Tvůj požadavek jsme zapsali pro redakci.</span>`;
       this.rc.logEvent('generate_failed', { concept: conceptId, error: String(e.message).slice(0, 200) });
     }
@@ -4599,6 +4602,7 @@ class PBook {
     if (result.error) { errEl.textContent = result.error; return; }
 
     this._setAuth({ email, token: result.token, displayName: result.displayName });
+    this.refreshAiBalance(true);
 
     // Merge cloud profile with local — cloud wins for reading progress (union of sets)
     if (result.profileData && Object.keys(result.profileData).length > 0) {
@@ -5877,6 +5881,7 @@ class PBook {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(insertHere ? {
           mode: 'insert',
+          auth: this._walletAuth(),
           concept: entry.meta.concept || null,
           facets: this._blockFacets(entry.meta) || {},
           anchor: (ctx?.anchorText || base.slice(Math.max(0, span[0] - 400), span[0])).slice(-1200),
@@ -5884,6 +5889,7 @@ class PBook {
           context: base.slice(0, 6000),
         } : {
           mode: 'remix',
+          auth: this._walletAuth(),
           concept: entry.meta.concept || null,
           facets: this._blockFacets(entry.meta) || {},
           selection: sourceQuote.slice(0, 2000),
@@ -5894,7 +5900,7 @@ class PBook {
       const data = await res.json();
       if (!res.ok || !data.ok) throw new Error(data.error || (insertHere ? 'vložení selhalo' : 'remix selhal'));
       const replacement = insertHere ? data.addition : data.replacement;
-      this.aiCharge(remixTier, payR);
+      this._walletApply(data, remixTier, payR);
       const attachedSvg = data.svg || null;   // reader asked for a diagram → server drew one
 
       // A drawn diagram belongs WHERE the change is — attaching it to the block
@@ -5934,6 +5940,8 @@ class PBook {
       }
       this._showRemixDecision(origForDecision, id, sourceQuote, replacement);
     } catch (e) {
+      const pwR = this._aiErrorPaywall(e, typeof remixTier !== 'undefined' ? remixTier : 'basic');
+      if (pwR) { if (status) status.innerHTML = pwR; return; }
       if (status) status.innerHTML = `<span style="color:var(--warn,#D97706);font-size:.72rem">Remix se nepovedl (${this.escHtml(String(e.message).slice(0, 120))}). Tvoje přání jsme si zapsali.</span>`;
       this.rc.logEvent('remix_failed', { blockId, error: String(e.message).slice(0, 150) });
     }
@@ -6020,6 +6028,7 @@ class PBook {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           mode: 'svg-remix',
+          auth: this._walletAuth(),
           concept: entry.meta.concept || null,
           facets: this._blockFacets(entry.meta) || {},
           svg: srcSvg,
@@ -6028,7 +6037,7 @@ class PBook {
       });
       const data = await res.json();
       if (!res.ok || !data.ok) throw new Error(data.error || 'remix SVG selhal');
-      this.aiCharge('advanced', payD);
+      this._walletApply(data, 'advanced', payD);
       const cleanSvg = this._sanitizeSvgClient(data.svg);
       if (!cleanSvg) throw new Error('remixované SVG neprošlo bezpečnostní kontrolou');
 
@@ -6555,53 +6564,90 @@ class PBook {
   }
 
   // ===== AI EKONOMIKA (hospodárná AI) =====
-  // Zůstatek = celoživotní XP − utracené. Úrovně/odznaky čtou this.user.xp,
-  // takže utrácením nikdy neklesají. Peněženka žije mimo UserModel, ať se
-  // nedotýká jeho serializace.
-  _wallet() {
-    try { return JSON.parse(localStorage.getItem('pbook-ai-wallet')) || { spent: 0, trials: 0 }; }
-    catch (e) { return { spent: 0, trials: 0 }; }
+  // Server-autoritativní: zůstatek drží ledger v Supabase (api/wallet) a
+  // útratu vynucuje api/generate PŘED voláním modelu. Klient jen zrcadlí
+  // zůstatek pro UI. Anonym má jediný trial základní AI; plná AI po přihlášení.
+  _walletAuth() {
+    const a = this._getAuth();
+    const uid = localStorage.getItem('pbook-uid') || '';
+    return a ? { email: a.email, token: a.token, uid } : { uid };
   }
-  aiBalance() { return Math.max(0, (this.user.xp || 0) - this._wallet().spent); }
+  async _walletCall(body) {
+    try {
+      const r = await fetch('/api/wallet', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+      return await r.json();
+    } catch (e) { return { ok: false, error: 'offline' }; }
+  }
+  async refreshAiBalance(seed) {
+    const a = this._getAuth();
+    if (!a) { this._srvBalance = null; this.updateXPBadge(); return; }
+    const d = await this._walletCall({ action: 'balance', email: a.email, token: a.token, clientXp: seed ? this.user.xp : undefined });
+    if (d && d.ok) { this._srvBalance = d.balance; this.updateXPBadge(); }
+  }
+  // XP výdělky se na server hlásí dávkovaně (server je stropuje per den).
+  _walletEarnQueue(n) {
+    if (!this._getAuth() || !CONFIG.aiEconomy?.enabled) return;
+    this._earnQ = (this._earnQ || 0) + n;
+    clearTimeout(this._earnT);
+    this._earnT = setTimeout(async () => {
+      const q = this._earnQ; this._earnQ = 0;
+      const a = this._getAuth();
+      if (!a || q <= 0) return;
+      const d = await this._walletCall({ action: 'earn', email: a.email, token: a.token, amount: q, reason: 'activity' });
+      if (d && d.ok) { this._srvBalance = d.balance; this.updateXPBadge(); }
+    }, 4000);
+  }
+  _trialUsedLocal() { return localStorage.getItem('pbook-ai-trial-used') === '1'; }
+  aiBalance() { return this._srvBalance == null ? 0 : this._srvBalance; }
   aiCanPay(tier) {
     const c = CONFIG.aiEconomy;
     if (!c || !c.enabled || !this._f('gamification')) return { ok: true, free: false };
-    const w = this._wallet();
-    if (tier === 'basic' && (w.trials || 0) < (c.freeTrials || 0)) return { ok: true, free: true };
-    return { ok: this.aiBalance() >= c.prices[tier], free: false };
+    if (this._getAuth()) return { ok: this._srvBalance == null ? true : this._srvBalance >= c.prices[tier], free: false };
+    if (tier === 'basic' && !this._trialUsedLocal()) return { ok: true, free: true };
+    return { ok: false, free: false, login: true };
   }
-  aiCharge(tier, pay) {
+  // Po úspěšné generaci: server už utratil (walletBalance v odpovědi) — klient jen zrcadlí.
+  _walletApply(data, tier, pay) {
     const c = CONFIG.aiEconomy;
     if (!c || !c.enabled || !this._f('gamification')) return;
-    const w = this._wallet();
-    if (pay && pay.free) {
-      w.trials = (w.trials || 0) + 1;
-      localStorage.setItem('pbook-ai-wallet', JSON.stringify(w));
+    if (this._getAuth()) {
+      if (data && data.walletBalance != null) { this._srvBalance = data.walletBalance; this.updateXPBadge(); }
+      else this.refreshAiBalance(false);
+      this.showXPToast('−{p} ⚡ za AI · zbývá ⚡{b}'.replace('{p}', c.prices[tier]).replace('{b}', this.aiBalance()), 'xp');
+    } else if (pay && pay.free) {
+      localStorage.setItem('pbook-ai-trial-used', '1');
       this.showXPToast('První vyzkoušení AI zdarma 🌱', 'xp');
-    } else {
-      w.spent = (w.spent || 0) + c.prices[tier];
-      localStorage.setItem('pbook-ai-wallet', JSON.stringify(w));
-      this.showXPToast('−{p} ⚡ za AI · zbývá {b}'.replace('{p}', c.prices[tier]).replace('{b}', '⚡' + this.aiBalance()), 'xp');
     }
-    this.rc.logEvent('ai_spend', { tier, price: pay && pay.free ? 0 : c.prices[tier], balance: this.aiBalance() });
-    this.updateXPBadge();
+    this.rc.logEvent('ai_spend', { tier, price: this._getAuth() ? c.prices[tier] : 0, balance: this.aiBalance() });
   }
-  aiPaywallHtml(tier) {
+  aiPaywallHtml(tier, kind) {
     const c = CONFIG.aiEconomy;
+    if (kind === 'login' || (!this._getAuth() && this._trialUsedLocal())) {
+      return `<div style="border:1.5px solid #0EA5E9;background:var(--card,#fff);border-radius:10px;padding:.55em .7em;font-size:.74rem;line-height:1.5">
+        <b>🔑 AI je pro přihlášené</b><br>Vyzkoušení zdarma už proběhlo. Přihlas se v <a href="#" onclick="event.preventDefault();app.switchView('profile')">Profilu</a> — ⚡ se ti začnou počítat na serveru a dosavadní XP se přenesou (do 100).<br>
+        <span style="color:#15803D;font-size:.68rem">Vedeme k hospodárnému využívání AI — ruční práce a přemýšlení se cení víc. 🌱</span></div>`;
+    }
     const tierName = tier === 'advanced' ? 'Pokročilá AI (varianty a diagramy)' : 'Základní AI (text)';
     return `<div style="border:1.5px solid #D97706;background:var(--card,#fff);border-radius:10px;padding:.55em .7em;font-size:.74rem;line-height:1.5">
       <b>⚡ Na tohle zatím nemáš dost ⚡</b><br>
-      ${'{tier} stojí <b>{p} ⚡</b>, máš <b>{b} ⚡</b>. XP vyděláš prací s knihou:'.replace('{tier}', tierName).replace('{p}', c.prices[tier]).replace('{b}', this.aiBalance())}<br>
-      <span style="color:var(--text-2,#666)">${'přečtená sekce +10 · kvíz kartička +2 · hra +5 · poznámka +3 · <b>ruční úprava +{me}</b>'.replace('{me}', c.earnManualEdit)}</span><br>
+      ${'{tier} stojí <b>{p} ⚡</b>, máš <b>⚡{b}</b>. Vyděláš prací s knihou:'.replace('{tier}', tierName).replace('{p}', c.prices[tier]).replace('{b}', this.aiBalance())}<br>
+      <span style="color:var(--text-2,#666)">${'přečtená sekce +10 · kvíz +2 · hra +5 · poznámka +3 · <b>ruční úprava +{me}</b>'.replace('{me}', c.earnManualEdit)}</span><br>
       <span style="color:#15803D;font-size:.68rem">Vedeme k hospodárnému využívání AI — ruční práce a přemýšlení se cení víc. 🌱</span>
     </div>`;
+  }
+  // 402/401 ze serveru → paywall místo obecné chyby
+  _aiErrorPaywall(e, tier) {
+    const m = String(e && e.message || '');
+    if (m.includes('insufficient_xp')) return this.aiPaywallHtml(tier, 'xp');
+    if (m.includes('login_required')) return this.aiPaywallHtml(tier, 'login');
+    return null;
   }
   aiEconHint() {
     const c = CONFIG.aiEconomy;
     if (!c || !c.enabled || !this._f('gamification')) return '';
-    const trial = this.aiCanPay('basic').free ? ' · první vyzkoušení zdarma 🌱' : '';
-    return 'AI se platí z XP: text {b} ⚡ · s diagramem {a} ⚡ — máš <b>⚡{bal}</b>{trial}. Ruční úprava je zdarma a vydělá +{me} XP.'.replace('{b}', c.prices.basic).replace('{a}', c.prices.advanced)
-      .replace('{bal}', this.aiBalance()).replace('{trial}', trial).replace('{me}', c.earnManualEdit);
+    if (this._getAuth()) return 'AI se platí z XP na serveru: text {b} ⚡ · s diagramem {a} ⚡ — máš <b>⚡{bal}</b>. Ruční úprava je zdarma a vydělá +{me} XP.'.replace('{b}', c.prices.basic).replace('{a}', c.prices.advanced).replace('{bal}', this.aiBalance()).replace('{me}', c.earnManualEdit);
+    if (!this._trialUsedLocal()) return 'První vyzkoušení AI zdarma 🌱 — pak se přihlas a plať z vydělaných XP (text {b} ⚡, diagram {a} ⚡).'.replace('{b}', c.prices.basic).replace('{a}', c.prices.advanced);
+    return 'AI po přihlášení (Profil) — platí se z XP vydělaných čtením a prací s knihou. Ruční úprava je zdarma.';
   }
 
   updateXPBadge() {
@@ -6611,7 +6657,7 @@ class PBook {
     el.style.display = '';
     const reward = this.getLevelRewards().filter(r => r.level <= this.user.level).pop();
     const editor = this.getEditorTrack?.().tier === 'editor' ? '🛠 ' : '';
-    el.textContent = editor + (reward?.icon || '') + ' Úr. ' + this.user.level + ' · ' + this.user.xp + ' XP' + (CONFIG.aiEconomy?.enabled ? ' · ⚡' + this.aiBalance() : '');
+    el.textContent = editor + (reward?.icon || '') + ' Úr. ' + this.user.level + ' · ' + this.user.xp + ' XP' + (CONFIG.aiEconomy?.enabled && this._srvBalance != null ? ' · ⚡' + this._srvBalance : '');
     el.title = editor ? 'Redaktor — vysloužený přijatými příspěvky' : '';
     // Apply cosmetic theme
     this._applyLevelTheme();
