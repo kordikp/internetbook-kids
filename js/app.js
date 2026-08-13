@@ -6470,6 +6470,9 @@ class PBook {
   // Insert a passage at a source offset, keeping markdown paragraph separation
   // (exactly one blank line on each side, never inside a word).
   _spliceIn(base, pos, text) {
+    // Kotva z renderovaného textu mapuje jen písmena/číslice — koncová interpunkce
+    // věty (?" …) by zůstala ZA vloženým textem a osiřela. Posuň bod vložení za ni.
+    while (pos > 0 && pos < base.length && !/\s/.test(base[pos - 1]) && /[?!.…,;:"'“”„‟»«)\]]/.test(base[pos])) pos++;
     const before = base.slice(0, pos).replace(/\s+$/, '');
     const after = base.slice(pos).replace(/^\s+/, '');
     return [before, text.trim(), after].filter(Boolean).join('\n\n');
