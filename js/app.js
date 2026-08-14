@@ -5576,6 +5576,9 @@ class PBook {
   // ===== Obrázky ve studiu: v textu jen token ⟦obrázek N⟧, zdroj SVG žije vedle =====
   // Člověk needituje SVG jako text — vidí ho v náhledu a upravuje TAM (dvojklik na
   // popisek, ✨ instrukce pro AI, 🗑). Při odeslání se tokeny rozbalí zpět na ⟦svg⟧.
+  // Značky obrázků v textu: [diagram|animace|obrázek|schéma|grafika: …] — bez ohledu na velikost písmen
+  _studioMarkerRx() { return /\[\s*(diagram|sch[eé]ma|animace|animation|obr[aá]zek|image|grafika)\s*:\s*([^\]]+)\]/gi; }
+
   _studioAssetRx() { return /⟦(?:obrázek|obrazek|image)\s*(\d+)⟧/g; }
   _studioCollapse(text) {
     const stdo = this._studio;
@@ -5629,7 +5632,7 @@ class PBook {
         ? { objective: conc.contract?.objective, mustCover: (conc.contract?.mustCover || []).map(m => m.point || m), recallQ: conc.contract?.recallQ }
         : { objective: node?.def || node?.teaser, mustCover: [], recallQ: undefined };
     const st = this._authorState()[slug] || {};
-    this._studio = { slug, title, contract, isProposal: !!prop, questions: [],
+    this._studio = { slug, title: st.title || title, contract, isProposal: !!prop, questions: [],
       assets: { ...(st.assets || {}) }, assetSeq: st.assetSeq || 0 };
     const cleanText = this._studioCollapse(st.text || '');
     document.getElementById('authorStudio')?.remove();
@@ -5648,7 +5651,7 @@ class PBook {
           ${contract.objective ? `<div style="margin-top:.25em"><span style="color:var(--text-2,#666)">Cíl:</span> ${this.escHtml(contract.objective)}</div>` : ''}
           ${(contract.mustCover || []).length ? `<div style="margin-top:.25em;font-size:.74rem"><span style="color:var(--text-2,#666)">Musí pokrýt:</span> ${(contract.mustCover || []).map(x => `<span style="display:inline-block;border:1px solid var(--border,#ddd);border-radius:999px;padding:0 .5em;margin:.1em">${this.escHtml(x)}</span>`).join('')}</div>` : ''}
         </div>
-        <div id="stCanvas" style="border:1.5px solid var(--border,#ddd);border-radius:12px;padding:1em 1.1em;background:var(--card,#fff);margin:.7em 0 .5em;min-height:30vh"></div>
+        <style>#stCanvas .st-block{transition:background .15s}#stCanvas .st-block:not([data-img]):hover{background:color-mix(in srgb, var(--accent) 6%, transparent)}#stCanvas #stTitleH:hover{background:color-mix(in srgb, var(--accent) 6%, transparent)}</style><div id="stCanvas" style="border:1.5px solid var(--border,#ddd);border-radius:12px;padding:1em 1.1em;background:var(--card,#fff);margin:.7em 0 .5em;min-height:30vh"></div>
         <div style="display:flex;gap:.5em;align-items:center;flex-wrap:wrap">
           <button class="note-save" id="stSeedBtn" onclick="app.seedDraft()" style="border:1.5px solid var(--accent);background:transparent;color:var(--accent)">✨ Navrhnout kostru · ${CONFIG.aiEconomy?.prices.basic || 0} ⚡</button>
           <button class="note-save" style="background:var(--accent)" id="stCoachBtn" onclick="app.coachRound()">🧭 Kouč · ${CONFIG.aiEconomy?.prices.basic || 0} ⚡</button>
@@ -5656,7 +5659,7 @@ class PBook {
           <button class="note-save" id="stFinishBtn" onclick="app.finishAuthoring()" style="background:#10B981">📤 Odeslat do knihy</button>
         </div>
         <div id="stOut" style="margin-top:.7em"></div>
-        <div style="font-size:.68rem;color:var(--text-2,#666);margin-top:.5em">✏️ Klikni na odstavec = uprav (markdown funguje, Ctrl+Enter nebo klik jinam = hotovo, Esc = zpět). Obrázek: klik vybere prvek a dá lištu (tažení, barvy, ⧉, 🗑, ↩), dvojklik přepíše popisek, ✨ pošle instrukci AI. Nový obrázek: napiš do odstavce [DIAGRAM: co má ukázat] či [ANIMACE: co se hýbe] a dej „Generuj grafiku".</div>
+        <div style="font-size:.68rem;color:var(--text-2,#666);margin-top:.5em">✏️ Klikni na odstavec = uprav (markdown funguje, Ctrl+Enter/klik jinam = hotovo, Esc = zpět); klikni na nadpis = přejmenuj. Obrázky: do textu piš značky [diagram: co ukázat], [animace: co se hýbe] nebo [obrázek: co nakreslit] — „Generuj grafiku" je nakreslí VŠECHNY najednou (každá značka = jeden obrázek, hned se vloží), nebo v náhledu klikni na jednu značku. Hotový obrázek: klik vybere prvek (tažení, barvy, ⧉, 🗑, ↩), dvojklik přepíše popisek, ✨ pošle instrukci AI.</div>
         <details style="margin-top:.6em"><summary style="font-size:.7rem;color:var(--text-3,#999);cursor:pointer">Zdroj (markdown) — pro zkušené</summary>
           <textarea id="stDraft" style="width:100%;min-height:30vh;margin:.4em 0;padding:.7em;border:1.5px solid var(--border,#ddd);border-radius:10px;font:ui-monospace,monospace;font-size:.78rem;line-height:1.5;background:var(--card,#fff)">${this.escHtml(cleanText)}</textarea>
         </details>
@@ -5686,6 +5689,7 @@ class PBook {
     const blocks = draft ? draft.split(/\n{2,}/).map(b => b.trim()).filter(Boolean) : [];
     stdo._blocks = blocks;
     const tokenRx = /^⟦(?:obrázek|obrazek|image)\s*(\d+)⟧$/;
+    let mkIdx = 0;
     let inner = '';
     blocks.forEach((b, i) => {
       const m = b.match(tokenRx);
@@ -5695,12 +5699,15 @@ class PBook {
         return;
       }
       let h = renderMarkdown(b);
-      h = h.replace(/\[(DIAGRAM|ANIMACE):\s*([^\]]*)\]/g, (_, k, w) =>
-        `<span style="display:block;border:1.5px dashed #7C3AED;border-radius:10px;padding:.5em .7em;margin:.4em 0;color:#7C3AED;font-size:.78rem">🎨 ${/^D/.test(k) ? 'DIAGRAM (zatím nenakreslený)' : 'ANIMACE (zatím nenakreslená)'}${w.trim() ? ': ' + w.trim() : ''}</span>`);
+      h = h.replace(this._studioMarkerRx(), (_, k, w) => {
+        const mi = mkIdx++;
+        return `<span style="display:inline-block;max-width:100%;border:1.5px dashed #7C3AED;border-radius:10px;padding:.35em .6em;margin:.15em .1em;color:#7C3AED;font-size:.78rem;vertical-align:middle">🎨 ${/anim/i.test(k) ? 'ANIMACE' : 'DIAGRAM'}: ${this.escHtml(w.trim())}
+          <button class="steer-chip" style="font-size:.64rem;margin-left:.5em;border-color:#7C3AED;color:#7C3AED" onclick="app.generateGraphic(${mi})">🎨 Nakreslit tenhle · ${CONFIG.aiEconomy?.prices.advanced || 0} ⚡</button></span>`;
+      });
       inner += `<div class="st-block" data-bi="${i}" title="klikni a uprav tento odstavec" style="border-radius:8px;padding:.15em .35em;margin:0 -.35em;cursor:text">${h}</div>`;
     });
     if (!blocks.length) inner = `<div style="color:var(--text-3,#999);font-size:.8rem;margin-bottom:.6em">Zatím prázdno — klikni na ＋ a napiš první odstavec, nebo si nech ✨ navrhnout kostru.</div>`;
-    pane.innerHTML = `<article class="block-article" style="margin:0;padding:0;border:none;box-shadow:none"><h2 style="margin:.1em 0 .5em;font-size:1.15rem">${this.escHtml(stdo.title)}</h2><div class="block-content">${inner}</div>
+    pane.innerHTML = `<article class="block-article" style="margin:0;padding:0;border:none;box-shadow:none"><h2 id="stTitleH" title="klikni a přejmenuj" style="margin:.1em 0 .5em;font-size:1.15rem;cursor:text;border-radius:6px" onclick="app._studioEditTitle()">${this.escHtml(stdo.title)} <span style="font-size:.7rem;opacity:.45">✏️</span></h2><div class="block-content">${inner}</div>
       <button class="steer-chip" style="font-size:.72rem;margin-top:.3em" onclick="app._studioAddBlock()">＋ odstavec</button></article>`;
     pane.querySelectorAll('.st-block[data-img]').forEach(div => {
       const fig = div.querySelector('figure.diagram-inline'); if (!fig) return;
@@ -5725,6 +5732,30 @@ class PBook {
         if (blk && !blk.dataset.img) this._studioEditBlock(+blk.dataset.bi, blk);
       });
     }
+  }
+
+  // Klik na nadpis = přejmenování podání (ukládá se k draftu)
+  _studioEditTitle() {
+    const stdo = this._studio; if (!stdo) return;
+    const h = document.getElementById('stTitleH'); if (!h) return;
+    const inp = document.createElement('input');
+    inp.value = stdo.title;
+    inp.style.cssText = 'width:100%;font:inherit;font-size:1.15rem;font-weight:700;padding:.1em .3em;border:1.5px solid var(--accent);border-radius:8px;background:var(--card,#fff)';
+    const commit = () => {
+      const v = inp.value.trim();
+      if (v) {
+        stdo.title = v;
+        const all = this._authorState(); (all[stdo.slug] = all[stdo.slug] || {}).title = v; this._authorSave(all);
+      }
+      this._studioPreview();
+    };
+    inp.addEventListener('blur', commit);
+    inp.addEventListener('keydown', ev => {
+      if (ev.key === 'Enter') { ev.preventDefault(); inp.blur(); }
+      if (ev.key === 'Escape') this._studioPreview();
+    });
+    h.replaceWith(inp);
+    inp.focus(); inp.select();
   }
 
   _studioEditBlock(i, blkEl) {
@@ -5986,46 +6017,69 @@ class PBook {
   }
 
   // 🎨 Nakresli k draftu grafiku (advanced): [DIAGRAM/ANIMACE: …] značka určí, co a kam
-  async generateGraphic() {
+  // 🎨 Generování grafiky: KAŽDÁ značka v textu = jeden obrázek; kreslí se
+  // postupně (kredit po kreditu), každý hotový hned nahradí svou značku.
+  // Bez značek se nakreslí jedno shrnutí textu. onlyIdx = jen jedna značka.
+  async generateGraphic(onlyIdx) {
     const stdo = this._studio; if (!stdo) return;
     const out = document.getElementById('stOut');
     const ta = document.getElementById('stDraft');
     const draft = (ta?.value || '').trim();
     if (draft.length < 40) { out.innerHTML = `<div style="background:#FEF3C7;border-radius:8px;padding:.5em .7em;font-size:.8rem">Napiš nejdřív text (aspoň pár vět) — grafika se kreslí z něj.</div>`; return; }
-    const pay = this.aiCanPay('advanced');
-    if (!pay.ok) { out.innerHTML = this.aiPaywallHtml('advanced'); return; }
-    const m = ta.value.match(/\[(DIAGRAM|ANIMACE):\s*([^\]]+)\]/);
-    const wantAnim = !!m && /^A/.test(m[1]);
-    const instruction = m ? `${wantAnim ? 'animace' : 'diagram'}: ${m[2].trim()}` : 'Nakresli jednoduchý diagram, který shrne hlavní myšlenku tohoto textu';
+    let marks = [...ta.value.matchAll(this._studioMarkerRx())];
+    if (typeof onlyIdx === 'number') marks = marks[onlyIdx] ? [marks[onlyIdx]] : [];
+    const price = CONFIG.aiEconomy?.prices.advanced || 0;
+    if (marks.length > 1 && !confirm('Našel jsem {n} značek pro obrázky. Vygenerovat všechny postupně? (~{n}× {c} ⚡ — každý hotový se hned vloží do textu)'.replace(/\{n\}/g, String(marks.length)).replace('{c}', String(price)))) return;
+    const jobs = marks.length
+      ? marks.map(m => ({ m, wantAnim: /anim/i.test(m[1]), wish: m[2].trim() }))
+      : [{ m: null, wantAnim: false, wish: null }];
     const btn = document.getElementById('stArtBtn');
-    btn.disabled = true; const orig = btn.textContent; btn.textContent = 'Kreslím…';
-    try {
-      const res = await fetch(CONFIG.steering.generateEndpoint, {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ mode: 'insert', concept: stdo.isProposal ? undefined : stdo.slug,
-          instruction, context: this._studioExpand(draft).slice(0, 6000), wantSvg: true, auth: this._walletAuth() }),
-      });
-      const data = await res.json();
-      if (!res.ok || !data.ok) throw new Error(data.error || 'generate failed');
-      this._walletApply(data, 'advanced', pay);
-      if (!data.svg) { out.innerHTML = `<div style="background:#FEF3C7;border-radius:8px;padding:.5em .7em;font-size:.8rem">Model tentokrát grafiku nevrátil — zkus to znovu, nebo upřesni [DIAGRAM: …].</div>`; }
-      else {
+    const orig = btn ? btn.textContent : '';
+    if (btn) btn.disabled = true;
+    let ok = 0, failed = [];
+    for (let i = 0; i < jobs.length; i++) {
+      const job = jobs[i];
+      const pay = this.aiCanPay('advanced');
+      if (!pay.ok) {
+        out.innerHTML = (ok ? `<div style="font-size:.78rem;margin-bottom:.4em">Došly ⚡ — vygenerováno {ok} z {n}. Zbylé značky můžeš nakreslit později kliknutím v náhledu.</div>`.replace('{ok}', String(ok)).replace('{n}', String(jobs.length)) : '') + this.aiPaywallHtml('advanced');
+        if (btn) { btn.disabled = false; btn.textContent = orig; }
+        return;
+      }
+      if (btn) btn.textContent = 'Kreslím {i}/{n}…'.replace('{i}', String(i + 1)).replace('{n}', String(jobs.length));
+      out.innerHTML = `<span class="gen-spinner">🎨 Kreslím {i}/{n}: „{w}"</span>`
+        .replace('{i}', String(i + 1)).replace('{n}', String(jobs.length))
+        .replace('{w}', this.escHtml((job.wish || 'Nakresli jednoduchý diagram, který shrne hlavní myšlenku tohoto textu').slice(0, 80)));
+      const instruction = job.wish ? `${job.wantAnim ? 'animace' : 'diagram'}: ${job.wish}` : 'Nakresli jednoduchý diagram, který shrne hlavní myšlenku tohoto textu';
+      try {
+        const res = await fetch(CONFIG.steering.generateEndpoint, {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ mode: 'insert', concept: stdo.isProposal ? undefined : stdo.slug,
+            instruction, context: this._studioExpand(ta.value).slice(0, 6000), wantSvg: true, auth: this._walletAuth() }),
+        });
+        const data = await res.json();
+        if (!res.ok || !data.ok) throw new Error(data.error || 'generate failed');
+        this._walletApply(data, 'advanced', pay);
+        if (!data.svg) { failed.push(job.wish || '?'); continue; }
         const id = String(++stdo.assetSeq);
         stdo.assets[id] = data.svg;
         const token = `⟦obrázek ${id}⟧`;
-        ta.value = m ? ta.value.replace(m[0], token) : ta.value + `\n\n${token}\n`;
+        ta.value = job.m ? ta.value.replace(job.m[0], token) : ta.value + `\n\n${token}\n`;
         this._studioSave();
-        ta.dispatchEvent(new Event('input'));
         this._studioPreview();
-        out.innerHTML = `<div style="border:1.5px solid #10B981;border-radius:8px;padding:.5em .7em;font-size:.8rem;background:var(--card,#fff)">Obrázek přidán — vidíš ho v náhledu. Dvojklikem na popisek ho přepíšeš, ✨ Uprav ho změní podle instrukce.</div>`;
+        ok++;
+        this.rc.logEvent('author_graphic', { slug: stdo.slug, marked: !!job.m, batch: jobs.length });
+      } catch (e) {
+        const pw = this._aiErrorPaywall(e, 'advanced');
+        if (pw) { out.innerHTML = pw; if (btn) { btn.disabled = false; btn.textContent = orig; } return; }
+        failed.push((job.wish || '?') + ' (' + String(e.message).slice(0, 60) + ')');
       }
-      this.rc.logEvent('author_graphic', { slug: stdo.slug, marked: !!m });
-    } catch (e) {
-      const pw = this._aiErrorPaywall(e, 'advanced');
-      out.innerHTML = pw || `<div style="background:#FEE2E2;border-radius:8px;padding:.5em .7em;font-size:.8rem">${this.escHtml(e.message)}</div>`;
     }
-    btn.disabled = false; btn.textContent = orig;
+    out.innerHTML = `<div style="border:1.5px solid ${failed.length ? '#D97706' : '#10B981'};border-radius:8px;padding:.5em .7em;font-size:.8rem;background:var(--card,#fff)">`
+      + '✅ Vloženo obrázků: {ok}{fail}'.replace('{ok}', String(ok)).replace('{fail}', failed.length ? ' · bez výsledku: {f} (zkus značku upřesnit a klikni na ni v náhledu)'.replace('{f}', failed.map(f => `„${this.escHtml(f)}"`).join(', ')) : '')
+      + '</div>';
+    if (btn) { btn.disabled = false; btn.textContent = orig; }
   }
+
   async seedDraft() {
     const stdo = this._studio; if (!stdo) return;
     const ta = document.getElementById('stDraft');
