@@ -5577,6 +5577,20 @@ class PBook {
   // Člověk needituje SVG jako text — vidí ho v náhledu a upravuje TAM (dvojklik na
   // popisek, ✨ instrukce pro AI, 🗑). Při odeslání se tokeny rozbalí zpět na ⟦svg⟧.
   // Značky obrázků v textu: [diagram|animace|obrázek|schéma|grafika: …] — bez ohledu na velikost písmen
+  // Dělení draftu na bloky: prázdný řádek odděluje, ale NE uvnitř ```fence
+  // (kódový blok s prázdným řádkem se nesmí rozpůlit — read feed parity)
+  _studioSplitBlocks(draft) {
+    const out = []; let buf = []; let fence = false;
+    for (const line of (draft || '').split('\n')) {
+      if (/^```/.test(line)) fence = !fence;
+      if (!fence && line.trim() === '') {
+        if (buf.length) { out.push(buf.join('\n').trim()); buf = []; }
+      } else buf.push(line);
+    }
+    if (buf.length) out.push(buf.join('\n').trim());
+    return out.filter(Boolean);
+  }
+
   _studioMarkerRx() { return /\[\s*(diagram|sch[eé]ma|animace|animation|obr[aá]zek|image|grafika)\s*:\s*([^\]]+)\]/gi; }
 
   _studioAssetRx() { return /⟦(?:obrázek|obrazek|image)\s*(\d+)⟧/g; }
@@ -5608,14 +5622,25 @@ class PBook {
   }
 
   // Vstup do studia rovnou ze čtení: sekce se otevře jako draft vlastního podání
-  startAuthoringFromBlock(blockId) {
+  async startAuthoringFromBlock(blockId) {
     const entry = this._findAnyBlock(blockId); if (!entry) return;
     const slug = (this._conceptIds ? this._conceptIds(entry.meta)[0] : entry.meta.concept) || blockId;
     const all = this._authorState();
     const st = all[slug] || {};
     if (st.text && st.text.trim() && !confirm('Ve studiu už máš k tomuto pojmu rozepsaný draft. Nahradit ho obsahem této sekce? (Zrušit = otevřít rozepsaný draft)')) { this.startAuthoring(slug); return; }
-    (all[slug] = all[slug] || {}).text = entry.body || '';
-    this._authorSave(all);
+    // Sekce se přenáší VĚRNĚ: hlavičkový diagram (meta.diagram) jako inline
+    // obrázek na začátek, ⟦rx⟧ značky remixů pryč.
+    let body = (entry.body || '').replace(/⟦\/?rx⟧/g, '');
+    const diag = entry.meta?.diagram;
+    if (diag && typeof diag === 'string' && /\.svg$/.test(diag) && !body.includes('⟦svg⟧')) {
+      try {
+        const svg = (await (await fetch(diag)).text()).trim();
+        if (/^<svg[\s\S]*<\/svg>$/.test(svg) && svg.length < 120000) body = '⟦svg⟧\n' + svg + '\n⟦/svg⟧\n\n' + body;
+      } catch (e) {}
+    }
+    const all2 = this._authorState();
+    (all2[slug] = all2[slug] || {}).text = body;
+    this._authorSave(all2);
     this.rc.logEvent('author_from_block', { slug, blockId });
     this.startAuthoring(slug);
   }
@@ -5686,7 +5711,7 @@ class PBook {
     this._studioDeselect();
     this._stEditing = null;
     const draft = (document.getElementById('stDraft')?.value || '').trim();
-    const blocks = draft ? draft.split(/\n{2,}/).map(b => b.trim()).filter(Boolean) : [];
+    const blocks = this._studioSplitBlocks(draft);
     stdo._blocks = blocks;
     const tokenRx = /^⟦(?:obrázek|obrazek|image)\s*(\d+)⟧$/;
     let mkIdx = 0;
