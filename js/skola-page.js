@@ -102,7 +102,9 @@ function exitGateHtml(ph) {
 
 // ---------- stránky ----------
 function renderDP(phaseId) {
-  const ph = School.phase(phaseId);
+  let ph = School.phase(phaseId);
+  const custom = customTaskFromHash();
+  if (custom) ph = { ...ph, tutored: custom, topic: ph.topic, what: ph.what + ' (Učitel poslal vlastní zadání úkolu — je níž.)' };
   renderRoute(phaseId);
   const meta = $('skMeta');
   if (meta) meta.textContent = (ph.est || '') + ' · vše jde opakovat · nic se nikam neposílá';
@@ -187,6 +189,30 @@ async function renderHodina() {
 function b64u(obj) {
   return btoa(unescape(encodeURIComponent(JSON.stringify(obj)))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 }
+function unb64u(str) {
+  try { return JSON.parse(decodeURIComponent(escape(atob(str.replace(/-/g, '+').replace(/_/g, '/'))))); }
+  catch (e) { return null; }
+}
+// Vlastní tutorovaný úkol od učitele: #ukol-<b64url {t,g,c:[{p,h:[…]}]}> na stránce DP
+// přepíše výchozí úkol z school-unit.json. Checkpointy hodnotí týž AI zkoušející.
+function customTaskFromHash() {
+  const m = location.hash.match(/^#ukol-(.+)$/);
+  if (!m) return null;
+  const d = unb64u(m[1]);
+  if (!d || !d.t || !Array.isArray(d.c) || !d.c.length) return null;
+  let hash36 = 0;
+  for (const ch of m[1]) hash36 = (hash36 * 31 + ch.charCodeAt(0)) >>> 0;
+  return {
+    id: 'tc-custom-' + hash36.toString(36),
+    title: String(d.t).slice(0, 90),
+    goal: String(d.g || '').slice(0, 300),
+    checkpoints: d.c.slice(0, 4).map((x, i) => ({
+      id: 'c' + (i + 1),
+      prompt: String(x.p || '').slice(0, 400),
+      hints: (Array.isArray(x.h) ? x.h : []).map(h => String(h).slice(0, 60)).slice(0, 6),
+    })).filter(cp => cp.prompt),
+  };
+}
 
 async function renderMissionBuilder() {
   const el = $('skBuilder');
@@ -230,9 +256,44 @@ async function renderMissionBuilder() {
   $('mbTitle').addEventListener('input', update);
 }
 
+
+// Builder vlastního tutorovaného úkolu: učitel sestaví zadání + checkpointy,
+// odkaz #ukol-<b64u> na dp2 přepíše výchozí úkol. Hodnotí týž AI zkoušející.
+function renderTaskBuilder() {
+  const el = $('skTaskBuilder'); if (!el) return;
+  const inp = 'width:100%;padding:9px;border:1px solid #cfcdc6;border-radius:8px;font:inherit;font-size:14px;margin:5px 0;background:#fff';
+  el.innerHTML = `
+    <h2 style="margin-top:30px">🧪 Vlastní tutorovaný úkol (do DP2)</h2>
+    <p>Výchozí úkol v DP2 je měření rychlosti. Tady sestavíte <b>vlastní zadání</b> (třeba pozorování Wi-Fi doma, mini-výzkum cookies…): žák z odkazu dostane vaše checkpointy a každou odpověď obhájí u AI zkoušejícího — hodnotí podle vašich nápověd, co má v odpovědi zaznít.</p>
+    <input id="tbT" placeholder="Název úkolu (např. Prozkoumej, co o tobě ví prohlížeč)" style="${inp}">
+    <input id="tbG" placeholder="Cíl jednou větou — žák ho uvidí nad checkpointy" style="${inp}">
+    ${[1, 2, 3].map(i => `
+      <div style="border:1px solid var(--line);border-radius:10px;padding:8px 10px;margin:7px 0;background:var(--card)">
+        <b style="font-size:13px">Checkpoint ${i}${i > 1 ? ' <span style="font-weight:400;color:#8a887f">(nepovinný)</span>' : ''}</b>
+        <textarea id="tbP${i}" rows="2" placeholder="Zadání — co má žák udělat a napsat" style="${inp};resize:vertical"></textarea>
+        <input id="tbH${i}" placeholder="Nápovědy pro hodnocení, oddělené čárkou (co má zaznít — žák je nevidí)" style="${inp}">
+      </div>`).join('')}
+    <div class="sk-copy" id="tbOut" style="display:none"><span id="tbLink"></span><button class="sk-btn ghost" id="tbCopy">Kopírovat</button></div>`;
+  const update = () => {
+    const t = $('tbT').value.trim();
+    const c = [1, 2, 3]
+      .map(i => ({ p: $('tbP' + i).value.trim(), h: $('tbH' + i).value.split(',').map(x => x.trim()).filter(Boolean) }))
+      .filter(x => x.p);
+    const out = $('tbOut');
+    if (!t || !c.length) { out.style.display = 'none'; return; }
+    const g = $('tbG').value.trim();
+    const link = location.origin + '/dp2#ukol-' + b64u(g ? { t, g, c } : { t, c });
+    out.style.display = '';
+    $('tbLink').innerHTML = `<b>${esc(t)}</b> · ${c.length}× checkpoint · odkaz pro žáky:<br>${esc(link)}`;
+    $('tbCopy').onclick = () => navigator.clipboard && navigator.clipboard.writeText(link);
+  };
+  el.addEventListener('input', update);
+}
+
 function renderUcitel() {
   renderRoute(null);
   renderMissionBuilder();
+  renderTaskBuilder();
   const base = location.origin + location.pathname.replace(/[^/]*$/, '');
   const links = [
     ['Rozcestník pro žáky', base + 'start'],
