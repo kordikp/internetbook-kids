@@ -5645,9 +5645,11 @@ class PBook {
   }
 
   // Živý náhled: markdown draftu vykreslený stejně jako blok v knize + editace obrázků
+  // Živý náhled: markdown draftu vykreslený stejně jako blok v knize + editace obrázků
   _studioPreview() {
     const stdo = this._studio; if (!stdo) return;
     const pane = document.getElementById('stPreview'); if (!pane) return;
+    this._studioDeselect();
     const draft = (document.getElementById('stDraft')?.value || '').trim();
     if (!draft) { pane.innerHTML = `<div style="color:var(--text-3,#999);font-size:.8rem">Zatím prázdno — začni psát vlevo a náhled se vykreslí sám.</div>`; return; }
     const order = [];
@@ -5655,20 +5657,23 @@ class PBook {
     html = html.replace(/\[(DIAGRAM|ANIMACE):\s*([^\]]*)\]/g, (_, k, w) =>
       `<span style="display:block;border:1.5px dashed #7C3AED;border-radius:10px;padding:.5em .7em;margin:.4em 0;color:#7C3AED;font-size:.78rem">🎨 ${/^D/.test(k) ? 'DIAGRAM (zatím nenakreslený)' : 'ANIMACE (zatím nenakreslená)'}${w.trim() ? ': ' + w.trim() : ''}</span>`);
     pane.innerHTML = `<article class="block-article" style="margin:0;padding:0;border:none;box-shadow:none"><h2 style="margin:.1em 0 .5em;font-size:1.15rem">${this.escHtml(stdo.title)}</h2><div class="block-content">${html}</div></article>`;
-    // lišta u každého obrázku: AI úprava, odebrání, nápověda k dvojkliku
+    // lišta u každého obrázku: AI úprava, odebrání, nápověda
     pane.querySelectorAll('figure.diagram-inline').forEach((fig, i) => {
       const aid = order[i]; if (!aid) return;
       fig.dataset.asset = aid;
+      fig.style.position = 'relative';
+      fig.style.touchAction = 'none';
       const bar = document.createElement('div');
-      bar.style.cssText = 'display:flex;gap:.4em;align-items:center;margin:.25em 0 .1em';
+      bar.style.cssText = 'display:flex;gap:.4em;align-items:center;margin:.25em 0 .1em;flex-wrap:wrap';
       bar.innerHTML = `<button class="steer-chip" style="font-size:.66rem" onclick="app.studioEditImage('${aid}')">✨ Uprav (AI) · ${CONFIG.aiEconomy?.prices.advanced || 0} ⚡</button>
         <button class="steer-chip" style="font-size:.66rem" onclick="app.studioDeleteImage('${aid}')">🗑</button>
-        <span style="font-size:.62rem;color:var(--text-3,#999)">✏️ dvojklik na popisek = přepiš text</span>`;
+        <span style="font-size:.62rem;color:var(--text-3,#999)">✏️ klikni na prvek = vyber a táhni · dvojklik na popisek = přepiš</span>`;
       fig.appendChild(bar);
     });
     if (!pane._svgEditBound) {
       pane._svgEditBound = true;
       pane.addEventListener('dblclick', e => this._studioLabelEdit(e));
+      pane.addEventListener('pointerdown', e => this._studioPointerDown(e));
     }
   }
 
@@ -5680,40 +5685,174 @@ class PBook {
     const cur = t.textContent;
     const nv = prompt('Nový text popisku:', cur);
     if (nv == null || nv === cur) return;
+    this._studioUndoPush(aid);
     t.textContent = nv;
-    const svgEl = fig.querySelector('svg'); if (!svgEl) return;
-    this._studio.assets[aid] = new XMLSerializer().serializeToString(svgEl);
-    this._studioSave();
+    this._studioCommitSvg(fig, aid);
     this.showXPToast('Popisek přepsán ✏️', 'xp');
   }
 
-  // ✨ Instrukce pro AI nad konkrétním obrázkem (mode svg-remix, advanced)
-  async studioEditImage(aid) {
+  // ===== Ruční editace SVG: klik vybere prvek, tažením se posouvá, lišta nabídne
+  // rodiče/duplikaci/paletu/smazání/↩; každá úprava jde přes undo zásobník a
+  // serializuje se zpět do assetu. AI iterace je pomalá — drobnosti dělá ruka.
+  _studioUndoPush(aid) {
+    const stdo = this._studio; if (!stdo) return;
+    (stdo.undo = stdo.undo || {});
+    (stdo.undo[aid] = stdo.undo[aid] || []).push(stdo.assets[aid]);
+    if (stdo.undo[aid].length > 25) stdo.undo[aid].shift();
+  }
+  _studioCommitSvg(fig, aid) {
+    const svgEl = fig.querySelector('svg'); if (!svgEl) return;
+    this._studio.assets[aid] = new XMLSerializer().serializeToString(svgEl);
+    this._studioSave();
+  }
+  _studioDeselect() {
+    this._studioSel = null;
+    document.getElementById('stSelBox')?.remove();
+    document.getElementById('stSelBar')?.remove();
+  }
+
+  _studioPointerDown(e) {
+    const fig = e.target.closest('figure.diagram-inline');
+    if (!fig) { this._studioDeselect(); return; }
+    const svg = fig.querySelector('svg');
+    if (!svg || !svg.contains(e.target) || e.target === svg) { this._studioDeselect(); return; }
+    const aid = fig.dataset.asset; if (!aid || !this._studio?.assets?.[aid]) return;
+    let el = e.target;
+    const prev = this._studioSel;
+    if (prev && prev.aid === aid && prev.el.contains(el) && prev.el !== svg) el = prev.el;
+    this._studioSel = { aid, el, fig, svg };
+    this._studioSelDraw();
+    e.preventDefault();
+    const vb = svg.viewBox?.baseVal;
+    const scale = vb && vb.width ? vb.width / svg.getBoundingClientRect().width : 1;
+    const startX = e.clientX, startY = e.clientY;
+    const baseTr = el.getAttribute('transform') || '';
+    let moved = false, pushed = false;
+    const onMove = ev => {
+      const dx = Math.round((ev.clientX - startX) * scale), dy = Math.round((ev.clientY - startY) * scale);
+      if (!moved && Math.abs(dx) < 3 && Math.abs(dy) < 3) return;
+      moved = true;
+      if (!pushed) { pushed = true; this._studioUndoPush(aid); }
+      // posun v souřadnicích obrazovky = translate PŘED stávající transform (rotace!)
+      el.setAttribute('transform', `translate(${dx} ${dy})${baseTr ? ' ' + baseTr : ''}`);
+      this._studioSelDraw(true);
+    };
+    const onUp = () => {
+      window.removeEventListener('pointermove', onMove);
+      window.removeEventListener('pointerup', onUp);
+      if (moved) { this._studioCommitSvg(fig, aid); this._studioSelDraw(); }
+    };
+    window.addEventListener('pointermove', onMove);
+    window.addEventListener('pointerup', onUp);
+  }
+
+  _studioSelDraw(light) {
+    const sel = this._studioSel; if (!sel) return;
+    document.getElementById('stSelBox')?.remove();
+    if (!light) document.getElementById('stSelBar')?.remove();
+    const r = sel.el.getBoundingClientRect(), fr = sel.fig.getBoundingClientRect();
+    const box = document.createElement('div');
+    box.id = 'stSelBox';
+    box.style.cssText = `position:absolute;pointer-events:none;border:1.5px dashed #6366F1;border-radius:4px;left:${r.left - fr.left - 4}px;top:${r.top - fr.top - 4}px;width:${r.width + 8}px;height:${r.height + 8}px`;
+    sel.fig.appendChild(box);
+    if (light) return;
+    const pal = [['#1E1B4B', ''], ['#7C3AED', '#EDE9FE'], ['#0EA5E9', '#E0F2FE'], ['#10B981', '#D1FAE5'], ['#D97706', '#FEF3C7']];
+    const bar = document.createElement('div');
+    bar.id = 'stSelBar';
+    bar.style.cssText = `position:absolute;z-index:5;left:${Math.max(0, r.left - fr.left - 4)}px;top:${r.bottom - fr.top + 8}px;display:flex;gap:.3em;align-items:center;background:var(--card,#fff);border:1px solid var(--border,#ddd);border-radius:8px;padding:.2em .35em;box-shadow:0 2px 8px rgba(0,0,0,.12)`;
+    const b = (label, title, fn2) => `<button class="steer-chip" style="font-size:.7rem;padding:.05em .35em" title="${title}" onclick="app.${fn2}">${label}</button>`;
+    bar.innerHTML = b('⬆', 'vybrat celou skupinu (rodiče)', 'studioSelParent()')
+      + b('⧉', 'duplikovat prvek', 'studioSelDup()')
+      + pal.map(([d, l]) => `<button title="přebarvit (paleta knihy)" onclick="app.studioSelColor('${d}','${l}')" style="width:15px;height:15px;border-radius:50%;border:1.5px solid #fff;outline:1px solid var(--border,#ccc);background:${d};cursor:pointer;padding:0"></button>`).join('')
+      + b('🗑', 'smazat prvek', 'studioSelDel()')
+      + b('✨', 'AI upraví jen označené', `studioEditImage('${sel.aid}', true)`)
+      + b('↩', 'zpět (vrátí poslední ruční úpravu obrázku)', `studioSelUndo('${sel.aid}')`)
+      + b('✕', 'zrušit výběr', '_studioDeselect()');
+    sel.fig.appendChild(bar);
+  }
+
+  studioSelParent() {
+    const sel = this._studioSel; if (!sel) return;
+    const par = sel.el.parentElement;
+    if (!par || par === sel.svg || par.tagName === 'svg') return;
+    sel.el = par;
+    this._studioSelDraw();
+  }
+  studioSelDup() {
+    const sel = this._studioSel; if (!sel) return;
+    this._studioUndoPush(sel.aid);
+    const clone = sel.el.cloneNode(true);
+    const tr = clone.getAttribute('transform') || '';
+    clone.setAttribute('transform', `translate(14 14)${tr ? ' ' + tr : ''}`);
+    sel.el.after(clone);
+    sel.el = clone;
+    this._studioCommitSvg(sel.fig, sel.aid);
+    this._studioSelDraw();
+  }
+  studioSelDel() {
+    const sel = this._studioSel; if (!sel) return;
+    this._studioUndoPush(sel.aid);
+    const { fig, aid } = sel;
+    sel.el.remove();
+    this._studioDeselect();
+    this._studioCommitSvg(fig, aid);
+  }
+  studioSelColor(dark, light) {
+    const sel = this._studioSel; if (!sel) return;
+    this._studioUndoPush(sel.aid);
+    const paint = n => {
+      if (!n.tagName) return;
+      if (n.tagName.toLowerCase() === 'text') { n.setAttribute('fill', dark); return; }
+      const st = n.getAttribute('stroke');
+      if (st && st !== 'none') n.setAttribute('stroke', dark);
+      const f = n.getAttribute('fill');
+      if (f && f !== 'none' && light && !/^(#fff(fff)?|white)$/i.test(f)) n.setAttribute('fill', light);
+      if (!st && (!f || f === 'none')) n.setAttribute('stroke', dark);
+    };
+    paint(sel.el);
+    sel.el.querySelectorAll('*').forEach(paint);
+    this._studioCommitSvg(sel.fig, sel.aid);
+  }
+  studioSelUndo(aid) {
+    const stdo = this._studio; if (!stdo) return;
+    const stack = stdo.undo?.[aid];
+    if (!stack || !stack.length) return;
+    stdo.assets[aid] = stack.pop();
+    this._studioSave();
+    this._studioPreview();
+  }
+
+  // ✨ Instrukce pro AI: celý obrázek, nebo jen označený prvek (mode svg-remix, advanced)
+  async studioEditImage(aid, selectionOnly) {
     const stdo = this._studio; const svg = stdo?.assets?.[aid]; if (!svg) return;
     const out = document.getElementById('stOut');
-    const instruction = prompt('Co má AI na obrázku změnit? (např. „přidej třetí router a popisky přesuň mimo šipky")'); if (!instruction || instruction.trim().length < 3) return;
+    const sel = selectionOnly && this._studioSel?.aid === aid ? this._studioSel : null;
+    const wish = prompt(sel ? 'Co má AI změnit na OZNAČENÉM prvku? (zbytek obrázku zůstane beze změny)' : 'Co má AI na obrázku změnit? (např. „přidej třetí router a popisky přesuň mimo šipky")'); if (!wish || wish.trim().length < 3) return;
+    const instruction = sel
+      ? `Uprav POUZE tento prvek SVG, vše ostatní ponech PŘESNĚ beze změny:\n${new XMLSerializer().serializeToString(sel.el).slice(0, 1800)}\nPožadavek: ${wish}`
+      : wish;
     const pay = this.aiCanPay('advanced');
     if (!pay.ok) { out.innerHTML = this.aiPaywallHtml('advanced'); return; }
     out.innerHTML = `<span class="gen-spinner">✨ Upravuji obrázek… (~20 s)</span>`;
     try {
       const res = await fetch(CONFIG.steering.generateEndpoint, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ mode: 'svg-remix', svg, instruction: instruction.slice(0, 500), auth: this._walletAuth() }),
+        body: JSON.stringify({ mode: 'svg-remix', svg, instruction: instruction.slice(0, 2400), auth: this._walletAuth() }),
       });
       const data = await res.json();
       if (!res.ok || !data.ok || !data.svg) throw new Error(data.error || 'svg remix failed');
       this._walletApply(data, 'advanced', pay);
+      this._studioUndoPush(aid);
       stdo.assets[aid] = data.svg;
       this._studioSave();
       this._studioPreview();
       out.innerHTML = `<div style="border:1.5px solid #10B981;border-radius:8px;padding:.5em .7em;font-size:.8rem;background:var(--card,#fff)">Obrázek upraven — mrkni na náhled.</div>`;
-      this.rc.logEvent('author_image_edit', { slug: stdo.slug });
+      this.rc.logEvent('author_image_edit', { slug: stdo.slug, selection: !!sel });
     } catch (e2) {
       const pw = this._aiErrorPaywall(e2, 'advanced');
       out.innerHTML = pw || `<div style="background:#FEE2E2;border-radius:8px;padding:.5em .7em;font-size:.8rem">${this.escHtml(e2.message)}</div>`;
     }
   }
-
   studioDeleteImage(aid) {
     const stdo = this._studio; if (!stdo?.assets?.[aid]) return;
     if (!confirm('Odebrat tento obrázek z textu?')) return;
