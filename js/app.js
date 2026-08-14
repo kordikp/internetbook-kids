@@ -5554,6 +5554,35 @@ class PBook {
     try { return JSON.parse(localStorage.getItem('pbook-author-drafts')) || {}; } catch (e) { return {}; }
   }
   _authorSave(st) { localStorage.setItem('pbook-author-drafts', JSON.stringify(st)); }
+  // ===== Obrázky ve studiu: v textu jen token ⟦obrázek N⟧, zdroj SVG žije vedle =====
+  // Člověk needituje SVG jako text — vidí ho v náhledu a upravuje TAM (dvojklik na
+  // popisek, ✨ instrukce pro AI, 🗑). Při odeslání se tokeny rozbalí zpět na ⟦svg⟧.
+  _studioAssetRx() { return /⟦(?:obrázek|obrazek|image)\s*(\d+)⟧/g; }
+  _studioCollapse(text) {
+    const stdo = this._studio;
+    return (text || '').replace(/⟦svg⟧([\s\S]*?)⟦\/svg⟧/g, (_, svg) => {
+      if (!svg.trim()) return '';
+      const id = String(++stdo.assetSeq);
+      stdo.assets[id] = svg.trim();
+      return `⟦obrázek ${id}⟧`;
+    });
+  }
+  _studioExpand(text, order) {
+    return (text || '').replace(this._studioAssetRx(), (m2, id) => {
+      const svg = this._studio?.assets?.[id];
+      if (!svg) return '';
+      if (order) order.push(id);
+      return `\n\n⟦svg⟧\n${svg}\n⟦/svg⟧\n\n`;
+    });
+  }
+  _studioSave() {
+    const stdo = this._studio; if (!stdo) return;
+    const all = this._authorState(); const st = (all[stdo.slug] = all[stdo.slug] || {});
+    st.text = document.getElementById('stDraft')?.value ?? st.text;
+    st.assets = stdo.assets; st.assetSeq = stdo.assetSeq;
+    this._authorSave(all);
+  }
+
   startAuthoring(slug) {
     const prop = (this.proposals || []).find(x => x.slug === slug);
     const conc = this.concepts?.[slug];
@@ -5565,8 +5594,10 @@ class PBook {
       : conc
         ? { objective: conc.contract?.objective, mustCover: (conc.contract?.mustCover || []).map(m => m.point || m), recallQ: conc.contract?.recallQ }
         : { objective: node?.def || node?.teaser, mustCover: [], recallQ: undefined };
-    this._studio = { slug, title, contract, isProposal: !!prop, questions: [] };
     const st = this._authorState()[slug] || {};
+    this._studio = { slug, title, contract, isProposal: !!prop, questions: [],
+      assets: { ...(st.assets || {}) }, assetSeq: st.assetSeq || 0 };
+    const cleanText = this._studioCollapse(st.text || '');
     document.getElementById('authorStudio')?.remove();
     const el = document.createElement('div');
     el.id = 'authorStudio';
@@ -5584,7 +5615,7 @@ class PBook {
               ${contract.objective ? `<div style="margin-top:.25em"><span style="color:var(--text-2,#666)">Cíl:</span> ${this.escHtml(contract.objective)}</div>` : ''}
               ${(contract.mustCover || []).length ? `<div style="margin-top:.25em;font-size:.74rem"><span style="color:var(--text-2,#666)">Musí pokrýt:</span> ${(contract.mustCover || []).map(x => `<span style="display:inline-block;border:1px solid var(--border,#ddd);border-radius:999px;padding:0 .5em;margin:.1em">${this.escHtml(x)}</span>`).join('')}</div>` : ''}
             </div>
-            <textarea id="stDraft" placeholder="Piš svůj text tady… (markdown funguje: **tučně**, odrážky)" style="width:100%;min-height:44vh;margin:.7em 0 .4em;padding:.7em;border:1.5px solid var(--border,#ddd);border-radius:10px;font:inherit;font-size:.9rem;line-height:1.55;background:var(--card,#fff)">${this.escHtml(st.text || '')}</textarea>
+            <textarea id="stDraft" placeholder="Piš svůj text tady… (markdown funguje: **tučně**, odrážky)" style="width:100%;min-height:44vh;margin:.7em 0 .4em;padding:.7em;border:1.5px solid var(--border,#ddd);border-radius:10px;font:inherit;font-size:.9rem;line-height:1.55;background:var(--card,#fff)">${this.escHtml(cleanText)}</textarea>
             <div style="display:flex;gap:.5em;align-items:center;flex-wrap:wrap">
               <button class="note-save" id="stSeedBtn" onclick="app.seedDraft()" style="border:1.5px solid var(--accent);background:transparent;color:var(--accent)">✨ Navrhnout kostru · ${CONFIG.aiEconomy?.prices.basic || 0} ⚡</button>
               <button class="note-save" style="background:var(--accent)" id="stCoachBtn" onclick="app.coachRound()">🧭 Kouč · ${CONFIG.aiEconomy?.prices.basic || 0} ⚡</button>
@@ -5592,7 +5623,7 @@ class PBook {
               <button class="note-save" id="stFinishBtn" onclick="app.finishAuthoring()" style="background:#10B981">📤 Odeslat do knihy</button>
             </div>
             <div id="stOut" style="margin-top:.7em"></div>
-            <div style="font-size:.68rem;color:var(--text-2,#666);margin-top:.5em">🎨 Označ v textu místo pro obrázek jako [DIAGRAM: co má ukázat] nebo [ANIMACE: co se hýbe] a klikni „Generuj grafiku" — hotový obrázek se vloží rovnou do textu a hned ho uvidíš v náhledu. Bez značky se nakreslí shrnutí celého textu.</div>
+            <div style="font-size:.68rem;color:var(--text-2,#666);margin-top:.5em">🎨 Obrázky se v textu drží jako krátká značka ⟦obrázek N⟧ — needituj je v textu, ale rovnou v náhledu: dvojklikem přepíšeš popisek, ✨ Uprav pošle instrukci AI, 🗑 obrázek odebere. Nový obrázek: označ místo [DIAGRAM: co má ukázat] či [ANIMACE: co se hýbe] a klikni „Generuj grafiku".</div>
           </div>
           <div style="flex:1 1 360px;min-width:0">
             <div style="font-size:.72rem;font-weight:700;color:var(--text-2,#666);margin:.1em 0 .35em">👀 Náhled — takhle to uvidí čtenáři</div>
@@ -5604,24 +5635,94 @@ class PBook {
     document.body.appendChild(el);
     const ta = document.getElementById('stDraft');
     ta.addEventListener('input', () => {
-      const all = this._authorState(); (all[slug] = all[slug] || {}).text = ta.value; this._authorSave(all);
+      this._studioSave();
       clearTimeout(this._stPvTimer);
       this._stPvTimer = setTimeout(() => this._studioPreview(), 250);
     });
+    if (cleanText !== (st.text || '')) this._studioSave();   // raw ⟦svg⟧ z dřívějška → tokeny hned persistovat
     this._studioPreview();
     this.rc.logEvent('author_open', { slug });
   }
 
-  // Živý náhled: markdown draftu vykreslený stejně jako blok v knize
+  // Živý náhled: markdown draftu vykreslený stejně jako blok v knize + editace obrázků
   _studioPreview() {
     const stdo = this._studio; if (!stdo) return;
     const pane = document.getElementById('stPreview'); if (!pane) return;
     const draft = (document.getElementById('stDraft')?.value || '').trim();
     if (!draft) { pane.innerHTML = `<div style="color:var(--text-3,#999);font-size:.8rem">Zatím prázdno — začni psát vlevo a náhled se vykreslí sám.</div>`; return; }
-    let html = renderMarkdown(draft);
+    const order = [];
+    let html = renderMarkdown(this._studioExpand(draft, order));
     html = html.replace(/\[(DIAGRAM|ANIMACE):\s*([^\]]*)\]/g, (_, k, w) =>
       `<span style="display:block;border:1.5px dashed #7C3AED;border-radius:10px;padding:.5em .7em;margin:.4em 0;color:#7C3AED;font-size:.78rem">🎨 ${/^D/.test(k) ? 'DIAGRAM (zatím nenakreslený)' : 'ANIMACE (zatím nenakreslená)'}${w.trim() ? ': ' + w.trim() : ''}</span>`);
     pane.innerHTML = `<article class="block-article" style="margin:0;padding:0;border:none;box-shadow:none"><h2 style="margin:.1em 0 .5em;font-size:1.15rem">${this.escHtml(stdo.title)}</h2><div class="block-content">${html}</div></article>`;
+    // lišta u každého obrázku: AI úprava, odebrání, nápověda k dvojkliku
+    pane.querySelectorAll('figure.diagram-inline').forEach((fig, i) => {
+      const aid = order[i]; if (!aid) return;
+      fig.dataset.asset = aid;
+      const bar = document.createElement('div');
+      bar.style.cssText = 'display:flex;gap:.4em;align-items:center;margin:.25em 0 .1em';
+      bar.innerHTML = `<button class="steer-chip" style="font-size:.66rem" onclick="app.studioEditImage('${aid}')">✨ Uprav (AI) · ${CONFIG.aiEconomy?.prices.advanced || 0} ⚡</button>
+        <button class="steer-chip" style="font-size:.66rem" onclick="app.studioDeleteImage('${aid}')">🗑</button>
+        <span style="font-size:.62rem;color:var(--text-3,#999)">✏️ dvojklik na popisek = přepiš text</span>`;
+      fig.appendChild(bar);
+    });
+    if (!pane._svgEditBound) {
+      pane._svgEditBound = true;
+      pane.addEventListener('dblclick', e => this._studioLabelEdit(e));
+    }
+  }
+
+  // Dvojklik na <text> v náhledu = přepsání popisku přímo v SVG (WYSIWYG bez knihoven)
+  _studioLabelEdit(e) {
+    const t = e.target.closest('text'); if (!t) return;
+    const fig = e.target.closest('figure.diagram-inline');
+    const aid = fig?.dataset.asset; if (!aid || !this._studio?.assets?.[aid]) return;
+    const cur = t.textContent;
+    const nv = prompt('Nový text popisku:', cur);
+    if (nv == null || nv === cur) return;
+    t.textContent = nv;
+    const svgEl = fig.querySelector('svg'); if (!svgEl) return;
+    this._studio.assets[aid] = new XMLSerializer().serializeToString(svgEl);
+    this._studioSave();
+    this.showXPToast('Popisek přepsán ✏️', 'xp');
+  }
+
+  // ✨ Instrukce pro AI nad konkrétním obrázkem (mode svg-remix, advanced)
+  async studioEditImage(aid) {
+    const stdo = this._studio; const svg = stdo?.assets?.[aid]; if (!svg) return;
+    const out = document.getElementById('stOut');
+    const instruction = prompt('Co má AI na obrázku změnit? (např. „přidej třetí router a popisky přesuň mimo šipky")'); if (!instruction || instruction.trim().length < 3) return;
+    const pay = this.aiCanPay('advanced');
+    if (!pay.ok) { out.innerHTML = this.aiPaywallHtml('advanced'); return; }
+    out.innerHTML = `<span class="gen-spinner">✨ Upravuji obrázek… (~20 s)</span>`;
+    try {
+      const res = await fetch(CONFIG.steering.generateEndpoint, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ mode: 'svg-remix', svg, instruction: instruction.slice(0, 500), auth: this._walletAuth() }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.ok || !data.svg) throw new Error(data.error || 'svg remix failed');
+      this._walletApply(data, 'advanced', pay);
+      stdo.assets[aid] = data.svg;
+      this._studioSave();
+      this._studioPreview();
+      out.innerHTML = `<div style="border:1.5px solid #10B981;border-radius:8px;padding:.5em .7em;font-size:.8rem;background:var(--card,#fff)">Obrázek upraven — mrkni na náhled.</div>`;
+      this.rc.logEvent('author_image_edit', { slug: stdo.slug });
+    } catch (e2) {
+      const pw = this._aiErrorPaywall(e2, 'advanced');
+      out.innerHTML = pw || `<div style="background:#FEE2E2;border-radius:8px;padding:.5em .7em;font-size:.8rem">${this.escHtml(e2.message)}</div>`;
+    }
+  }
+
+  studioDeleteImage(aid) {
+    const stdo = this._studio; if (!stdo?.assets?.[aid]) return;
+    if (!confirm('Odebrat tento obrázek z textu?')) return;
+    const ta = document.getElementById('stDraft');
+    ta.value = ta.value.replace(new RegExp(`\\n?⟦(?:obrázek|obrazek|image)\\s*${aid}⟧\\n?`, 'g'), '\n');
+    delete stdo.assets[aid];
+    this._studioSave();
+    ta.dispatchEvent(new Event('input'));
+    this._studioPreview();
   }
 
   // 🎨 Nakresli k draftu grafiku (advanced): [DIAGRAM/ANIMACE: …] značka určí, co a kam
@@ -5642,18 +5743,21 @@ class PBook {
       const res = await fetch(CONFIG.steering.generateEndpoint, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ mode: 'insert', concept: stdo.isProposal ? undefined : stdo.slug,
-          instruction, context: draft.slice(0, 6000), wantSvg: true, auth: this._walletAuth() }),
+          instruction, context: this._studioExpand(draft).slice(0, 6000), wantSvg: true, auth: this._walletAuth() }),
       });
       const data = await res.json();
       if (!res.ok || !data.ok) throw new Error(data.error || 'generate failed');
       this._walletApply(data, 'advanced', pay);
       if (!data.svg) { out.innerHTML = `<div style="background:#FEF3C7;border-radius:8px;padding:.5em .7em;font-size:.8rem">Model tentokrát grafiku nevrátil — zkus to znovu, nebo upřesni [DIAGRAM: …].</div>`; }
       else {
-        const svgBlock = `\n\n⟦svg⟧\n${data.svg}\n⟦/svg⟧\n\n`;
-        ta.value = m ? ta.value.replace(m[0], svgBlock) : ta.value + svgBlock;
+        const id = String(++stdo.assetSeq);
+        stdo.assets[id] = data.svg;
+        const token = `⟦obrázek ${id}⟧`;
+        ta.value = m ? ta.value.replace(m[0], token) : ta.value + `\n\n${token}\n`;
+        this._studioSave();
         ta.dispatchEvent(new Event('input'));
         this._studioPreview();
-        out.innerHTML = `<div style="border:1.5px solid #10B981;border-radius:8px;padding:.5em .7em;font-size:.8rem;background:var(--card,#fff)">Grafika vložena do textu — mrkni na náhled. Nelíbí se? Smaž blok ⟦svg⟧…⟦/svg⟧ a generuj znovu.</div>`;
+        out.innerHTML = `<div style="border:1.5px solid #10B981;border-radius:8px;padding:.5em .7em;font-size:.8rem;background:var(--card,#fff)">Obrázek přidán — vidíš ho v náhledu. Dvojklikem na popisek ho přepíšeš, ✨ Uprav ho změní podle instrukce.</div>`;
       }
       this.rc.logEvent('author_graphic', { slug: stdo.slug, marked: !!m });
     } catch (e) {
@@ -5735,7 +5839,8 @@ class PBook {
   finishAuthoring() {
     const stdo = this._studio; if (!stdo) return;
     const all = this._authorState(); const st = all[stdo.slug] || {};
-    const draft = (document.getElementById('stDraft')?.value || '').trim();
+    const raw = (document.getElementById('stDraft')?.value || '').trim();
+    const draft = this._studioExpand(raw).replace(/\n{3,}/g, '\n\n').trim();
     if (draft.length < 80) { this.showXPToast('Nejdřív něco napiš — pošli aspoň pár vět.', 'xp'); return; }
     const id = `autor--${stdo.slug}--${Date.now().toString(36)}`;
     const block = {
