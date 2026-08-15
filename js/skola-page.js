@@ -307,24 +307,44 @@ async function renderCreateBuilder() {
       <label style="font-size:13.5px"><input type="radio" name="cbMode" value="dilna" checked> 🎓 dílna s koučem <span style="color:#8a887f">(role → domluva → tvorba → certifikát)</span></label>
       <label style="font-size:13.5px"><input type="radio" name="cbMode" value="autor"> ✍️ jen studio <span style="color:#8a887f">(rychlá volná tvorba)</span></label>
     </div>
+    <div style="margin:.3em 0;font-size:13.5px">
+      <b style="font-size:12.5px;color:#57554d">Forma práce:</b>
+      <label style="margin-left:.6em"><input type="radio" name="cbWork" value="solo" checked> 🙋 sólo</label>
+      <label style="margin-left:.6em"><input type="radio" name="cbWork" value="par"> 👥 ve dvojici <span style="color:#8a887f">(vzájemné připomínkování)</span></label>
+      <label style="margin-left:.6em"><input type="radio" name="cbWork" value="soutez"> 🏆 soutěž třídy <span style="color:#8a887f">(galerie + hlasování ve třídě)</span></label>
+    </div>
     <label style="font-size:13.5px;display:block;margin:.2em 0"><input type="checkbox" id="cbFb" checked> Chci vidět rozdělané drafty — žák mi pošle odkaz na zpětnou vazbu</label>
     <div class="sk-copy" id="cbOut" style="display:none"><span id="cbLink"></span><button class="sk-btn ghost" id="cbCopy">Kopírovat zadání</button></div>`;
+  // kód třídy: stabilní pro tuto stránku (učitel ho pošle všem najednou)
+  let classCode = (localStorage.getItem('sk-class-code') || '').replace(/^trida-/, '');
+  if (!/^[a-z0-9]{4,10}$/.test(classCode)) { classCode = Math.random().toString(36).slice(2, 8); localStorage.setItem('sk-class-code', classCode); }
   const update = () => {
     const cid = $('cbConcept').value;
     const title = ($('cbConcept').selectedOptions[0] || {}).textContent || cid;
     const mode = document.querySelector('input[name="cbMode"]:checked').value;
+    const work = document.querySelector('input[name="cbWork"]:checked').value;
     const link = location.origin + '/#' + (mode === 'dilna' ? 'dilna-' : 'autor-') + cid;
+    const galLink = location.origin + '/#trida-' + classCode;
     const fb = $('cbFb').checked;
-    const zadani = `Tvůrčí úkol: ${title.replace(' (zatím nenapsaný pojem)', '')}\n`
-      + `1) Otevři ${link}\n`
-      + (mode === 'dilna'
-        ? '2) Vyber si roli (vlastní nápad / spolu / oponent), domluv se s koučem CO vytvoříš, a tvoř.\n'
-        : '2) Napiš vlastní podání — klikni na odstavec a piš; obrázky přes [diagram: …].\n')
-      + (fb ? '3) Až budeš mít hrubou verzi, klikni ve studiu na 👀 Zpětná vazba, vytvoř odkaz a pošli mi ho.\n' : '')
-      + (mode === 'dilna' ? '4) Na konci vyplň, co jsi do tvorby přinesl/a ty — certifikát mi ukážeš.' : '3) Hotový text pošli do knihy (📤) a připrav si ho k prezentaci.');
+    const tvor = mode === 'dilna'
+      ? 'Vyber si roli (vlastní nápad / spolu / oponent), domluv se s koučem CO vytvoříš, a tvoř.'
+      : 'Napiš vlastní podání — klikni na odstavec a piš; obrázky přes [diagram: …].';
+    let kroky;
+    if (work === 'par') {
+      kroky = `1) Utvořte dvojice. Každý otevři ${link}\n2) ${tvor}\n3) Až máš hrubou verzi: klikni na 👀 Zpětná vazba, do pole „kód třídy" napiš ${classCode}, vytvoř odkaz a POŠLI HO PARŤÁKOVI.\n4) Parťákovu práci si přečti a přidej aspoň 2 komentáře (👍 co funguje, ❓ otázka nebo 💡 návrh). On udělá totéž tobě.\n5) Podle komentářů svůj text vylepši a pošli do knihy (📤).`;
+    } else if (work === 'soutez') {
+      kroky = `1) Otevři ${link}\n2) ${tvor}\n3) Hotovou práci sdílej: klikni na 👀 Zpětná vazba, do pole „kód třídy" napiš ${classCode} a vytvoř odkaz.\n4) Ve třídě si všechny práce promítneme z galerie a budeme hlasovat o nejlepší.`;
+    } else {
+      kroky = `1) Otevři ${link}\n2) ${tvor}\n`
+        + (fb ? `3) Až budeš mít hrubou verzi, klikni na 👀 Zpětná vazba${fb ? `, kód třídy ${classCode},` : ''} a odkaz mi pošli.\n` : '')
+        + (mode === 'dilna' ? '4) Na konci vyplň, co jsi do tvorby přinesl/a ty — certifikát mi ukážeš.' : '3) Hotový text pošli do knihy (📤) a připrav si ho k prezentaci.');
+    }
+    const zadani = `Tvůrčí úkol: ${title.replace(' (zatím nenapsaný pojem)', '')}\n` + kroky;
     const out = $('cbOut');
     out.style.display = '';
-    $('cbLink').innerHTML = `<b>${esc(title)}</b> · ${mode === 'dilna' ? '🎓 dílna' : '✍️ studio'}${fb ? ' · 👀 s drafty' : ''}<br><span style="white-space:pre-wrap;font-size:12.5px;color:#57554d">${esc(zadani)}</span>`;
+    const galRow = (work !== 'solo' || fb)
+      ? `<div style="margin-top:.35em;font-size:12px;color:#57554d">🖼 <b>Vaše galerie odevzdaných prací</b> (kód ${esc(classCode)}): <a href="${galLink}" target="_blank">${esc(galLink)}</a> — otevřete na projektoru, práce se objevují průběžně.</div>` : '';
+    $('cbLink').innerHTML = `<b>${esc(title)}</b> · ${mode === 'dilna' ? '🎓 dílna' : '✍️ studio'} · ${work === 'par' ? '👥 dvojice' : work === 'soutez' ? '🏆 soutěž' : '🙋 sólo'}<br><span style="white-space:pre-wrap;font-size:12.5px;color:#57554d">${esc(zadani)}</span>${galRow}`;
     $('cbCopy').onclick = () => navigator.clipboard && navigator.clipboard.writeText(zadani);
   };
   el.addEventListener('change', update);
