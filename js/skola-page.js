@@ -363,19 +363,37 @@ function renderUcitel() {
   renderMissionBuilder();
   renderTaskBuilder();
   renderCreateBuilder();
-  const base = location.origin + location.pathname.replace(/[^/]*$/, '');
-  const links = [
-    ['Rozcestník pro žáky', base + 'start'],
-    ['Domácí příprava 1 (po 1. hodině)', base + 'dp1'],
-    ['Domácí příprava 2 (po 2. hodině)', base + 'dp2'],
-    ['Domácí příprava 3 (po 3. hodině)', base + 'dp3'],
-    ['Režim třídy (projekce, rozcvička)', base + 'hodina'],
-    ['Briefing pro rodiče', base + 'rodic'],
-    ['Kniha (volné čtení)', base]
-  ];
-  $('skLinks').innerHTML = links.map(([label, url]) =>
-    `<div class="sk-copy"><span><b>${esc(label)}</b><br>${esc(url)}</span>
-     <button class="sk-btn ghost" onclick="navigator.clipboard&&navigator.clipboard.writeText('${url}')">Kopírovat</button></div>`).join('');
+
+  // Dlaždice: panel toggle (jen jeden otevřený) + kopírování odkazů
+  const base = location.origin;
+  document.querySelectorAll('.sk-tile[data-panel]').forEach(t => {
+    t.addEventListener('click', () => {
+      const id = t.dataset.panel;
+      const panel = $(id);
+      const wasOpen = panel.classList.contains('open');
+      document.querySelectorAll('.sk-panel').forEach(p2 => p2.classList.remove('open'));
+      document.querySelectorAll('.sk-tile').forEach(t2 => t2.classList.remove('active'));
+      if (!wasOpen) { panel.classList.add('open'); t.classList.add('active'); panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }
+    });
+  });
+  const flash = (t, txt) => { const h = t.querySelector('h4'); const o = h.textContent; h.textContent = txt; setTimeout(() => { h.textContent = o; }, 1400); };
+  document.querySelectorAll('.sk-tile[data-copy]').forEach(t => {
+    t.addEventListener('click', () => {
+      const url = base + t.dataset.copy;
+      if (navigator.clipboard) navigator.clipboard.writeText(url);
+      flash(t, '✓ odkaz zkopírován');
+    });
+  });
+  const gal = $('skGalTile');
+  if (gal) gal.addEventListener('click', () => {
+    let code = (localStorage.getItem('sk-class-code') || '').replace(/^trida-/, '');
+    if (!/^[a-z0-9]{4,10}$/.test(code)) { code = Math.random().toString(36).slice(2, 8); localStorage.setItem('sk-class-code', code); }
+    const url = base + '/#trida-' + code;
+    if (navigator.clipboard) navigator.clipboard.writeText(url);
+    flash(gal, '✓ ' + code + ' zkopírováno');
+    window.open(url, '_blank');
+  });
+
   const exp = $('skExport');
   if (exp) exp.onclick = () => School.signals.download('local-anonymous');
   const cnt = $('skSigCount');

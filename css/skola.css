@@ -200,3 +200,16 @@ body[data-accent="parent"] .sk-btn:not(.ghost) { background: var(--parent); }
 .sk-tool>summary:after{content:"▾";float:right;color:#8a887f;transition:transform .15s}
 .sk-tool[open]>summary:after{transform:rotate(180deg)}
 .sk-tool-in{padding:2px 14px 14px;border-top:1px dashed var(--line,#e2e0d8)}
+
+/* Control-panel dlaždice (/ucitel, /prispej) */
+.sk-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:10px;margin:12px 0}
+.sk-tile{display:block;text-align:left;border:1.5px solid var(--line,#d8d6cd);border-radius:14px;background:var(--card,#fff);padding:14px 13px;cursor:pointer;text-decoration:none;color:inherit;transition:transform .08s, box-shadow .08s;font:inherit}
+.sk-tile:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,.08)}
+.sk-tile .ic{font-size:1.5rem;line-height:1}
+.sk-tile h4{margin:.35em 0 .15em;font-size:14.5px}
+.sk-tile p{margin:0;font-size:12px;color:#6b6960;line-height:1.35}
+.sk-tile .tag{display:inline-block;font-size:10.5px;font-weight:700;border-radius:999px;padding:1px 8px;margin-bottom:6px;background:#f1efe8;color:#57554d}
+.sk-tile.active{border-color:var(--accent,#7C3AED);box-shadow:0 0 0 2px color-mix(in srgb, var(--accent,#7C3AED) 30%, transparent)}
+.sk-panel{display:none;border:1.5px solid var(--accent,#7C3AED);border-radius:14px;background:var(--card,#fff);padding:14px 16px;margin:10px 0 18px}
+.sk-panel.open{display:block}
+.sk-sec{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#8a887f;margin:22px 0 2px}

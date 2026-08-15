@@ -4,68 +4,60 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Pro učitele · Jak funguje internet — p-book</title>
-<meta name="description" content="Stránka pro učitele: odkazy k rozeslání, jak fungují vstupenky, reporty tutorovaných úkolů a export learning signálů.">
+<meta name="description" content="Ovládací panel učitele: sestavte domácí přípravu jedním odkazem, promítejte galerii třídy, čtěte reporty.">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-<link rel="stylesheet" href="css/skola.css?v=1">
+<link rel="stylesheet" href="css/skola.css?v=2">
 </head>
 <body data-page="ucitel" data-accent="teacher">
 <header class="sk-top"><a class="sk-brand" href="/start">p-book<b>://</b>skola/internet</a><span class="sk-role">učitel</span></header>
 <div class="sk-route" id="skRoute"></div>
 <main class="sk-main">
   <p class="sk-eyebrow">Pro učitele</p>
-  <h1>Blok řídíte odkazy, ne administrací</h1>
-  <p class="sk-lead">Žádné zakládání tříd a účtů. Po každé hodině pošlete žákům jeden odkaz na domácí přípravu — kamkoliv, kam jim posíláte úkoly (Tiny, Bakaláři, Teams…). Zbytek vede p-book.</p>
+  <h1>Ovládací panel</h1>
+  <p class="sk-lead">Žádné účty ani administrace: každá dlaždice vyrobí <b>jeden odkaz</b>, který pošlete žákům, kamkoli jim posíláte úkoly.</p>
 
-  <h2 style="margin-top:26px">🧭 Co poslat žákům — tři typy domácí přípravy</h2>
-  <p class="sk-meta" style="margin:.2em 0 .8em">Každý nástroj vyrobí <b>jeden odkaz</b>. Vyberte typ podle toho, co má žák udělat: <b>číst</b>, <b>zkoumat</b>, nebo <b>tvořit</b>. U každého je napsáno, kdy se hodí.</p>
+  <div class="sk-sec">Sestavit domácí přípravu</div>
+  <div class="sk-grid">
+    <button class="sk-tile" data-panel="pMise"><span class="ic">📖</span><h4>Čtecí mise</h4><p>Vyberete koncepty, žák čte a obhájí boss otázku. Na hodinu i na test.</p></button>
+    <button class="sk-tile" data-panel="pUkol"><span class="ic">🧪</span><h4>Badatelský úkol</h4><p>Žák něco změří či prozkoumá, závěry obhájí u AI podle vašich checkpointů.</p></button>
+    <button class="sk-tile" data-panel="pTvorba"><span class="ic">✍️</span><h4>Tvůrčí úkol</h4><p>Vlastní podání pojmu — sólo, ve dvojici, nebo soutěž třídy s galerií.</p></button>
+  </div>
+  <div class="sk-panel" id="pMise"><div id="skBuilder"></div></div>
+  <div class="sk-panel" id="pUkol"><p class="sk-meta" style="margin:.1em 0 .5em">Checkpointy napíšete vlastními slovy; AI zkoušející hodnotí podle vašich nápověd „co má zaznít". Bez vlastního zadání platí výchozí úkol se speedtestem.</p><div id="skTaskBuilder"></div></div>
+  <div class="sk-panel" id="pTvorba"><p class="sk-meta" style="margin:.1em 0 .5em">Žák tvoří ve studiu (rychlá editace), nebo v 🎓 dílně s koučem (role → domluva → certifikát s vlastním přínosem). Drafty vám pošle ke zpětné vazbě — komentujete, autorem zůstává žák.</p><div id="skCreateBuilder"></div></div>
 
-  <details class="sk-tool" open>
-    <summary><b>📖 Čtecí mise</b> — žák si přečte vybrané koncepty a obhájí boss otázku</summary>
-    <div class="sk-tool-in">
-      <p class="sk-meta"><b>Kdy použít:</b> běžná příprava na hodinu nebo opakování na test. Vyberete <b>co</b> (koncepty), žák si volí <b>jak</b> (text, komiks, hra…). Na konci odpoví na kontrolní otázku AI zkoušejícímu a získá mikrocertifikát — ten vám ukáže.</p>
-      <div id="skBuilder"></div>
-    </div>
-  </details>
+  <div class="sk-sec">Hotový 4hodinový blok — pošlete odkaz po hodině</div>
+  <div class="sk-grid" id="skQuick">
+    <button class="sk-tile" data-copy="/dp1"><span class="ic">1️⃣</span><h4>DP1 · po 1. hodině</h4><p>Mise „Jak vypadá internet" → vstupenka.</p></button>
+    <button class="sk-tile" data-copy="/dp2"><span class="ic">2️⃣</span><h4>DP2 · po 2. hodině</h4><p>Připojení + tutorovaný úkol.</p></button>
+    <button class="sk-tile" data-copy="/dp3"><span class="ic">3️⃣</span><h4>DP3 · po 3. hodině</h4><p>Digitální stopa + telling.</p></button>
+    <button class="sk-tile" data-copy="/hodina"><span class="ic">🏫</span><h4>Režim třídy</h4><p>Rozcvička na projektor, program hodin.</p></button>
+    <button class="sk-tile" data-copy="/rodic"><span class="ic">👨‍👩‍👧</span><h4>Pro rodiče</h4><p>Dvouminutový briefing + otázky k večeři.</p></button>
+    <button class="sk-tile" id="skGalTile"><span class="ic">🖼</span><h4>Galerie třídy</h4><p>Odevzdané práce na projektor.</p></button>
+  </div>
 
-  <details class="sk-tool">
-    <summary><b>🧪 Tutorovaný úkol</b> — žák něco změří/prozkoumá a závěry obhájí u AI</summary>
-    <div class="sk-tool-in">
-      <p class="sk-meta"><b>Kdy použít:</b> badatelská či praktická DÚ (měření rychlosti, pozorování Wi-Fi doma, mini-průzkum cookies…). Napíšete checkpointy vlastními slovy; AI zkoušející hodnotí odpovědi podle vašich nápověd „co má zaznít" a žák vám ukáže report. Bez vlastního zadání se použije výchozí úkol se speedtestem.</p>
-      <div id="skTaskBuilder"></div>
-    </div>
-  </details>
-
-  <details class="sk-tool">
-    <summary><b>✍️ Tvůrčí úkol</b> — sólo, ve dvojici, nebo jako soutěž třídy</summary>
-    <div class="sk-tool-in">
-      <p class="sk-meta"><b>Kdy použít:</b> hlubší práce s tématem, referát nové generace, podklad pro prezentaci ve třídě. Žák tvoří v autorském studiu (rychlá editace s náhledem), nebo v <b>tvůrčí dílně</b> — tam si nejdřív vyjasní roli (vlastní nápad / spolutvorba / oponent AI), s koučem se domluví CO vytvoří, a certifikát nakonec doloží, co do tvorby vnesl on sám. Rozdělaný text vám žák může poslat ke zpětné vazbě (komentáře, ne úpravy — autorem zůstává žák). <b>Ve dvojici</b> si žáci práce vzájemně okomentují; <b>v soutěži</b> všichni sdílí s kódem třídy a vy máte jeden odkaz na galerii — promítnete, třída hlasuje.</p>
-      <div id="skCreateBuilder"></div>
-    </div>
-  </details>
-
-  <h2 style="margin-top:28px">📦 Hotový 4hodinový blok (brány k rozeslání)</h2>
-  <p class="sk-meta" style="margin:.2em 0 .6em"><b>Kdy použít:</b> chcete odučit celý blok „Jak funguje internet" podle připraveného plánu — stačí po každé hodině poslat příslušný odkaz.</p>
-  <div id="skLinks"></div>
-
-  <h2 style="margin-top:30px">Jak číst výstupní brány</h2>
-  <div class="sk-q"><b>🎫 Vstupenka</b> Binární doklad o dokončené přípravě (mise + boss otázka, práh 70 %, neomezené pokusy). Kód je odvozený z fáze a data — namátkově si ho můžete nechat ukázat. Nehodnotí kvalitu; slouží jako vstup do aktivit hodiny.</div>
-  <div class="sk-q"><b>📋 Report tutorovaného úkolu (DP2)</b> Žák prošel checkpointy úkolu (výchozí: měření rychlosti; nebo vaše vlastní zadání); každou odpověď hodnotil AI zkoušející (verdikt, skóre, počet pokusů, samostatně/s dopomocí). Žák vám report ukáže nebo zkopíruje — je to podklad, ne známka.</div>
-  <div class="sk-q"><b>👀 Zpětná vazba na draft</b> Žák vám může poslat odkaz na <i>rozdělaný</i> text (jen ke čtení). Přidáte komentář 👍 co funguje · ❓ otázka · 💡 návrh — upravovat text nemůžete, autorem zůstává žák. Komentáře uvidí ve studiu vedle rad AI kouče.</div>
-  <div class="sk-q"><b>🎨 Telling (DP3)</b> Vlastní podání tématu (ručně či s AI, vždy označené). Hodnotí se obhajoba ve 4. hodině, ne artefakt. Sdílené tellingy vidíte v knize jako komunitní vrstvu — dobré můžete povýšit.</div>
-
-  <h2 style="margin-top:30px">Learning signály (příprava na tiny.school)</h2>
-  <p>Každá dokončená brána generuje learning signál ve formátu integračního kontraktu tiny.school (doména, kompetence, úroveň, jistota). Signály zůstávají v zařízení žáka; až bude škola propojená s Tiny, potečou automaticky do profilu žáka. Do té doby je žák může exportovat a poslat vám je.</p>
-  <p><button class="sk-btn" id="skExport">Exportovat signály z tohoto zařízení (<span id="skSigCount">0</span>)</button></p>
-
-  <h2 style="margin-top:30px">Eskalační žebřík nasazení</h2>
-  <p>Nemusíte hned všechno: <b>1)</b> jen rozcvička v hodině (nulová příprava) → <b>2)</b> domácí přípravy se vstupenkami → <b>3)</b> tutorovaný úkol → <b>4)</b> tellingy s obhajobami. Každý stupeň funguje samostatně.</p>
-
-  <div class="sk-q" style="border-color:#7C3AED;background:color-mix(in srgb, #7C3AED 5%, transparent)"><b>💜 Chcete knihu vylepšovat s námi?</b> Kniha je živá — učitelé mohou připomínkovat obsah, vylepšovat podání i psát nová. Jak přesně na to (a co je teď potřeba): <a href="/prispej"><b>prispej — průvodce pro učitele-přispěvatele →</b></a></div>
+  <div class="sk-sec">Přehled</div>
+  <div class="sk-grid">
+    <button class="sk-tile" data-panel="pGates"><span class="ic">🎫</span><h4>Jak číst výstupy</h4><p>Vstupenky, reporty, tellingy, zpětná vazba.</p></button>
+    <button class="sk-tile" data-panel="pSignaly"><span class="ic">📊</span><h4>Learning signály</h4><p>Export pro tiny.school (<span id="skSigCount">0</span>).</p></button>
+    <a class="sk-tile" href="/prispej" style="border-color:#7C3AED"><span class="ic">💜</span><h4>Vylepšujte knihu</h4><p>Průvodce učitele-přispěvatele: kniha roste vašima rukama.</p></a>
+  </div>
+  <div class="sk-panel" id="pGates">
+    <div class="sk-q"><b>🎫 Vstupenka</b> Doklad o dokončené přípravě (mise + boss, práh 70 %, neomezené pokusy). Kód odvozený z fáze a data — namátkově si ho nechte ukázat. Vstup do aktivit hodiny, ne známka.</div>
+    <div class="sk-q"><b>📋 Report úkolu</b> Verdikt, skóre a počet pokusů u každého checkpointu; žák report ukáže nebo zkopíruje. Podklad, ne známka.</div>
+    <div class="sk-q"><b>👀 Zpětná vazba na draft</b> Žák pošle odkaz na rozdělaný text (jen ke čtení); komentujete 👍/❓/💡 — upravovat nelze, autorem zůstává žák.</div>
+    <div class="sk-q"><b>🎨 Telling</b> Vlastní podání tématu (ručně či s AI, vždy označené). Hodnotí se obhajoba ve třídě; dobrá podání můžete nechat přijmout do knihy.</div>
+    <div class="sk-q" style="border-color:#0EA5E9"><b>🪜 Eskalační žebřík</b> 1) jen rozcvička v hodině → 2) domácí přípravy → 3) badatelský úkol → 4) tellingy s obhajobou. Každý stupeň funguje samostatně.</div>
+  </div>
+  <div class="sk-panel" id="pSignaly">
+    <p class="sk-meta">Každá dokončená brána generuje learning signál (formát tiny.school: doména, kompetence, úroveň, jistota). Zůstávají v zařízení žáka; žák je může exportovat a poslat vám.</p>
+    <p><button class="sk-btn" id="skExport">Exportovat signály z tohoto zařízení</button></p>
+  </div>
 </main>
 <footer class="sk-foot"><div class="in">
   <span>Materiály vychází z Internet4Kids (MFF UK &amp; PedF UK), RVP I-9-4-03 a I-9-4-05.</span>
   <a href="/start">← rozcestník</a>
 </div></footer>
-<script type="module" src="js/skola-page.js?v=1"></script>
+<script type="module" src="js/skola-page.js?v=2"></script>
 </body>
 </html>
