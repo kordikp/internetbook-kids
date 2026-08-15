@@ -313,6 +313,12 @@ async function renderCreateBuilder() {
       <label style="margin-left:.6em"><input type="radio" name="cbWork" value="par"> 👥 ve dvojici <span style="color:#8a887f">(vzájemné připomínkování)</span></label>
       <label style="margin-left:.6em"><input type="radio" name="cbWork" value="soutez"> 🏆 soutěž třídy <span style="color:#8a887f">(galerie + hlasování ve třídě)</span></label>
     </div>
+    <div style="margin:.25em 0;font-size:13.5px"><b style="font-size:12.5px;color:#57554d">Doporučená forma:</b>
+      <select id="cbGenre" style="padding:6px;border:1px solid #cfcdc6;border-radius:8px;font:inherit;font-size:13.5px;background:#fff">
+        <option value="">— nechám na žákovi —</option>
+        <option value="výklad">📄 výklad</option><option value="komiks">🎭 komiks</option><option value="příběh">📖 příběh</option>
+        <option value="experiment">🧪 experiment</option><option value="dialog">💬 dialog</option><option value="propočet">🧮 propočet</option>
+      </select></div>
     <label style="font-size:13.5px;display:block;margin:.2em 0"><input type="checkbox" id="cbFb" checked> Chci vidět rozdělané drafty — žák mi pošle odkaz na zpětnou vazbu</label>
     <div class="sk-copy" id="cbOut" style="display:none"><span id="cbLink"></span><button class="sk-btn ghost" id="cbCopy">Kopírovat zadání</button></div>`;
   // kód třídy: stabilní pro tuto stránku (učitel ho pošle všem najednou)
@@ -323,7 +329,8 @@ async function renderCreateBuilder() {
     const title = ($('cbConcept').selectedOptions[0] || {}).textContent || cid;
     const mode = document.querySelector('input[name="cbMode"]:checked').value;
     const work = document.querySelector('input[name="cbWork"]:checked').value;
-    const link = location.origin + '/#' + (mode === 'dilna' ? 'dilna-' : 'autor-') + cid;
+    const genre = $('cbGenre') ? $('cbGenre').value : '';
+    const link = location.origin + '/#' + (mode === 'dilna' ? 'dilna-' : 'autor-') + cid + (genre ? '~' + encodeURIComponent(genre) : '');
     const galLink = location.origin + '/#trida-' + classCode;
     const fb = $('cbFb').checked;
     const tvor = mode === 'dilna'
