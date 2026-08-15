@@ -192,3 +192,11 @@ body[data-accent="parent"] .sk-btn:not(.ghost) { background: var(--parent); }
   body { background: #fff; }
 }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+
+/* Nástrojové karty na /ucitel */
+.sk-tool{border:1.5px solid var(--line,#d8d6cd);border-radius:12px;background:var(--card,#fff);margin:10px 0;overflow:hidden}
+.sk-tool>summary{cursor:pointer;padding:12px 14px;font-size:15.5px;list-style:none}
+.sk-tool>summary::-webkit-details-marker{display:none}
+.sk-tool>summary:after{content:"▾";float:right;color:#8a887f;transition:transform .15s}
+.sk-tool[open]>summary:after{transform:rotate(180deg)}
+.sk-tool-in{padding:2px 14px 14px;border-top:1px dashed var(--line,#e2e0d8)}

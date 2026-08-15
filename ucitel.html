@@ -16,15 +16,41 @@
   <h1>Blok řídíte odkazy, ne administrací</h1>
   <p class="sk-lead">Žádné zakládání tříd a účtů. Po každé hodině pošlete žákům jeden odkaz na domácí přípravu — kamkoliv, kam jim posíláte úkoly (Tiny, Bakaláři, Teams…). Zbytek vede p-book.</p>
 
-  <div id="skBuilder"></div>
-  <div id="skTaskBuilder"></div>
+  <h2 style="margin-top:26px">🧭 Co poslat žákům — tři typy domácí přípravy</h2>
+  <p class="sk-meta" style="margin:.2em 0 .8em">Každý nástroj vyrobí <b>jeden odkaz</b>. Vyberte typ podle toho, co má žák udělat: <b>číst</b>, <b>zkoumat</b>, nebo <b>tvořit</b>. U každého je napsáno, kdy se hodí.</p>
 
-  <h2 style="margin-top:28px">Odkazy k rozeslání</h2>
+  <details class="sk-tool" open>
+    <summary><b>📖 Čtecí mise</b> — žák si přečte vybrané koncepty a obhájí boss otázku</summary>
+    <div class="sk-tool-in">
+      <p class="sk-meta"><b>Kdy použít:</b> běžná příprava na hodinu nebo opakování na test. Vyberete <b>co</b> (koncepty), žák si volí <b>jak</b> (text, komiks, hra…). Na konci odpoví na kontrolní otázku AI zkoušejícímu a získá mikrocertifikát — ten vám ukáže.</p>
+      <div id="skBuilder"></div>
+    </div>
+  </details>
+
+  <details class="sk-tool">
+    <summary><b>🧪 Tutorovaný úkol</b> — žák něco změří/prozkoumá a závěry obhájí u AI</summary>
+    <div class="sk-tool-in">
+      <p class="sk-meta"><b>Kdy použít:</b> badatelská či praktická DÚ (měření rychlosti, pozorování Wi-Fi doma, mini-průzkum cookies…). Napíšete checkpointy vlastními slovy; AI zkoušející hodnotí odpovědi podle vašich nápověd „co má zaznít" a žák vám ukáže report. Bez vlastního zadání se použije výchozí úkol se speedtestem.</p>
+      <div id="skTaskBuilder"></div>
+    </div>
+  </details>
+
+  <details class="sk-tool">
+    <summary><b>✍️ Tvůrčí úkol</b> — žák napíše vlastní podání pojmu (a vy uvidíte draft)</summary>
+    <div class="sk-tool-in">
+      <p class="sk-meta"><b>Kdy použít:</b> hlubší práce s tématem, referát nové generace, podklad pro prezentaci ve třídě. Žák tvoří v autorském studiu (rychlá editace s náhledem), nebo v <b>tvůrčí dílně</b> — tam si nejdřív vyjasní roli (vlastní nápad / spolutvorba / oponent AI), s koučem se domluví CO vytvoří, a certifikát nakonec doloží, co do tvorby vnesl on sám. Rozdělaný text vám žák může poslat ke zpětné vazbě (komentáře, ne úpravy — autorem zůstává žák).</p>
+      <div id="skCreateBuilder"></div>
+    </div>
+  </details>
+
+  <h2 style="margin-top:28px">📦 Hotový 4hodinový blok (brány k rozeslání)</h2>
+  <p class="sk-meta" style="margin:.2em 0 .6em"><b>Kdy použít:</b> chcete odučit celý blok „Jak funguje internet" podle připraveného plánu — stačí po každé hodině poslat příslušný odkaz.</p>
   <div id="skLinks"></div>
 
   <h2 style="margin-top:30px">Jak číst výstupní brány</h2>
   <div class="sk-q"><b>🎫 Vstupenka</b> Binární doklad o dokončené přípravě (mise + boss otázka, práh 70 %, neomezené pokusy). Kód je odvozený z fáze a data — namátkově si ho můžete nechat ukázat. Nehodnotí kvalitu; slouží jako vstup do aktivit hodiny.</div>
-  <div class="sk-q"><b>📋 Report tutorovaného úkolu (DP2)</b> Žák prošel 3 checkpointy měření rychlosti; každou odpověď hodnotil AI zkoušející (verdikt, skóre, počet pokusů, samostatně/s dopomocí). Žák vám report ukáže nebo zkopíruje — je to podklad, ne známka.</div>
+  <div class="sk-q"><b>📋 Report tutorovaného úkolu (DP2)</b> Žák prošel checkpointy úkolu (výchozí: měření rychlosti; nebo vaše vlastní zadání); každou odpověď hodnotil AI zkoušející (verdikt, skóre, počet pokusů, samostatně/s dopomocí). Žák vám report ukáže nebo zkopíruje — je to podklad, ne známka.</div>
+  <div class="sk-q"><b>👀 Zpětná vazba na draft</b> Žák vám může poslat odkaz na <i>rozdělaný</i> text (jen ke čtení). Přidáte komentář 👍 co funguje · ❓ otázka · 💡 návrh — upravovat text nemůžete, autorem zůstává žák. Komentáře uvidí ve studiu vedle rad AI kouče.</div>
   <div class="sk-q"><b>🎨 Telling (DP3)</b> Vlastní podání tématu (ručně či s AI, vždy označené). Hodnotí se obhajoba ve 4. hodině, ne artefakt. Sdílené tellingy vidíte v knize jako komunitní vrstvu — dobré můžete povýšit.</div>
 
   <h2 style="margin-top:30px">Learning signály (příprava na tiny.school)</h2>
@@ -33,6 +59,8 @@
 
   <h2 style="margin-top:30px">Eskalační žebřík nasazení</h2>
   <p>Nemusíte hned všechno: <b>1)</b> jen rozcvička v hodině (nulová příprava) → <b>2)</b> domácí přípravy se vstupenkami → <b>3)</b> tutorovaný úkol → <b>4)</b> tellingy s obhajobami. Každý stupeň funguje samostatně.</p>
+
+  <div class="sk-q" style="border-color:#7C3AED;background:color-mix(in srgb, #7C3AED 5%, transparent)"><b>💜 Chcete knihu vylepšovat s námi?</b> Kniha je živá — učitelé mohou připomínkovat obsah, vylepšovat podání i psát nová. Jak přesně na to (a co je teď potřeba): <a href="/prispej"><b>prispej — průvodce pro učitele-přispěvatele →</b></a></div>
 </main>
 <footer class="sk-foot"><div class="in">
   <span>Materiály vychází z Internet4Kids (MFF UK &amp; PedF UK), RVP I-9-4-03 a I-9-4-05.</span>

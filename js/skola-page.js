@@ -224,7 +224,7 @@ async function renderMissionBuilder() {
   const byCh = {};
   concepts.forEach(c => (byCh[c.chapter] = byCh[c.chapter] || []).push(c));
   el.innerHTML = `
-    <h2 style="margin-top:30px">🎯 Mikromise z konceptů</h2>
+    <h3 style="margin:2px 0 6px;font-size:16px">🎯 Sestavit misi</h3>
     <p>Vyberte koncepty k procvičení — <b>formu si žák volí sám</b> (text, komiks, ukázka kódu, jiné podání…). Z odkazu se žákovi sestaví krátká mise s boss otázkou; za zvládnutí dostane <b>mikrocertifikát</b>.</p>
     <input id="mbTitle" placeholder="Název mikromise (nepovinné, např. Opakování na test)" style="width:100%;padding:9px;border:1px solid #cfcdc6;border-radius:8px;font:inherit;font-size:14.5px;margin:6px 0">
     ${Object.entries(byCh).map(([ch, list]) => `
@@ -234,11 +234,7 @@ async function renderMissionBuilder() {
       </div>`).join('')}
     <div class="sk-copy" id="mbOut" style="display:none"><span id="mbLink"></span><button class="sk-btn ghost" id="mbCopy">Kopírovat</button></div>
 
-    <h2 style="margin-top:30px">✍️ Autorské studio — rozpracování konceptu</h2>
-    <p>Žák dostane koncept a <b>rozpracuje ho do knihy pod vedením AI kouče</b>: iterativně píše, kouč hodnotí proti kontraktu (skóre, mezery, jedna otázka, jeden tip — nikdy nepíše za něj). Při skóre ≥ 70 vznikne autorský blok, certifikát s otázkami k obhajobě a žák může prezentovat ve třídě. Kouč stojí 10 ⚡ za kolo — psaní je zdarma.</p>
-    ${proposals.length ? proposals.map(pr => `<div class="sk-copy"><span><b>${esc(pr.title)}</b><br>${location.origin}/#autor-${esc(pr.slug)}</span>
-      <button class="sk-btn ghost" onclick="navigator.clipboard&&navigator.clipboard.writeText('${location.origin}/#autor-${esc(pr.slug)}')">Kopírovat</button></div>`).join('')
-      : '<p class="sk-meta">Zatím žádné návrhy konceptů — založte je v adminu (🌱 Proposals), nebo zadejte rozpracování existujícího konceptu odkazem #autor-&lt;id-konceptu&gt;.</p>'}
+
   `;
   const update = () => {
     const sel = [...el.querySelectorAll('.mbC:checked')];
@@ -290,10 +286,56 @@ function renderTaskBuilder() {
   el.addEventListener('input', update);
 }
 
+
+// Builder tvůrčího úkolu: koncept (i zatím nenapsaný pojem z mapy) + režim
+// (rychlé studio / dílna s koučem) + volba zpětné vazby → odkaz + hotové zadání.
+async function renderCreateBuilder() {
+  const el = $('skCreateBuilder'); if (!el) return;
+  let concepts = [];
+  try { concepts = (await (await fetch('/content/concepts.json')).json()).concepts || []; } catch (e) {}
+  let ghosts = [];
+  try {
+    const cm = await (await fetch('/content/concept-map.json')).json();
+    ghosts = (cm.nodes || []).filter(n => !(n.pool || []).length).map(n => ({ id: n.slug, title: n.title + ' (zatím nenapsaný pojem)' }));
+  } catch (e) {}
+  const opts = concepts.map(c => `<option value="${esc(c.id)}">${esc(c.title)}</option>`).join('')
+    + (ghosts.length ? `<optgroup label="🌱 Pojmy, které v knize ještě chybí">${ghosts.map(g => `<option value="${esc(g.id)}">${esc(g.title)}</option>`).join('')}</optgroup>` : '');
+  const inp = 'padding:9px;border:1px solid #cfcdc6;border-radius:8px;font:inherit;font-size:14px;background:#fff';
+  el.innerHTML = `
+    <div style="display:flex;gap:.6em;flex-wrap:wrap;align-items:center;margin:.4em 0">
+      <select id="cbConcept" style="${inp};flex:1 1 220px;min-width:0">${opts}</select>
+      <label style="font-size:13.5px"><input type="radio" name="cbMode" value="dilna" checked> 🎓 dílna s koučem <span style="color:#8a887f">(role → domluva → tvorba → certifikát)</span></label>
+      <label style="font-size:13.5px"><input type="radio" name="cbMode" value="autor"> ✍️ jen studio <span style="color:#8a887f">(rychlá volná tvorba)</span></label>
+    </div>
+    <label style="font-size:13.5px;display:block;margin:.2em 0"><input type="checkbox" id="cbFb" checked> Chci vidět rozdělané drafty — žák mi pošle odkaz na zpětnou vazbu</label>
+    <div class="sk-copy" id="cbOut" style="display:none"><span id="cbLink"></span><button class="sk-btn ghost" id="cbCopy">Kopírovat zadání</button></div>`;
+  const update = () => {
+    const cid = $('cbConcept').value;
+    const title = ($('cbConcept').selectedOptions[0] || {}).textContent || cid;
+    const mode = document.querySelector('input[name="cbMode"]:checked').value;
+    const link = location.origin + '/#' + (mode === 'dilna' ? 'dilna-' : 'autor-') + cid;
+    const fb = $('cbFb').checked;
+    const zadani = `Tvůrčí úkol: ${title.replace(' (zatím nenapsaný pojem)', '')}\n`
+      + `1) Otevři ${link}\n`
+      + (mode === 'dilna'
+        ? '2) Vyber si roli (vlastní nápad / spolu / oponent), domluv se s koučem CO vytvoříš, a tvoř.\n'
+        : '2) Napiš vlastní podání — klikni na odstavec a piš; obrázky přes [diagram: …].\n')
+      + (fb ? '3) Až budeš mít hrubou verzi, klikni ve studiu na 👀 Zpětná vazba, vytvoř odkaz a pošli mi ho.\n' : '')
+      + (mode === 'dilna' ? '4) Na konci vyplň, co jsi do tvorby přinesl/a ty — certifikát mi ukážeš.' : '3) Hotový text pošli do knihy (📤) a připrav si ho k prezentaci.');
+    const out = $('cbOut');
+    out.style.display = '';
+    $('cbLink').innerHTML = `<b>${esc(title)}</b> · ${mode === 'dilna' ? '🎓 dílna' : '✍️ studio'}${fb ? ' · 👀 s drafty' : ''}<br><span style="white-space:pre-wrap;font-size:12.5px;color:#57554d">${esc(zadani)}</span>`;
+    $('cbCopy').onclick = () => navigator.clipboard && navigator.clipboard.writeText(zadani);
+  };
+  el.addEventListener('change', update);
+  update();
+}
+
 function renderUcitel() {
   renderRoute(null);
   renderMissionBuilder();
   renderTaskBuilder();
+  renderCreateBuilder();
   const base = location.origin + location.pathname.replace(/[^/]*$/, '');
   const links = [
     ['Rozcestník pro žáky', base + 'start'],
