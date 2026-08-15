@@ -5748,7 +5748,10 @@ class PBook {
     st2.sourceTitle = entry.meta?.title || '';
     if (!st2.recallQ && entry.meta?.recallQ) st2.recallQ = entry.meta.recallQ;
     if (!st2.recallA && entry.meta?.recallA) st2.recallA = entry.meta.recallA;
-    if (!st2.genre && entry.meta?.genre) st2.genre = entry.meta.genre;
+    st2.facets = st2.facets || {};
+    if (!st2.facets.genre && entry.meta?.genre) { st2.facets.genre = entry.meta.genre; st2.genre = entry.meta.genre; }
+    if (!st2.facets.depth && entry.meta?.depth) st2.facets.depth = entry.meta.depth;
+    if (!st2.facets.visuality && entry.meta?.visuality) st2.facets.visuality = entry.meta.visuality;
     st2.importHash = this._hash36(body);
     delete st2.title;
     all2[slug] = st2;
@@ -5793,7 +5796,7 @@ class PBook {
                   style="width:100%;font:inherit;font-size:.8rem;padding:.25em .45em;margin:.2em 0;border:1px dashed var(--border,#ccc);border-radius:8px;background:var(--bg,#fafaf7)">
                 <input id="stGoalA" placeholder="Očekávaná odpověď…" value="${this.escHtml(st.recallA || '')}"
                   style="width:100%;font:inherit;font-size:.8rem;padding:.25em .45em;margin:.1em 0;border:1px dashed var(--border,#ccc);border-radius:8px;background:var(--bg,#fafaf7)">
-                <div style="font-size:.72rem;font-weight:700;color:var(--text-2,#666);margin-top:.25em">🎭 Forma: <span id="stGenreChips"><button class="steer-chip st-genre" data-g="výklad" style="font-size:.66rem;margin:.1em" onclick="app._studioGoalGenre(this)">výklad</button><button class="steer-chip st-genre" data-g="komiks" style="font-size:.66rem;margin:.1em" onclick="app._studioGoalGenre(this)">komiks</button><button class="steer-chip st-genre" data-g="příběh" style="font-size:.66rem;margin:.1em" onclick="app._studioGoalGenre(this)">příběh</button><button class="steer-chip st-genre" data-g="experiment" style="font-size:.66rem;margin:.1em" onclick="app._studioGoalGenre(this)">experiment</button><button class="steer-chip st-genre" data-g="dialog" style="font-size:.66rem;margin:.1em" onclick="app._studioGoalGenre(this)">dialog</button><button class="steer-chip st-genre" data-g="propočet" style="font-size:.66rem;margin:.1em" onclick="app._studioGoalGenre(this)">propočet</button></span></div>
+                <div id="stFacetRows">${this._studioFacetRowsHtml(st)}</div>
           </div>
         </div>
         <style>#stCanvas .st-block{transition:background .15s}#stCanvas .st-block:not([data-img]):hover{background:color-mix(in srgb, var(--accent) 6%, transparent)}#stCanvas #stTitleH:hover{background:color-mix(in srgb, var(--accent) 6%, transparent)}</style><div id="stCanvas" style="border:1.5px solid var(--border,#eee);border-radius:12px;padding:1em 1.1em;background:var(--bg,#fafaf7);margin:.7em 0 .5em;min-height:30vh"></div>
@@ -5818,10 +5821,6 @@ class PBook {
     });
     // Cíl tvorby (Q/A/forma) se ukládá k draftu a posílá koučovi i kostře
     ['stGoalQ', 'stGoalA'].forEach(id => document.getElementById(id)?.addEventListener('change', () => this._studioSaveGoal()));
-    const curG = st.genre || '';
-    document.querySelectorAll('#stGenreChips .st-genre').forEach(ch => {
-      if (ch.dataset.g === curG) { ch.style.background = '#EDE9FE'; ch.style.borderColor = '#7C3AED'; ch.dataset.on = '1'; }
-    });
     if ((cleanText || '').trim().length >= 60) document.getElementById('stSeedBtn')?.remove();
     // Esc zavře okno (uloženo je vše průběžně); v inputech Esc nechává jejich vlastní chování
     if (!this._stEscBound) {
@@ -6327,6 +6326,87 @@ class PBook {
     } catch (e) { this.showXPToast(this.escHtml(String(e.message).slice(0, 60)), 'xp'); }
   }
 
+  // Forma tellingu = stejné fasety jako u rozkliknutí podání (CONFIG.facets):
+  // žánr / hloubka / vizuálnost, kanonické hodnoty (explainer, intro, …).
+  // U napsaného textu změna formy nabídne AI PŘETVOŘENÍ obsahu (mode transform),
+  // ne jen tichý přepis štítku.
+  _studioFacetLabels() { return { genre: { explainer: 'výklad', story: 'příběh', 'worked-example': 'propočet', 'code-walkthrough': 'ukázka kódu', comic: 'komiks', animation: 'animace' }, depth: { intro: 'úvodní', standard: 'standard', technical: 'technická', research: 'badatelská' }, visuality: { 'text-first': 'hlavně text', balanced: 'vyvážené', 'visual-first': 'hlavně vizuál' }, _dim: { genre: '🎭 Žánr', depth: '📏 Hloubka', visuality: '🖼 Vizuálnost' } }; }
+  _studioFacetRowsHtml(st) {
+    const L = this._studioFacetLabels();
+    const fac = st.facets || { genre: st.genre || '', depth: '', visuality: '' };
+    return ['genre', 'depth', 'visuality'].map(dim => {
+      const vals = CONFIG.facets?.[dim]?.values || [];
+      return `<div style="font-size:.72rem;font-weight:700;color:var(--text-2,#666);margin-top:.25em">${(L._dim || {})[dim] || dim}:
+        <span>${vals.map(v => `<button class="steer-chip st-fac" data-dim="${dim}" data-v="${v}"
+          style="font-size:.66rem;margin:.1em${fac[dim] === v ? ';background:#EDE9FE;border-color:#7C3AED' : ''}"
+          onclick="app._studioFacetPick(this)">${this.escHtml((L[dim] || {})[v] || v)}</button>`).join('')}</span></div>`;
+    }).join('');
+  }
+  _studioFacetPick(el) {
+    const stdo = this._studio; if (!stdo) return;
+    const dim = el.dataset.dim, v = el.dataset.v;
+    const all = this._authorState(); const st = (all[stdo.slug] = all[stdo.slug] || {});
+    st.facets = st.facets || { genre: st.genre || '', depth: '', visuality: '' };
+    const hasText = (document.getElementById('stDraft')?.value || '').trim().length >= 120;
+    const changed = st.facets[dim] && st.facets[dim] !== v;
+    const apply = () => {
+      st.facets[dim] = v; if (dim === 'genre') st.genre = v;
+      this._authorSave(all);
+      const rows = document.getElementById('stFacetRows');
+      if (rows) rows.innerHTML = this._studioFacetRowsHtml(st);
+    };
+    if (!hasText || !changed) { apply(); return; }
+    const out = document.getElementById('stOut');
+    const lbl = this.escHtml(((this._studioFacetLabels()[dim] || {})[v]) || v);
+    out.innerHTML = `<div style="display:flex;gap:.5em;align-items:center;flex-wrap:wrap;border:1.5px solid #D97706;border-radius:10px;padding:.45em .6em;font-size:.8rem;background:var(--card,#fff)">
+      Text už je napsaný — změna formy by měla změnit i obsah.
+      <button class="steer-chip" style="border-color:#D97706;color:#B45309;font-weight:700" onclick="app._studioTransform('${dim}','${v}')">✨ Přetvořit text → ${lbl} · ${CONFIG.aiEconomy?.prices.advanced || 0} ⚡</button>
+      <button class="steer-chip" onclick="app._studioFacetApply('${dim}','${v}');document.getElementById('stOut').innerHTML=''">jen změnit štítek</button>
+      <button class="steer-chip" onclick="document.getElementById('stOut').innerHTML=''">✕</button>
+    </div>`;
+  }
+  _studioFacetApply(dim, v) {
+    const stdo = this._studio; if (!stdo) return;
+    const all = this._authorState(); const st = (all[stdo.slug] = all[stdo.slug] || {});
+    st.facets = st.facets || {}; st.facets[dim] = v; if (dim === 'genre') st.genre = v;
+    this._authorSave(all);
+    const rows = document.getElementById('stFacetRows');
+    if (rows) rows.innerHTML = this._studioFacetRowsHtml(st);
+  }
+  async _studioTransform(dim, v) {
+    const stdo = this._studio; if (!stdo) return;
+    const out = document.getElementById('stOut');
+    const ta = document.getElementById('stDraft');
+    const pay = this.aiCanPay('advanced');
+    if (!pay.ok) { out.innerHTML = this.aiPaywallHtml('advanced'); return; }
+    const all = this._authorState(); const st = (all[stdo.slug] = all[stdo.slug] || {});
+    st.facets = st.facets || {}; st.facets[dim] = v; if (dim === 'genre') st.genre = v;
+    st.backup = { text: ta.value, assets: stdo.assets, assetSeq: stdo.assetSeq, stats: st.stats, ts: Date.now(), sourceBlockId: st.sourceBlockId, importHash: st.importHash, title: st.title };
+    this._authorSave(all);
+    const rows = document.getElementById('stFacetRows');
+    if (rows) rows.innerHTML = this._studioFacetRowsHtml(st);
+    out.innerHTML = `<span class="gen-spinner">✨ Přetvářím text do nové formy… (~30 s)</span>`;
+    try {
+      const res = await fetch(CONFIG.steering.generateEndpoint, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ mode: 'transform', concept: stdo.isProposal ? undefined : stdo.slug,
+          text: ta.value, target: st.facets, auth: this._walletAuth() }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.ok || !data.text) throw new Error(data.error || 'transform failed');
+      this._walletApply(data, 'advanced', pay);
+      this._studioStat('ai');
+      ta.value = data.text;
+      this._studioSave();
+      this._studioPreview();
+      out.innerHTML = `<div style="border:1.5px solid #10B981;border-radius:8px;padding:.5em .7em;font-size:.8rem;background:var(--card,#fff)">Přetvořeno — předchozí verze je v záloze (↩ v banneru po znovuotevření).</div>`;
+      this.rc.logEvent('author_transform', { slug: stdo.slug, dim, v });
+    } catch (e) {
+      const pw = this._aiErrorPaywall(e, 'advanced');
+      out.innerHTML = pw || `<div style="background:#FEE2E2;border-radius:8px;padding:.5em .7em;font-size:.8rem">${this.escHtml(e.message)}</div>`;
+    }
+  }
+
   _studioSaveGoal() {
     const stdo = this._studio; if (!stdo) return;
     const all = this._authorState(); const st = (all[stdo.slug] = all[stdo.slug] || {});
@@ -6334,15 +6414,10 @@ class PBook {
     st.recallA = (document.getElementById('stGoalA')?.value || '').trim().slice(0, 500);
     this._authorSave(all);
   }
-  _studioGoalGenre(el) {
-    document.querySelectorAll('#stGenreChips .st-genre').forEach(ch => { ch.style.background = ''; ch.style.borderColor = ''; ch.dataset.on = ''; });
-    el.style.background = '#EDE9FE'; el.style.borderColor = '#7C3AED'; el.dataset.on = '1';
-    const stdo = this._studio; if (!stdo) return;
-    const all = this._authorState(); (all[stdo.slug] = all[stdo.slug] || {}).genre = el.dataset.g; this._authorSave(all);
-  }
   _studioGoal() {
     const st = this._authorState()[this._studio?.slug] || {};
-    return { recallQ: st.recallQ || '', recallA: st.recallA || '', genre: st.genre || '' };
+    const f = st.facets || {};
+    return { recallQ: st.recallQ || '', recallA: st.recallA || '', genre: f.genre || st.genre || '', depth: f.depth || '', visuality: f.visuality || '' };
   }
 
   _studioClose() {
@@ -6755,7 +6830,8 @@ class PBook {
     const block = {
       meta: { id, title: stdo.title, type: 'spine', state: 'private', authored: true, core: false,
         concept: stdo.isProposal ? undefined : stdo.slug, proposalSlug: stdo.isProposal ? stdo.slug : undefined,
-        recallQ: st.recallQ || undefined, recallA: st.recallA || undefined, genre: st.genre || undefined,
+        recallQ: st.recallQ || undefined, recallA: st.recallA || undefined,
+        genre: (st.facets?.genre || st.genre) || undefined, depth: st.facets?.depth || undefined, visuality: st.facets?.visuality || undefined,
         readingTime: Math.max(1, Math.round(draft.split(/\s+/).length / 200)) },
       body: draft,
     };
