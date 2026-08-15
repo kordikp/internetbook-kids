@@ -1466,6 +1466,18 @@ class PBook {
       if (forYouCards.length) html += this.shelf('Vybráno pro tebe', forYouCards);
     }
 
+    // „Protože jsi četl X" — související k poslednímu přečtenému (Items to Item;
+    // scénář related-item po založení v Admin UI zpřesní logiku, do té doby default).
+    const lastReadId = [...this.user.readBlocks].pop();
+    const lastReadBlock = lastReadId && this.findBlock(lastReadId);
+    if (lastReadBlock) {
+      const rel = await this.rc.getRecsForItem(lastReadId, 8, this.rc.reql({ type: 'spine' }), 'related-item');
+      const relCards = (rel?.recomms || [])
+        .filter(r => r.id !== lastReadId && !this.user.readBlocks.has(r.id))
+        .map(r => this.cardFromRec(r)).filter(Boolean);
+      if (relCards.length >= 3) html += this.shelf('Protože sis přečetl/a: ' + this.escHtml(lastReadBlock.meta.title || ''), relCards);
+    }
+
     // Community layer (open mode only, spec §6): tellings other readers generated & shared,
     // clearly labelled, blended into discovery — the living part of the book
     if (this._f('community') && this.user.readerMode === 'open') {
@@ -1818,9 +1830,15 @@ class PBook {
     const shown = this._feedShownBlocks || new Set();
     let blocks = [];
 
-    // Try Recombee for personalized recommendations
+    // Infinite feed = JEDNO doporučení stránkované přes Next Items (scénář
+    // next-read existuje v DB); nový dotaz jen na začátku nebo po vyčerpání.
     if (this.rc.enabled && this._f('personalization')) {
-      const result = await this.rc.getRecsForUser('next-read', count * 3, this.rc.reql({ type: 'spine' }), this.rc.reqlBoost(this.user));
+      let result = null;
+      if (this._feedRecommId) result = await this.rc.getNextRecs(this._feedRecommId, count * 3);
+      if (!result?.recomms?.length) {
+        result = await this.rc.getRecsForUser('next-read', count * 3, this.rc.reql({ type: 'spine' }), this.rc.reqlBoost(this.user));
+      }
+      this._feedRecommId = result?.recommId || null;
       if (result?.recomms?.length) {
         for (const r of result.recomms) {
           if (shown.has(r.id)) continue;
