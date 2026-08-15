@@ -5698,7 +5698,12 @@ class PBook {
     this._stReloadForce = false;
     // Sekce se přenáší VĚRNĚ: hlavičkový diagram (meta.diagram) jako inline
     // obrázek na začátek, ⟦rx⟧ značky remixů pryč.
-    let body = (entry.body || '').replace(/⟦\/?rx⟧/g, '');
+    // Edituje se to, co čtenář VIDÍ: přijatá úprava (override) má přednost před
+    // originálem — jinak by studio tiše zahodilo jeho dřívější práci.
+    const ovId = this._overrides?.[blockId];
+    const ov = ovId && !this._overridesOff().has(blockId) ? this.privateBlocks?.[ovId] : null;
+    let body = ((ov ? ov.body : entry.body) || '').replace(/⟦\/?rx⟧/g, '');
+    if (ov?.meta?.diagramSvg && !body.includes('⟦svg⟧')) body = '⟦svg⟧\n' + ov.meta.diagramSvg.trim() + '\n⟦/svg⟧\n\n' + body;
     body = await this._resolveMediaMarks(body, this._mediaMap(entry.meta));
     const diag = entry.meta?.diagram;
     if (diag && typeof diag === 'string' && /\.svg$/.test(diag) && !body.includes('⟦svg⟧')) {
