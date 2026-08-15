@@ -1454,7 +1454,11 @@ class PBook {
     } // end missions guard
 
     // Core essentials — unread core blocks
-    const unreadCore = this.allBlocks.filter(b => b.meta.core && b.meta.type === 'spine' && !this.user.readBlocks.has(b.meta.id)).slice(0, 10);
+    // Základ = jádro látky; opakovací bloky jsou core kvůli misím, ale do „základů" nepatří
+    const unreadCore = this.allBlocks.filter(b => b.meta.core && b.meta.type === 'spine'
+      && !this.user.readBlocks.has(b.meta.id)
+      && !/opakov/i.test(String(b._chapter || b.meta.chapter || ''))
+      && !/^\s*(opakování|review)\b/i.test(String(b.meta.title || ''))).slice(0, 10);
     if (unreadCore.length) {
       html += this.shelf('Základ, který nesmíš minout', unreadCore.map(b => this.cardHtml(b.meta)));
     }
@@ -5690,12 +5694,6 @@ class PBook {
     const slug = (this._conceptIds ? this._conceptIds(entry.meta)[0] : entry.meta.concept) || blockId;
     const all = this._authorState();
     const st = all[slug] || {};
-    if (st.text && st.text.trim() && !this._stReloadForce) {
-      this._stReloadOffer = blockId;
-      this.startAuthoring(slug);
-      return;
-    }
-    this._stReloadForce = false;
     // Sekce se přenáší VĚRNĚ: hlavičkový diagram (meta.diagram) jako inline
     // obrázek na začátek, ⟦rx⟧ značky remixů pryč.
     // Edituje se to, co čtenář VIDÍ: přijatá úprava (override) má přednost před
@@ -5712,10 +5710,27 @@ class PBook {
         if (/^<svg[\s\S]*<\/svg>$/.test(svg) && svg.length < 120000) body = '⟦svg⟧\n' + svg + '\n⟦/svg⟧\n\n' + body;
       } catch (e) {}
     }
+    // Klik na podání otevře VŽDY to podání. Jeden draft na pojem zůstává, ale
+    // rozdělaná práce (dirty = text se od importu změnil) se neztratí — jde do
+    // st.backup a banner nabídne návrat. Čistý auto-import se přepíše tiše.
     const all2 = this._authorState();
-    (all2[slug] = all2[slug] || {}).text = body;
+    const st2 = all2[slug] || {};
+    const dirty = !!(st2.text && st2.text.trim())
+      && st2.sourceBlockId !== blockId
+      && st2.importHash !== this._hash36(st2.text);
+    if (dirty) {
+      st2.backup = { text: st2.text, assets: st2.assets, assetSeq: st2.assetSeq, stats: st2.stats,
+        ts: st2.ts, sourceBlockId: st2.sourceBlockId, importHash: st2.importHash, title: st2.title };
+      this._stBackupOffer = true;
+    }
+    st2.text = body;
+    st2.assets = {}; st2.assetSeq = 0; st2.stats = { manual: 0, ai: 0, coach: 0 };
+    st2.sourceBlockId = blockId;
+    st2.importHash = this._hash36(body);
+    delete st2.title;
+    all2[slug] = st2;
     this._authorSave(all2);
-    this.rc.logEvent('author_from_block', { slug, blockId });
+    this.rc.logEvent('author_from_block', { slug, blockId, displaced: dirty });
     this.startAuthoring(slug);
   }
 
@@ -5737,12 +5752,12 @@ class PBook {
     document.getElementById('authorStudio')?.remove();
     const el = document.createElement('div');
     el.id = 'authorStudio';
-    el.innerHTML = `<div style="position:fixed;inset:0;background:var(--bg,#fafaf7);z-index:250;overflow-y:auto">
-      <div style="max-width:760px;margin:0 auto;padding:1em 1em 4em">
+    el.innerHTML = `<div style="position:fixed;inset:0;background:rgba(20,20,30,.5);z-index:250;overflow-y:auto" onclick="if(event.target===this)app._studioClose()">
+      <div style="max-width:780px;margin:3vh auto 6vh;background:var(--card,#fff);border:1px solid var(--border,#ddd);border-radius:16px;box-shadow:0 14px 44px rgba(0,0,0,.28);padding:1em 1.2em 2em">
         <div style="display:flex;justify-content:space-between;align-items:center;gap:.6em">
           <div style="font-weight:800;font-size:1.05rem">✍️ Autorské studio</div>
           <span id="stSaved" style="font-size:.66rem;color:var(--text-3,#999);margin-left:auto"></span>
-          <button class="note-cancel" onclick="app._studioClose()">Zavřít</button>
+          <button onclick="app._studioClose()" title="Zavřít — vše je průběžně uloženo" style="width:34px;height:34px;flex-shrink:0;border-radius:50%;border:1.5px solid var(--border,#ccc);background:var(--bg,#fafaf7);font-size:1rem;font-weight:700;cursor:pointer;line-height:1">✕</button>
         </div>
         <div style="font-size:.75rem;color:var(--text-2,#666);margin:.2em 0 .7em">Piš rovnou do stránky: klikni na odstavec a uprav ho, obrázky vybírej a tahej myší. Vše se průběžně ukládá.</div>
         <div style="border:1.5px solid var(--border,#ddd);border-radius:10px;padding:.6em .8em;font-size:.8rem;background:var(--card,#fff)">
@@ -5750,7 +5765,7 @@ class PBook {
           ${contract.objective ? `<div style="margin-top:.25em"><span style="color:var(--text-2,#666)">Cíl:</span> ${this.escHtml(contract.objective)}</div>` : ''}
           ${(contract.mustCover || []).length ? `<div style="margin-top:.25em;font-size:.74rem"><span style="color:var(--text-2,#666)">Musí pokrýt:</span> ${(contract.mustCover || []).map(x => `<span style="display:inline-block;border:1px solid var(--border,#ddd);border-radius:999px;padding:0 .5em;margin:.1em">${this.escHtml(x)}</span>`).join('')}</div>` : ''}
         </div>
-        <style>#stCanvas .st-block{transition:background .15s}#stCanvas .st-block:not([data-img]):hover{background:color-mix(in srgb, var(--accent) 6%, transparent)}#stCanvas #stTitleH:hover{background:color-mix(in srgb, var(--accent) 6%, transparent)}</style><div id="stCanvas" style="border:1.5px solid var(--border,#ddd);border-radius:12px;padding:1em 1.1em;background:var(--card,#fff);margin:.7em 0 .5em;min-height:30vh"></div>
+        <style>#stCanvas .st-block{transition:background .15s}#stCanvas .st-block:not([data-img]):hover{background:color-mix(in srgb, var(--accent) 6%, transparent)}#stCanvas #stTitleH:hover{background:color-mix(in srgb, var(--accent) 6%, transparent)}</style><div id="stCanvas" style="border:1.5px solid var(--border,#eee);border-radius:12px;padding:1em 1.1em;background:var(--bg,#fafaf7);margin:.7em 0 .5em;min-height:30vh"></div>
         <div style="display:flex;gap:.5em;align-items:center;flex-wrap:wrap">
           <button class="note-save" id="stSeedBtn" onclick="app.seedDraft()" style="border:1.5px solid var(--accent);background:transparent;color:var(--accent)">✨ Navrhnout kostru · ${CONFIG.aiEconomy?.prices.basic || 0} ⚡</button>
           <button class="note-save" style="background:var(--accent)" id="stCoachBtn" onclick="app.coachRound()">🧭 Kouč · ${CONFIG.aiEconomy?.prices.basic || 0} ⚡</button>
@@ -5771,15 +5786,24 @@ class PBook {
       clearTimeout(this._stPvTimer);
       this._stPvTimer = setTimeout(() => this._studioPreview(), 250);
     });
+    // Esc zavře okno (uloženo je vše průběžně); v inputech Esc nechává jejich vlastní chování
+    if (!this._stEscBound) {
+      this._stEscBound = true;
+      document.addEventListener('keydown', e => {
+        if (e.key !== 'Escape') return;
+        if (e.target.closest('textarea, input')) return;
+        if (document.getElementById('authorStudio')) this._studioClose();
+      });
+    }
     if (cleanText !== (st.text || '')) this._studioSave();
     this._studioPreview();
-    if (this._stReloadOffer) {
+    if (this._stBackupOffer) {
+      this._stBackupOffer = false;
       const rb = document.createElement('div');
-      rb.style.cssText = 'display:flex;gap:.5em;align-items:center;flex-wrap:wrap;font-size:.75rem;border:1px dashed var(--border,#ddd);border-radius:9px;padding:.35em .6em;margin:.4em 0;color:var(--text-2,#666)';
-      rb.innerHTML = `Pokračuješ v rozepsaném draftu. <button class="steer-chip" style="font-size:.68rem" data-bid="${this.escHtml(this._stReloadOffer)}" onclick="app._stReloadForce=true;this.closest('div').remove();app.startAuthoringFromBlock(this.dataset.bid)">↻ Načíst sekci znovu (přepíše draft)</button>
-        <button class="steer-chip" style="font-size:.68rem" onclick="app._stReloadOffer=null;this.closest('div').remove()">✕</button>`;
+      rb.style.cssText = 'display:flex;gap:.5em;align-items:center;flex-wrap:wrap;font-size:.75rem;border:1.5px dashed #7C3AED;border-radius:9px;padding:.4em .6em;margin:.4em 0;color:var(--text-2,#666);background:color-mix(in srgb, #7C3AED 5%, transparent)';
+      rb.innerHTML = `Tvoje předchozí rozdělaná práce k tomuto pojmu je v bezpečí. <button class="steer-chip" style="font-size:.68rem;border-color:#7C3AED;color:#7C3AED" onclick="this.closest('div').remove();app._studioRestoreBackup()">↩ Vrátit se k ní</button>
+        <button class="steer-chip" style="font-size:.68rem" onclick="this.closest('div').remove()">✕</button>`;
       document.getElementById('stCanvas')?.before(rb);
-      this._stReloadOffer = null;
     }
     this.rc.logEvent('author_open', { slug });
   }
@@ -6011,11 +6035,11 @@ class PBook {
           <button class="note-cancel" onclick="document.getElementById('workshop').remove()">Zavřít</button>
         </div></div>`;
     }
-    el.innerHTML = `<div style="position:fixed;inset:0;background:var(--bg,#fafaf7);z-index:260;overflow-y:auto">
-      <div style="max-width:640px;margin:0 auto;padding:1em 1em 4em">
+    el.innerHTML = `<div style="position:fixed;inset:0;background:rgba(20,20,30,.5);z-index:260;overflow-y:auto" onclick="if(event.target===this){app._wsSave();document.getElementById('workshop').remove()}">
+      <div style="max-width:660px;margin:3vh auto 6vh;background:var(--card,#fff);border:1px solid var(--border,#ddd);border-radius:16px;box-shadow:0 14px 44px rgba(0,0,0,.28);padding:1em 1.2em 2em">
         <div style="display:flex;justify-content:space-between;align-items:center;gap:.6em">
           <div style="font-weight:800;font-size:1.05rem">🎓 Tvůrčí dílna · ${this.escHtml(ws.title)}</div>
-          <button class="note-cancel" onclick="app._wsSave();document.getElementById('workshop').remove()">Zavřít (rozpracováno se uloží)</button>
+          <button onclick="app._wsSave();document.getElementById('workshop').remove()" title="Zavřít (rozpracováno se uloží)" style="width:34px;height:34px;flex-shrink:0;border-radius:50%;border:1.5px solid var(--border,#ccc);background:var(--bg,#fafaf7);font-size:1rem;font-weight:700;cursor:pointer;line-height:1">✕</button>
         </div>
         <div style="font-size:.73rem;color:var(--text-2);margin:.2em 0 .8em">S koučem se nejdřív domluvíte, CO vytvoříte — pak tvoříš, nakonec odprezentuješ, co jsi do toho vnesl/a.</div>
         ${inner}
@@ -6095,6 +6119,22 @@ class PBook {
     ws.step = 'cert'; this._wsSave();
     this.rc.logEvent('workshop_done', { slug: ws.slug, role: ws.role });
     this._wsRender();
+  }
+
+  // Návrat k odložené práci: aktivní draft a záloha se PROHODÍ (nic se nemaže)
+  _studioRestoreBackup() {
+    const stdo = this._studio; if (!stdo) return;
+    const all = this._authorState(); const st = all[stdo.slug];
+    if (!st?.backup) return;
+    const cur = { text: st.text, assets: st.assets, assetSeq: st.assetSeq, stats: st.stats,
+      ts: st.ts, sourceBlockId: st.sourceBlockId, importHash: st.importHash, title: st.title };
+    const b = st.backup;
+    Object.assign(st, b);
+    st.backup = cur;
+    all[stdo.slug] = st;
+    this._authorSave(all);
+    this.showXPToast('Prohozeno — druhá verze je teď v záloze.', 'xp');
+    this.startAuthoring(stdo.slug);
   }
 
   _studioClose() {
