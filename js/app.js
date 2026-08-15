@@ -5732,6 +5732,15 @@ class PBook {
     let body = ((ov ? ov.body : entry.body) || '').replace(/⟦\/?rx⟧/g, '');
     if (ov?.meta?.diagramSvg && !body.includes('⟦svg⟧')) body = '⟦svg⟧\n' + ov.meta.diagramSvg.trim() + '\n⟦/svg⟧\n\n' + body;
     body = await this._resolveMediaMarks(body, this._mediaMap(entry.meta));
+    // Komiksy aj. vložené markdownem (![alt](images/x.svg)) → editovatelný asset:
+    // jinak by hlavní obsah bloku ve studiu nešel upravit vůbec.
+    for (const im of [...body.matchAll(/!\[[^\]]*\]\(([^)\s]+\.svg)\)/g)]) {
+      if (/^https?:/i.test(im[1])) continue;
+      try {
+        const svg = ((await getDiagram(im[1])) || '').trim();
+        if (/^<svg[\s\S]*<\/svg>$/.test(svg) && svg.length < 120000) body = body.replace(im[0], `\n\n⟦svg⟧\n${svg}\n⟦/svg⟧\n\n`);
+      } catch (e) {}
+    }
     const diag = entry.meta?.diagram;
     if (diag && typeof diag === 'string' && /\.svg$/.test(diag) && !body.includes('⟦svg⟧')) {
       try {
@@ -5809,6 +5818,7 @@ class PBook {
                 <input id="stGoalA" placeholder="Očekávaná odpověď…" value="${this.escHtml(st.recallA || '')}"
                   style="width:100%;font:inherit;font-size:.8rem;padding:.25em .45em;margin:.1em 0;border:1px dashed var(--border,#ccc);border-radius:8px;background:var(--bg,#fafaf7)">
                 <div id="stFacetRows">${this._studioFacetRowsHtml(st)}</div>
+                <div id="stFacetOut"></div>
           </div>
         </div>
         <style>#stCanvas .st-block{transition:background .15s}#stCanvas .st-block:not([data-img]):hover{background:color-mix(in srgb, var(--accent) 6%, transparent)}#stCanvas #stTitleH:hover{background:color-mix(in srgb, var(--accent) 6%, transparent)}</style><div id="stCanvas" style="border:1.5px solid var(--border,#eee);border-radius:12px;padding:1em 1.1em;background:var(--bg,#fafaf7);margin:.7em 0 .5em;min-height:30vh"></div>
@@ -5920,7 +5930,10 @@ class PBook {
       pane.addEventListener('dblclick', e => this._studioLabelEdit(e));
       pane.addEventListener('pointerdown', e => this._studioPointerDown(e));
       pane.addEventListener('click', e => {
-        if (e.target.closest('button, a, figure, #stSelBar, textarea')) return;
+        if (e.target.closest('button, a, #stSelBar, textarea')) return;
+        // Asset-obrázky mají vlastní ovládání (klik = výběr prvku); ostatní
+        // figury (rastr, ⟦obr:⟧) patří textovému bloku → klik otevře editor.
+        if (e.target.closest('figure')?.dataset.asset) return;
         const blk = e.target.closest('.st-block');
         if (blk && !blk.dataset.img) this._studioEditBlock(+blk.dataset.bi, blk);
       });
@@ -6368,13 +6381,14 @@ class PBook {
       if (rows) rows.innerHTML = this._studioFacetRowsHtml(st);
     };
     if (!hasText || !changed) { apply(); return; }
-    const out = document.getElementById('stOut');
+    // Nabídka se ukazuje HNED POD chipy faset (ne dole pod plátnem, kde není vidět)
+    const out = document.getElementById('stFacetOut') || document.getElementById('stOut');
     const lbl = this.escHtml(((this._studioFacetLabels()[dim] || {})[v]) || v);
-    out.innerHTML = `<div style="display:flex;gap:.5em;align-items:center;flex-wrap:wrap;border:1.5px solid #D97706;border-radius:10px;padding:.45em .6em;font-size:.8rem;background:var(--card,#fff)">
+    out.innerHTML = `<div style="display:flex;gap:.5em;align-items:center;flex-wrap:wrap;border:1.5px solid #D97706;border-radius:10px;padding:.45em .6em;font-size:.8rem;background:var(--card,#fff);margin-top:.4em">
       Text už je napsaný — změna formy by měla změnit i obsah.
       <button class="steer-chip" style="border-color:#D97706;color:#B45309;font-weight:700" onclick="app._studioTransform('${dim}','${v}')">✨ Přetvořit text → ${lbl} · ${CONFIG.aiEconomy?.prices.advanced || 0} ⚡</button>
-      <button class="steer-chip" onclick="app._studioFacetApply('${dim}','${v}');document.getElementById('stOut').innerHTML=''">jen změnit štítek</button>
-      <button class="steer-chip" onclick="document.getElementById('stOut').innerHTML=''">✕</button>
+      <button class="steer-chip" onclick="app._studioFacetApply('${dim}','${v}');document.getElementById('stFacetOut').innerHTML=''">jen změnit štítek</button>
+      <button class="steer-chip" onclick="document.getElementById('stFacetOut').innerHTML=''">✕</button>
     </div>`;
   }
   _studioFacetApply(dim, v) {
@@ -6387,7 +6401,7 @@ class PBook {
   }
   async _studioTransform(dim, v) {
     const stdo = this._studio; if (!stdo) return;
-    const out = document.getElementById('stOut');
+    const out = document.getElementById('stFacetOut') || document.getElementById('stOut');
     const ta = document.getElementById('stDraft');
     const pay = this.aiCanPay('advanced');
     if (!pay.ok) { out.innerHTML = this.aiPaywallHtml('advanced'); return; }
