@@ -8,7 +8,8 @@ core: false
 teaser: "Google si o každém uživateli vede kartu s odhady: věk, pohlaví, zájmy. Dá se do ní nahlédnout."
 voice: thinker
 parent: ch3-stopa
-diagram: images/ch3-my-ad-center.svg
+diagram: null
+media: adcenter=images/ch3-my-ad-center.svg
 recallQ: "Kde se dá zjistit, co o uživateli odhaduje Google, a jak s odhady pracuje?"
 recallA: "V nástroji My Ad Center (myadcenter.google.com) Google ukazuje své odhady — pohlaví, věk, jazyky, zájmy — které používá k výběru reklam. Jsou to odhady z digitální stopy, ne jistoty, a dají se prohlížet i vypnout."
 status: accepted
@@ -22,8 +23,9 @@ lengthBand: standard
 genre: explainer
 carriers: prose|diagram
 ---
-
 Jak vlastně vypadá výsledek toho, co o tobě internet „ví"? U Googlu se do toho dá **přímo nahlédnout**. Nástroj se jmenuje **My Ad Center** a Google v něm ukazuje odhady, které si o uživateli vede kvůli výběru reklam.
+
+⟦obr:adcenter⟧
 
 Na diagramu vidíš kartu skutečného uživatele. Google u něj odhaduje: **pohlaví** (žena), **věk** (25–34 let), **jazyky** (tři), **vztahy** (zadaní), vzdělání, dokonce i to, jestli **bydlí v nájmu**. Nic z toho uživatelka Googlu přímo neřekla — všechno jsou odhady poskládané z její digitální stopy: co vyhledává, jaká videa sleduje, jaké stránky navštěvuje.
 

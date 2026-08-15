@@ -8,7 +8,8 @@ core: true
 teaser: "Projdi se čerstvým sněhem a zůstanou po tobě stopy. Na internetu je to stejné — jen se stopy samy nerozpustí."
 voice: universal
 parent: null
-diagram: images/ch3-historie-krecka.svg
+diagram: null
+media: historie=images/ch3-historie-krecka.svg
 recallQ: "Co je digitální stopa a co z ní servery dělají?"
 recallA: "Digitální stopa je všechno, co po nás na internetu zůstává: fotky, lajky, komentáře, vyhledávání, kliknutí — i to, co o nás sdílejí ostatní. Servery z ní odhadují, co nás zajímá, ale jen podle pravděpodobnosti — mohou se plést."
 status: accepted
@@ -22,12 +23,13 @@ lengthBand: standard
 genre: explainer
 carriers: prose|diagram
 ---
-
 I když cookies odmítneš, něco po tobě na internetu zůstává. Představ si, že se projdeš čerstvě napadaným sněhem — zůstanou po tobě stopy. Kdo umí stopovat, pozná, kudy jsi šel/šla, jestli jsi běžel/a, nebo se loudal/a.
 
 Stejné je to se vším, co na internetu děláš: fotky, lajky, komentáře, vyhledávání, navštívené stránky, kliknutí. Říkáme tomu **digitální (datová) stopa**. A patří do ní i věci, které by tě nenapadly — třeba to, co o tobě sdílejí **ostatní** (fotka, na které tě kamarád označil), nebo kolik času trávíš na které stránce.
 
 K čemu ta stopa je? Servery z ní **odhadují**, co jsi za člověka a co by tě mohlo zajímat — a podle toho ti ukazují reklamy a příspěvky. Důležité slovo je *odhadují*: jsou to jen odhady podle **pravděpodobnosti**, takže se klidně mohou plést. Server neví, kdo jsi. Jen tipuje — a tipuje tak, aby se trefil co nejčastěji.
+
+⟦obr:historie⟧
 
 Podívej se na diagram: je na něm historie vyhledávání neznámého člověka. Tři vyhledávání — *je křeček vhodný k dítěti*, *nejlepší zš v praze*, *jak velkou klec potřebuji pro křečka*. Nic víc.
 

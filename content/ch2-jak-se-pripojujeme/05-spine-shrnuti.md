@@ -8,7 +8,8 @@ core: true
 teaser: "Kabel, Wi-Fi, mobilní data, satelit — čtyři cesty na internet. Která je nejlepší? Přijde na to!"
 voice: universal
 parent: null
-diagram: images/ch2-myslenkova-mapa.svg
+diagram: null
+media: mapa-pripojeni=images/ch2-myslenkova-mapa.svg
 recallQ: "Které připojení je typicky nejrychlejší a nejspolehlivější — a proč?"
 recallA: "Kabel. Nevadí mu zdi ani počasí a data po něm tečou nejrychleji — proto tvoří i páteř celého internetu. Nevýhoda: nejde jednoduše zapojit do mobilu a překáží."
 status: accepted
@@ -22,8 +23,9 @@ lengthBand: standard
 genre: explainer
 carriers: prose|diagram
 ---
-
 Poznal(a) jsi čtyři typy připojení. Každý má své výhody a nevýhody — a přesně to shrnuje myšlenková mapa u tohoto bloku:
+
+⟦obr:mapa-pripojeni⟧
 
 - **Kabel** — nejrychlejší a nejspolehlivější, ale nejde jednoduše zapojit do mobilu a překáží.
 - **Wi-Fi** — pohodlná, bez kabelu, ale má krátký dosah a snadno se ruší.

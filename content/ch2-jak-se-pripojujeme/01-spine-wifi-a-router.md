@@ -8,7 +8,8 @@ core: true
 teaser: "Wi-Fi není jen tak kolem nás. Vysílá ji krabička, která musí být zapojená dvěma kabely — víš kterými?"
 voice: universal
 parent: null
-diagram: images/ch2-router-zapojeni.svg
+diagram: null
+media: zapojeni=images/ch2-router-zapojeni.svg
 recallQ: "Co všechno musí být u Wi-Fi routeru zapojeno, aby ti doma fungoval internet?"
 recallA: "Dva kabely: napájení z elektřiny a kabel do internetové přípojky ve zdi — tudy do routeru internet přitéká. Bez něj Wi-Fi síť sice uvidíš, ale nic se nenačte."
 status: accepted
@@ -22,13 +23,14 @@ lengthBand: standard
 genre: explainer
 carriers: prose|diagram
 ---
-
 Když se doma připojíš k internetu z mobilu, nejspíš to bude přes **Wi-Fi**. Ale odkud se Wi-Fi bere? Není jen tak kolem nás — vysílá ji krabička, které se říká **Wi-Fi router** (někdy taky modem).
 
 Aby router fungoval, nestačí ho jen zapnout. Musí být zapojen **dvěma kabely**:
 
 - do **elektřiny** — jako každý spotřebič,
 - do **přípojky k internetu** ve zdi — tudy do něj internet vlastně přitéká.
+
+⟦obr:zapojeni⟧
 
 Podívej se na schéma: **šedý** kabel vede do elektrické zásuvky, **modrý** do internetové přípojky ve zdi. A ten **oranžový**? Notebook nebo stolní počítač můžeš k routeru připojit i přímo **síťovým kabelem** — router na to má vzadu několik portů. Barvy kabelů odpovídají barvám portů na routeru.
 

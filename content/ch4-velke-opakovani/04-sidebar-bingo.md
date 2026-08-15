@@ -7,7 +7,8 @@ standalone: true
 teaser: "Mřížka 3×3, jeden čte definice, druhý škrtá. Kdo první spojí tři políčka v řadě?"
 voice: explorer
 parent: null
-diagram: images/ch4-bingo.svg
+diagram: null
+media: list=images/ch4-bingo.svg
 recallQ: "Jak vyhraješ v pojmovém Bingu?"
 recallA: "Spojíš tři správně škrtnutá políčka v řadě — vodorovně, svisle nebo úhlopříčně. Škrtáš pojem, když jeho definici přečte druhý hráč."
 status: accepted
@@ -21,7 +22,6 @@ lengthBand: standard
 genre: explainer
 carriers: prose|diagram
 ---
-
 Bingo je hra na procvičení pojmů — a klidně si ji zahraješ doma. Potřebuješ jen papír, tužku a ještě jednoho člověka: kamaráda, sourozence nebo rodiče, který bude číst definice.
 
 ## Jak hrát
@@ -31,5 +31,7 @@ Bingo je hra na procvičení pojmů — a klidně si ji zahraješ doma. Potřebu
 3. **Ty škrtáš.** Když si myslíš, že pojem odpovídající vysvětlení máš v mřížce, škrtni ho nebo barevně označ.
 4. **Kontrola.** Po chvíli čtenář prozradí, o který pojem šlo. Zkontrolujte, jestli jsi škrtal správně — a klidně proberte, proč jiná odpověď nesedí.
 5. **Výhra!** Vyhráváš, když spojíš **tři správně škrtnutá políčka v řadě** — vodorovně, svisle nebo úhlopříčně. Pak si role vyměňte a zahrajte si znovu.
+
+⟦obr:list⟧
 
 **Tip pro průzkumníky:** Druhé kolo si ztiž — místo definic z knížky ať čtenář vysvětluje pojmy vlastními slovy. Poznáš pojem i v „přestrojení"?
