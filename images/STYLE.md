@@ -41,6 +41,16 @@ V jednom diagramu max 3 akcentové barvy + neutrály.
   k tvaru nevejdou, použij tenkou vodicí čáru (`#9CA3AF`, width 1) a text stranou.
 - Česky, spisovně, krátce. Čísla s mezerou (35 000 km).
 
+## Média v textu (obrázek kdekoli, ne jen nahoře)
+
+- `diagram:` ve frontmatteru = hero obrázek NAD textem (výchozí, beze změny).
+- Chceš-li obrázek/animaci JINDE: dej do frontmatteru seznam
+  `media: nazev=images/soubor.svg | dalsi=images/b.svg`
+  a v textu na samostatný řádek značku `⟦obr:nazev⟧` — vykreslí se přesně tam.
+  Značka umí i přímou cestu: `⟦obr:images/soubor.svg⟧`; rastery (png/jpg/webp) se vloží jako <img>.
+- Jeden soubor smí být použit víckrát (více značek na jedno jméno média).
+- Autorské studio značky při importu promění v editovatelné obrázky na správném místě.
+
 ## Animace (jen když pohyb = význam)
 
 - Dráha animovaného prvku je taky tvar: NESMÍ procházet přes žádný text (zkontroluj celou trasu!).

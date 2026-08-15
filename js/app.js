@@ -1967,7 +1967,7 @@ class PBook {
           ${ov.meta.state !== 'community' ? `· <a href="#" onclick="event.preventDefault();app._showShareConsent('${ovId}')">📣 sdílet se čtenáři a redakcí</a>` : '· ⚡ sdíleno'}</div>`;
       }
     }
-    let bodyHtml = renderMarkdown(block.body);
+    let bodyHtml = renderMarkdown(await this._resolveMediaMarks(block.body, this._mediaMap(block)));
     // Remixed passages carry ⟦rx⟧…⟦/rx⟧ markers — render as visible "changed by you" marks
     if (bodyHtml.includes('⟦rx⟧')) {
       // legacy blocks (markers inside a paragraph) — region markers are handled by the renderer
@@ -5577,6 +5577,38 @@ class PBook {
   // Člověk needituje SVG jako text — vidí ho v náhledu a upravuje TAM (dvojklik na
   // popisek, ✨ instrukce pro AI, 🗑). Při odeslání se tokeny rozbalí zpět na ⟦svg⟧.
   // Značky obrázků v textu: [diagram|animace|obrázek|schéma|grafika: …] — bez ohledu na velikost písmen
+  // ===== MÉDIA V TEXTU =====
+  // Frontmatter: media: nazev=images/soubor.svg | dalsi=images/b.svg
+  // V textu pak značka ⟦obr:nazev⟧ (nebo přímo ⟦obr:images/c.svg⟧) umístí
+  // obrázek/animaci KAMKOLIV — meta.diagram zůstává jako hero nahoře.
+  _mediaMap(meta) {
+    const out = {};
+    String(meta?.media || '').split('|').forEach(part => {
+      const m = part.trim().match(/^([\w-]+)\s*=\s*(\S+)$/);
+      if (m) out[m[1]] = m[2];
+    });
+    return out;
+  }
+  _mediaMarkRx() { return /⟦(?:obr|img|media)\s*:\s*([^⟧]+)⟧/g; }
+  async _resolveMediaMarks(body, map) {
+    if (!body || !/⟦(?:obr|img|media)\s*:/.test(body)) return body;
+    for (const m of [...body.matchAll(this._mediaMarkRx())]) {
+      const ref = m[1].trim();
+      const path = map?.[ref] || (/[\/.]/.test(ref) ? ref : null);
+      let repl = '';
+      if (path) {
+        try {
+          const html = await getDiagram(path);
+          if (html) repl = /^<svg/i.test(html.trim())
+            ? `\n\n⟦svg⟧\n${html.trim()}\n⟦/svg⟧\n\n`
+            : `\n\n${html}\n\n`;
+        } catch (e) {}
+      }
+      body = body.replace(m[0], repl);
+    }
+    return body;
+  }
+
   // Dělení draftu na bloky: prázdný řádek odděluje, ale NE uvnitř ```fence
   // (kódový blok s prázdným řádkem se nesmí rozpůlit — read feed parity)
   _studioSplitBlocks(draft) {
@@ -5631,6 +5663,7 @@ class PBook {
     // Sekce se přenáší VĚRNĚ: hlavičkový diagram (meta.diagram) jako inline
     // obrázek na začátek, ⟦rx⟧ značky remixů pryč.
     let body = (entry.body || '').replace(/⟦\/?rx⟧/g, '');
+    body = await this._resolveMediaMarks(body, this._mediaMap(entry.meta));
     const diag = entry.meta?.diagram;
     if (diag && typeof diag === 'string' && /\.svg$/.test(diag) && !body.includes('⟦svg⟧')) {
       try {
@@ -5724,6 +5757,10 @@ class PBook {
         return;
       }
       let h = renderMarkdown(b);
+      // soubor odkazovaný značkou ⟦obr:cesta⟧ — zobraz (editovatelné jsou jen assety)
+      h = h.replace(this._mediaMarkRx(), (_, ref) => /[\/.]/.test(ref.trim())
+        ? `<figure class="md-figure diagram-inline"><img src="${this.escHtml(ref.trim())}" style="max-width:100%"></figure>`
+        : `<span style="color:#B45309;font-size:.75rem">⟦obr:${this.escHtml(ref.trim())}⟧ — ?</span>`);
       h = h.replace(this._studioMarkerRx(), (_, k, w) => {
         const mi = mkIdx++;
         return `<span style="display:inline-block;max-width:100%;border:1.5px dashed #7C3AED;border-radius:10px;padding:.35em .6em;margin:.15em .1em;color:#7C3AED;font-size:.78rem;vertical-align:middle">🎨 ${/anim/i.test(k) ? 'ANIMACE' : 'DIAGRAM'}: ${this.escHtml(w.trim())}

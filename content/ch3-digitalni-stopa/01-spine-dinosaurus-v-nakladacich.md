@@ -8,7 +8,8 @@ core: true
 teaser: "Jak poslat obří kostru dinosaura do jiného města, když se nevejde do jednoho náklaďáku? Přesně takhle cestují data."
 voice: universal
 parent: null
-diagram: images/ch3-dino-trucks.svg
+diagram: null
+media: trucks=images/ch3-dino-trucks.svg
 recallQ: "Proč nevadí, že náklaďáky s kostmi dinosaura jedou každý jinou cestou?"
 recallA: "Kosti jsou očíslované a existuje plánek, jak kostra vypadá složená. V cíli se všechno složí správně, ať náklaďáky přijedou v jakémkoli pořadí. Úplně stejně cestují data po internetu."
 status: accepted
@@ -28,6 +29,8 @@ Představ si, že pracuješ v muzeu a máš poslat **obří kostru dinosaura** d
 - Uděláš si **plánek**, jak kostra vypadá složená.
 - **Očísluješ** jednotlivé kosti.
 - Uložíš je do **označených krabic** a naložíš do několika náklaďáků.
+
+⟦obr:trucks⟧
 
 A teď ten fígl: náklaďáky **nemusí jet stejnou cestou**. Jeden se může vyhnout zácpě po dálnici, druhý si to střihne po okreskách. Dokonce ani nemusí dorazit ve správném pořadí — klidně přijede nejdřív ocas a až potom hlava. Hlavně že dojedou všechny. Podle plánku a čísel pak kostru v cílovém muzeu zase složíš, kost po kosti.
 
