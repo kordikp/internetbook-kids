@@ -153,6 +153,10 @@ class PBook {
         document.getElementById('onboarding').classList.add('hidden');
         this.updateXPBadge();
         this.switchView(hash.slice(5));
+      } else if (hash.startsWith('dilna-')) {
+        document.getElementById('onboarding').classList.add('hidden');
+        this.updateXPBadge();
+        this.startWorkshop(hash.slice(6));
       } else if (hash === 'cesta') {
         // deep link na herní pole Cesty (sdílení učitelem, screenshoty)
         document.getElementById('onboarding').classList.add('hidden');
@@ -3694,7 +3698,8 @@ class PBook {
               ? `<span style="font-size:.68rem;color:#0EA5E9">${votes[g.slug] > 0 ? '✓ chci' : '✓ nezájem'}</span>`
               : `<button class="steer-chip" style="border-color:#0EA5E9;color:#0EA5E9;font-size:.62rem;padding:.06em .4em" onclick="app.ghostVote('${g.slug}',1,'cmap')">👍 chci</button>
                  <button class="steer-chip" style="font-size:.62rem;padding:.06em .4em" onclick="app.ghostVote('${g.slug}',-1,'cmap')">ne</button>`}
-              <button class="steer-chip" style="border-color:#EC4899;color:#EC4899;font-size:.62rem;padding:.06em .4em" onclick="app.startAuthoring('${g.slug}')">✍️ napsat</button></span>
+              <button class="steer-chip" style="border-color:#EC4899;color:#EC4899;font-size:.62rem;padding:.06em .4em" onclick="app.startAuthoring('${g.slug}')">✍️ napsat</button>
+              <button class="steer-chip" style="border-color:#7C3AED;color:#7C3AED;font-size:.62rem;padding:.06em .4em" title="Tvůrčí dílna s koučem: domluva → tvorba → certifikát s tvým přínosem" onclick="app.startWorkshop('${g.slug}')">🎓 dílna</button></span>
           </div>`;
         });
       }
@@ -5643,6 +5648,14 @@ class PBook {
       return `\n\n⟦svg⟧\n${svg}\n⟦/svg⟧\n\n`;
     });
   }
+  // Statistika tvůrčího procesu (pro dílnu/certifikát): kolik udělal člověk, kolik AI
+  _studioStat(kind) {
+    const stdo = this._studio; if (!stdo) return;
+    stdo.stats = stdo.stats || { manual: 0, ai: 0, coach: 0 };
+    stdo.stats[kind] = (stdo.stats[kind] || 0) + 1;
+    const all = this._authorState(); (all[stdo.slug] = all[stdo.slug] || {}).stats = stdo.stats; this._authorSave(all);
+  }
+
   _studioSave() {
     const stdo = this._studio; if (!stdo) return;
     const all = this._authorState(); const st = (all[stdo.slug] = all[stdo.slug] || {});
@@ -5659,7 +5672,12 @@ class PBook {
     const slug = (this._conceptIds ? this._conceptIds(entry.meta)[0] : entry.meta.concept) || blockId;
     const all = this._authorState();
     const st = all[slug] || {};
-    if (st.text && st.text.trim() && !confirm('Ve studiu už máš k tomuto pojmu rozepsaný draft. Nahradit ho obsahem této sekce? (Zrušit = otevřít rozepsaný draft)')) { this.startAuthoring(slug); return; }
+    if (st.text && st.text.trim() && !this._stReloadForce) {
+      this._stReloadOffer = blockId;
+      this.startAuthoring(slug);
+      return;
+    }
+    this._stReloadForce = false;
     // Sekce se přenáší VĚRNĚ: hlavičkový diagram (meta.diagram) jako inline
     // obrázek na začátek, ⟦rx⟧ značky remixů pryč.
     let body = (entry.body || '').replace(/⟦\/?rx⟧/g, '');
@@ -5691,7 +5709,7 @@ class PBook {
         : { objective: node?.def || node?.teaser, mustCover: [], recallQ: undefined };
     const st = this._authorState()[slug] || {};
     this._studio = { slug, title: st.title || title, contract, isProposal: !!prop, questions: [],
-      assets: { ...(st.assets || {}) }, assetSeq: st.assetSeq || 0 };
+      assets: { ...(st.assets || {}) }, assetSeq: st.assetSeq || 0, stats: st.stats || { manual: 0, ai: 0, coach: 0 } };
     const cleanText = this._studioCollapse(st.text || '');
     document.getElementById('authorStudio')?.remove();
     const el = document.createElement('div');
@@ -5732,6 +5750,14 @@ class PBook {
     });
     if (cleanText !== (st.text || '')) this._studioSave();
     this._studioPreview();
+    if (this._stReloadOffer) {
+      const rb = document.createElement('div');
+      rb.style.cssText = 'display:flex;gap:.5em;align-items:center;flex-wrap:wrap;font-size:.75rem;border:1px dashed var(--border,#ddd);border-radius:9px;padding:.35em .6em;margin:.4em 0;color:var(--text-2,#666)';
+      rb.innerHTML = `Pokračuješ v rozepsaném draftu. <button class="steer-chip" style="font-size:.68rem" data-bid="${this.escHtml(this._stReloadOffer)}" onclick="app._stReloadForce=true;this.closest('div').remove();app.startAuthoringFromBlock(this.dataset.bid)">↻ Načíst sekci znovu (přepíše draft)</button>
+        <button class="steer-chip" style="font-size:.68rem" onclick="app._stReloadOffer=null;this.closest('div').remove()">✕</button>`;
+      document.getElementById('stCanvas')?.before(rb);
+      this._stReloadOffer = null;
+    }
     this.rc.logEvent('author_open', { slug });
   }
 
@@ -5851,6 +5877,7 @@ class PBook {
     else blocks.splice(st.i, 1);
     const ta = document.getElementById('stDraft');
     if (ta) ta.value = blocks.join('\n\n');
+    this._studioStat('manual');
     this._studioSave();
     this._studioPreview();
   }
@@ -5879,6 +5906,174 @@ class PBook {
       .sort((a, b) => (b.st.ts || 0) - (a.st.ts || 0));
   }
 
+  // ===== TVŮRČÍ DÍLNA — oddělený průvodce nad studiem =====
+  // role → domluva s koučem (alignment, mode coach/phase align) → tvorba ve
+  // studiu → reflexe (co přinesl člověk) → certifikát s lidským přínosem.
+  // Studio zůstává rychlý editor; dílna je pomalá, vědomá cesta.
+  _wsState() { try { return JSON.parse(localStorage.getItem('pbook-workshop')) || {}; } catch (e) { return {}; } }
+  _wsSave() { const all = this._wsState(); all[this._ws.slug] = this._ws; localStorage.setItem('pbook-workshop', JSON.stringify(all)); }
+
+  startWorkshop(slug) {
+    const conc = this.concepts?.[slug];
+    const node = this._cmapNodes?.[slug];
+    const prop = (this.proposals || []).find(x => x.slug === slug);
+    const title = prop?.title || conc?.title || node?.title || slug;
+    this._ws = this._wsState()[slug] || { slug, title, step: 'role', role: null, msgs: [], brief: '', reflect: { brought: '', learned: '' } };
+    this._ws.title = title;
+    this._wsRender();
+  }
+
+  _wsRender() {
+    const ws = this._ws; if (!ws) return;
+    document.getElementById('workshop')?.remove();
+    const el = document.createElement('div');
+    el.id = 'workshop';
+    const ROLE_NAMES = { idea: 'ideový tvůrce', spolu: 'spolutvůrce', oponent: 'oponent' };
+    let inner = '';
+    if (ws.step === 'role') {
+      const card = (r, t2, d) => `<button onclick="app._wsRole('${r}')" style="flex:1 1 180px;text-align:left;border:1.5px solid var(--border,#ddd);border-radius:12px;padding:.8em .9em;background:var(--card,#fff);cursor:pointer">
+        <div style="font-weight:800">${t2}</div><div style="font-size:.75rem;color:var(--text-2,#666);margin-top:.25em">${d}</div></button>`;
+      inner = `<h3 style="margin:.4em 0">Jakou roli chceš mít?</h3>
+        <div style="display:flex;gap:.7em;flex-wrap:wrap">
+          ${card('idea', '🎨 Mám vlastní nápad', 'Ty vedeš, kouč se ptá a pomáhá nápad doladit.')}
+          ${card('spolu', '🤝 Vymyslíme to spolu', 'Kouč navrhuje, ty přidáváš — 50 na 50.')}
+          ${card('oponent', '🔍 Budu oponent', 'Kouč přijde s vizí, ty ji rozporuješ a vylepšuješ. I kritika je tvorba!')}
+        </div>`;
+    } else if (ws.step === 'align') {
+      const msgs = ws.msgs.map(m => `<div style="display:flex;${m.role === 'user' ? 'justify-content:flex-end' : ''}">
+        <div style="max-width:85%;border-radius:12px;padding:.45em .7em;margin:.2em 0;font-size:.85rem;white-space:pre-wrap;${m.role === 'user' ? 'background:var(--accent);color:#fff' : 'background:var(--bg,#f4f4f1);border:1px solid var(--border,#ddd)'}">${this.escHtml(m.text)}</div></div>`).join('');
+      inner = `<h3 style="margin:.4em 0">Domluva s koučem <span style="font-size:.7rem;color:var(--text-3);font-weight:400">(${ROLE_NAMES[ws.role] || ''})</span></h3>
+        <div id="wsChat" style="border:1.5px solid var(--border,#ddd);border-radius:12px;padding:.6em .7em;background:var(--card,#fff);max-height:46vh;overflow-y:auto">${msgs || ''}
+          ${!ws.msgs.length ? `<button class="steer-chip" onclick="app._wsAsk('')">🎧 Nech kouče začít · ${CONFIG.aiEconomy?.prices.basic || 0} ⚡</button>` : ''}
+          <div id="wsSpin"></div></div>
+        <div style="display:flex;gap:.4em;margin-top:.5em">
+          <input id="wsInput" placeholder="Napiš kouči… (Enter = poslat)" style="flex:1 1 auto;min-width:0;font:inherit;font-size:.88rem;padding:.5em .6em;border:1.5px solid var(--border,#ddd);border-radius:10px;background:var(--card,#fff)">
+          <button class="note-save" style="background:var(--accent)" onclick="app._wsAsk(document.getElementById('wsInput').value)">Poslat · ${CONFIG.aiEconomy?.prices.basic || 0} ⚡</button>
+        </div>
+        <div id="wsBriefBox" style="margin-top:.6em">${ws.brief ? `<div style="border:1.5px solid #10B981;border-radius:12px;padding:.6em .8em;background:var(--card,#fff)">
+          <b>🤝 Domluveno:</b> <span id="wsBriefTxt" style="font-size:.85rem">${this.escHtml(ws.brief)}</span>
+          <button class="steer-chip" style="font-size:.66rem" onclick="app._wsBriefEdit()">✏️ upravit</button>
+          <div style="margin-top:.5em"><button class="note-save" style="background:#10B981" onclick="app._wsToStudio()">Jdeme tvořit →</button></div>
+        </div>` : `<div style="font-size:.72rem;color:var(--text-3)">Ještě se s koučem domluvte — brief vznikne, až přispěješ svým dílem.</div>`}</div>`;
+    } else if (ws.step === 'reflect') {
+      const st = this._authorState()[ws.slug] || {};
+      const stats = st.stats || { manual: 0, ai: 0, coach: 0 };
+      inner = `<h3 style="margin:.4em 0">Tvoje stopa v díle</h3>
+        <p style="font-size:.78rem;color:var(--text-2)">Certifikát doloží, co jsi do tvorby vnesl/a TY. Napiš to vlastními slovy.</p>
+        <div style="font-size:.75rem;color:var(--text-2);margin:.3em 0">✋ ${stats.manual} ručních úprav · ✨ ${stats.ai} kroků s AI · 🧭 ${stats.coach} kol s koučem</div>
+        <label style="font-size:.75rem;font-weight:700">Co jsem do tvorby přinesl/a já (nápad, námitky, příklady, úpravy…)</label>
+        <textarea id="wsBrought" style="width:100%;min-height:9vh;font:inherit;font-size:.85rem;padding:.5em;border:1.5px solid var(--border,#ddd);border-radius:10px;background:var(--card,#fff)">${this.escHtml(ws.reflect.brought)}</textarea>
+        <label style="font-size:.75rem;font-weight:700;margin-top:.5em;display:block">Co jsem se při tom naučil/a</label>
+        <textarea id="wsLearned" style="width:100%;min-height:9vh;font:inherit;font-size:.85rem;padding:.5em;border:1.5px solid var(--border,#ddd);border-radius:10px;background:var(--card,#fff)">${this.escHtml(ws.reflect.learned)}</textarea>
+        <div style="margin-top:.6em"><button class="note-save" style="background:#10B981" onclick="app._wsFinish()">Dokončit → certifikát</button></div>`;
+    } else if (ws.step === 'cert') {
+      const st = this._authorState()[ws.slug] || {};
+      const stats = st.stats || { manual: 0, ai: 0, coach: 0 };
+      const name = localStorage.getItem('pbook-cert-name') || '';
+      const date = new Date().toLocaleDateString('cs-CZ');
+      const code = this._hash36([ws.slug, ws.role, date].join('|')).padEnd(8, '0').slice(0, 8);
+      inner = `<div style="border-top:6px solid #7C3AED;border-radius:14px;background:var(--card,#fff);padding:1em 1.2em" id="wsCert">
+        <div style="font-size:1.1rem;font-weight:800">🎓 Certifikát z tvůrčí dílny</div>
+        <input value="${this.escHtml(name)}" placeholder="Tvoje jméno (pro tisk)" onchange="localStorage.setItem('pbook-cert-name',this.value)"
+          style="width:100%;font-size:.95rem;font-weight:700;padding:.35em .5em;border:1px dashed var(--border,#ddd);border-radius:8px;margin:.5em 0">
+        <div style="font-size:.9rem"><b>${this.escHtml(ws.title)}</b> · role: <b>${ROLE_NAMES[ws.role] || '?'}</b></div>
+        ${ws.brief ? `<div style="font-size:.78rem;color:var(--text-2);margin:.3em 0">„${this.escHtml(ws.brief)}"</div>` : ''}
+        <div style="font-size:.78rem;margin:.4em 0">✋ ${stats.manual} ručních úprav · ✨ ${stats.ai} kroků s AI · 🧭 ${stats.coach} kol s koučem</div>
+        ${ws.reflect.brought ? `<div style="font-size:.82rem;margin:.4em 0"><b>Co jsem přinesl/a:</b> ${this.escHtml(ws.reflect.brought)}</div>` : ''}
+        ${ws.reflect.learned ? `<div style="font-size:.82rem;margin:.4em 0"><b>Co jsem se naučil/a:</b> ${this.escHtml(ws.reflect.learned)}</div>` : ''}
+        <div style="font-family:ui-monospace,monospace;font-size:.7rem;color:var(--text-3);margin-top:.5em">${date} · kód ${code}</div>
+        <div style="display:flex;gap:.5em;margin-top:.7em" class="no-print">
+          <button class="note-save" onclick="print()">🖨 Vytisknout</button>
+          ${ws.blockId ? `<button class="note-save" style="background:var(--accent)" onclick="document.getElementById('workshop').remove();app._showShareConsent('${ws.blockId}')">📣 Sdílet se třídou</button>` : ''}
+          <button class="note-cancel" onclick="document.getElementById('workshop').remove()">Zavřít</button>
+        </div></div>`;
+    }
+    el.innerHTML = `<div style="position:fixed;inset:0;background:var(--bg,#fafaf7);z-index:260;overflow-y:auto">
+      <div style="max-width:640px;margin:0 auto;padding:1em 1em 4em">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:.6em">
+          <div style="font-weight:800;font-size:1.05rem">🎓 Tvůrčí dílna · ${this.escHtml(ws.title)}</div>
+          <button class="note-cancel" onclick="app._wsSave();document.getElementById('workshop').remove()">Zavřít (rozpracováno se uloží)</button>
+        </div>
+        <div style="font-size:.73rem;color:var(--text-2);margin:.2em 0 .8em">S koučem se nejdřív domluvíte, CO vytvoříte — pak tvoříš, nakonec odprezentuješ, co jsi do toho vnesl/a.</div>
+        ${inner}
+      </div></div>`;
+    document.body.appendChild(el);
+    const chat = document.getElementById('wsChat'); if (chat) chat.scrollTop = chat.scrollHeight;
+    const wi = document.getElementById('wsInput');
+    if (wi) wi.addEventListener('keydown', ev => { if (ev.key === 'Enter') { ev.preventDefault(); this._wsAsk(wi.value); } });
+  }
+
+  _wsRole(r) { this._ws.role = r; this._ws.step = 'align'; this._wsSave(); this._wsRender(); }
+
+  async _wsAsk(text) {
+    const ws = this._ws; if (!ws) return;
+    text = (text || '').trim();
+    if (text) { ws.msgs.push({ role: 'user', text: text.slice(0, 600) }); this._wsSave(); this._wsRender(); }
+    else if (ws.msgs.length) return;
+    const pay = this.aiCanPay('basic');
+    const spin = () => document.getElementById('wsSpin');
+    if (!pay.ok) { if (spin()) spin().innerHTML = this.aiPaywallHtml('basic'); return; }
+    if (spin()) spin().innerHTML = `<div style="font-size:.75rem;color:var(--text-3);padding:.3em 0">Kouč přemýšlí…</div>`;
+    try {
+      const res = await fetch(CONFIG.steering.generateEndpoint, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ mode: 'coach', phase: 'align', role: ws.role, concept: ws.slug,
+          messages: ws.msgs.slice(-12), auth: this._walletAuth() }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.ok || !data.align) throw new Error(data.error || 'align failed');
+      this._walletApply(data, 'basic', pay);
+      ws.msgs.push({ role: 'coach', text: data.align.reply });
+      if (data.align.brief) ws.brief = data.align.brief;
+      this._wsSave();
+      this._wsRender();
+      this.rc.logEvent('workshop_align', { slug: ws.slug, role: ws.role, hasBrief: !!ws.brief });
+    } catch (e) {
+      const pw = this._aiErrorPaywall(e, 'basic');
+      if (spin()) spin().innerHTML = pw || `<div style="background:#FEE2E2;border-radius:8px;padding:.4em .6em;font-size:.78rem">${this.escHtml(e.message)}</div>`;
+    }
+  }
+
+  _wsBriefEdit() {
+    const box = document.getElementById('wsBriefTxt'); if (!box) return;
+    const ta = document.createElement('textarea');
+    ta.value = this._ws.brief;
+    ta.style.cssText = 'width:100%;min-height:7vh;font:inherit;font-size:.85rem;padding:.4em;border:1.5px solid var(--accent);border-radius:8px';
+    ta.addEventListener('blur', () => { this._ws.brief = ta.value.trim() || this._ws.brief; this._wsSave(); this._wsRender(); });
+    box.replaceWith(ta); ta.focus();
+  }
+
+  _wsToStudio() {
+    const ws = this._ws;
+    ws.step = 'create'; this._wsSave();
+    document.getElementById('workshop')?.remove();
+    this.startAuthoring(ws.slug);
+    const stdo = this._studio;
+    if (stdo) stdo.wizard = true;
+    const bar = document.createElement('div');
+    bar.id = 'wsBar';
+    bar.style.cssText = 'display:flex;gap:.5em;align-items:center;flex-wrap:wrap;border:1.5px solid #7C3AED;border-radius:10px;padding:.4em .6em;margin:.4em 0;background:color-mix(in srgb, #7C3AED 6%, transparent);font-size:.75rem';
+    bar.innerHTML = `<b>Dílna</b> <span style="color:var(--text-2)">${this.escHtml(ws.brief.slice(0, 140))}</span>
+      <button class="note-save" style="margin-left:auto;background:#10B981;font-size:.72rem" onclick="app.finishAuthoring()">✅ Hotovo → prezentace</button>`;
+    document.getElementById('stCanvas')?.before(bar);
+  }
+
+  _wsAfterSave(blockId) {
+    const ws = this._ws = this._ws || this._wsState()[this._studio?.slug] || null;
+    if (!ws) return;
+    ws.blockId = blockId; ws.step = 'reflect'; this._wsSave();
+    this._wsRender();
+  }
+
+  _wsFinish() {
+    const ws = this._ws;
+    ws.reflect.brought = (document.getElementById('wsBrought')?.value || '').trim().slice(0, 500);
+    ws.reflect.learned = (document.getElementById('wsLearned')?.value || '').trim().slice(0, 500);
+    ws.step = 'cert'; this._wsSave();
+    this.rc.logEvent('workshop_done', { slug: ws.slug, role: ws.role });
+    this._wsRender();
+  }
+
   _studioClose() {
     if (this._stEditing) this._studioCommitBlock();   // rozepsaný odstavec nesmí spadnout pod stůl
     this._studioSave();
@@ -5890,19 +6085,35 @@ class PBook {
     this._studioEditBlock((this._studio._blocks || []).length, null);
   }
 
-  // Dvojklik na <text> v náhledu = přepsání popisku přímo v SVG (WYSIWYG bez knihoven)
+  // Dvojklik na <text> = přepis popisku v plovoucím inputu přímo u textu (žádný prompt)
   _studioLabelEdit(e) {
     const t = e.target.closest('text'); if (!t) return;
     const fig = e.target.closest('figure.diagram-inline');
     const aid = fig?.dataset.asset; if (!aid || !this._studio?.assets?.[aid]) return;
-    const cur = t.textContent;
-    const nv = prompt('Nový text popisku:', cur);
-    if (nv == null || nv === cur) return;
-    this._studioUndoPush(aid);
-    t.textContent = nv;
-    this._studioCommitSvg(fig, aid);
-    this.showXPToast('Popisek přepsán ✏️', 'xp');
+    document.getElementById('stLblEd')?.remove();
+    const r = t.getBoundingClientRect(), fr = fig.getBoundingClientRect();
+    const orig = t.textContent;
+    const inp = document.createElement('input');
+    inp.id = 'stLblEd';
+    inp.value = orig;
+    inp.style.cssText = `position:absolute;z-index:7;left:${Math.max(0, r.left - fr.left - 6)}px;top:${Math.max(0, r.top - fr.top - 8)}px;width:${Math.max(110, r.width + 40)}px;font:inherit;font-size:.85rem;padding:.15em .4em;border:1.5px solid var(--accent);border-radius:6px;background:var(--card,#fff)`;
+    const commit = () => {
+      const v = inp.value; inp.remove();
+      if (v == null || v === orig) return;
+      this._studioUndoPush(aid);
+      t.textContent = v;
+      this._studioCommitSvg(fig, aid);
+      this._studioStat('manual');
+    };
+    inp.addEventListener('keydown', ev => {
+      if (ev.key === 'Enter') { ev.preventDefault(); inp.blur(); }
+      if (ev.key === 'Escape') { inp.value = orig; inp.blur(); }
+    });
+    inp.addEventListener('blur', commit);
+    fig.appendChild(inp);
+    inp.focus(); inp.select();
   }
+
 
   // ===== Ruční editace SVG: klik vybere prvek, tažením se posouvá, lišta nabídne
   // rodiče/duplikaci/paletu/smazání/↩; každá úprava jde přes undo zásobník a
@@ -5954,7 +6165,7 @@ class PBook {
     const onUp = () => {
       window.removeEventListener('pointermove', onMove);
       window.removeEventListener('pointerup', onUp);
-      if (moved) { this._studioCommitSvg(fig, aid); this._studioSelDraw(); }
+      if (moved) { this._studioCommitSvg(fig, aid); this._studioStat('manual'); this._studioSelDraw(); }
     };
     window.addEventListener('pointermove', onMove);
     window.addEventListener('pointerup', onUp);
@@ -6000,6 +6211,7 @@ class PBook {
     clone.setAttribute('transform', `translate(14 14)${tr ? ' ' + tr : ''}`);
     sel.el.after(clone);
     sel.el = clone;
+    this._studioStat('manual');
     this._studioCommitSvg(sel.fig, sel.aid);
     this._studioSelDraw();
   }
@@ -6009,6 +6221,7 @@ class PBook {
     const { fig, aid } = sel;
     sel.el.remove();
     this._studioDeselect();
+    this._studioStat('manual');
     this._studioCommitSvg(fig, aid);
   }
   studioSelColor(dark, light) {
@@ -6025,6 +6238,7 @@ class PBook {
     };
     paint(sel.el);
     sel.el.querySelectorAll('*').forEach(paint);
+    this._studioStat('manual');
     this._studioCommitSvg(sel.fig, sel.aid);
   }
   studioSelUndo(aid) {
@@ -6036,12 +6250,24 @@ class PBook {
     this._studioPreview();
   }
 
-  // ✨ Instrukce pro AI: celý obrázek, nebo jen označený prvek (mode svg-remix, advanced)
-  async studioEditImage(aid, selectionOnly) {
+  // ✨ AI úprava obrázku: instrukce se píše v inline řádku pod tlačítky (žádný prompt)
+  studioEditImage(aid, selectionOnly) {
+    const out = document.getElementById('stOut'); if (!out) return;
+    const sel = !!(selectionOnly && this._studioSel?.aid === aid);
+    out.innerHTML = `<div style="display:flex;gap:.4em;align-items:center;border:1.5px solid #D97706;border-radius:10px;padding:.4em .5em;background:var(--card,#fff)">
+      <input id="stImgWish" placeholder="${sel ? '__SEL_PH__' : '__IMG_PH__'}" style="flex:1 1 auto;min-width:0;font:inherit;font-size:.82rem;padding:.3em .5em;border:1px solid var(--border,#ddd);border-radius:8px">
+      <button class="steer-chip" style="border-color:#D97706;color:#B45309" onclick="app._studioEditImageGo('${aid}', ${sel})">✨ ${CONFIG.aiEconomy?.prices.advanced || 0} ⚡</button>
+      <button class="steer-chip" onclick="document.getElementById('stOut').innerHTML=''">✕</button></div>`;
+    const inp = document.getElementById('stImgWish');
+    inp.addEventListener('keydown', ev => { if (ev.key === 'Enter') { ev.preventDefault(); this._studioEditImageGo(aid, sel); } });
+    inp.focus();
+  }
+  async _studioEditImageGo(aid, selectionOnly) {
     const stdo = this._studio; const svg = stdo?.assets?.[aid]; if (!svg) return;
     const out = document.getElementById('stOut');
+    const wish = (document.getElementById('stImgWish')?.value || '').trim();
+    if (wish.length < 3) return;
     const sel = selectionOnly && this._studioSel?.aid === aid ? this._studioSel : null;
-    const wish = prompt(sel ? 'Co má AI změnit na OZNAČENÉM prvku? (zbytek obrázku zůstane beze změny)' : 'Co má AI na obrázku změnit? (např. „přidej třetí router a popisky přesuň mimo šipky")'); if (!wish || wish.trim().length < 3) return;
     const instruction = sel
       ? `Uprav POUZE tento prvek SVG, vše ostatní ponech PŘESNĚ beze změny:\n${new XMLSerializer().serializeToString(sel.el).slice(0, 1800)}\nPožadavek: ${wish}`
       : wish;
@@ -6058,6 +6284,7 @@ class PBook {
       this._walletApply(data, 'advanced', pay);
       this._studioUndoPush(aid);
       stdo.assets[aid] = data.svg;
+      this._studioStat('ai');
       this._studioSave();
       this._studioPreview();
       out.innerHTML = `<div style="border:1.5px solid #10B981;border-radius:8px;padding:.5em .7em;font-size:.8rem;background:var(--card,#fff)">Obrázek upraven — mrkni na náhled.</div>`;
@@ -6067,16 +6294,31 @@ class PBook {
       out.innerHTML = pw || `<div style="background:#FEE2E2;border-radius:8px;padding:.5em .7em;font-size:.8rem">${this.escHtml(e2.message)}</div>`;
     }
   }
+
+  // Odebrání obrázku bez potvrzovacího okna — místo něj okamžité [↩ Vrátit]
   studioDeleteImage(aid) {
     const stdo = this._studio; if (!stdo?.assets?.[aid]) return;
-    if (!confirm('Odebrat tento obrázek z textu?')) return;
     const ta = document.getElementById('stDraft');
+    stdo.lastDelete = { draft: ta.value, aid, svg: stdo.assets[aid] };
     ta.value = ta.value.replace(new RegExp(`\\n?⟦(?:obrázek|obrazek|image)\\s*${aid}⟧\\n?`, 'g'), '\n');
     delete stdo.assets[aid];
+    this._studioStat('manual');
     this._studioSave();
-    ta.dispatchEvent(new Event('input'));
     this._studioPreview();
+    const out = document.getElementById('stOut');
+    if (out) out.innerHTML = `<div style="font-size:.8rem;display:flex;gap:.5em;align-items:center">__DELETED__
+      <button class="steer-chip" style="font-size:.7rem" onclick="app._studioUndelete()">__UNDO_DEL__</button></div>`;
   }
+  _studioUndelete() {
+    const stdo = this._studio; const d = stdo?.lastDelete; if (!d) return;
+    stdo.assets[d.aid] = d.svg;
+    document.getElementById('stDraft').value = d.draft;
+    stdo.lastDelete = null;
+    this._studioSave();
+    this._studioPreview();
+    const out = document.getElementById('stOut'); if (out) out.innerHTML = '';
+  }
+
 
   // 🎨 Nakresli k draftu grafiku (advanced): [DIAGRAM/ANIMACE: …] značka určí, co a kam
   // 🎨 Generování grafiky: KAŽDÁ značka v textu = jeden obrázek; kreslí se
@@ -6091,7 +6333,16 @@ class PBook {
     let marks = [...ta.value.matchAll(this._studioMarkerRx())];
     if (typeof onlyIdx === 'number') marks = marks[onlyIdx] ? [marks[onlyIdx]] : [];
     const price = CONFIG.aiEconomy?.prices.advanced || 0;
-    if (marks.length > 1 && !confirm('Našel jsem {n} značek pro obrázky. Vygenerovat všechny postupně? (~{n}× {c} ⚡ — každý hotový se hned vloží do textu)'.replace(/\{n\}/g, String(marks.length)).replace('{c}', String(price)))) return;
+    if (marks.length > 1 && !window.__stForce) {
+      const price0 = CONFIG.aiEconomy?.prices.advanced || 0;
+      out.innerHTML = `<div style="display:flex;gap:.5em;align-items:center;flex-wrap:wrap;border:1.5px solid #D97706;border-radius:10px;padding:.45em .6em;font-size:.8rem;background:var(--card,#fff)">
+        🎨 Našel jsem {n} značek pro obrázky (~{sum} ⚡ celkem).
+        <button class="steer-chip" style="border-color:#D97706;color:#B45309;font-weight:700" onclick="window.__stForce=1;app.generateGraphic().finally(()=>{window.__stForce=0})">🎨 Nakreslit vše</button>
+        <span style="color:var(--text-3);font-size:.72rem">nebo klikej na značky v náhledu po jedné</span>
+        <button class="steer-chip" onclick="document.getElementById('stOut').innerHTML=''">✕</button>
+      </div>`.replace('{n}', String(marks.length)).replace('{sum}', String(marks.length * price0));
+      return;
+    }
     const jobs = marks.length
       ? marks.map(m => ({ m, wantAnim: /anim/i.test(m[1]), wish: m[2].trim() }))
       : [{ m: null, wantAnim: false, wish: null }];
@@ -6121,6 +6372,7 @@ class PBook {
         const data = await res.json();
         if (!res.ok || !data.ok) throw new Error(data.error || 'generate failed');
         this._walletApply(data, 'advanced', pay);
+        this._studioStat('ai');
         if (!data.svg) { failed.push(job.wish || '?'); continue; }
         const id = String(++stdo.assetSeq);
         stdo.assets[id] = data.svg;
@@ -6146,7 +6398,14 @@ class PBook {
     const stdo = this._studio; if (!stdo) return;
     const ta = document.getElementById('stDraft');
     const out = document.getElementById('stOut');
-    if (ta.value.trim().length > 60 && !confirm('Přepsat tvůj rozepsaný text kostrou?')) return;
+    if (ta.value.trim().length > 60 && !window.__stSeedForce) {
+      out.innerHTML = `<div style="display:flex;gap:.5em;align-items:center;flex-wrap:wrap;border:1.5px solid var(--accent);border-radius:10px;padding:.45em .6em;font-size:.8rem;background:var(--card,#fff)">
+        ✨ Kostra přepíše tvůj rozepsaný text.
+        <button class="steer-chip" style="border-color:var(--accent);color:var(--accent);font-weight:700" onclick="window.__stSeedForce=1;app.seedDraft().finally(()=>{window.__stSeedForce=0})">Přepsat kostrou</button>
+        <button class="steer-chip" onclick="document.getElementById('stOut').innerHTML=''">✕</button>
+      </div>`;
+      return;
+    }
     const pay = this.aiCanPay('basic');
     if (!pay.ok) { out.innerHTML = this.aiPaywallHtml('basic'); return; }
     const btn = document.getElementById('stSeedBtn');
@@ -6160,6 +6419,7 @@ class PBook {
       const data = await res.json();
       if (!res.ok || !data.ok || !data.seed) throw new Error(data.error || 'seed failed');
       this._walletApply(data, 'basic', pay);
+      this._studioStat('ai');
       ta.value = data.seed;
       ta.dispatchEvent(new Event('input'));
       (data.questions || []).forEach(q => stdo.questions.push(q));
@@ -6196,6 +6456,7 @@ class PBook {
       const c = data.coach;
       this._walletApply(data, 'basic', pay);
       st.best = Math.max(st.best || 0, c.score); this._authorSave(all);
+      this._studioStat('coach');
       if (c.question) stdo.questions.push(c.question);
       const bar = `<div style="height:8px;border-radius:4px;background:var(--border,#eee);overflow:hidden"><div style="height:100%;width:${c.score}%;background:${c.score >= 70 ? '#10B981' : c.score >= 40 ? '#D97706' : '#EF4444'}"></div></div>`;
       out.innerHTML = `<div style="border:1.5px solid var(--border,#ddd);border-radius:10px;padding:.7em .8em;background:var(--card,#fff);font-size:.82rem">
@@ -6228,9 +6489,11 @@ class PBook {
     this._savePrivateBlock(block);
     st.done = true; st.blockId = id; this._authorSave(all);
     this.rc.logEvent('author_finished', { slug: stdo.slug, blockId: id, score: st.best, rounds: st.round || 0 });
-    this.showXPToast('Uloženo do knihy jako tvůj autorský blok ✍️', 'achievement');
     document.getElementById('authorStudio')?.remove();
-    this._showMicroCert(null, { kind: 'author', slug: stdo.slug, conceptTitle: stdo.title, score: st.best, shareId: id, defense: (stdo.questions || []).slice(-3) });
+    if (this._studio?.wizard) { this._wsAfterSave(id); return; }
+    this.showXPToast('Uloženo do knihy ✍️', 'achievement');
+    this.switchView('read');
+    setTimeout(() => this.openBlock(id), 60);
   }
   completeMission(missionId) {
     const missions = this.getMissions();
