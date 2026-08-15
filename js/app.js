@@ -6835,7 +6835,7 @@ class PBook {
         if (g.verdict === 'pass') {
           hintEl.className = 'boss-hint boss-pass';
           hintEl.innerHTML = `${bar}<b>Prošel/prošla jsi!</b> ${this.escHtml(g.feedback)}`;
-          setTimeout(() => this.completeMission(missionId), 2000);
+          this._bossReflection(missionId, hintEl, g.score);
         } else {
           hintEl.className = 'boss-hint boss-retry';
           hintEl.innerHTML = `${bar}${this.escHtml(g.feedback)}
@@ -6856,6 +6856,50 @@ class PBook {
     this._checkBossAnswerLocal(missionId, rawAnswer.toLowerCase(), hintEl);
   }
 
+  // ===== REFLEXE PO ZKOUŠCE: co sedlo / co drhlo / návrh — materiál pro redakci =====
+  // Neblokuje oslavu (jeden klik „Pokračovat"), ale zachytí čerstvý dojem;
+  // signály tečou do /api/log a editoři je vidí v admin Demand.
+  _bossReflection(missionId, hintEl, score) {
+    const m = this._wizardMission;
+    const blocks = (m?.core || []).map(id => this.findBlock(id)).filter(Boolean).slice(0, 6);
+    const chip = (b, kind) => `<button class="steer-chip st-refl" data-kind="${kind}" data-id="${this.escHtml(b.meta.id)}"
+      style="font-size:.68rem;margin:.12em" onclick="app._bossReflToggle(this)">${this.escHtml((b.meta.title || b.meta.id).slice(0, 30))}</button>`;
+    const box = document.createElement('div');
+    box.id = 'bossRefl';
+    box.style.cssText = 'margin-top:.7em;border-top:1px dashed var(--border,#ddd);padding-top:.55em;font-size:.8rem;text-align:left';
+    box.innerHTML = `<b>🪞 Ještě vteřinku — pomoz knize růst</b>
+      <div style="margin-top:.35em;font-size:.72rem;color:var(--text-2)">👍 Co ti nejvíc sedlo?</div>
+      <div>${blocks.map(b => chip(b, 'liked')).join('')}</div>
+      <div style="margin-top:.35em;font-size:.72rem;color:var(--text-2)">🌧 Co bylo nejasné nebo otravné?</div>
+      <div>${blocks.map(b => chip(b, 'disliked')).join('')}</div>
+      <div style="margin-top:.35em;font-size:.72rem;color:var(--text-2)">💡 Co vylepšit? (ťukni)</div>
+      <div><button class="steer-chip st-refl" data-kind="suggest" data-id="víc obrázků" style="font-size:.68rem;margin:.12em" onclick="app._bossReflToggle(this)">víc obrázků</button><button class="steer-chip st-refl" data-kind="suggest" data-id="kratší texty" style="font-size:.68rem;margin:.12em" onclick="app._bossReflToggle(this)">kratší texty</button><button class="steer-chip st-refl" data-kind="suggest" data-id="víc příkladů ze života" style="font-size:.68rem;margin:.12em" onclick="app._bossReflToggle(this)">víc příkladů ze života</button><button class="steer-chip st-refl" data-kind="suggest" data-id="víc her" style="font-size:.68rem;margin:.12em" onclick="app._bossReflToggle(this)">víc her</button><button class="steer-chip st-refl" data-kind="suggest" data-id="jednodušší vysvětlení" style="font-size:.68rem;margin:.12em" onclick="app._bossReflToggle(this)">jednodušší vysvětlení</button><button class="steer-chip st-refl" data-kind="suggest" data-id="chci to těžší" style="font-size:.68rem;margin:.12em" onclick="app._bossReflToggle(this)">chci to těžší</button></div>
+      <textarea id="bossReflNote" placeholder="Co bys vylepšil/a? (nepovinné — uvidí redakce)" style="width:100%;min-height:6vh;margin-top:.4em;font:inherit;font-size:.8rem;padding:.4em;border:1px solid var(--border,#ddd);border-radius:8px;background:var(--card,#fff)"></textarea>
+      <div style="margin-top:.4em"><button class="wizard-nav-btn" onclick="app._bossReflSubmit('${this.escHtml(missionId)}', ${Number(score) || 0})">Pokračovat 🎉</button></div>`;
+    hintEl.appendChild(box);
+  }
+  _bossReflToggle(el) {
+    const on = el.dataset.on === '1';
+    el.dataset.on = on ? '' : '1';
+    el.style.background = on ? '' : (el.dataset.kind === 'liked' ? '#D1FAE5' : el.dataset.kind === 'suggest' ? '#EDE9FE' : '#FEE2E2');
+    el.style.borderColor = on ? '' : (el.dataset.kind === 'liked' ? '#10B981' : el.dataset.kind === 'suggest' ? '#7C3AED' : '#EF4444');
+  }
+  _bossReflSubmit(missionId, score) {
+    const box = document.getElementById('bossRefl');
+    const pick = kind => box ? [...box.querySelectorAll(`.st-refl[data-kind="${kind}"][data-on="1"]`)].map(e => e.dataset.id) : [];
+    const liked = pick('liked'), disliked = pick('disliked'), suggestions = pick('suggest');
+    const note = (document.getElementById('bossReflNote')?.value || '').trim().slice(0, 500);
+    if (liked.length || disliked.length || suggestions.length || note) {
+      fetch('/api/log', { method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type: 'reflection', event: 'mission_reflection', userId: this.rc.userId,
+          mission: missionId, score, liked, disliked, suggestions, note }) }).catch(() => {});
+      this.rc.logEvent('mission_reflection', { mission: missionId, liked: liked.length, disliked: disliked.length, hasNote: !!note });
+      if (this._f('gamification')) { this.user.addXP(5); this.user.save(); this.updateXPBadge(); }
+      this.showXPToast('Díky! Poslal/a jsi knize zpětnou vazbu 🌱 +5 XP', 'achievement');
+    }
+    this.completeMission(missionId);
+  }
+
   _checkBossAnswerLocal(missionId, answer, hintEl) {
     const m = this._wizardMission;
     const hints = m.boss.hints || [];
@@ -6866,7 +6910,7 @@ class PBook {
       hintEl.style.display = 'block';
       hintEl.className = 'boss-hint boss-pass';
       hintEl.innerHTML = `<b>Paráda!</b> Zmínil/a jsi ${found.length} klíčových pojmů. Je vidět, že tomu rozumíš!`;
-      setTimeout(() => this.completeMission(missionId), 1500);
+      this._bossReflection(missionId, hintEl);
     } else {
       const missing = hints.filter(h => !answer.includes(h)).slice(0, 2);
       hintEl.style.display = 'block';
