@@ -88,6 +88,8 @@ export const CONFIG = {
     freeTrials: 3,                      // první použití základní AI zdarma
     prices: { basic: 10, advanced: 30 },// basic = textový přepis/vložení; advanced = varianta/diagram (silný model)
     earnManualEdit: 8,                  // odměna za ruční úpravu obsahu (jednou na sekci)
+    earnStudioChars: 250,               // milník vlastního psaní ve studiu (znaky) → +earnManualEdit
+    earnStudioMax: 4,                   // kolik milníků max na jeden draft
   },
 
   steering: {

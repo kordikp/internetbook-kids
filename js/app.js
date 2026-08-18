@@ -4792,7 +4792,7 @@ class PBook {
       if (this._getAuth()) {
         h += `<div style="font-size:1.6rem;font-weight:800">⚡ ${this._srvBalance != null ? this._srvBalance : '…'}</div>
           <div style="font-size:.75rem;color:var(--text-2)">zůstatek na serveru · základní AI (text) ${pr.basic} ⚡ · pokročilá (varianty a diagramy) ${pr.advanced} ⚡</div>
-          <div style="font-size:.75rem;color:var(--text-2);margin-top:.3em">Vyděláváš čtením (+10), kvízy (+2), hrami (+5), poznámkami (+3) a ruční úpravou (+${CONFIG.aiEconomy.earnManualEdit}). Denní strop výdělku hlídá server.</div>`;
+          <div style="font-size:.75rem;color:var(--text-2);margin-top:.3em">Vyděláváš čtením (+10), kvízy (+2), hrami (+5), poznámkami (+3), ruční úpravou (+${CONFIG.aiEconomy.earnManualEdit}) a vlastním psaním ve studiu (+${CONFIG.aiEconomy.earnManualEdit} za ~${CONFIG.aiEconomy.earnStudioChars || 250} znaků). Denní strop výdělku hlídá server.</div>`;
       } else {
         const left = Math.max(0, (CONFIG.aiEconomy.freeTrials || 1) - this._trialsUsedLocal());
         h += `<div style="font-size:.95rem"><b>${left}×</b> vyzkoušení AI zdarma na tomto zařízení</div>
@@ -5803,7 +5803,8 @@ class PBook {
       <div style="max-width:780px;margin:3vh auto 6vh;background:var(--card,#fff);border:1px solid var(--border,#ddd);border-radius:16px;box-shadow:0 14px 44px rgba(0,0,0,.28);padding:1em 1.2em 2em">
         <div style="display:flex;justify-content:space-between;align-items:center;gap:.6em">
           <div style="font-weight:800;font-size:1.05rem">✍️ Autorské studio</div>
-          <span id="stSaved" style="font-size:.66rem;color:var(--text-3,#999);margin-left:auto"></span>
+          <span id="stEarn" style="font-size:.64rem;color:#15803D;margin-left:auto;text-align:right"></span>
+          <span id="stSaved" style="font-size:.66rem;color:var(--text-3,#999)"></span>
           <button onclick="app._studioClose()" title="Zavřít — vše je průběžně uloženo" style="width:34px;height:34px;flex-shrink:0;border-radius:50%;border:1.5px solid var(--border,#ccc);background:var(--bg,#fafaf7);font-size:1rem;font-weight:700;cursor:pointer;line-height:1">✕</button>
         </div>
         <div style="font-size:.75rem;color:var(--text-2,#666);margin:.2em 0 .7em">Piš rovnou do stránky: klikni na odstavec a uprav ho, obrázky vybírej a tahej myší. Vše se průběžně ukládá.</div>
@@ -5855,6 +5856,7 @@ class PBook {
     }
     if (cleanText !== (st.text || '')) this._studioSave();
     this._studioPreview();
+    this._studioEarnHint(st);
     if (st.shareId) {
       fetch('/api/drafts?id=' + st.shareId).then(r => r.json()).then(d => {
         const btn = document.getElementById('stFbBtn');
@@ -5990,14 +5992,50 @@ class PBook {
     this._stEditing = null;
     const val = ed.value.trim();
     const blocks = this._studio._blocks || [];
+    const before = st.i < blocks.length ? (blocks[st.i] || '') : '';
     if (st.i >= blocks.length) { if (val) blocks.push(val); }
     else if (val) blocks[st.i] = val;
     else blocks.splice(st.i, 1);
     const ta = document.getElementById('stDraft');
     if (ta) ta.value = blocks.join('\n\n');
     this._studioStat('manual');
+    if (val && val !== before) this._studioEarnAdd(Math.max(val.length > before.length ? val.length - before.length : 0, 15));
     this._studioSave();
     this._studioPreview();
+  }
+
+  // Vlastní psaní se počítá: každých ~250 ručně napsaných znaků → +⚡ (max 4×
+  // na draft, denní strop hlídá server). Aby šlo bez kreditů pracovat dál a
+  // na kouče si zase našetřit. AI vložení sem nevedou (jdou mimo commit).
+  _studioEarnAdd(chars) {
+    const c = CONFIG.aiEconomy;
+    if (!c?.enabled || !this._f('gamification')) return;
+    const stdo = this._studio; if (!stdo) return;
+    const all = this._authorState(); const st = (all[stdo.slug] = all[stdo.slug] || {});
+    st.earn = st.earn || { chars: 0, paid: 0 };
+    st.earn.chars += Math.max(0, chars | 0);
+    const step = c.earnStudioChars || 250, cap = c.earnStudioMax || 4;
+    const due = Math.min(cap, Math.floor(st.earn.chars / step));
+    while (st.earn.paid < due) {
+      st.earn.paid++;
+      this.user.addXP(c.earnManualEdit || 8); this.user.save();
+      this.showXPToast('+{n} ⚡ za vlastní psaní ✍️'.replace('{n}', c.earnManualEdit || 8), 'xp');
+      this.updateXPBadge();
+      this.rc.logEvent('studio_manual_earn', { slug: stdo.slug, milestone: st.earn.paid });
+    }
+    this._authorSave(all);
+    this._studioEarnHint(st);
+  }
+  _studioEarnHint(st) {
+    const el = document.getElementById('stEarn'); if (!el) return;
+    const c = CONFIG.aiEconomy;
+    if (!c?.enabled || !this._f('gamification')) { el.textContent = ''; return; }
+    const e = (st || {}).earn || { chars: 0, paid: 0 };
+    const step = c.earnStudioChars || 250, cap = c.earnStudioMax || 4;
+    el.textContent = e.paid >= cap
+      ? '✍️ vyděláno ⚡ maximum za tenhle draft'
+      : '✍️ +{n} ⚡ za ~{z} znaků psaní'.replace('{n}', c.earnManualEdit || 8).replace('{z}', String(step - (e.chars % step)));
+    el.title = 'Vlastní psaní vydělává ⚡ na AI — kouč i grafika se z nich platí. Milník každých ' + step + ' znaků, max ' + cap + '× na draft.';
   }
   // Rozepsané drafty studia — ať je vždy jde najít (Profil, Koncepty, Cesta)
   // Draft k uzlu mapy: pod slugem uzlu, nebo pod kterýmkoli konceptem z jeho poolu
@@ -6046,7 +6084,7 @@ class PBook {
     document.getElementById('workshop')?.remove();
     const el = document.createElement('div');
     el.id = 'workshop';
-    const ROLE_NAMES = { idea: 'ideový tvůrce', spolu: 'spolutvůrce', oponent: 'oponent' };
+    const ROLE_NAMES = { idea: 'ideový tvůrce', spolu: 'spolutvůrce', oponent: 'oponent', solo: 'samostatný tvůrce' };
     let inner = '';
     if (ws.step === 'role') {
       const card = (r, t2, d) => `<button onclick="app._wsRole('${r}')" style="flex:1 1 180px;text-align:left;border:1.5px solid var(--border,#ddd);border-radius:12px;padding:.8em .9em;background:var(--card,#fff);cursor:pointer">
@@ -6056,6 +6094,7 @@ class PBook {
           ${card('idea', '🎨 Mám vlastní nápad', 'Ty vedeš, kouč se ptá a pomáhá nápad doladit.')}
           ${card('spolu', '🤝 Vymyslíme to spolu', 'Kouč navrhuje, ty přidáváš — 50 na 50.')}
           ${card('oponent', '🔍 Budu oponent', 'Kouč přijde s vizí, ty ji rozporuješ a vylepšuješ. I kritika je tvorba!')}
+          ${card('solo', '✍️ Tvořím rovnou sám', 'Bez kouče a zdarma — psaní ti navíc vydělává ⚡, kouče můžeš přivolat kdykoli později.')}
         </div>`;
     } else if (ws.step === 'align') {
       const msgs = ws.msgs.map(m => `<div style="display:flex;${m.role === 'user' ? 'justify-content:flex-end' : ''}">
@@ -6072,7 +6111,9 @@ class PBook {
           <b>🤝 Domluveno:</b> <span id="wsBriefTxt" style="font-size:.85rem">${this.escHtml(ws.brief)}</span>
           <button class="steer-chip" style="font-size:.66rem" onclick="app._wsBriefEdit()">✏️ upravit</button>
           <div style="margin-top:.5em"><button class="note-save" style="background:#10B981" onclick="app._wsToStudio()">Jdeme tvořit →</button></div>
-        </div>` : `<div style="font-size:.72rem;color:var(--text-3)">Ještě se s koučem domluvte — brief vznikne, až přispěješ svým dílem.</div>`}</div>`;
+        </div>` : `<div style="font-size:.72rem;color:var(--text-3)">Ještě se s koučem domluvte — brief vznikne, až přispěješ svým dílem.
+          <div style="margin-top:.4em"><button class="steer-chip" style="font-size:.7rem" onclick="app._wsToStudio()">✍️ Nečekám — začnu tvořit sám (zdarma) →</button>
+          <span style="color:var(--text-3);font-size:.66rem">psaní vydělává ⚡, kouče přivoláš i později</span></div></div>`}</div>`;
     } else if (ws.step === 'reflect') {
       const st = this._authorState()[ws.slug] || {};
       const stats = st.stats || { manual: 0, ai: 0, coach: 0 };
@@ -6121,7 +6162,12 @@ class PBook {
     if (wi) wi.addEventListener('keydown', ev => { if (ev.key === 'Enter') { ev.preventDefault(); this._wsAsk(wi.value); } });
   }
 
-  _wsRole(r) { this._ws.role = r; this._ws.step = 'align'; this._wsSave(); this._wsRender(); }
+  // „Rovnou tvořit" přeskočí kouče úplně — do studia se dá jít KDYKOLI a zdarma
+  _wsRole(r) {
+    this._ws.role = r;
+    if (r === 'solo') { this._ws.step = 'create'; this._wsSave(); this._wsToStudio(); return; }
+    this._ws.step = 'align'; this._wsSave(); this._wsRender();
+  }
 
   async _wsAsk(text) {
     const ws = this._ws; if (!ws) return;
@@ -6130,7 +6176,9 @@ class PBook {
     else if (ws.msgs.length) return;
     const pay = this.aiCanPay('basic');
     const spin = () => document.getElementById('wsSpin');
-    if (!pay.ok) { if (spin()) spin().innerHTML = this.aiPaywallHtml('basic'); return; }
+    // Došly ⚡? Konverzace není vězení — vždy jde tvořit ručně a ⚡ si vydělat.
+    const escapeBtn = `<div style="margin-top:.4em"><button class="steer-chip" style="font-size:.7rem;border-color:#15803D;color:#15803D" onclick="app._wsToStudio()">✍️ Tvořím zatím sám (zdarma, vydělává ⚡) →</button></div>`;
+    if (!pay.ok) { if (spin()) spin().innerHTML = this.aiPaywallHtml('basic') + escapeBtn; return; }
     if (spin()) spin().innerHTML = `<div style="font-size:.75rem;color:var(--text-3);padding:.3em 0">Kouč přemýšlí…</div>`;
     try {
       const res = await fetch(CONFIG.steering.generateEndpoint, {
@@ -6148,7 +6196,7 @@ class PBook {
       this.rc.logEvent('workshop_align', { slug: ws.slug, role: ws.role, hasBrief: !!ws.brief });
     } catch (e) {
       const pw = this._aiErrorPaywall(e, 'basic');
-      if (spin()) spin().innerHTML = pw || `<div style="background:#FEE2E2;border-radius:8px;padding:.4em .6em;font-size:.78rem">${this.escHtml(e.message)}</div>`;
+      if (spin()) spin().innerHTML = (pw ? pw + escapeBtn : `<div style="background:#FEE2E2;border-radius:8px;padding:.4em .6em;font-size:.78rem">${this.escHtml(e.message)}</div>`);
     }
   }
 
@@ -6171,7 +6219,7 @@ class PBook {
     const bar = document.createElement('div');
     bar.id = 'wsBar';
     bar.style.cssText = 'display:flex;gap:.5em;align-items:center;flex-wrap:wrap;border:1.5px solid #7C3AED;border-radius:10px;padding:.4em .6em;margin:.4em 0;background:color-mix(in srgb, #7C3AED 6%, transparent);font-size:.75rem';
-    bar.innerHTML = `<b>Dílna</b> <span style="color:var(--text-2)">${this.escHtml(ws.brief.slice(0, 140))}</span>
+    bar.innerHTML = `<b>Dílna</b> <span style="color:var(--text-2)">${this.escHtml((ws.brief || 'Tvoříš po svém — kouče 🧭 můžeš přivolat kdykoli, psaní ti vydělává ⚡.').slice(0, 140))}</span>
       <button class="note-save" style="margin-left:auto;background:#10B981;font-size:.72rem" onclick="app.finishAuthoring()">✅ Hotovo → prezentace</button>`;
     document.getElementById('stCanvas')?.before(bar);
   }
@@ -8457,7 +8505,8 @@ class PBook {
     return `<div style="border:1.5px solid #D97706;background:var(--card,#fff);border-radius:10px;padding:.55em .7em;font-size:.74rem;line-height:1.5">
       <b>⚡ Na tohle zatím nemáš dost ⚡</b><br>
       ${'{tier} stojí <b>{p} ⚡</b>, máš <b>⚡{b}</b>. Vyděláš prací s knihou:'.replace('{tier}', tierName).replace('{p}', c.prices[tier]).replace('{b}', this.aiBalance())}<br>
-      <span style="color:var(--text-2,#666)">${'přečtená sekce +10 · kvíz +2 · hra +5 · poznámka +3 · <b>ruční úprava +{me}</b>'.replace('{me}', c.earnManualEdit)}</span><br>
+      <span style="color:var(--text-2,#666)">${'přečtená sekce +10 · kvíz +2 · hra +5 · poznámka +3 · <b>ruční úprava +{me}</b> · <b>vlastní psaní ve studiu +{me} za ~{z} znaků</b>'.replace(/\{me\}/g, c.earnManualEdit).replace('{z}', c.earnStudioChars || 250)}</span><br>
+      <span style="color:var(--text-2,#666)">Tvořit ručně můžeš dál hned teď — nic tě nezastaví, ⚡ si prací vyděláš zpátky.</span><br>
       <span style="color:#15803D;font-size:.68rem">Vedeme k hospodárnému využívání AI — ruční práce a přemýšlení se cení víc. 🌱</span>
     </div>`;
   }
