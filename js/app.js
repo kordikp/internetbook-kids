@@ -7974,7 +7974,7 @@ class PBook {
           el.style.opacity = on ? '' : '0';
           el.style.pointerEvents = on ? '' : 'none';
         });
-        badge.textContent = cur === 0 ? `▶ klikej · ${max} kroků` : cur < max ? `krok ${cur}/${max} · dál ▶` : '↺ znovu';
+        badge.textContent = cur === 0 ? `▶ klikej · ${max} ${max < 5 ? 'kroky' : 'kroků'}` : cur < max ? `krok ${cur}/${max} · dál ▶` : '↺ znovu';
       };
       const advance = () => { cur = cur >= max ? 0 : cur + 1; apply(); };
       svg.addEventListener('click', e => { e.stopPropagation(); advance(); });
