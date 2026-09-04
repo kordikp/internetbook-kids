@@ -74,3 +74,29 @@ V jednom diagramu max 3 akcentové barvy + neutrály.
 2. Žádný text mimo plátno, žádný text pod 11 px, žádný překryv textu s tvary, šipkami ani s celou dráhou animace.
 3. Jen povolené barvy; pozadí přesně dle systému; `font-family` jen system-ui,sans-serif.
 4. Vyrenderuj přes chromium a PODÍVEJ SE na výsledek (nástroj Read) — obrázek musí být pochopitelný sám o sobě.
+
+## Klikací odkrývání (data-krok)
+
+Příběhové diagramy se odkrývají po krocích: logické skupiny zabal do
+`<g data-krok="1">` … `<g data-krok="N">` (max 6). Základ scény (rám, titulek)
+je bez kroku. Kniha odkrývá kroky klikáním (badge vpravo dole), na slajdu
+(export do SlAIdy) se přehrají samy po ~1,4 s. Bez JS je vidět všechno —
+hotový obrázek musí fungovat i vcelku. Pořadí kroků = pořadí vyprávění.
+
+## Mapy světa — sdílené tvary kontinentů
+
+Oba „mapové" obrázky (datová centra, podmořské kabely) používají STEJNÉ
+zjednodušené siluety kontinentů, ať kniha vypráví jedním jazykem. Kontinenty:
+výplň `#EEF2F7`, obrys `#CBD5E1` width 1.5; oceán = pozadí plátna. Popisky
+kontinentů 11px `#6B7280`. Tvary (viewBox 800×420, volné k překreslení, ale
+držte rozmístění): Amerika vlevo (x 60–230), Evropa nahoře uprostřed
+(x 330–430), Afrika pod ní (x 340–450), Asie vpravo (x 460–700),
+Austrálie vpravo dole (x 640–730).
+
+## SlAIdy interop (prezentace z knihy a zpět)
+
+Bloky knihy jdou exportovat jako SlAIdy deck (studio 🎞, kapitoly v Podrobném
+seznamu). V textu smí být neviditelné značky — HTML komentáře na vlastním řádku:
+`<!-- slide: Titulek | layout=two | center -->` (hranice slajdu),
+`<!-- col -->` (zlom sloupce), `<!-- gap -->` (mezera), `<!-- notes: … -->`
+(poznámky řečníka). Kniha je nezobrazuje; bez značek exportér volí layout sám.

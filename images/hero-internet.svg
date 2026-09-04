@@ -7,8 +7,10 @@
     </marker>
   </defs>
 
-  <!-- zem: kabely vedou pod ní -->
-  <line x1="44" y1="302" x2="756" y2="302" stroke="#E5E7EB" stroke-width="1.6" stroke-dasharray="6 5"/>
+  <!-- zem: kabely vedou pod ní (podzemí = jemně tmavší pás) -->
+  <path d="M 14 302 L 786 302 L 786 406 Q 786 420 772 420 L 28 420 Q 14 420 14 406 Z" fill="#F1F2EE"/>
+  <line x1="14" y1="302" x2="786" y2="302" stroke="#D6D8D2" stroke-width="2"/>
+  <text x="36" y="322" font-size="11" fill="#9CA3AF">pod zemí</text>
 
   <!-- ===== dům vlevo: dítě s notebookem + Wi-Fi router ===== -->
   <g>

@@ -2,33 +2,44 @@
   <rect width="800" height="420" rx="14" fill="#FAFAF7" stroke="#E5E7EB"/>
   <text x="400" y="36" text-anchor="middle" font-size="19" font-weight="700" fill="#1E1B4B">Podmořské kabely: dálnice mezi kontinenty</text>
 
-  <!-- zjednodušené kontinenty -->
-  <g fill="#FFFFFF" stroke="#E5E7EB" stroke-width="1.5">
-    <path d="M 65 100 C 100 74 180 74 215 98 C 240 116 238 150 212 170 C 190 187 155 196 125 190 C 92 183 66 140 65 100 Z"/>
-    <path d="M 150 230 C 180 215 215 222 225 250 C 233 277 220 315 200 335 C 185 320 160 295 152 268 C 148 252 145 240 150 230 Z"/>
-    <path d="M 560 85 C 595 70 650 72 675 92 C 692 108 685 130 660 140 C 630 150 590 148 570 130 C 556 117 552 97 560 85 Z"/>
-    <path d="M 575 175 C 610 160 655 168 668 195 C 680 222 668 262 648 292 C 632 312 608 315 595 292 C 580 265 566 200 575 175 Z"/>
+  <!-- kontinenty (sdílené siluety — viz STYLE.md) -->
+  <g fill="#EEF2F7" stroke="#CBD5E1" stroke-width="1.5" stroke-linejoin="round">
+    <path d="M 78 96 C 96 78 150 70 186 80 C 218 88 232 104 226 122 C 244 128 246 146 232 156 C 216 168 196 164 184 176 C 174 188 166 204 150 206 C 136 208 132 194 124 184 C 110 168 92 158 84 140 C 76 124 70 108 78 96 Z"/>
+    <path d="M 158 222 C 176 214 196 220 202 236 C 208 252 202 272 192 292 C 184 308 176 326 164 328 C 152 330 146 314 144 298 C 142 278 140 254 146 238 C 149 230 152 225 158 222 Z"/>
+    <path d="M 344 92 C 360 80 386 76 404 84 C 420 90 428 102 422 114 C 416 128 400 130 386 136 C 372 142 360 148 348 142 C 336 136 330 120 334 108 C 336 100 338 96 344 92 Z"/>
+    <path d="M 352 162 C 372 150 400 152 416 164 C 430 176 432 196 424 216 C 416 238 404 260 388 268 C 372 276 358 266 352 248 C 344 226 340 198 344 180 C 346 172 348 166 352 162 Z"/>
+    <path d="M 452 86 C 486 68 546 62 596 72 C 644 82 680 100 686 122 C 692 144 668 158 640 162 C 648 176 640 192 620 196 C 600 200 584 190 566 192 C 546 194 530 204 512 198 C 492 192 482 176 470 160 C 458 144 444 122 446 106 C 447 97 448 90 452 86 Z"/>
+    <path d="M 636 282 C 652 270 682 268 702 278 C 720 286 726 302 718 316 C 710 330 690 338 668 334 C 648 330 632 318 630 302 C 629 294 630 288 636 282 Z"/>
+  </g>
+  <g font-size="11" fill="#6B7280" text-anchor="middle">
+    <text x="152" y="66">Severní Amerika</text>
+    <text x="384" y="68">Evropa</text>
+    <text x="570" y="52">Asie</text>
+    <text x="176" y="348">Jižní Amerika</text>
+    <text x="429" y="288">Afrika</text>
+    <text x="676" y="354">Austrálie</text>
   </g>
 
-  <!-- kabely (modrá = data v pohybu) -->
-  <g stroke="#0EA5E9" stroke-width="2.5" fill="none">
-    <path d="M 228 120 C 340 86 460 84 562 102"/>
-    <path d="M 232 138 C 345 108 462 104 566 116"/>
-    <path d="M 234 156 C 348 130 465 124 570 129"/>
-    <path d="M 226 268 C 340 302 465 288 572 236"/>
+  <!-- kabely na dně oceánu (modrá = síť); animovaná tečka = zpráva -->
+  <g fill="none" stroke="#0EA5E9" stroke-width="3.5" stroke-linecap="round">
+    <path id="kAtl" d="M 216 148 C 268 178 300 166 336 128"/>
+    <path d="M 214 158 C 262 200 300 200 344 172"/>
+    <path d="M 200 238 C 260 262 320 250 356 216"/>
+    <path d="M 424 132 C 442 144 452 148 468 152"/>
+    <path d="M 420 250 C 480 290 560 300 636 300"/>
+    <path d="M 560 196 C 580 240 620 272 652 288"/>
+  </g>
+  <g>
+    <circle r="6" fill="#FEF3C7" stroke="#D97706" stroke-width="2"/>
+    <animateMotion dur="4s" repeatCount="indefinite" path="M 216 148 C 268 178 300 166 336 128"/>
   </g>
 
-  <!-- zvýraznění nejhustšího svazku -->
-  <text x="400" y="70" text-anchor="middle" font-size="11" fill="#D97706">tudy vede nejvíc kabelů světa</text>
-  <line x1="400" y1="75" x2="400" y2="86" stroke="#D97706" stroke-width="1.5"/>
+  <!-- popisky s vodicí čarou (nikdy na kabelu) -->
+  <line x1="278" y1="120" x2="278" y2="158" stroke="#9CA3AF" stroke-width="1"/>
+  <text x="278" y="110" text-anchor="middle" font-size="11.5" fill="#1E1B4B" font-weight="700">přes Atlantik ~70 kabelů</text>
+  <line x1="530" y1="322" x2="530" y2="292" stroke="#9CA3AF" stroke-width="1"/>
+  <text x="530" y="336" text-anchor="middle" font-size="11.5" fill="#1E1B4B">jeden kabel = tisíce km na dně</text>
 
-  <!-- popisky -->
-  <g text-anchor="middle" font-size="12.5" font-weight="700" fill="#1E1B4B">
-    <text x="148" y="211">Amerika</text>
-    <text x="620" y="112">Evropa</text>
-    <text x="620" y="232">Afrika</text>
-  </g>
-  <text x="398" y="332" text-anchor="middle" font-size="11" fill="#6B7280">Atlantský oceán</text>
-
-  <text x="400" y="404" text-anchor="middle" font-size="12.5" fill="#6B7280">99 % dat mezi kontinenty teče kabely po dně oceánu – satelity jsou jen doplněk.</text>
+  <text x="400" y="404" text-anchor="middle" font-size="12.5" fill="#6B7280">99 % dat mezi kontinenty teče kabely po dně oceánu — satelity jsou jen doplněk.</text>
+  <style>@media (prefers-reduced-motion: reduce) { * { animation: none !important } }</style>
 </svg>
