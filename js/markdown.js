@@ -146,6 +146,10 @@ export function renderMarkdown(text) {
       continue;
     }
 
+    // HTML komentář na vlastním řádku = interop značka (slAIdy: <!-- col -->,
+    // <!-- gap -->, <!-- slide -->) — kniha je nezobrazuje, ale v textu přežijí.
+    if (/^<!--[\s\S]*?-->\s*$/.test(line.trim())) continue;
+
     // Empty line
     if (line.trim() === '') continue;
 
@@ -180,6 +184,7 @@ function isBlockStart(line) {
     /^---+\s*$/.test(line) || /^\*\*\*+\s*$/.test(line) || /^\|/.test(line) || /^%%/.test(line) ||
     /^!\[/.test(line) || // standalone image
     /^⟦\/?(rx|svg)⟧$/.test(line.trim()) || // changed-region / reader diagram markers
+    /^<!--/.test(line.trim()) || // interop comment marks (slAIdy)
     /^>\s?/.test(line); // blockquote
 }
 
