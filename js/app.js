@@ -6176,12 +6176,11 @@ class PBook {
   }
   _slaidyStyle() { return { accent: '#7C3AED', ink: '#1E1B4B', paper: '#FFFFFF', titleSize: 38, bodySize: 19, header: 'position' }; }
 
-  // Export rozdělaného draftu ze studia → deck ke stažení (otevřeš ve SlAIdy)
-  slaidyExportDraft() {
-    const stdo = this._studio; if (!stdo) return;
-    const st = this._authorState()[stdo.slug] || {};
+  // Bundle z aktuálního draftu (jádro exportu i cloud uložení)
+  _slaidyDraftBundle() {
+    const stdo = this._studio; if (!stdo) return null;
     const md = this._studioExpand(document.getElementById('stDraft')?.value || '');
-    if (!md.trim()) { this.showXPToast('Draft je prázdný', 'xp'); return; }
+    if (!md.trim()) return null;
     const slug = this._slaidySlugify(stdo.title || stdo.slug);
     const figs = {};
     const goal = this._studioGoal();
@@ -6190,13 +6189,86 @@ class PBook {
       summary: goal.recallQ || '',
       notes: goal.recallQ ? `Kontrolní otázka: ${goal.recallQ}${goal.recallA ? `\nOčekávaná odpověď: ${goal.recallA}` : ''}` : '',
     });
-    this._slaidyDownload({
+    return {
       id: `pbook-${slug}`, title: stdo.title,
-      meta: { author: st.nick || '', affiliation: '', event: document.title, venue: location.host, date: '' },
+      meta: { author: '', affiliation: '', event: document.title, venue: location.host, date: '' },
       style: this._slaidyStyle(), slides, figs,
-    });
-    this.rc.logEvent('slaidy_export', { slug: stdo.slug, slides: slides.length });
-    this.showXPToast(`🎞 Deck stažen (${slides.length} slajdů) — otevři ho ve SlAIdy`, 'xp');
+    };
+  }
+  slaidyExportDraft() {
+    const b = this._slaidyDraftBundle();
+    if (!b) { this.showXPToast('Draft je prázdný', 'xp'); return; }
+    this._slaidyDownload(b);
+    this.rc.logEvent('slaidy_export', { slug: this._studio.slug, slides: b.slides.length });
+    this.showXPToast(`🎞 Deck stažen (${b.slides.length} slajdů)`, 'xp');
+  }
+
+  // ===== TŘÍDNÍ ÚLOŽIŠTĚ DECKŮ (/api/decks) =====
+  // Nic se neexportuje ručně: deck se uloží pod kód třídy, SlAIdy ho otevře
+  // z URL (?deck=…) a ukládá rovnou zpátky; kniha ho kdykoli načte do studia.
+  _slaidyAppUrl() { return 'https://kordikp.github.io/slaidy/'; }
+  _slaidyDeckUrl(id) { return location.origin + '/api/decks?id=' + id; }
+  _slaidyGroup() { return (localStorage.getItem('pbook-deck-group') || localStorage.getItem('sk-class-code') || '').toLowerCase(); }
+  async slaidyCloudSave() {
+    const stdo = this._studio; if (!stdo) return;
+    const out = document.getElementById('stSlaidyOut') || document.getElementById('stOut');
+    const group = (document.getElementById('stDeckGroup')?.value || '').trim().toLowerCase();
+    if (!/^[a-z0-9-]{4,16}$/.test(group)) { out.innerHTML = `<div style="font-size:.76rem;color:#B45309;padding:.3em 0">Zadej kód třídy (4–16 znaků, písmena/čísla/pomlčka) — decky se pod ním sejdou.</div>`; return; }
+    localStorage.setItem('pbook-deck-group', group);
+    const bundle = this._slaidyDraftBundle();
+    if (!bundle) { this.showXPToast('Draft je prázdný', 'xp'); return; }
+    const all = this._authorState(); const st = (all[stdo.slug] = all[stdo.slug] || {});
+    out.innerHTML = `<div style="font-size:.76rem;color:var(--text-3);padding:.3em 0">Ukládám do úložiště…</div>`;
+    try {
+      const r = await fetch('/api/decks', { method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'save', group, id: st.deckId || undefined, title: stdo.title, deck: bundle }) });
+      const d = await r.json();
+      if (!r.ok || !d.ok) throw new Error(d.error || 'save failed');
+      st.deckId = d.id; st.deckGroup = group; this._authorSave(all);
+      const url = this._slaidyDeckUrl(d.id);
+      const open = this._slaidyAppUrl() + '?deck=' + encodeURIComponent(url);
+      out.innerHTML = `<div style="border:1.5px solid #10B981;border-radius:8px;padding:.5em .7em;font-size:.78rem;background:var(--card,#fff)">
+        💾 Uloženo (revize ${d.rev}, ${bundle.slides.length} slajdů) pod kódem <code>${this.escHtml(group)}</code>.
+        <div style="display:flex;gap:.5em;flex-wrap:wrap;margin-top:.4em">
+          <a class="note-save" style="background:#7C3AED;font-size:.74rem;text-decoration:none" href="${open}" target="_blank" rel="noopener">▶ Otevřít ve SlAIdy</a>
+          <button class="steer-chip" style="font-size:.72rem" onclick="navigator.clipboard.writeText('${open}');app.showXPToast('Odkaz zkopírován ✓','xp')">🔗 kopírovat odkaz</button>
+        </div>
+        <span style="color:var(--text-2,#666);font-size:.72rem">Změny udělané ve SlAIdy se ukládají tamtéž — sem je vrátíš tlačítkem „Načíst z třídy".</span>
+      </div>`;
+      this.rc.logEvent('slaidy_cloud_save', { slug: stdo.slug, id: d.id, rev: d.rev, group });
+    } catch (e) {
+      out.innerHTML = `<div style="background:#FEE2E2;border-radius:8px;padding:.5em .7em;font-size:.78rem">Uložení selhalo: ${this.escHtml(e.message)}</div>`;
+    }
+  }
+  async slaidyCloudList() {
+    const out = document.getElementById('stSlaidyOut') || document.getElementById('stOut');
+    const group = (document.getElementById('stDeckGroup')?.value || '').trim().toLowerCase();
+    if (!/^[a-z0-9-]{4,16}$/.test(group)) { out.innerHTML = `<div style="font-size:.76rem;color:#B45309;padding:.3em 0">Zadej kód třídy a zkusím to znovu.</div>`; return; }
+    localStorage.setItem('pbook-deck-group', group);
+    out.innerHTML = `<div style="font-size:.76rem;color:var(--text-3);padding:.3em 0">Načítám decky třídy…</div>`;
+    try {
+      const d = await (await fetch('/api/decks?group=' + encodeURIComponent(group))).json();
+      if (!d.ok) throw new Error(d.error || 'list failed');
+      const items = (d.items || []).sort((a, b2) => String(b2.at).localeCompare(String(a.at)));
+      out.innerHTML = items.length ? `<div style="border:1.5px solid var(--border,#ddd);border-radius:8px;padding:.4em .6em;font-size:.78rem;background:var(--card,#fff)">
+        ${items.map(it => `<div style="display:flex;gap:.5em;align-items:center;padding:.25em 0;border-bottom:1px dashed var(--border,#eee)">
+          <span style="flex:1 1 auto;min-width:0"><b>${this.escHtml(it.title || '—')}</b> <span style="font-size:.7rem;color:var(--text-3)">${this.escHtml(it.author || '')} · ${it.n} slajdů · rev ${it.rev}</span></span>
+          <a class="steer-chip" style="font-size:.68rem;text-decoration:none" target="_blank" rel="noopener" href="${this._slaidyAppUrl()}?deck=${encodeURIComponent(this._slaidyDeckUrl(it.id))}">▶ SlAIdy</a>
+          <button class="steer-chip" style="font-size:.68rem" onclick="app.slaidyCloudLoad('${this.escHtml(it.id)}')">📥 do studia</button>
+        </div>`).join('')}</div>`
+        : `<div style="font-size:.76rem;color:var(--text-3);padding:.3em 0">Pod kódem <code>${this.escHtml(group)}</code> zatím žádný deck není.</div>`;
+    } catch (e) {
+      out.innerHTML = `<div style="background:#FEE2E2;border-radius:8px;padding:.5em .7em;font-size:.78rem">${this.escHtml(e.message)}</div>`;
+    }
+  }
+  async slaidyCloudLoad(id) {
+    try {
+      const d = await (await fetch('/api/decks?id=' + encodeURIComponent(id))).json();
+      if (!Array.isArray(d.slides)) throw new Error('deck se nepodařilo načíst');
+      this._slaidyImportBundle(d);
+      const stdo = this._studio;
+      if (stdo) { const all = this._authorState(); const st = (all[stdo.slug] = all[stdo.slug] || {}); st.deckId = id; this._authorSave(all); }
+    } catch (e) { this.showXPToast('Načtení selhalo: ' + e.message, 'xp'); }
   }
 
   // Export celé kapitoly (spine bloky, s overridy) → deck s cover slajdem
@@ -6229,13 +6301,28 @@ class PBook {
         startN: slides.length,
       }));
     }
-    this._slaidyDownload({
+    const bundle = {
       id: `pbook-${slug}`, title: ch.title,
       meta: { author: '', affiliation: '', event: document.title, venue: location.host, date: '' },
       style: this._slaidyStyle(), slides, figs,
-    });
+    };
+    // Žádné ruční soubory: kapitola se uloží do úložiště (stabilní deck na
+    // kapitolu, police „kniha") a SlAIdy se rovnou otevře. Soubor jen nouzově.
+    this.showXPToast('🎞 Připravuji prezentaci kapitoly…', 'xp');
+    try {
+      const known = JSON.parse(localStorage.getItem('pbook-chapter-decks') || '{}');
+      const r = await fetch('/api/decks', { method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'save', group: 'kniha', id: known[chId] || undefined, title: ch.title, deck: bundle }) });
+      const d = await r.json();
+      if (!r.ok || !d.ok) throw new Error(d.error || 'save failed');
+      known[chId] = d.id; localStorage.setItem('pbook-chapter-decks', JSON.stringify(known));
+      window.open(this._slaidyAppUrl() + '?deck=' + encodeURIComponent(this._slaidyDeckUrl(d.id)), '_blank', 'noopener');
+      this.showXPToast(`🎞 Kapitola → ${slides.length} slajdů, otevírám SlAIdy`, 'xp');
+    } catch (e) {
+      this._slaidyDownload(bundle);
+      this.showXPToast('Úložiště nedostupné — deck stažen jako soubor', 'xp');
+    }
     this.rc.logEvent('slaidy_export_chapter', { chId, slides: slides.length });
-    this.showXPToast(`🎞 Kapitola → ${slides.length} slajdů, deck stažen`, 'xp');
   }
 
   // Import decku zpět: slajdy → markdown se <!-- slide --> značkami, figury → assety.
@@ -6246,6 +6333,13 @@ class PBook {
     rd.onload = () => {
       try {
         const d = JSON.parse(rd.result);
+        this._slaidyImportBundle(d);
+      } catch (e) { this.showXPToast('Import selhal: ' + e.message, 'xp'); }
+    };
+    rd.readAsText(f);
+  }
+  _slaidyImportBundle(d) {
+      {
         if (!Array.isArray(d.slides)) throw new Error('nevypadá jako SlAIdy deck');
         const figs = d.figs || d.figures || {};
         const md = d.slides.filter(s => !s.skip).map(s => {
@@ -6269,23 +6363,26 @@ class PBook {
         this.rc.logEvent('slaidy_import', { slug: stdo.slug, slides: d.slides.length });
         this.startAuthoring(stdo.slug);
         this.showXPToast(`🎞 Deck načten (${d.slides.length} slajdů) — předchozí draft je v záloze`, 'xp');
-      } catch (e) { this.showXPToast('Import selhal: ' + e.message, 'xp'); }
-    };
-    rd.readAsText(f);
+      }
   }
 
-  // Panel 🎞 ve studiu: export / import + vysvětlení značek
+  // Panel 🎞 ve studiu: třídní úložiště na prvním místě, soubory jen jako záloha
   slaidyPanel() {
     const out = document.getElementById('stOut'); if (!out) return;
     if (document.getElementById('stSlaidy')) { document.getElementById('stSlaidy').remove(); return; }
+    const st = this._authorState()[this._studio?.slug] || {};
+    const group = st.deckGroup || this._slaidyGroup();
     out.innerHTML = `<div id="stSlaidy" style="border:1.5px solid #7C3AED;border-radius:10px;padding:.55em .7em;font-size:.78rem;background:var(--card,#fff)">
-      <b>🎞 SlAIdy</b> — prezentace z tvého textu a zpět.
-      <div style="display:flex;gap:.5em;flex-wrap:wrap;margin:.4em 0">
-        <button class="note-save" style="background:#7C3AED;font-size:.74rem" onclick="app.slaidyExportDraft()">⬇ Export decku (.json)</button>
-        <label class="steer-chip" style="font-size:.74rem;cursor:pointer">⬆ Import decku <input type="file" accept=".json,application/json" style="display:none" onchange="app.slaidyImportFile(this)"></label>
+      <b>🎞 Prezentace</b> — deck žije v úložišti třídy; SlAIdy i kniha ho čtou a ukládají samy.
+      <div style="display:flex;gap:.5em;flex-wrap:wrap;align-items:center;margin:.4em 0">
+        <input id="stDeckGroup" placeholder="kód třídy" value="${this.escHtml(group)}" style="width:110px;font:inherit;font-size:.76rem;padding:.3em .5em;border:1.5px solid var(--border,#ddd);border-radius:8px;background:var(--bg,#fafaf7)">
+        <button class="note-save" style="background:#7C3AED;font-size:.74rem" onclick="app.slaidyCloudSave()">💾 Uložit do třídy${st.deckId ? ' (aktualizovat)' : ''}</button>
+        <button class="steer-chip" style="font-size:.72rem" onclick="app.slaidyCloudList()">📥 Načíst z třídy</button>
+        ${st.deckId ? `<a class="steer-chip" style="font-size:.72rem;text-decoration:none" target="_blank" rel="noopener" href="${this._slaidyAppUrl()}?deck=${encodeURIComponent(this._slaidyDeckUrl(st.deckId))}">▶ Otevřít ve SlAIdy</a>` : ''}
         <button class="steer-chip" style="font-size:.72rem" onclick="document.getElementById('stSlaidy').remove()">✕</button>
       </div>
-      <span style="color:var(--text-2,#666)">Sloupce a slajdy řídí značky <code>&lt;!-- slide: Titulek | layout=two | center --&gt;</code>, <code>&lt;!-- col --&gt;</code> a <code>&lt;!-- gap --&gt;</code> — v knize jsou neviditelné, deck je respektuje. Bez značek se layout zvolí sám (obrázek+text → dva sloupce, krátké → na střed). Klikací kroky 🎬 se na slajdu odkrývají samy po čase. Ve SlAIdy můžeš obrázky doladit a deck importovat zpět — vrátí se jako ⟦obrázek⟧ assety.</span>
+      <div id="stSlaidyOut"></div>
+      <span style="color:var(--text-2,#666);font-size:.72rem">Layout se volí sám (obrázek+text → dva sloupce, krátké → na střed); doladíš značkami <code>&lt;!-- slide: Titulek | layout=two | center --&gt;</code>, <code>&lt;!-- col --&gt;</code>, <code>&lt;!-- gap --&gt;</code> — v knize neviditelné. Klikací kroky 🎬 se na slajdu přehrají samy. Soubor ručně: <button class="steer-chip" style="font-size:.66rem" onclick="app.slaidyExportDraft()">⬇</button> <label class="steer-chip" style="font-size:.66rem;cursor:pointer">⬆<input type="file" accept=".json,application/json" style="display:none" onchange="app.slaidyImportFile(this)"></label></span>
     </div>`;
   }
 
@@ -6577,8 +6674,21 @@ class PBook {
             <span style="color:var(--text-3)">›</span>
           </div>`).join('')
         : `<div style="color:var(--text-3);font-size:.8rem">Zatím tu nic není — práce se objeví, jakmile je žáci sdílí s kódem.</div>`}
+        <div id="galDecks"></div>
       </div></div>`;
     document.body.appendChild(el);
+    // Prezentace třídy z úložiště decků — SlAIdy je otevře přímo z URL
+    fetch('/api/decks?group=' + encodeURIComponent(code)).then(r => r.json()).then(d => {
+      const box = document.getElementById('galDecks');
+      if (!box || !d?.ok || !(d.items || []).length) return;
+      const items2 = d.items.sort((a, b2) => String(b2.at).localeCompare(String(a.at)));
+      box.innerHTML = `<div style="font-size:.8rem;font-weight:700;margin:.8em 0 .3em">🎞 Prezentace třídy</div>` + items2.map(it =>
+        `<div style="display:flex;gap:.6em;align-items:center;padding:.45em .6em;border:1.5px solid var(--border,#eee);border-radius:10px;margin:.3em 0">
+          <span style="flex:1 1 auto;min-width:0"><b>${this.escHtml(it.title || '—')}</b> <span style="font-size:.72rem;color:var(--text-3)">— ${this.escHtml(it.author || 'bez autora')} · ${it.n} slajdů</span></span>
+          <a class="note-save" style="background:#7C3AED;font-size:.72rem;text-decoration:none" target="_blank" rel="noopener"
+            href="${this._slaidyAppUrl()}?deck=${encodeURIComponent(this._slaidyDeckUrl(it.id))}#present">▶ Promítnout</a>
+        </div>`).join('');
+    }).catch(() => {});
   }
 
   // Hlasování: toggle, hlas se počítá na serveru per žák (uid) — poslední stav platí
