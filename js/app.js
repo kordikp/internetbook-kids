@@ -571,14 +571,21 @@ class PBook {
   }
 
   // Lazily fetch community variants for a concept (open mode only; graceful empty)
+  // Kód třídy čtenáře — jeden zdroj pravdy pro drafty, decky i podání do knihy
+  _classCode() {
+    const c = (localStorage.getItem('pbook-deck-group') || localStorage.getItem('sk-class-code') || '').toLowerCase();
+    return /^[a-z0-9-]{4,16}$/.test(c) ? c : '';
+  }
   async _fetchCommunity(conceptId) {
     if (!this._f('community')) return [];
     if (!this._communityCache) this._communityCache = {};
     if (this._communityCache[conceptId]) return this._communityCache[conceptId];
     // Adopted runtime tellings (edited/core) serve to EVERYONE — an editor
     // verified them; raw community stays behind open mode.
+    // Paralelní třídy: podání s classGroup vidí jen čtenáři TÉŽE třídy —
+    // do společné knihy je povyšuje až redakce (pak classGroup zmizí).
     const states = this.user.readerMode === 'open' ? ['community', 'edited', 'core'] : ['edited', 'core'];
-    const items = await this.rc.listCommunityBlocks(conceptId, 10, states);
+    const items = await this.rc.listCommunityBlocks(conceptId, 10, states, { classGroup: this._classCode() });
     this._communityCache[conceptId] = items;
     return items;
   }
@@ -6653,7 +6660,7 @@ class PBook {
     try { data = await (await fetch('/api/drafts?group=' + encodeURIComponent(code) + '&voter=' + encodeURIComponent(voter))).json(); } catch (e) {}
     // řazení: hlasy sestupně, při shodě podle času odevzdání (stabilní a fér)
     const items = (data?.ok ? data.items : []).sort((a, b2) => (b2.votes - a.votes) || String(a.at).localeCompare(String(b2.at)));
-    this._galState = { code, items, myVotes: new Set(data?.myVotes || []), voter };
+    this._galState = { code, items, myVotes: new Set(data?.myVotes || []), votesAll: data?.votes || {}, voter };
     const el = document.createElement('div');
     el.id = 'classGal';
     el.innerHTML = `<div style="position:fixed;inset:0;background:rgba(20,20,30,.5);z-index:265;overflow-y:auto" onclick="if(event.target===this)document.getElementById('classGal').remove()">
@@ -6674,9 +6681,27 @@ class PBook {
             <span style="color:var(--text-3)">›</span>
           </div>`).join('')
         : `<div style="color:var(--text-3);font-size:.8rem">Zatím tu nic není — práce se objeví, jakmile je žáci sdílí s kódem.</div>`}
+        <div id="galTellings"></div>
         <div id="galDecks"></div>
       </div></div>`;
     document.body.appendChild(el);
+    // Podání do knihy z této třídy (izolovaná od ostatních tříd): hlasuje se
+    // srdíčkem, nejlepší učitel ⭐ doporučí redakci — výtah třída → kniha → jádro
+    this.rc.listCommunityBlocks(null, 50, ['community'], { onlyGroup: code }).then(tells => {
+      const box = document.getElementById('galTellings');
+      if (!box || !tells.length) return;
+      const g = this._galState;
+      box.innerHTML = `<div style="font-size:.8rem;font-weight:700;margin:.8em 0 .1em">✍️ Podání do knihy</div>
+        <div style="font-size:.68rem;color:var(--text-3);margin:0 0 .3em">Vidí je jen tahle třída. Srdíčkem hlasujete; ⭐ = učitel doporučí redakci do společné knihy.</div>`
+        + tells.map(t => `<div style="display:flex;gap:.6em;align-items:center;padding:.45em .6em;border:1.5px solid var(--border,#eee);border-radius:10px;margin:.3em 0;cursor:pointer"
+            onclick="app._showTellingPreview('${this.escHtml(t.meta.id)}','${this.escHtml(code)}')">
+            <span style="flex:1 1 auto;min-width:0"><b>${this.escHtml(t.meta.title || '—')}</b> <span style="font-size:.72rem;color:var(--text-3)">— ${this.escHtml(t.meta.sharedAs || 'anonym')}${t.meta.nominated ? ' · ⭐ doporučeno redakci' : ''}</span></span>
+            <button class="steer-chip gal-vote" data-id="${this.escHtml(t.meta.id)}" onclick="event.stopPropagation();app.classVote('${this.escHtml(t.meta.id)}',this)"
+              style="font-size:.82rem;min-width:56px;${g.myVotes.has(t.meta.id) ? 'background:#FEE2E2;border-color:#EF4444' : ''}">${g.myVotes.has(t.meta.id) ? '❤️' : '🤍'} <b class="gv-n">${g.votesAll?.[t.meta.id] || 0}</b></button>
+            ${t.meta.nominated ? '' : `<button class="steer-chip" title="Učitel: doporučit redakci do společné knihy" style="font-size:.78rem" onclick="event.stopPropagation();app.classNominate('${this.escHtml(t.meta.id)}','${this.escHtml(code)}',this)">⭐</button>`}
+          </div>`).join('');
+      this._galTellings = Object.fromEntries(tells.map(t => [t.meta.id, t]));
+    }).catch(() => {});
     // Prezentace třídy z úložiště decků — SlAIdy je otevře přímo z URL
     fetch('/api/decks?group=' + encodeURIComponent(code)).then(r => r.json()).then(d => {
       const box = document.getElementById('galDecks');
@@ -6708,6 +6733,37 @@ class PBook {
       await fetch('/api/drafts', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'vote', id, group: g.code, voter: g.voter, on }) });
     } catch (e) {}
     this.rc.logEvent('class_vote', { group: g.code, id, on });
+  }
+
+  // Učitelská nominace: podání třídy → fronta redakce (výtah do společné knihy)
+  async classNominate(itemId, code, btn) {
+    const ok = await this.rc.api('POST', `/items/${encodeURIComponent(itemId)}`, {
+      nominated: code, nominatedAt: new Date().toISOString(), '!cascadeCreate': true,
+    });
+    this.rc.logEvent('class_nomination', { group: code, itemId, ok: ok !== null });
+    if (btn) btn.replaceWith(Object.assign(document.createElement('span'), { textContent: '⭐', title: 'doporučeno redakci' }));
+    this.showXPToast(ok !== null ? '⭐ Doporučeno redakci — díky za výběr!' : 'Nominace se nepovedla', 'xp');
+  }
+  // Náhled podání třídy (jen ke čtení, s hlasováním v hlavičce)
+  _showTellingPreview(itemId, code) {
+    const t = this._galTellings?.[itemId]; if (!t) return;
+    document.getElementById('tellPrev')?.remove();
+    const g = this._galState;
+    const el = document.createElement('div');
+    el.id = 'tellPrev';
+    el.innerHTML = `<div style="position:fixed;inset:0;background:rgba(20,20,30,.5);z-index:270;overflow-y:auto" onclick="if(event.target===this)document.getElementById('tellPrev').remove()">
+      <div style="max-width:720px;margin:3vh auto 6vh;background:var(--card,#fff);border:1px solid var(--border,#ddd);border-radius:16px;box-shadow:0 14px 44px rgba(0,0,0,.28);padding:1em 1.2em 1.4em">
+        <div style="display:flex;align-items:center;gap:.6em;flex-wrap:wrap">
+          <b style="flex:1 1 auto;min-width:0">${this.escHtml(t.meta.title || '—')}</b>
+          <span style="font-size:.74rem;color:var(--text-3)">${this.escHtml(t.meta.sharedAs || 'anonym')}</span>
+          <button class="steer-chip gal-vote" data-id="${this.escHtml(itemId)}" onclick="app.classVote('${this.escHtml(itemId)}',this)"
+            style="font-size:.85rem;${g?.myVotes.has(itemId) ? 'background:#FEE2E2;border-color:#EF4444' : ''}">${g?.myVotes.has(itemId) ? '❤️' : '🤍'} <b class="gv-n">${g?.votesAll?.[itemId] || 0}</b></button>
+          <button onclick="document.getElementById('tellPrev').remove()" style="width:34px;height:34px;border-radius:50%;border:1.5px solid var(--border,#ccc);background:var(--bg,#fafaf7);font-weight:700;cursor:pointer">✕</button>
+        </div>
+        <div class="block-content spine-body" style="margin-top:.6em">${renderMarkdown(t.body || '')}</div>
+      </div></div>`;
+    document.body.appendChild(el);
+    this._attachReveals(el);
   }
 
   // Promítání pro třídu: jedna práce na celou obrazovku, šipky/klávesy, hlasování
@@ -8418,6 +8474,9 @@ class PBook {
       <div style="font-size:.7rem;color:var(--text-3);margin:.3em 0">Sdílí se anonymně, pokud nechceš jinak. Dokud ho neprověří redakce, zůstane označené jako čtenářské. Můžeš si ho nechat i soukromé — tvoje bude tak jako tak.</div>
       <input type="text" id="share-nick-${blockId}" placeholder="Nepovinná přezdívka (prázdné = anonymně)" maxlength="40"
         style="width:100%;padding:.4em;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:.75rem;margin:.2em 0">
+      <input type="text" id="share-group-${blockId}" placeholder="Kód třídy (nepovinný — podání pak vidí jen tvoje třída)" maxlength="16" value="${this.escHtml(this._classCode())}"
+        style="width:100%;padding:.4em;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:.75rem;margin:.2em 0">
+      <div style="font-size:.66rem;color:var(--text-3)">S kódem: uvidí ho spolužáci a učitel v galerii třídy, hlasuje se o něm — a to nejlepší učitel ⭐ doporučí redakci do společné knihy. Bez kódu jde rovnou mezi čtenářská podání celé knihy.</div>
       <div class="note-actions">
         <button class="note-save" onclick="app.shareGeneratedBlock('${blockId}')">📣 Sdílet do knihy</button>
         <button class="note-cancel" onclick="document.getElementById('share-consent-${blockId}').remove()">Nechat soukromé</button>
@@ -8445,9 +8504,14 @@ class PBook {
       remixOf: meta.remixOf || '',
       remixLog: meta.remixLog ? JSON.stringify(meta.remixLog).slice(0, 1500) : '',
       diagramSvg: meta.diagramSvg || '',
+      // Paralelní třídy: s kódem je podání vidět jen ve své třídě, dokud ho
+      // redakce nepovýší do společné knihy (pak classGroup smaže).
+      classGroup: (() => { const g = (document.getElementById(`share-group-${blockId}`)?.value || '').trim().toLowerCase(); return /^[a-z0-9-]{4,16}$/.test(g) ? g : ''; })() || undefined,
     });
+    const sharedGroup = (document.getElementById(`share-group-${blockId}`)?.value || '').trim().toLowerCase();
+    if (/^[a-z0-9-]{4,16}$/.test(sharedGroup)) localStorage.setItem('pbook-deck-group', sharedGroup);
     // Log regardless — the editorial nomination queue reads these events
-    this.rc.logEvent('community_share', { blockId, concept: meta.concept, sharedAs: nick ? 'nick' : 'anonymous', ok });
+    this.rc.logEvent('community_share', { blockId, concept: meta.concept, sharedAs: nick ? 'nick' : 'anonymous', group: sharedGroup || undefined, ok });
     document.getElementById(`share-consent-${blockId}`)?.remove();
     if (ok) {
       block.meta.state = 'community';
